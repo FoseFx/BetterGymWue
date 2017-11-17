@@ -1,0 +1,33 @@
+#terms{
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    display: none;
+}
+#click {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #444;
+    opacity: 0.05;
+}
+#terms-wrapper{
+    margin: 5% auto 0;
+    height: 60%;
+    min-height: 500px;
+    background: #d0d0d0;
+    width: 40%;
+    min-width: 800px;
+}
+
+.terms-inner-wrapper{
+    overflow-y: scroll;
+    width: 95%;
+    height: 97%;
+    margin: 1% auto;
+    padding: 0 10px 0 10px;
+}.terms-inner-wrapper > h1, h2, h3, h4, h5, h6{
+    text-align: center;
+}
