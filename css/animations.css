@@ -1,0 +1,67 @@
+button.yes{
+    transition: all 0.5s;
+}
+button.yes > span{
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+}
+button.yes > span:after{
+    content: "✔";
+    position: absolute;
+    opacity: 0;
+    top:0;
+    right: -32px;
+    transition: 0.5s;
+}
+button.yes:hover > span{
+    padding-right: 10px;
+}
+button.yes:hover > span:after{
+    opacity:1;
+    right: -10px;
+}
+button.yes {
+    display: inline-block;
+    vertical-align: middle;
+    -webkit-transform: perspective(1px) translateZ(0);
+    transform: perspective(1px) translateZ(0);
+    box-shadow: 0 0 1px transparent;
+    position: relative;
+    -webkit-transition-property: color;
+    transition-property: color;
+    -webkit-transition-duration: 0.1s;
+    transition-duration: 0.1s;
+}
+button.yes:before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #4CAF50;
+    -webkit-transform: scaleX(0);
+    transform: scaleX(0);
+    -webkit-transform-origin: 0 50%;
+    transform-origin: 0 50%;
+    -webkit-transition-property: transform;
+    transition-property: transform;
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-timing-function: ease-out;
+    transition-timing-function: ease-out;
+    -webkit-transition: color 0.1s 0s linear;
+    -moz-transition: color 0.1s 0s linear;
+    -ms-transition: color 0.1s 0s linear;
+    -o-transition: color 0.1s 0s linear;
+    transition: color 0.1s 0s linear;
+}
+button.yes:hover, .button.yes:focus, .button.yes:active {
+    color: white;
+}
+button.yes:hover:before, .button.yes:focus:before, .button.yes:active:before {
+    -webkit-transform: scaleX(1);
+    transform: scaleX(1);
+}

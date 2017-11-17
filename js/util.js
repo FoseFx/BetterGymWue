@@ -30,9 +30,5 @@ function startSpinner() {
 }
 
 function showAGB() {
-    $("#page-wraper").css("opacity", "0");
-    setTimeout(function () {
-        $("#page-wraper").css("display", "none");
-        $("#terms").css("display", "flex");
-    }, 200);
+    $("#terms").css("display", "flex");
 }
