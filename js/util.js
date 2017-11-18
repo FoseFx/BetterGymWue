@@ -3,7 +3,7 @@ $(document).ready(function () {
     document.cookie.split(";").forEach(function (t) {if(t == "a=true") a = true;});
     stopSpinner();
     if(!a) showAGB();
-    moveInLogin();
+    else moveInLogin();
 });
 
 function stopSpinner() {
@@ -35,7 +35,6 @@ function showAGB() {
 
 function moveInLogin() {
     setTimeout(function () {
-        console.log("s");
         $("#login-wrapper").css("transform", "translate(0px,0)");
     }, 700);
 }
