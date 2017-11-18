@@ -3,7 +3,7 @@ $(document).ready(function () {
     document.cookie.split(";").forEach(function (t) {if(t == "a=true") a = true;});
     stopSpinner();
     if(!a) showAGB();
-    moveInLogin()
+    else moveInLogin()
 });
 
 function stopSpinner() {
