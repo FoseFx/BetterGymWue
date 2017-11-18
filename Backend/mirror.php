@@ -1,14 +1,13 @@
 <?php
-
 if($_GET['hash'] == 'true'){
     echo hash_file("sha256", "mirror.php");
     exit;
 }
 
 header('Access-Control-Allow-Origin: *');
-header( 'Access-Control-Allow-Headers: Authorization' );
+header( 'Access-Control-Allow-Headers: authorization' );
+header('Access-Control-Allow-Methods: GET');
 header('Content-Type: text/html');
-header('Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT');
 
 if (!function_exists('getallheaders'))
 {
@@ -28,6 +27,10 @@ if (!function_exists('getallheaders'))
 
 $method = $_SERVER['REQUEST_METHOD'];
 
+if($method == 'OPTIONS'){
+    exit;
+}
+
 if ($_GET && $_GET['url']) {
     $headers = getallheaders();
     $headers_str = [];
@@ -45,7 +48,6 @@ if ($_GET && $_GET['url']) {
     if( $method !== 'GET') {
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
     }
-
     if($method == "PUT" || $method == "PATCH" || ($method == "POST" && empty($_FILES))) {
       $data_str = file_get_contents('php://input');
       curl_setopt($ch, CURLOPT_POSTFIELDS, $data_str);
@@ -69,17 +71,18 @@ if ($_GET && $_GET['url']) {
     curl_setopt( $ch, CURLOPT_HTTPHEADER, $headers_str );
 
     $result = curl_exec($ch);
-    $info = curl_getinfo ($ch);
+    if(curl_errno($ch)){
+        echo 'Request Error:' . curl_error($ch);
+    }
+
+    $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
 
-    http_response_code($info['http_code']);
-echo $result;
+    header('Access-Control-Allow-Origin: *');
+
+    http_response_code($status);
+    echo $result;
 }
 else {
-      echo $method;
-      var_dump($_POST);
-      var_dump($_GET);
-      $data_str = file_get_contents('php://input');
-      echo "invalid";
-  }
-?>
+    http_response_code(400);
+}
