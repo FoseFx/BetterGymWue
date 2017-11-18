@@ -62,8 +62,11 @@
         min-height: 0;
     }
 }
-#login-wrapper{
-    transform: translate(-1000px, 0);
+#login-wrapper, #stufe-wrapper{
+    position: absolute;
+    left:50%;
+    top:50%;
+    transform: translate(1000px, -50%);
     transition: transform 1s ease, opacity 0.5s linear;
     width: 600px;
     height: 210px;
@@ -108,7 +111,7 @@ input[type=submit]:hover {
 
 @media (max-width: 650px){
     
-    #login-wrapper{
+    #login-wrapper, #stufe-wrapper{
         width: 90%;
     }
     #login-form{

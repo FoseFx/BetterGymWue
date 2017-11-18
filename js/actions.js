@@ -37,6 +37,7 @@ $("#login-form").submit(function (e) {
     });
 
 });
+
 function onTrue() {
     document.cookie = "user=" + $("#select").val() + ";expires=Fri, 31 Dec 9999 23:59:59 GMT";
     document.cookie = "psw=" + $("#psw").val() + ";expires=Fri, 31 Dec 9999 23:59:59 GMT";
