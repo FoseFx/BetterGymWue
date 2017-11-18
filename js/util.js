@@ -10,11 +10,10 @@ function stopSpinner() {
     $("#spinner").css("opacity", "0");
     setTimeout(function () {
         $("#spinner").css("display", "none");
-        $("#page-wraper").css("display", "flex");
+        $("#page-wraper").css("display", "block");
         setTimeout(function () {
             $("#page-wraper").css("opacity", "1");
         }, 10);
-
     }, 200);
 
 }
@@ -35,7 +34,7 @@ function showAGB() {
 
 function moveInLogin() {
     setTimeout(function () {
-        $("#login-wrapper").css("transform", "translate(0px,0)");
+        $("#login-wrapper").css("transform", "translate(-50%,-50%)");
     }, 700);
 }
 function unAuth() {
@@ -49,5 +48,9 @@ function Auth() {
     $("#login-wrapper").css("opacity", "0");
     setTimeout(function () {
         $("#login-wrapper").css("display", "none");
+        $("#stufe-wrapper").css("display", "flex");
+        setTimeout(function () {
+            $("#stufe-wrapper").css("opacity", "1");
+        }, 10);
     }, 500);
 }
