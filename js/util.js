@@ -3,7 +3,7 @@ $(document).ready(function () {
     document.cookie.split(";").forEach(function (t) {if(t == "a=true") a = true;});
     stopSpinner();
     if(!a) showAGB();
-
+    moveInLogin();
 });
 
 function stopSpinner() {
@@ -31,4 +31,24 @@ function startSpinner() {
 
 function showAGB() {
     $("#terms").css("display", "flex");
+}
+
+function moveInLogin() {
+    setTimeout(function () {
+        console.log("s");
+        $("#login-wrapper").css("transform", "translate(0px,0)");
+    }, 700);
+}
+function unAuth() {
+    $("#login-wrapper").css("box-shadow", "0px 0px 12px 0px rgba(255,36,36,1)")
+        .addClass("shake shake-constant");
+    setTimeout(function () {
+        $("#login-wrapper").removeClass("shake shake-constant");
+    }, 100);
+}
+function Auth() {
+    $("#login-wrapper").css("opacity", "0");
+    setTimeout(function () {
+        $("#login-wrapper").css("display", "none");
+    }, 500);
 }
