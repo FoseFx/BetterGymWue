@@ -19,6 +19,7 @@ Ich habe mich bei bereits veröffentlichtem Code bedient vielen Dank an:
  - W3School's Codesamples und Inspiration
  - [Google Fonts](https://fonts.google.com/)
  - [tobiasahlin's spinner](http://tobiasahlin.com/spinkit/)
+ - [Devstreak's scrollbar] (https://codepen.io/devstreak/pen/dMYgeO)
 
 
 ----------
