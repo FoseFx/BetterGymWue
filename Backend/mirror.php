@@ -80,7 +80,6 @@ else {
       var_dump($_POST);
       var_dump($_GET);
       $data_str = file_get_contents('php://input');
-      echo $data_str;
-
+      echo "invalid";
   }
 ?>
