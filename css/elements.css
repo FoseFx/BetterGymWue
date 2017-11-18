@@ -3,6 +3,7 @@
     height: 100vh;
     position: fixed;
     display: none;
+    z-index: 9;
 }
 .click {
     position: fixed;
