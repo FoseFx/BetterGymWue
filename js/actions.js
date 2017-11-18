@@ -1,14 +1,20 @@
+const CLICK = 0;
+
 $("#termsaccept").on("click", function (e) {
     e.preventDefault();
     document.cookie = "a=true;expires=Fri, 31 Dec 9999 23:59:59 GMT";
     $("#terms").css("display", "none");
-    moveInLogin();
+    checkLoginCookie();
 });
 
 $("#login-form").submit(function (e) {
     e.preventDefault();
     var key = btoa($("#select").val() + ":" + $("#psw").val());
-    console.log(key);
+
+    login(key, CLICK);
+});
+
+function login(key, i) {
     $.ajax({
         type: "GET",
         beforeSend: function (xhr) {
@@ -16,17 +22,17 @@ $("#login-form").submit(function (e) {
         },
         url: 'https://www.fosefx.de/betterGymWue/mirror.php?url=gymnasium-wuerselen.de/untis/Schueler-Stundenplan/45/c/c00020.htm',
         success: function (r) {
-            onTrue(key);
+            Auth(key);
         },
         error: function (e, r, t) {
-            console.log(e.getAllResponseHeaders());
-            unAuth();
+            if(i === CLICK){
+                unAuth();
+            }else {
+                moveInLogin();
+                setTimeout(function () {
+                    unAuth();
+                }, 1500)
+            }
         }
     });
-
-});
-
-function onTrue(key) {
-    document.cookie = "key=" + key + ";expires=Fri, 31 Dec 9999 23:59:59 GMT";
-    Auth();
 }
