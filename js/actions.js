@@ -36,3 +36,12 @@ function login(key, i) {
         }
     });
 }
+
+$("#stufe-form").submit(function (e) {
+    e.preventDefault();
+    if($("#stufe").val() !== ""){
+        moveOutLogin();
+        Gstufe = $("#stufe").val();
+        document.cookie = "stufe="+Gstufe+EXP;
+    }
+});

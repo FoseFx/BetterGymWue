@@ -38,6 +38,7 @@ function checkLoginCookie() {
         login(c, 1);
     else moveInLogin();
 }
+
 function checkStufeCookie() {
     startSpinner();
     var r = checkCookie("stufe");
@@ -54,6 +55,7 @@ function moveInLogin() {
         $("#login-wrapper").css("transform", "translate(-50%,-50%)");
     }, 700);
 }
+
 function unAuth() {
     $("#login-wrapper").css("box-shadow", "0px 0px 12px 0px rgba(255,36,36,1)")
         .addClass("shake shake-constant");
@@ -62,6 +64,7 @@ function unAuth() {
         $("#psw").val("");
     }, 200);
 }
+
 function Auth(key) {
     document.cookie = "key=" + key + ";expires=Fri, 31 Dec 9999 23:59:59 GMT";
     Gkey = key;
@@ -78,4 +81,11 @@ function checkCookie(c) {
     var r = null;
     document.cookie.split(";").forEach(function (t) {var l = t.split("="); if(l[0].replace(/\s/g, '') === c) r = l[1]});
     return r;
+}
+
+function moveOutLogin() {
+    $("#stufe-wrapper").css("transform", "translate(-1000%, -50%)");
+    setTimeout(function () {
+        $("#login-wrapper").hide();
+    }, 500);
 }
