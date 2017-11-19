@@ -1,1 +1,2 @@
 var stufe;
+var Gkey;
