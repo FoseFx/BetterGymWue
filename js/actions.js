@@ -42,6 +42,10 @@ $("#stufe-form").submit(function (e) {
     if($("#stufe").val() !== ""){
         moveOutLogin();
         Gstufe = $("#stufe").val();
+        for(var i = 0; i < GStufeA.length; i++){
+            if(GStufeA[i] === Gstufe) GStufeid = i + 1;
+        }
         document.cookie = "stufe="+Gstufe+EXP;
+        document.cookie = "stufeid="+GStufeid+EXP;
     }
 });
