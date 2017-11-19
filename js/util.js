@@ -44,6 +44,7 @@ function checkStufeCookie() {
     var r = checkCookie("stufe");
     if(r !== null){
         Gstufe = r;
+        GStufeid = checkCookie("stufeid");
     }else getStufen();
 
     stopSpinner();
@@ -98,4 +99,12 @@ function getWeek(d) {
     var dayDiff = (target - jan4) / 86400000;
     return 1 + Math.ceil(dayDiff / 7);
 
+}
+
+function to5erString(i) {
+    var l = i;
+    while (l.length !== 5){
+        l = "0" + l;
+    }
+    return l;
 }
