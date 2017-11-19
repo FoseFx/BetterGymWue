@@ -16,3 +16,21 @@ function getStufen() {
         }
     });
 }
+
+function getKurse() {
+    $.ajax({
+        url: "",
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("Authorization", "Basic " + Gkey);
+        },
+        success: function (r) {
+            evaKurse(r);
+        },
+        error: function (r) {
+            alert("Serververbindung fehlgeschlagen");
+        }
+    });
+}
+function evaKurse(r) {
+
+}
