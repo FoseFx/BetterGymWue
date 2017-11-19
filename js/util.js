@@ -43,9 +43,7 @@ function checkStufeCookie() {
     var r = checkCookie("stufe");
     if(r !== null){
         stufe = r;
-    }else{
-
-    }
+    }else getStufen();
 
     stopSpinner();
     $(".nointeract").removeClass("nointeract");
@@ -65,9 +63,8 @@ function unAuth() {
     }, 200);
 }
 function Auth(key) {
-    if(key){
-        document.cookie = "key=" + key + ";expires=Fri, 31 Dec 9999 23:59:59 GMT";
-    }
+    document.cookie = "key=" + key + ";expires=Fri, 31 Dec 9999 23:59:59 GMT";
+    Gkey = key;
 
     $("#login-wrapper").css("opacity", "0");
     setTimeout(function () {
