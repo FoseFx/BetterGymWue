@@ -33,12 +33,24 @@ function showAGB() {
 }
 
 function checkLoginCookie() {
-    var c = null;
-    document.cookie.split(";").forEach(function (t) {var l = t.split("="); if(l[0].replace(/\s/g, '') === "key") c = l[1]});
+    var c = checkCookie("key");
     if(c !== null)
         login(c, 1);
     else moveInLogin();
 }
+function checkStufeCookie() {
+    startSpinner();
+    var r = checkCookie("stufe");
+    if(r !== null){
+        stufe = r;
+    }else{
+
+    }
+
+    stopSpinner();
+    $(".nointeract").removeClass("nointeract");
+}
+
 function moveInLogin() {
     setTimeout(function () {
         $("#login-wrapper").css("transform", "translate(-50%,-50%)");
@@ -60,9 +72,13 @@ function Auth(key) {
     $("#login-wrapper").css("opacity", "0");
     setTimeout(function () {
         $("#login-wrapper").css("display", "none");
-        $("#stufe-wrapper").css("display", "flex");
-        setTimeout(function () {
-            $("#stufe-wrapper").css("opacity", "1");
-        }, 10);
+        $("#stufe-wrapper").removeClass("hidden").css("transform", "translate(-50%, -50%)");
+        checkStufeCookie();
     }, 500);
+}
+
+function checkCookie(c) {
+    var r = null;
+    document.cookie.split(";").forEach(function (t) {var l = t.split("="); if(l[0].replace(/\s/g, '') === c) r = l[1]});
+    return r;
 }

@@ -31,3 +31,11 @@ button{
     font-size: 16px;
     cursor: pointer;
 }
+hr {
+    width: 50%;
+    height: 1px;
+    margin: 0 auto;
+    background: #444;
+    opacity: 0.4;
+    border-style: hidden;
+}
