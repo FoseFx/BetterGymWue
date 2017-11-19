@@ -20,7 +20,7 @@ function getStufen() {
 
 function getKurse() {
 
-    var url = "https://www.fosefx.de/betterGymWue/mirror.php?url=http://gymnasium-wuerselen.de/untis/Schueler-Stundenplan/" + getWeek(new Date()) + "/c/c" + to5erString(GStufeid);
+    var url = "https://www.fosefx.de/betterGymWue/mirror.php?url=http://gymnasium-wuerselen.de/untis/Schueler-Stundenplan/" + getWeekOfYear(new Date()) + "/c/c" + to5erString(GStufeid) + ".htm";
     console.log(url);
     $.ajax({
         url: url,
