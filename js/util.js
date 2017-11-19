@@ -43,7 +43,7 @@ function checkStufeCookie() {
     startSpinner();
     var r = checkCookie("stufe");
     if(r !== null){
-        stufe = r;
+        Gstufe = r;
     }else getStufen();
 
     stopSpinner();
@@ -88,4 +88,14 @@ function moveOutLogin() {
     setTimeout(function () {
         $("#login-wrapper").hide();
     }, 500);
+}
+
+function getWeek(d) {
+    var target  = new Date(d.valueOf());
+    var dayNr   = (d.getDay() + 6) % 7;
+    target.setDate(target.getDate() - dayNr + 3);
+    var jan4    = new Date(target.getFullYear(), 0, 4);
+    var dayDiff = (target - jan4) / 86400000;
+    return 1 + Math.ceil(dayDiff / 7);
+
 }
