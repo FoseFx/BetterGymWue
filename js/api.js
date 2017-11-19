@@ -36,5 +36,28 @@ function getKurse() {
     });
 }
 function evaKurse(r) {
-    console.log(r);
+
+    var orig = $(r.replace(/\r?\n|\r/g, ''));
+     orig.children("table").each(function (t) {
+         if ($(this).children("tbody").children("tr").children("td").children("font").html() === "") $(this).remove();
+    });
+    var main = orig.children("table");
+    $(main).children("tbody").children("tr")[0].remove();
+
+
+    $(main).children("tbody").children("tr").each(function () {
+
+        $(this).children("td").each(function () {
+            var val = $(this).children("table").children("tbody").children("tr").children("td").children("font").children("b").html();
+            if(/^\d+$/.test(val)) $(this).html("");
+        });
+
+        if ($(this).html() === "") $(this).remove();
+        if($(this).children().length === 1) $(this).remove();
+
+    });
+
+
+    console.log($(main).children("tbody").html());
+
 }
