@@ -45,7 +45,11 @@ function checkStufeCookie() {
     if(r !== null){
         Gstufe = r;
         GStufeid = checkCookie("stufeid");
-    }else getStufen();
+        accessStufe();
+    }else {
+        moveInStufe();
+        getStufen();
+    }
 
     stopSpinner();
     $(".nointeract").removeClass("nointeract");
@@ -66,6 +70,10 @@ function unAuth() {
     }, 200);
 }
 
+function moveInStufe() {
+    $("#stufe-wrapper").removeClass("hidden").css("transform", "translate(-50%, -50%)");
+}
+
 function Auth(key) {
     document.cookie = "key=" + key + ";expires=Fri, 31 Dec 9999 23:59:59 GMT";
     Gkey = key;
@@ -73,7 +81,6 @@ function Auth(key) {
     $("#login-wrapper").css("opacity", "0");
     setTimeout(function () {
         $("#login-wrapper").css("display", "none");
-        $("#stufe-wrapper").removeClass("hidden").css("transform", "translate(-50%, -50%)");
         checkStufeCookie();
     }, 500);
 }
@@ -84,22 +91,50 @@ function checkCookie(c) {
     return r;
 }
 
-function moveOutLogin() {
+function moveOutStufe() {
     $("#stufe-wrapper").css("transform", "translate(-1000%, -50%)");
     setTimeout(function () {
         $("#login-wrapper").hide();
     }, 500);
 }
 
-function getWeek(d) {
-    var target  = new Date(d.valueOf());
-    var dayNr   = (d.getDay() + 6) % 7;
-    target.setDate(target.getDate() - dayNr + 3);
-    var jan4    = new Date(target.getFullYear(), 0, 4);
-    var dayDiff = (target - jan4) / 86400000;
-    return 1 + Math.ceil(dayDiff / 7);
-
+function getWeekOfYear(d) {
+    return(d.getWeek());
 }
+/**
+ * Returns the week number for this date.
+ * the week returned is the ISO 8601 week number.
+ * source: http://techblog.procurios.nl/k/news/view/33796/14863/calculate-iso-8601-week-and-year-in-javascript.html
+ * @return int
+ */
+Date.prototype.getWeek = function () {
+    // Create a copy of this date object
+    var target = new Date(this.valueOf());
+
+    // ISO week date weeks start on monday
+    // so correct the day number
+    var dayNr = (this.getDay() + 6) % 7;
+
+    // ISO 8601 states that week 1 is the week
+    // with the first thursday of that year.
+    // Set the target date to the thursday in the target week
+    target.setDate(target.getDate() - dayNr + 3);
+
+    // Store the millisecond value of the target date
+    var firstThursday = target.valueOf();
+
+    // Set the target to the first thursday of the year
+    // First set the target to january first
+    target.setMonth(0, 1);
+    // Not a thursday? Correct the date to the next thursday
+    if (target.getDay() != 4) {
+        target.setMonth(0, 1 + ((4 - target.getDay()) + 7) % 7);
+    }
+
+    // The weeknumber is the number of weeks between the
+    // first thursday of the year and the thursday in the target week
+    return 1 + Math.ceil((firstThursday - target) / 604800000); // 604800000 = 7 * 24 * 3600 * 1000
+};
 
 function to5erString(i) {
     var l = i;
