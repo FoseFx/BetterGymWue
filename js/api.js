@@ -19,8 +19,8 @@ function getStufen() {
 }
 
 function getKurse() {
-
-    var url = "https://www.fosefx.de/betterGymWue/mirror.php?url=http://gymnasium-wuerselen.de/untis/Schueler-Stundenplan/" + getWeekOfYear(new Date()) + "/c/c" + to5erString(GStufeid) + ".htm";
+    var week = getWeekOfYear(new Date());
+    var url = "https://www.fosefx.de/betterGymWue/mirror.php?url=http://gymnasium-wuerselen.de/untis/Schueler-Stundenplan/" + "45" + "/c/c" + to5erString(GStufeid) + ".htm";
     console.log(url);
     $.ajax({
         url: url,
@@ -36,28 +36,76 @@ function getKurse() {
     });
 }
 function evaKurse(r) {
+    var arr = [];
+    var orig = $(r.replace(/\r?\n|\r/g, '').toUpperCase());
 
-    var orig = $(r.replace(/\r?\n|\r/g, ''));
-     orig.children("table").each(function (t) {
-         if ($(this).children("tbody").children("tr").children("td").children("font").html() === "") $(this).remove();
-    });
-    var main = orig.children("table");
+    var main = orig.children("table")[0];
+
     $(main).children("tbody").children("tr")[0].remove();
+    main = $(main).children("tbody")[0];
 
-
-    $(main).children("tbody").children("tr").each(function () {
-
-        $(this).children("td").each(function () {
-            var val = $(this).children("table").children("tbody").children("tr").children("td").children("font").children("b").html();
-            if(/^\d+$/.test(val)) $(this).html("");
-        });
-
-        if ($(this).html() === "") $(this).remove();
-        if($(this).children().length === 1) $(this).remove();
-
+    $(main).find("b").each(function () {
+        if ($(this).html() === "PAUSE") {
+            $(this).parents().eq(6).attr("id", "pause").html(" ");
+        }
     });
 
+    $(main).children("tr").each(function (i) {
+        var row = $(this);
+        if(row.is("#pause")) return true;
+        var stunde = [];
 
-    console.log($(main).children("tbody").html());
+        if(row.html() === "") {
+            row.remove();
+            return true;
+        }
+
+        row.children("td").each(function (i) {
+            if(i === 0) return true;
+            var isBig = false;
+            if($(this).attr("rowspan") === "4") isBig = true;
+
+            var data = $(this).children("table").children("tbody");
+            var rowz = data.children("tr");
+
+            if(rowz.length  === 1){
+                var vars = rowz.find("font");
+                if(vars.length === 1) {
+                    if(vars.html() !== "") return true;
+                }
+                var fach = $(vars[0]).children("b").html();
+                var lehrer = $(vars[1]).html();
+                var raum = $(vars[2]).html();
+                var objz = {
+                    type: "klasse",
+                    isBig: isBig,
+                    fach: fach,
+                    lehrer: lehrer,
+                    raum: raum
+                };
+                stunde.push(objz);
+            }else{
+                var fach = rowz.find("font").children("b").html();
+
+
+
+                var objz = {
+                    type: "kurs",
+                    fach: fach,
+                    isBig: isBig
+                };
+
+                stunde.push(objz);
+            }
+        });
+        arr.push(stunde);
+    });
+    var final = [];
+    for (var i = 0; i < arr.length; i++)if(arr[i].length !== 0) final.push(arr[i]);
+    arr = final;
+    console.log(arr);
+
+}
+function addKurs(kurs) {
 
 }
