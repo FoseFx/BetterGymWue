@@ -36,6 +36,7 @@ function getKurse() {
     });
 }
 function evaKurse(r) {
+
     var arr = [];
     var orig = $(r.replace(/\r?\n|\r/g, '').toUpperCase());
 
@@ -50,7 +51,7 @@ function evaKurse(r) {
         }
     });
 
-    $(main).children("tr").each(function (i) {
+    $(main).children("tr").each(function (welcheRow) {
         var row = $(this);
         if(row.is("#pause")) return true;
         var stunde = [];
@@ -61,6 +62,7 @@ function evaKurse(r) {
         }
 
         row.children("td").each(function (i) {
+            var TAG = i;
             if(i === 0) return true;
             var isBig = false;
             if($(this).attr("rowspan") === "4") isBig = true;
@@ -87,7 +89,20 @@ function evaKurse(r) {
             }else{
                 var fach = rowz.find("font").children("b").html();
 
+                rowz.each(function (i) {
+                    if(i === 0) return true;
+                    var ffach = $(this).children("td")[0].children("font");
+                    var lehrer = $(this).children("td")[1].children("font");
+                    var raum = $(this).children("td")[2].children("font");
 
+                    addKurs({
+                        fach: ffach,
+                        lehrer: lehrer,
+                        pos: [welcheRow, TAG],
+                        raum: raum
+                    });
+
+                });
 
                 var objz = {
                     type: "kurs",
@@ -107,5 +122,6 @@ function evaKurse(r) {
 
 }
 function addKurs(kurs) {
+
 
 }
