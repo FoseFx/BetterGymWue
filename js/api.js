@@ -50,13 +50,14 @@ function evaKurse(r) {
             $(this).parents().eq(6).attr("id", "pause").html(" ");
         }
     });
-
+    var subtractor = 1;
     $(main).children("tr").each(function (welcheRow) {
         var row = $(this);
         if(row.is("#pause")) return true;
         var stunde = [];
 
         if(row.html() === "") {
+            subtractor++;
             row.remove();
             return true;
         }
@@ -83,7 +84,8 @@ function evaKurse(r) {
                     isBig: isBig,
                     fach: fach,
                     lehrer: lehrer,
-                    raum: raum
+                    raum: raum,
+                    pos: [welcheRow - subtractor + 1, TAG - 1]
                 };
                 stunde.push(objz);
             }else{
@@ -91,37 +93,104 @@ function evaKurse(r) {
 
                 rowz.each(function (i) {
                     if(i === 0) return true;
-                    var ffach = $(this).children("td")[0].children("font");
-                    var lehrer = $(this).children("td")[1].children("font");
-                    var raum = $(this).children("td")[2].children("font");
+                    var ffach = $($(this).children("td")[0]).children("font").html();
+                    var lehrer = $($(this).children("td")[1]).children("font").html();
+                    var raum = $($(this).children("td")[2]).children("font").html();
 
                     addKurs({
+                        title: fach,
                         fach: ffach,
                         lehrer: lehrer,
-                        pos: [welcheRow, TAG],
+                        pos: [welcheRow - subtractor, TAG - 1],
                         raum: raum
                     });
-
                 });
-
                 var objz = {
                     type: "kurs",
                     fach: fach,
-                    isBig: isBig
+                    isBig: isBig,
+                    pos: [welcheRow - subtractor + 1, TAG - 1]
                 };
-
                 stunde.push(objz);
             }
         });
         arr.push(stunde);
     });
     var final = [];
-    for (var i = 0; i < arr.length; i++)if(arr[i].length !== 0) final.push(arr[i]);
-    arr = final;
-    console.log(arr);
+
+    for (var i = 0; i < arr.length; i++){
+        if(arr[i].length !== 0){
+            final.push(arr[i]);
+            for(var ii = 0; ii < GKURSE.kurse.length; ii++)
+                for(var iii = 0; iii< GKURSE.kurse[ii].raeume.length; iii++)
+                    if(GKURSE.kurse[ii].raeume[iii].pos[0] === i) GKURSE.kurse[ii].raeume[iii].pos[0] = final.length - 1;
+        }
+    }
+
+    var tt = { days: [[],[],[],[],[]]};
+
+
+    final.forEach(function (stunden) {
+        stunden.forEach(function (tage) {
+            var back = {};
+            var tag = tage.pos[1];
+            var stunde = tage.pos[0];
+            if(tt.days[tag][stunde] !== undefined) return;
+
+            if(tage.fach !== undefined) {
+                if(tage.type === "klasse"){
+                    back = {
+                        type: tage.type,
+                        fach: tage.fach,
+                        lehrer: tage.lehrer,
+                        raum: tage.raum
+                    };
+                }else if(tage.type === "kurs"){
+                    back = {
+                        type: tage.type,
+                        fach: tage.fach
+                    };
+                }
+            }
+            tt.days[tage.pos[1]][tage.pos[0]] = back;
+            if(tage.isBig) tt.days[tage.pos[1]][tage.pos[0] + 1] = back;
+        });
+    });
+
+    //PAUSEN FÜllen
+    for(var i = 0; i < 5; i++){
+        tt.days[i][6] = {};
+    }
+
+    GTimeTable = tt;
+    document.cookie = "tt=" + JSON.stringify(GTimeTable) + EXP;
+
+    document.cookie = "kurse=" + JSON.stringify(GKURSE) + EXP;
 
 }
 function addKurs(kurs) {
+    var orig = null;
+    for(var i = 0; i < GKURSE.kurse.length; i++) if(kurs.fach === GKURSE.kurse[i].fach) orig = i;
 
+    if(orig === null){
+
+        GKURSE.kurse.push({
+            raeume: [
+                {
+                    pos: kurs.pos,
+                    raum: kurs.raum
+                }
+            ],
+            fach: kurs.fach,
+            lehrer: kurs.lehrer,
+            title: kurs.title
+        });
+    }else{
+        GKURSE.kurse[orig].raeume.push({
+            pos: kurs.pos,
+            raum: kurs.raum,
+            title: kurs.title
+        });
+    }
 
 }

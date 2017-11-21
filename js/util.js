@@ -4,6 +4,9 @@ $(document).ready(function () {
     stopSpinner();
     if(!a) showAGB();
     if(a) checkLoginCookie();
+
+    GTimeTable = checkCookie("tt");
+
 });
 
 function stopSpinner() {
@@ -143,3 +146,5 @@ function to5erString(i) {
     }
     return l;
 }
+
+
