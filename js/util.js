@@ -5,9 +5,39 @@ $(document).ready(function () {
     if(!a) showAGB();
     if(a) checkLoginCookie();
 
-    GTimeTable = checkCookie("tt");
+
+    var ptt = JSON.parse(checkCookie("tt"));
+    if(ptt !== null){
+        GTimeTable = ptt;
+    }
+    if(checkCookie("kl") !== undefined){
+        if(checkCookie("kl") === 1){
+            GKURSE = JSON.parse(checkCookie("kurs0"));
+        }else{
+            var c = "";
+            for (var i = 0; i < checkCookie("kl"); i++){
+                c = c + checkCookie("kurs" + i);
+            }
+            GKURSE = JSON.parse(c);
+        }
+    }
 
 });
+function splitter(str, l){
+    var strs = [];
+    while(str.length > l){
+        var pos = str.substring(0, l).lastIndexOf(' ');
+        pos = pos <= 0 ? l : pos;
+        strs.push(str.substring(0, pos));
+        var i = str.indexOf(' ', pos)+1;
+        if(i < pos || i > pos+l)
+            i = pos;
+        str = str.substring(i);
+    }
+    strs.push(str);
+    return strs;
+}
+
 
 function stopSpinner() {
     $("#spinner").css("opacity", "0");
@@ -65,10 +95,10 @@ function moveInLogin() {
 }
 
 function unAuth() {
-    $("#login-wrapper").css("box-shadow", "0px 0px 12px 0px rgba(255,36,36,1)")
-        .addClass("shake shake-constant");
+    $("#login-wrapper").css("box-shadow", "0px 0px 12px 0px rgba(255,36,36,1)");
+        $("#page-wraper").addClass("shake shake-constant");
     setTimeout(function () {
-        $("#login-wrapper").removeClass("shake shake-constant");
+        $("#page-wraper").removeClass("shake shake-constant");
         $("#psw").val("");
     }, 200);
 }

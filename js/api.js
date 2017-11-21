@@ -18,9 +18,13 @@ function getStufen() {
     });
 }
 
-function getKurse() {
+function getKurse(woche) {
     var week = getWeekOfYear(new Date());
-    var url = "https://www.fosefx.de/betterGymWue/mirror.php?url=http://gymnasium-wuerselen.de/untis/Schueler-Stundenplan/" + "45" + "/c/c" + to5erString(GStufeid) + ".htm";
+
+    if(woche === "a") week = "46";
+    if(woche === "b") week = "45";
+
+    var url = "https://www.fosefx.de/betterGymWue/mirror.php?url=http://gymnasium-wuerselen.de/untis/Schueler-Stundenplan/" + week + "/c/c" + to5erString(GStufeid) + ".htm";
     console.log(url);
     $.ajax({
         url: url,
@@ -28,15 +32,14 @@ function getKurse() {
             xhr.setRequestHeader("Authorization", "Basic " + Gkey);
         },
         success: function (r) {
-            evaKurse(r);
+            evaKurse(r, woche);
         },
         error: function (r) {
             alert("Serververbindung fehlgeschlagen");
         }
     });
 }
-function evaKurse(r) {
-
+function evaKurse(r, ABwoche) {
     var arr = [];
     var orig = $(r.replace(/\r?\n|\r/g, '').toUpperCase());
 
@@ -103,7 +106,7 @@ function evaKurse(r) {
                         lehrer: lehrer,
                         pos: [welcheRow - subtractor, TAG - 1],
                         raum: raum
-                    });
+                    }, ABwoche);
                 });
                 var objz = {
                     type: "kurs",
@@ -121,9 +124,11 @@ function evaKurse(r) {
     for (var i = 0; i < arr.length; i++){
         if(arr[i].length !== 0){
             final.push(arr[i]);
-            for(var ii = 0; ii < GKURSE.kurse.length; ii++)
-                for(var iii = 0; iii< GKURSE.kurse[ii].raeume.length; iii++)
-                    if(GKURSE.kurse[ii].raeume[iii].pos[0] === i) GKURSE.kurse[ii].raeume[iii].pos[0] = final.length - 1;
+            var global = (ABwoche === "a")? 0:1;
+
+            for(var ii = 0; ii < GKURSE[global].kurse.length; ii++)
+                for(var iii = 0; iii< GKURSE[global].kurse[ii].raeume.length; iii++)
+                    if(GKURSE[global].kurse[ii].raeume[iii].pos[0] === i) GKURSE[global].kurse[ii].raeume[iii].pos[0] = final.length - 1;
         }
     }
 
@@ -162,19 +167,34 @@ function evaKurse(r) {
         tt.days[i][6] = {};
     }
 
-    GTimeTable = tt;
+    GTimeTable[global] = tt;
     document.cookie = "tt=" + JSON.stringify(GTimeTable) + EXP;
 
-    document.cookie = "kurse=" + JSON.stringify(GKURSE) + EXP;
+    var oc = JSON.stringify(GKURSE);
+
+    var cs = splitter(oc, 1950);
+    var cl = cs.length;
+
+    document.cookie = "kl=" + cl.toString() + EXP;
+    for(var lol = 0; lol < cl; lol++){
+        document.cookie = "kurs" + lol + "=" + cs[lol] + EXP;
+    }
+
+
+
 
 }
-function addKurs(kurs) {
+function addKurs(kurs, ABWOCHE) {
     var orig = null;
-    for(var i = 0; i < GKURSE.kurse.length; i++) if(kurs.fach === GKURSE.kurse[i].fach) orig = i;
+
+    var what = (ABWOCHE === "a")? 0:1;
+
+    for(var i = 0; i < GKURSE[what].kurse.length; i++)
+        if(kurs.fach === GKURSE[what].kurse[i].fach) orig = i;
 
     if(orig === null){
 
-        GKURSE.kurse.push({
+        GKURSE[what].kurse.push({
             raeume: [
                 {
                     pos: kurs.pos,
@@ -186,7 +206,7 @@ function addKurs(kurs) {
             title: kurs.title
         });
     }else{
-        GKURSE.kurse[orig].raeume.push({
+        GKURSE[what].kurse[orig].raeume.push({
             pos: kurs.pos,
             raum: kurs.raum,
             title: kurs.title
