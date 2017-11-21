@@ -4,5 +4,5 @@ var Gstufe;
 var GStufeid;
 var GStufeA;
 var Gkey;
-var GKURSE = {"kurse": []};
-var GTimeTable;
+var GKURSE = [{kurse: []},{kurse: []}];
+var GTimeTable = [];
