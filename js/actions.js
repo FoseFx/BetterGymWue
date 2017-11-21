@@ -53,5 +53,6 @@ $('#stufe-form').submit(function (e) {
 
 function accessStufe() {
     moveOutStufe();
-    getKurse();
+    getKurse("a");
+    getKurse("b");
 }
