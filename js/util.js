@@ -10,6 +10,12 @@ $(document).ready(function () {
     if(ptt !== null){
         GTimeTable = ptt;
     }
+    var kl = checkCookie("kl");
+    if(kl !== null){
+        var k = "";
+        for(var i = 0; i < kl; i++) k = k + checkCookie("k" + i);
+        GMyKurse = JSON.parse(k).a;
+    }
 
 });
 function splitter(str, l){
