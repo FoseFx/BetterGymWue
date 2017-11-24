@@ -160,3 +160,97 @@ input[type=submit]:hover {
     opacity: 0.4;
     pointer-events: none;
 }
+#selectkurs-wrapper{
+    width: 100%;
+    height: 100vh;
+    z-index: 3;
+    padding: 0;
+    margin: 0;
+    display: inline-flex;
+    justify-content: center;
+    /*align-items: center;*/
+    flex-wrap: wrap;
+    overflow-y: auto;
+}
+#selectkurs-inner-wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    height: 70%;
+    flex-wrap: wrap;
+    margin: 0;
+}
+.kurs-select{
+    width: 100px;
+    height: 100px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 4px;
+}
+.kurs-select-inner{
+    width: 100%;
+    height: 100%;
+    box-shadow: -4px 0px 16px 0px rgba(38,153,0,0);
+    transition: all 0.2s ease;
+    background: lightgrey;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+}
+.selected > div{
+    width: 90%;
+    height: 90%;
+    /*box-shadow: -4px 0px 16px 0px rgba(38,153,0,1);*/
+    background: #4CAF50;
+    color: white;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+}
+.kurs-select-inner > h6{
+    text-align: right;
+    font-size: 12px;
+    margin:0;
+    margin-right: 5px;
+    padding-bottom: 5px;
+}
+.kurs-select-inner > div{
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: calc(100% - 17px);
+    text-align: center;
+}
+#selectkurs-header{
+    width: 80%;
+    min-height: 20%;
+    text-align: center;
+    color: #444;
+    font-weight: 600;
+}
+#kurse-title-container{
+    width: 100%;
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+#kurse-title-container > span{
+    display: block;
+    width: 50px;
+}
+
+@media (max-width: 800px){
+
+    #selectkurs-inner-wrapper{
+        width: 100%;
+    }
+    #selectkurs-header{
+        width: 100%;
+        height: 30%;
+    }#selectkurs-header > h1{
+        margin-bottom: 0;
+    }
+}

@@ -10,17 +10,6 @@ $(document).ready(function () {
     if(ptt !== null){
         GTimeTable = ptt;
     }
-    if(checkCookie("kl") !== undefined){
-        if(checkCookie("kl") === 1){
-            GKURSE = JSON.parse(checkCookie("kurs0"));
-        }else{
-            var c = "";
-            for (var i = 0; i < checkCookie("kl"); i++){
-                c = c + checkCookie("kurs" + i);
-            }
-            GKURSE = JSON.parse(c);
-        }
-    }
 
 });
 function splitter(str, l){
