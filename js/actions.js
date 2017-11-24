@@ -14,6 +14,47 @@ $("#login-form").submit(function (e) {
     login(key, CLICK);
 });
 
+var selectedKurse = [];
+var avTitles = [];
+var layedKurse = [];
+//{title: "TITLE", used: 9, span: $()}
+$("#selectkurs-inner-wrapper").on("click", ".kurs-select", function () {
+    if(!$(this).hasClass("selected")){
+        $(this).addClass("selected");
+        const fach = $(this).find("span").html();
+        const title = $(this).find("h6").html();
+        avTitles.forEach(function (o) {
+            if(o.title === title){
+                o.used++;
+                if(o.used > 1){
+                    o.span.css("color", "red").css("font-weight", "600").css("font-style", "italic");
+                }else if(o.used === 1){
+                    o.span.css("color", "green").css("font-weight", "300").css("font-style", "normal");
+                }
+            }
+        });
+        selectedKurse.push(fach);
+
+    }else{
+        $(this).removeClass("selected");
+        const fach = $(this).find("span").html();
+        const title = $(this).find("h6").html();
+        avTitles.forEach(function (o) {
+            if(o.title === title){
+                o.used--;
+                if(o.used > 1){
+                    o.span.css("color", "red").css("font-weight", "600").css("font-style", "italic");
+                }else if(o.used === 1){
+                    o.span.css("color", "green").css("font-weight", "300").css("font-style", "normal");
+                }else{
+                    o.span.css("color", "black").css("font-weight", "600").css("font-style", "normal");
+                }
+            }
+        });
+        selectedKurse.push(fach);
+    }
+});
+
 function login(key, i) {
     $.ajax({
         type: "GET",
@@ -53,6 +94,35 @@ $('#stufe-form').submit(function (e) {
 
 function accessStufe() {
     moveOutStufe();
+    startSpinner();
     getKurse("a");
     getKurse("b");
+}
+
+function TTLoaded() {
+
+    stopSpinner();
+    $("#selectkurs-wrapper").removeClass("hidden");
+    GKURSE.forEach(function (t) {
+        t.kurse.forEach(function (o) {
+            var inn = false;
+            layedKurse.forEach(function (test) {if(test === o.fach) inn = true;});
+            if(inn) return;
+            layedKurse.push(o.fach);
+            $("#selectkurs-inner-wrapper").append("<div class=\"kurs-select\"><div class=\"kurs-select-inner\"><div><span>" + o.fach + "</span></div><h6>" + o.title + "</h6></div></div>");
+
+            var dk = $("<span>" + o.title + "</span>");
+            var innn = false;
+            avTitles.forEach(function (t2) {
+               if(t2.title === o.title) innn = true;
+            });
+            if(!innn)
+                dk.appendTo("#kurse-title-container");
+                avTitles.push({
+                    title: o.title,
+                    used: 0,
+                    span: dk
+                });
+        });
+    });
 }

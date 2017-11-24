@@ -170,18 +170,7 @@ function evaKurse(r, ABwoche) {
     GTimeTable[global] = tt;
     document.cookie = "tt=" + JSON.stringify(GTimeTable) + EXP;
 
-    var oc = JSON.stringify(GKURSE);
-
-    var cs = splitter(oc, 1950);
-    var cl = cs.length;
-
-    document.cookie = "kl=" + cl.toString() + EXP;
-    for(var lol = 0; lol < cl; lol++){
-        document.cookie = "kurs" + lol + "=" + cs[lol] + EXP;
-    }
-
-
-
+    TTLoaded();
 
 }
 function addKurs(kurs, ABWOCHE) {
