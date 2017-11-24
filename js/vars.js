@@ -6,3 +6,4 @@ var GStufeA;
 var Gkey;
 var GKURSE = [{kurse: []},{kurse: []}];
 var GTimeTable = [];
+var GMyKurse = [];

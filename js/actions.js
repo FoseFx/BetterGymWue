@@ -94,14 +94,22 @@ $('#stufe-form').submit(function (e) {
 
 function accessStufe() {
     moveOutStufe();
-    startSpinner();
-    getKurse("a");
-    getKurse("b");
+    if(checkCookie("kl") === null || checkCookie("tt") === null){
+        startSpinner();
+        getKurse("a");
+        getKurse("b");
+    }else {
+        //TODO
+    }
 }
 
 function TTLoaded() {
 
-    stopSpinner();
+    if(checkCookie("kl") !== null) {
+        stopSpinner();
+        //TODO
+        return;
+    }
     $("#selectkurs-wrapper").removeClass("hidden");
     GKURSE.forEach(function (t) {
         t.kurse.forEach(function (o) {
@@ -125,4 +133,33 @@ function TTLoaded() {
                 });
         });
     });
+    stopSpinner();
 }
+
+$("#kurseSelected").click(function (e) {
+    e.preventDefault();
+    var gueltig = true;
+    avTitles.forEach(function (t) { if(t.used !== 1) gueltig = false; });
+    if(!gueltig) {
+        $("#selectkurs-inner-wrapper").addClass("shake shake-constant");
+        setTimeout(function () {
+            $("#selectkurs-inner-wrapper").removeClass("shake shake-constant");
+        }, 200);
+        return;
+    }
+    selectedKurse.forEach(function (t) {GKURSE.forEach(function (t2) {t2.kurse.forEach(function (e) {
+        if(t === e.fach) GMyKurse.push(e);
+    });});});
+
+    var c = {a: GMyKurse};
+    var cc = JSON.stringify(c);
+    var ccc = splitter(cc, 3500);
+
+    ccc.forEach(function (t, i) {
+        document.cookie = "k" + i + "=" + t + EXP;
+    });
+    document.cookie = "kl=" + ccc.length + EXP;
+
+    $("#selectkurs-wrapper").addClass("hidden");
+    //TODO
+});
