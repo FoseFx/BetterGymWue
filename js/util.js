@@ -5,6 +5,8 @@ $(document).ready(function () {
     if(!a) showAGB();
     if(a) checkLoginCookie();
 
+    var l = checkCookie("key");
+    if(l !== null) Gkey = l;
 
     var ptt = JSON.parse(checkCookie("tt"));
     if(ptt !== null){
@@ -172,4 +174,57 @@ function to5erString(i) {
     return l;
 }
 
+var Scrawled = 0;
+var Scbase = "https://www.fosefx.de/betterGymWue/mirror.php?url=http://gymnasium-wuerselen.de/untis/Schueler/";
+var Scmid = "f1/";
+var Scurl = "subst_001.htm";
+var Scfiles = [];
+var Scbodys = [];
+var Scbody1 = null;
+var Scbody2 = null;
 
+function scrawl(){
+    Scfiles.push(Scurl);
+    $.ajax({
+        url: Scbase + Scmid + Scurl,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("Authorization", "Basic " + Gkey);
+        },
+        success: function (c) {
+            Scurl = c.split("<meta http-equiv=\"refresh\" content=\"10; URL=")[1].split("\">")[0];
+            Scbodys.push(c.split("<body bgcolor=\"#F0F0F0\">")[1].split("</body>")[0]);
+            if(Scfiles.indexOf(Scurl) === -1) scrawl();
+            else evaScrawl();
+        }
+    });
+}
+function evaScrawl() {
+    Scrawled++;
+    if(Scrawled === 1){
+        //Heute
+        Scbody1 = Scbodys;
+        //Morgen
+        Scmid = "f2/";
+        Scurl = "subst_001.htm";
+        Scfiles = [];
+        Scbodys = [];
+        scrawl();
+    }if(Scrawled !== 2) return;
+    Scbody2 = Scbodys;
+
+    Scbody1.forEach(function (t) { t = t.replace("\n", ""); });
+    Scbody2.forEach(function (t) { t = t.replace("\n", ""); });
+
+    Scbody1.forEach(function (seite) {
+        var tables = $(seite).find("table");
+        var table;
+
+        if(tables.length === 2){
+            table = tables[1];
+        }else{
+            table = tables[0];
+        }
+
+    });
+
+}
