@@ -99,7 +99,7 @@ function accessStufe() {
         getKurse("a");
         getKurse("b");
     }else {
-        //TODO
+        scrawl();
     }
 }
 
@@ -107,7 +107,7 @@ function TTLoaded() {
 
     if(checkCookie("kl") !== null) {
         stopSpinner();
-        //TODO
+        scrawl();
         return;
     }
     $("#selectkurs-wrapper").removeClass("hidden");
@@ -161,5 +161,5 @@ $("#kurseSelected").click(function (e) {
     document.cookie = "kl=" + ccc.length + EXP;
 
     $("#selectkurs-wrapper").addClass("hidden");
-    //TODO
+    scrawl();
 });
