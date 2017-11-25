@@ -184,6 +184,7 @@ var Scbody1 = null;
 var Scbody2 = null;
 
 function scrawl(){
+    startSpinner();
     Scfiles.push(Scurl);
     $.ajax({
         url: Scbase + Scmid + Scurl,
@@ -212,19 +213,76 @@ function evaScrawl() {
     }if(Scrawled !== 2) return;
     Scbody2 = Scbodys;
 
-    Scbody1.forEach(function (t) { t = t.replace("\n", ""); });
-    Scbody2.forEach(function (t) { t = t.replace("\n", ""); });
+    var cInfo = [];
+    var cVertretung = [];
 
     Scbody1.forEach(function (seite) {
-        var tables = $(seite).find("table");
-        var table;
-
-        if(tables.length === 2){
-            table = tables[1];
-        }else{
-            table = tables[0];
+        seite = $(seite);
+        /*  Informationskasten  */
+        var info = seite.find("td.info");
+        if(info.length === 0) info = null;
+        if(info !== null){
+            var g = [];
+            info.each(function () {g.push($(this).html());});
+            g.forEach(function (t) {
+                if(cInfo.indexOf(t) === -1)  cInfo.push(t);
+            });
         }
 
+
+        /*  Vertretungsdaten  */
+        var table = [];
+        $(seite.find("table.mon_list")[0]).children("tbody").children().each(function (i) {
+            if(i === 0) return;
+            if($(this).children().length === 1) table.push({
+                klasse: $(this).children(".inline_header").html(),
+                ctnd: []
+            });
+            else {
+
+                var ch = $(this).children();
+                var st = [,$(ch[1]).html()];
+
+                if(st[1].indexOf(" - ") !== -1){
+                    st = st[1].split(" - ");
+                    table[table.length - 1].ctnd.push({
+                        date: $(ch[0]).html(),
+                        stunde : st[0],
+                        kurs: $(ch[2]).html(),
+                        type: $(ch[3]).children("b").html(),
+                        nraum: $(ch[5]).html(),
+                        info : $(ch[6]).html()
+                    });
+                }
+                table[table.length - 1].ctnd.push({
+                    date: $(ch[0]).html(),
+                    stunde : st[1],
+                    kurs: $(ch[2]).html(),
+                    type: $(ch[3]).children("b").html(),
+                    nraum: $(ch[5]).html(),
+                    info : $(ch[6]).html()
+                });
+            }
+
+        });
+        table.forEach(function (t) {
+            var set = false;
+            cVertretung.forEach(function (t2) {
+                if(t2.klasse === t.klasse){
+                    set = true;
+                    t.ctnd.forEach(function (t3) {
+                        t2.ctnd.push(t3);
+                    });
+                }
+            });
+
+            if(!set) cVertretung.push(t);
+        });
     });
+    cVertretung.forEach(function (t) {  t.ctnd.sort(function (a,b) {if(a.kurs < b.kurs) return -1;if(a.kurs > b.kurs) return 1;}); });
+    console.log(cVertretung);
+    console.log(cInfo);
+    stopSpinner();
 
 }
+
