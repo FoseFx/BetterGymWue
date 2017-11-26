@@ -279,10 +279,145 @@ function evaScrawl() {
             if(!set) cVertretung.push(t);
         });
     });
-    cVertretung.forEach(function (t) {  t.ctnd.sort(function (a,b) {if(a.kurs < b.kurs) return -1;if(a.kurs > b.kurs) return 1;}); });
+
+    cInfo = [[],cInfo];
+    cVertretung = [[], cVertretung];
+
+    Scbody2.forEach(function (seite) {
+        seite = $(seite);
+        /*  Informationskasten  */
+        var info = seite.find("td.info");
+        if(info.length === 0) info = null;
+        if(info !== null){
+            var g = [];
+            info.each(function () {g.push($(this).html());});
+            g.forEach(function (t) {
+                if(cInfo[0].indexOf(t) === -1)  cInfo[0].push(t);
+            });
+        }
+
+
+        /*  Vertretungsdaten  */
+        var table = [];
+        $(seite.find("table.mon_list")[0]).children("tbody").children().each(function (i) {
+            if(i === 0) return;
+            if($(this).children().length === 1) table.push({
+                klasse: $(this).children(".inline_header").html(),
+                ctnd: []
+            });
+            else {
+
+                var ch = $(this).children();
+                var st = [,$(ch[1]).html()];
+
+                if(st[1].indexOf(" - ") !== -1){
+                    st = st[1].split(" - ");
+                    table[table.length - 1].ctnd.push({
+                        date: $(ch[0]).html(),
+                        stunde : st[0],
+                        kurs: $(ch[2]).html(),
+                        type: $(ch[3]).children("b").html(),
+                        nraum: $(ch[5]).html(),
+                        info : $(ch[6]).html()
+                    });
+                }
+                table[table.length - 1].ctnd.push({
+                    date: $(ch[0]).html(),
+                    stunde : st[1],
+                    kurs: $(ch[2]).html(),
+                    type: $(ch[3]).children("b").html(),
+                    nraum: $(ch[5]).html(),
+                    info : $(ch[6]).html()
+                });
+            }
+
+        });
+        table.forEach(function (t) {
+            var set = false;
+            cVertretung[0].forEach(function (t2) {
+                if(t2.klasse === t.klasse){
+                    set = true;
+                    t.ctnd.forEach(function (t3) {
+                        t2.ctnd.push(t3);
+                    });
+                }
+            });
+
+            if(!set) cVertretung[0].push(t);
+        });
+    });
+
+    cVertretung.reverse();
+
     console.log(cVertretung);
     console.log(cInfo);
     stopSpinner();
 
-}
+    cVertretung.forEach(function (t, woche) {
+        var date = new Date();
+        while(date.getDay() === 0 || date.getDay() === 6)
+            date.setDate(date.getDate() + 1);
 
+        if(t === 1) date.setDate(date.getDate() + 1);
+        var d = date.getDate() + "." + (date.getMonth() + 1) + ".";
+        var str = "<div class=\"tag\">\n" +
+            "                    <h1>" + d +"</h1>\n" +
+            "                    <hr>\n" +
+            "                    <table>\n" +
+            "                        <tbody class='lul'>\n" +
+            "                            <tr><td><b>Std.</b></td><td><b>Fach</b></td><td><b>Raum</b></td><td><b>Lehrer</b></td></td><td></td></tr>\n" +
+            "                        </tbody>\n" +
+            "                    </table>\n" +
+            "                </div>";
+
+        var ret = $(str);
+        var obj = $(ret).find("tbody.lul")[0];
+
+        var week = (date.getWeek() % 2 === 0)? 0:1;
+        
+        var ttobj = GTimeTable[week].days[date.getDay() - 1];
+        ttobj.forEach(function (t2, i) {
+            var s = "";
+            if(t2 === {}) s = "<tr><td colspan='5'>Pause</td></tr>";
+            else if(t2.type === "klasse"){
+                s = "<tr><td>" + (i + 1) + "</td><td>" + t2.fach + "</td><td>" + t2.raum + "</td><td>" + t2.lehrer + "</td></tr>";
+                s = s.replace("undefined", "?");
+            }
+            else if(t2.type === "kurs"){
+                GMyKurse.forEach(function (t3) {
+                    if(t3.title !== t2.fach)return;
+                    var r = [woche, i+1, date.getDay()-1];
+                    var raum = null;
+
+                    t3.raeume.forEach(function (t4) { if(t4.pos[0] === r[0] && (t4.pos[1] === r[1] || t4.pos[1] === (r[1] - 1)) && t4.pos[2] === r[2]) raum = t4.raum; });
+
+                    try {raum = raum.toString();}catch (s){}
+                    s = "<tr><td>" + (i + 1) + "</td><td>" + t3.fach + "</td><td>" + raum + "</td><td>" + t3.lehrer + "</td></tr>";
+                });
+            }
+
+            $(obj).append(s);
+        });
+
+        cVertretung.forEach(function (tag) {
+            var important = [];
+            tag.forEach(function (header) {
+                if(header.klasse.indexOf(Gstufe) === -1) return;
+                header.ctnd.forEach(function (ctnd) {
+                    if(ctnd.date !== d) return;
+                    GMyKurse.forEach(function (t2) { if(t2.fach === ctnd.kurs || ctnd.kurs === "&nbsp;")important.push(ctnd); });
+                    GTimeTable[week].days.forEach(function (t2) { t2.forEach(function (t3) {
+                        if(t3.type !== "klasse") return;
+                        if(t3.fach === ctnd.kurs) important.push(ctnd);
+                    });});
+                });
+            });
+            console.log(important);
+        });
+
+
+        $("#inner-tag-wrapper").append(ret);
+    });
+    $("#anzeigen-wrapper").removeClass("hidden");
+
+}
