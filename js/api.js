@@ -104,7 +104,7 @@ function evaKurse(r, ABwoche) {
                         title: fach,
                         fach: ffach,
                         lehrer: lehrer,
-                        pos: [welcheRow - subtractor, TAG - 1],
+                        pos: [welcheRow, TAG - 1],
                         raum: raum
                     }, ABwoche);
                 });

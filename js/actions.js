@@ -147,9 +147,22 @@ $("#kurseSelected").click(function (e) {
         }, 200);
         return;
     }
-    selectedKurse.forEach(function (t) {GKURSE.forEach(function (t2) {t2.kurse.forEach(function (e) {
-        if(t === e.fach) GMyKurse.push(e);
-    });});});
+    selectedKurse.forEach(function (t) {GKURSE.forEach(function (t2, w) {
+        t2.kurse.forEach(function (e) {
+            if(t === e.fach) {
+                e.raeume.forEach(function (t3, i) { e.raeume[i].pos = [w, t3.pos[0], t3.pos[1]] });
+
+                var posi = null;
+                GMyKurse.forEach(function (t3, i) { if(t3.fach === e.fach) posi = i; });
+                if(posi === null){
+                    GMyKurse.push(e);
+                    return;
+                }
+                e.raeume.forEach(function (t3) { GMyKurse[posi].raeume.push(t3); });
+
+            }
+        });
+    });});
 
     var c = {a: GMyKurse};
     var cc = JSON.stringify(c);
