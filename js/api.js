@@ -165,8 +165,15 @@ function evaKurse(r, ABwoche) {
         tt.days[i][6] = {};
     }
 
+    var s = checkCookie("tt");
+    GTimeTable = JSON.parse(s);
     GTimeTable[global] = tt;
-    document.cookie = "tt=" + JSON.stringify(GTimeTable) + EXP;
+    var spl = splitter(JSON.stringify(GTimeTable), 1990);
+    var len = spl.length;
+    document.cookie = "tl=" + len + EXP;
+    spl.forEach(function (value, i) {
+        document.cookie = "t" + i + "=" + value + EXP;
+    });
 
     TTLoaded();
 
