@@ -8,10 +8,13 @@ $(document).ready(function () {
     var l = checkCookie("key");
     if(l !== null) Gkey = l;
 
-    var ptt = JSON.parse(checkCookie("tt"));
-    if(ptt !== null){
-        GTimeTable = ptt;
+    var tlen = checkCookie("tl");
+    var kkk = "";
+    for (var i = 0; i < tlen; i++){
+        kkk = kkk + checkCookie("k" + i);
     }
+    GTimeTable = JSON.parse(kkk);
+
     var kl = checkCookie("kl");
     if(kl !== null){
         var k = "";
@@ -374,7 +377,7 @@ function evaScrawl() {
         var obj = $(ret).find("tbody.lul")[0];
 
         var week = (date.getWeek() % 2 === 0)? 0:1;
-        
+        console.log(week);
         var ttobj = GTimeTable[week].days[date.getDay() - 1];
         ttobj.forEach(function (t2, i) {
             var s = "";
@@ -387,6 +390,7 @@ function evaScrawl() {
                     if(t3.title !== t2.fach)return;
                     var raum = null;
                     t2.raeume.forEach(function (value) { if(value.kurs === t3.fach) raum = value.raum; });
+                    raum = (raum === null)? "- - -":raum;
 
                     s = "<tr><td>" + (i + 1) + "</td><td>" + t3.fach + "</td><td>" + raum + "</td><td>" + t3.lehrer + "</td></tr>";
                 });
