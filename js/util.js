@@ -8,13 +8,10 @@ $(document).ready(function () {
     var l = checkCookie("key");
     if(l !== null) Gkey = l;
 
-    var tlen = checkCookie("tl");
-    var kkk = "";
-    for (var i = 0; i < tlen; i++){
-        kkk = kkk + checkCookie("k" + i);
+    var ptt = JSON.parse(checkCookie("tt"));
+    if(ptt !== null){
+        GTimeTable = ptt;
     }
-    GTimeTable = JSON.parse(kkk);
-
     var kl = checkCookie("kl");
     if(kl !== null){
         var k = "";
@@ -377,7 +374,7 @@ function evaScrawl() {
         var obj = $(ret).find("tbody.lul")[0];
 
         var week = (date.getWeek() % 2 === 0)? 0:1;
-        console.log(week);
+
         var ttobj = GTimeTable[week].days[date.getDay() - 1];
         ttobj.forEach(function (t2, i) {
             var s = "";
