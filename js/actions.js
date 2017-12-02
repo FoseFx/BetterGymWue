@@ -9,6 +9,7 @@ $("#termsaccept").on("click", function (e) {
 
 $("#login-form").submit(function (e) {
     e.preventDefault();
+    console.log($("#select").val() + ":" + $("#psw").val());
     var key = btoa($("#select").val() + ":" + $("#psw").val());
 
     login(key, CLICK);
@@ -61,11 +62,12 @@ function login(key, i) {
         beforeSend: function (xhr) {
             xhr.setRequestHeader ("Authorization", "Basic " + key);
         },
-        url: 'https://www.fosefx.de/betterGymWue/mirror.php?url=gymnasium-wuerselen.de/untis/Schueler-Stundenplan/45/c/c00020.htm',
+        url: 'https://www.fosefx.de/betterGymWue/mirror.php?url=gymnasium-wuerselen.de/untis/Schueler-Stundenplan/default.htm',
         success: function (r) {
             Auth(key);
         },
         error: function (e, r, t) {
+            console.log(t);
             if(i === CLICK){
                 unAuth();
             }else {
@@ -112,11 +114,14 @@ function TTLoaded() {
     }
     $("#selectkurs-wrapper").removeClass("hidden");
     GKURSE.forEach(function (t) {
+        var prevTitle = null;
         t.kurse.forEach(function (o) {
             var inn = false;
             layedKurse.forEach(function (test) {if(test === o.fach) inn = true;});
             if(inn) return;
             layedKurse.push(o.fach);
+            if(prevTitle !== o.title) $("#selectkurs-inner-wrapper").append("<div class=\"kurs-select\"><div class=\"kurs-select-inner\"><div><span>Frei</span></div><h6>" + o.title + "</h6></div></div>");
+            prevTitle = o.title;
             $("#selectkurs-inner-wrapper").append("<div class=\"kurs-select\"><div class=\"kurs-select-inner\"><div><span>" + o.fach + "</span></div><h6>" + o.title + "</h6></div></div>");
 
             var dk = $("<span>" + o.title + "</span>");
@@ -150,16 +155,12 @@ $("#kurseSelected").click(function (e) {
     selectedKurse.forEach(function (t) {GKURSE.forEach(function (t2, w) {
         t2.kurse.forEach(function (e) {
             if(t === e.fach) {
-                e.raeume.forEach(function (t3, i) { e.raeume[i].pos = [w, t3.pos[0], t3.pos[1]] });
-
                 var posi = null;
                 GMyKurse.forEach(function (t3, i) { if(t3.fach === e.fach) posi = i; });
                 if(posi === null){
                     GMyKurse.push(e);
-                    return;
-                }
-                e.raeume.forEach(function (t3) { GMyKurse[posi].raeume.push(t3); });
 
+                }
             }
         });
     });});

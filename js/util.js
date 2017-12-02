@@ -381,40 +381,50 @@ function evaScrawl() {
             if(t2 === {}) s = "<tr><td colspan='5'>Pause</td></tr>";
             else if(t2.type === "klasse"){
                 s = "<tr><td>" + (i + 1) + "</td><td>" + t2.fach + "</td><td>" + t2.raum + "</td><td>" + t2.lehrer + "</td></tr>";
-                s = s.replace("undefined", "?");
             }
             else if(t2.type === "kurs"){
                 GMyKurse.forEach(function (t3) {
                     if(t3.title !== t2.fach)return;
-                    var r = [woche, i+1, date.getDay()-1];
                     var raum = null;
+                    t2.raeume.forEach(function (value) { if(value.kurs === t3.fach) raum = value.raum; });
 
-                    t3.raeume.forEach(function (t4) { if(t4.pos[0] === r[0] && (t4.pos[1] === r[1] || t4.pos[1] === (r[1] - 1)) && t4.pos[2] === r[2]) raum = t4.raum; });
-
-                    try {raum = raum.toString();}catch (s){}
                     s = "<tr><td>" + (i + 1) + "</td><td>" + t3.fach + "</td><td>" + raum + "</td><td>" + t3.lehrer + "</td></tr>";
                 });
             }
-
+            s = s.replace("undefined", "?");
+            s = s.replace("null", "");
             $(obj).append(s);
         });
 
+        var important = [];
         cVertretung.forEach(function (tag) {
-            var important = [];
             tag.forEach(function (header) {
                 if(header.klasse.indexOf(Gstufe) === -1) return;
                 header.ctnd.forEach(function (ctnd) {
                     if(ctnd.date !== d) return;
                     GMyKurse.forEach(function (t2) { if(t2.fach === ctnd.kurs || ctnd.kurs === "&nbsp;")important.push(ctnd); });
                     GTimeTable[week].days.forEach(function (t2) { t2.forEach(function (t3) {
+                        if(t3 === {}) return;
+                        if (t3 === null) return;
                         if(t3.type !== "klasse") return;
                         if(t3.fach === ctnd.kurs) important.push(ctnd);
                     });});
                 });
             });
-            console.log(important);
         });
+        console.log(important);
 
+        important.forEach(function (t2) {
+            var stunde = t2.stunde;
+            $(obj).children().each(function () {
+                if($($(this).children()[0]).html() !== stunde) return;
+                if(t2.type === "Vertretung") $(this).append("<b id='moveto" + stunde + "'></b>");
+                
+                $(this).children("td").each(function () {
+                    $(this).appendTo("moveto" + stunde);
+                });
+            });
+        });
 
         $("#inner-tag-wrapper").append(ret);
     });
