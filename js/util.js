@@ -376,6 +376,7 @@ function evaScrawl() {
         var week = (date.getWeek() % 2 === 0)? 0:1;
 
         var ttobj = GTimeTable[week].days[date.getDay() - 1];
+        console.log(ttobj);
         ttobj.forEach(function (t2, i) {
             var s = "";
             if(t2 === {}) s = "<tr><td colspan='5'>Pause</td></tr>";
