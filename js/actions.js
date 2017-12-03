@@ -106,7 +106,7 @@ function accessStufe() {
 }
 
 function TTLoaded() {
-
+    document.cookie = "tt=" + JSON.stringify(GTimeTable) + EXP;
     if(checkCookie("kl") !== null) {
         stopSpinner();
         scrawl();
