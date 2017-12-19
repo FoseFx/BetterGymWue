@@ -74,7 +74,7 @@ function evaKurse(r, ABwoche) {
 
             var data = $(this).children("table").children("tbody");
             var rowz = data.children("tr");
-
+            
             if(rowz.length  === 1){
                 var vars = rowz.find("font");
                 if(vars.length === 1) {
@@ -137,9 +137,11 @@ function evaKurse(r, ABwoche) {
             var tag = zwei;
             var stunde = eins;
 
-            if(tt.days[tag][stunde] !== undefined) return;
-
-            if(tage.fach !== undefined) {
+            if(tt.days[tag][stunde] !== undefined) {
+                console.log("skipping");
+                return;
+            }
+            if(tage.fach !== undefined || tage.fach === "klasse") {
                 if(tage.type === "klasse"){
                     back = {
                         type: tage.type,
@@ -147,7 +149,7 @@ function evaKurse(r, ABwoche) {
                         lehrer: tage.lehrer,
                         raum: tage.raum
                     };
-                }else if(tage.type === "kurs"){
+                }else if(tage.type === "kurs"){ //TODO
                     back = {
                         type: tage.type,
                         fach: tage.fach,
