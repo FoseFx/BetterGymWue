@@ -123,23 +123,29 @@ function evaKurse(r, ABwoche) {
     var final = [];
     for (var i = 0; i < arr.length; i++){
         if(arr[i].length !== 0){
-            final.push(arr[i]);
+            var tval = true;
+            for(var ii = 0; ii < arr[i].length; ii++){
+                if(typeof arr[i][ii].fach == "undefined") tval = false;
+            }
+
+            if(tval) final.push(arr[i]);
             var global = (ABwoche === "a")? 0:1;
         }
     }
 
 
     var tt = { days: [[],[],[],[],[]]};
-
     final.forEach(function (stunden, eins) {
+
         stunden.forEach(function (tage, zwei) {
             var back = {};
             var tag = zwei;
             var stunde = eins;
+            var ob = tt.days[tag][stunde];
 
-            if(tt.days[tag][stunde] !== undefined) {
-                console.log("skipping");
-                return;
+            while (typeof ob != "undefined") {
+                stunde++;
+                ob = tt.days[tag][stunde];
             }
             if(tage.fach !== undefined || tage.fach === "klasse") {
                 if(tage.type === "klasse"){
@@ -149,7 +155,7 @@ function evaKurse(r, ABwoche) {
                         lehrer: tage.lehrer,
                         raum: tage.raum
                     };
-                }else if(tage.type === "kurs"){ //TODO
+                }else if(tage.type === "kurs"){
                     back = {
                         type: tage.type,
                         fach: tage.fach,
@@ -162,9 +168,9 @@ function evaKurse(r, ABwoche) {
         });
     });
 
-    //PAUSEN FÜllen
+    //PAUSEN Füllen
     for(var i = 0; i < 5; i++){
-        tt.days[i][6] = {};
+        tt.days[i][7] = {};
     }
 
 
