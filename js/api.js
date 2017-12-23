@@ -170,7 +170,7 @@ function evaKurse(r, ABwoche) {
 
     //PAUSEN Füllen
     for(var i = 0; i < 5; i++){
-        tt.days[i][7] = {};
+        tt.days[i][6] = {};
     }
 
 
