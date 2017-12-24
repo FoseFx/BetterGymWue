@@ -358,7 +358,7 @@ function evaScrawl() {
         while(date.getDay() === 0 || date.getDay() === 6)
             date.setDate(date.getDate() + 1);
 
-        if(t === 1) date.setDate(date.getDate() + 1);
+        if(woche === 1) date.setDate(date.getDate() + 1);
         var d = date.getDate() + "." + (date.getMonth() + 1) + ".";
         var str = "<div class=\"tag\">\n" +
             "                    <h1>" + d +"</h1>\n" +

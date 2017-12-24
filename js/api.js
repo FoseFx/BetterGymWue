@@ -57,18 +57,18 @@ function evaKurse(r, ABwoche) {
     var subtractor = 0;
     $(main).children("tr").each(function (welcheRow) {
         var row = $(this);
-        if(row.is("#pause")) return true;
+        if(row.is("#pause")) return;
         var stunde = [];
 
         if(row.html() === "") {
             subtractor++;
             row.remove();
-            return true;
+            return;
         }
 
         row.children("td").each(function (i) {
             var TAG = i;
-            if(i === 0) return true;
+            if(i === 0) return;
             var isBig = false;
             if($(this).attr("rowspan") === "4") isBig = true;
 
@@ -78,7 +78,7 @@ function evaKurse(r, ABwoche) {
             if(rowz.length  === 1){
                 var vars = rowz.find("font");
                 if(vars.length === 1) {
-                    if(vars.html() !== "") return true;
+                    if(vars.html() !== "") return;
                 }
                 var fach = $(vars[0]).children("b").html();
                 var lehrer = $(vars[1]).html();
@@ -96,7 +96,7 @@ function evaKurse(r, ABwoche) {
                 var fach = rowz.find("font").children("b").html();
                 var raeume = [];
                 rowz.each(function (i) {
-                    if(i === 0) return true;
+                    if(i === 0) return;
                     var ffach = $($(this).children("td")[0]).children("font").html();
                     var lehrer = $($(this).children("td")[1]).children("font").html();
                     var raum = $($(this).children("td")[2]).children("font").html();
@@ -174,7 +174,7 @@ function evaKurse(r, ABwoche) {
     }
 
 
-    GTimeTable[global] = tt;
+    GTimeTable[global] = tt;    
     document.cookie = "tt=" + JSON.stringify(GTimeTable) + EXP;
 
     TTLoaded();
