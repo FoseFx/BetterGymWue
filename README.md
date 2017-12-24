@@ -11,7 +11,7 @@ Vielen Dank, dass du an dem Projekt "Better Gym Wue" von mir interessiert bist. 
 ----------
 
 
-#Externe Quellen#
+## Externe Quellen
 Ich habe mich bei bereits veröffentlichtem Code bedient vielen Dank an:
 
  - [iovar's Proxy Script](https://gist.github.com/iovar/9091078)
@@ -26,6 +26,6 @@ Ich habe mich bei bereits veröffentlichtem Code bedient vielen Dank an:
 ----------
 
 
-#Informationen zu Datensicherheit:#
+## Informationen zu Datensicherheit:
 Alle Dateien, welche für dises Projekt benötigt werden stahen in diesem Respo zur Verfügung.
 Wie jeder nachgucken kann werden im Backend ***keinerlei Daten gespeichert***. Um zu verifizieren, dass es sich um die gleichen Dateien handelt lässt sich mit der **GET request '*hash=true*'** z.B. '***`/mirror.php?hash=true`***' die SHA256 Hashes der Dateien auslesen und Vergleichen. (*P.S. wenn die Richtigen Header gesetzt worden währen, gäbe es kein Backend.* )
