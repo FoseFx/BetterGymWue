@@ -177,14 +177,14 @@ $("#kurseSelected").click(function (e) {
     $("#selectkurs-wrapper").addClass("hidden");
     scrawl();
 });
-
-$("#leftarrow").click(function () {
+function slide(left) {
     var tage = $(".tag").toArray();
-    $(tage[0]).show();
-    $(tage[1]).hide();
+    $(tage[(left)? 0 : 1]).show();
+    $(tage[(left)? 1 : 0]).hide();
+}
+$("#leftarrow, #leftbig").click(function () {
+    slide(true);
 });
-$("#rightarrow").click(function () {
-    var tage = $(".tag").toArray();
-    $(tage[0]).hide();
-    $(tage[1]).show();
+$("#rightarrow, #rightbig").click(function () {
+    slide(false);
 });
