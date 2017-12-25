@@ -39,3 +39,24 @@ hr {
     opacity: 0.4;
     border-style: hidden;
 }
+.big{
+    display: none;
+}
+@media (max-width: 800px){
+    .big{
+        display: block;
+        position: fixed;
+        width: 20%;
+        height: 100vh;
+    }
+    #leftbig{
+        top: 0;
+        left: 0;
+    }
+    #rightbig{
+        top: 0;
+        right: 0;
+    }
+
+
+}
