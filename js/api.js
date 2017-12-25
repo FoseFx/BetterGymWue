@@ -124,10 +124,9 @@ function evaKurse(r, ABwoche) {
     for (var i = 0; i < arr.length; i++){
         if(arr[i].length !== 0){
             var tval = true;
-            for(var ii = 0; ii < arr[i].length; ii++){
+            /*for(var ii = 0; ii < arr[i].length; ii++){
                 if(typeof arr[i][ii].fach == "undefined") tval = false;
-            }
-
+            }*/
             if(tval) final.push(arr[i]);
             var global = (ABwoche === "a")? 0:1;
         }
@@ -170,7 +169,7 @@ function evaKurse(r, ABwoche) {
 
     //PAUSEN Füllen
     for(var i = 0; i < 5; i++){
-        tt.days[i][6] = {};
+        tt.days[i].splice(6, 0, {});
     }
 
 
