@@ -126,21 +126,18 @@ input[type=submit]:hover {
  *  Scrollbar   *
  ****************/
 
-.scrollbar::-webkit-scrollbar-track
-{
+.scrollbar::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
     border-radius: 10px;
     background-color: #F5F5F5;
 }
 
-.scrollbar::-webkit-scrollbar
-{
+.scrollbar::-webkit-scrollbar {
     width: 12px;
     background-color: #F5F5F5;
 }
 
-.scrollbar::-webkit-scrollbar-thumb
-{
+.scrollbar::-webkit-scrollbar-thumb {
     border-radius: 10px;
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
     background-color: #555;
@@ -257,7 +254,6 @@ input[type=submit]:hover {
 #anzeigen-wrapper{
     width: 100%;
     height: 100vh;
-    background: red;
     position: absolute;
     left:0;
     top:0;
@@ -271,6 +267,7 @@ input[type=submit]:hover {
     background: #f4f4f4;
     border-radius: 10px;
     overflow: hidden;
+    box-shadow: 0px 0px 5px 0px #45a049;
 }
 #anzeigen-wrapper > img{
     width: 4%;
@@ -288,14 +285,14 @@ input[type=submit]:hover {
 .tag{
     width:100%;
     height: 100%;
-    background: yellow;
     border-radius: 10px;
     text-align: center;
+    overflow-y: auto;
+    padding-bottom: 15px;
 }
 #inner-tag-wrapper{
     width:100%;
     height: 100%;
-    background: green;
     border-radius: 10px;
 }
 .tag > h1{
