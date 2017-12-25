@@ -177,3 +177,14 @@ $("#kurseSelected").click(function (e) {
     $("#selectkurs-wrapper").addClass("hidden");
     scrawl();
 });
+
+$("#leftarrow").click(function () {
+    var tage = $(".tag").toArray();
+    $(tage[0]).show();
+    $(tage[1]).hide();
+});
+$("#rightarrow").click(function () {
+    var tage = $(".tag").toArray();
+    $(tage[0]).hide();
+    $(tage[1]).show();
+});
