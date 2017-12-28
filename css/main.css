@@ -60,3 +60,7 @@ hr {
 
 
 }
+.hi{
+    width: 50% !important;
+    border: solid 1px black;
+}
