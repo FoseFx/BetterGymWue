@@ -427,6 +427,20 @@ function evaScrawl() {
             });
         });
 
+        //Header tabelle
+        var headtab = $("<h3>Info</h3>\n" +
+            "<table class='hi'>\n" +
+            "    <tbody class=\"headerTab\">\n" +
+            "        \n" +
+            "    </tbody>\n" +
+            "</table>");
+        cInfo.forEach(function (value) {
+            if(value === [] || value[0] === undefined || value[1] === undefined) return;
+            headtab.find(".headerTab").append("<tr><td>" + value[0] + "</td><td>" + value[1] + "</td></tr>");
+        });
+        ret.append($(headtab));
+
+
         $("#inner-tag-wrapper").append(ret);
     });
     $("#anzeigen-wrapper").removeClass("hidden");
