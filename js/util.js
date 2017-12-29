@@ -355,10 +355,10 @@ function evaScrawl() {
 
     cVertretung.forEach(function (t, woche) {
         var date = new Date();
+        if(woche === 1) date.setDate(date.getDate() + 1);
         while(date.getDay() === 0 || date.getDay() === 6)
             date.setDate(date.getDate() + 1);
 
-        if(woche === 1) date.setDate(date.getDate() + 1);
         var d = date.getDate() + "." + (date.getMonth() + 1) + ".";
         var str = "<div class=\"tag scrollbar\">\n" +
             "                    <h1>" + d +"</h1>\n" +
