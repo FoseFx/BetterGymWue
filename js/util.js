@@ -175,7 +175,7 @@ function to5erString(i) {
 }
 
 var Scrawled = 0;
-var Scbase = "https://www.fosefx.de/betterGymWue/mirror.php?url=http://gymnasium-wuerselen.de/untis/Schueler/";
+var Scbase = GURL + "Schueler/";
 var Scmid = "f1/";
 var Scurl = "subst_001.htm";
 var Scfiles = [];
