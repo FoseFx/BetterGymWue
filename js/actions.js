@@ -62,7 +62,7 @@ function login(key, i) {
         beforeSend: function (xhr) {
             xhr.setRequestHeader ("Authorization", "Basic " + key);
         },
-        url: 'https://www.fosefx.de/betterGymWue/mirror.php?url=gymnasium-wuerselen.de/untis/Schueler-Stundenplan/default.htm',
+        url: GURL + 'Schueler-Stundenplan/default.htm',
         success: function (r) {
             Auth(key);
         },
