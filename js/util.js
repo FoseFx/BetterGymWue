@@ -388,7 +388,6 @@ function evaScrawl() {
                     var raum = null;
                     t2.raeume.forEach(function (value) { if(value.kurs === t3.fach) raum = value.raum; });
                     raum = (raum === null)? "- - -":raum;
-
                     s = "<tr><td>" + (i + 1) + "</td><td>" + t3.fach + "</td><td>" + raum + "</td><td>" + t3.lehrer + "</td></tr>";
                 });
             }
@@ -440,6 +439,25 @@ function evaScrawl() {
         });
         ret.append($(headtab));
 
+        //Vertretungsinfo für Stufe
+
+        var vertInfo = $("<h3>" + Gstufe +"</h3>\n" +
+            "<table class='hi'>\n" +
+            "   <tbody>\n" +
+            "       \n" +
+            "   </tbody>\n" +
+            "</table>");
+        cVertretung.forEach(function (value, j) {
+            value.forEach(function (value2, j2) {
+                if(value2.klasse.indexOf(Gstufe) !== -1){
+                    value2.ctnd.forEach(function (value3) {
+                        if(value3.date === d) vertInfo.find("tbody").append("<tr><td>" + value3.stunde +"</td><td>" + value3.kurs + "</td><td>" + value3.type + "</td><td>" + value3.nraum + "</td></tr>");
+                    });
+                }
+            });
+        });
+        if(vertInfo.find("tbody").children().length !== 0)
+            ret.append(vertInfo);
 
         $("#inner-tag-wrapper").append(ret);
     });
