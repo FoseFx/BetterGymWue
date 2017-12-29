@@ -1,6 +1,6 @@
 function getStufen() {
     $.ajax({
-        url: "https://www.fosefx.de/betterGymWue/mirror.php?url=http://gymnasium-wuerselen.de/untis/Schueler-Stundenplan/frames/navbar.htm",
+        url: GURL + "Schueler-Stundenplan/frames/navbar.htm",
         beforeSend: function (xhr) {
             xhr.setRequestHeader("Authorization", "Basic " + Gkey);
         },
@@ -24,7 +24,7 @@ function getKurse(woche) {
     if(woche === "a") week = "49";
     if(woche === "b") week = "50";
 
-    var url = "https://www.fosefx.de/betterGymWue/mirror.php?url=http://gymnasium-wuerselen.de/untis/Schueler-Stundenplan/" + week + "/c/c" + to5erString(GStufeid) + ".htm";
+    var url = GURL + "Schueler-Stundenplan/" + week + "/c/c" + to5erString(GStufeid) + ".htm";
     console.log(url);
     $.ajax({
         url: url,
