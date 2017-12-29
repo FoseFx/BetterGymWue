@@ -360,6 +360,7 @@ function evaScrawl() {
             date.setDate(date.getDate() + 1);
 
         var d = date.getDate() + "." + (date.getMonth() + 1) + ".";
+        console.log(d);
         var str = "<div class=\"tag scrollbar\">\n" +
             "                    <h1>" + d +"</h1>\n" +
             "                    <hr>\n" +
