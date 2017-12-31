@@ -353,16 +353,22 @@ function evaScrawl() {
     console.log(cInfo);
     stopSpinner();
 
+    var date1;
+
     cVertretung.forEach(function (t, woche) {
         var date = new Date();
+        var tagesNamen = ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"];
         if(woche === 1) date.setDate(date.getDate() + 1);
         while(date.getDay() === 0 || date.getDay() === 6)
             date.setDate(date.getDate() + 1);
 
+        if(woche === 0) date1 = date;
+        if(woche === 1 && date === date) date.setDate(date.getDate() + 1);
+
         var d = date.getDate() + "." + (date.getMonth() + 1) + ".";
-        console.log(d);
+        console.log(date);
         var str = "<div class=\"tag scrollbar\">\n" +
-            "                    <h1>" + d +"</h1>\n" +
+            "                    <h1>" + tagesNamen[date.getDay()] + " " + d +"</h1>\n" +
             "                    <hr>\n" +
             "                    <table>\n" +
             "                        <tbody class='lul'>\n" +
