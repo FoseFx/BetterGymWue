@@ -13,7 +13,7 @@ function getStufen() {
             });
         },
         error: function (e, r, t) {
-            alert("Serververbindung fehlgeschlagen: " + t);
+            alert("Serververbindung fehlgeschlagen: " + t + "\nEin reload könnte helfen");
         }
     });
 }
@@ -35,7 +35,7 @@ function getKurse(woche) {
             evaKurse(r, woche);
         },
         error: function (e, r, t) {
-            alert("Serververbindung fehlgeschlagen: " + t);
+            alert("Serververbindung fehlgeschlagen: " + t + "\nEin reload könnte helfen");
 
         }
     });
