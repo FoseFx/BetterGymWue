@@ -19,26 +19,43 @@ function getStufen() {
 }
 
 function getKurse(woche) {
-    var week = getWeekOfYear(new Date());
 
-    if(woche === "a") week = "49";
-    if(woche === "b") week = "50";
-
-    var url = GURL + "Schueler-Stundenplan/" + week + "/c/c" + to5erString(GStufeid) + ".htm";
-    console.log(url);
     $.ajax({
-        url: url,
+        url: GURL + "Schueler-Stundenplan/frames/navbar.htm",
         beforeSend: function (xhr) {
             xhr.setRequestHeader("Authorization", "Basic " + Gkey);
         },
-        success: function (r) {
-            evaKurse(r, woche);
-        },
-        error: function (e, r, t) {
-            alert("Serververbindung fehlgeschlagen: " + t + "\nEin reload könnte helfen");
+        type: "GET",
+        success: function (RawHtml) {
+            var w = [];
+            RawHtml = RawHtml.split("<select name=\"week\" class=\"selectbox\" onChange=\"doDisplayTimetable(NavBar, topDir);\">")[1];
+            RawHtml = RawHtml.split("</select>")[0];
+            RawHtml.split("<option value=\"").splice(1, 2).forEach(function(val, index){
+                w[index] = val.split("\"")[0];
+            });
+            var weekA = (w[0]%2 === 0)? w[0]:w[1];
+            var weekB = (w[0]%2 !== 0)? w[0]:w[1];
+            var week = (woche === "a")? weekA:weekB;
 
+            var url = GURL + "Schueler-Stundenplan/" + week + "/c/c" + to5erString(GStufeid) + ".htm";
+            console.log(url);
+            $.ajax({
+                url: url,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", "Basic " + Gkey);
+                },
+                success: function (r) {
+                    evaKurse(r, woche);
+                },
+                error: function (e, r, t) {
+                    alert("Serververbindung fehlgeschlagen: " + t + "\nEin reload könnte helfen");
+
+                }
+            });
         }
     });
+
+
 }
 function evaKurse(r, ABwoche) {
     var arr = [];

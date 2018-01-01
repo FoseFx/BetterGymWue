@@ -363,7 +363,7 @@ function evaScrawl() {
             date.setDate(date.getDate() + 1);
 
         if(woche === 0) date1 = date;
-        if(woche === 1 && date === date) date.setDate(date.getDate() + 1);
+        if(woche === 1 && date1 === date) date.setDate(date.getDate() + 1);
 
         var d = date.getDate() + "." + (date.getMonth() + 1) + ".";
         console.log(date);
