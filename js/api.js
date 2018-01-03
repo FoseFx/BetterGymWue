@@ -191,7 +191,7 @@ function evaKurse(r, ABwoche) {
 
 
     GTimeTable[global] = tt;    
-    document.cookie = "tt=" + JSON.stringify(GTimeTable) + EXP;
+    //document.cookie = "tt=" + JSON.stringify(GTimeTable) + EXP;
 
     TTLoaded();
 
