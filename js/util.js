@@ -182,8 +182,11 @@ var Scfiles = [];
 var Scbodys = [];
 var Scbody1 = null;
 var Scbody2 = null;
+var allowed = true;
 
 function scrawl(){
+    if(!allowed) return;
+    allowed = false;
     startSpinner();
     var theurl = Scbase + Scmid + Scurl;
     $.ajax({
@@ -192,10 +195,12 @@ function scrawl(){
         beforeSend: function (xhr) {
             xhr.setRequestHeader("Authorization", "Basic " + Gkey);
         },
-        success: function (c) { //  TODO c  Gives old result
+        success: function (c) {
             Scfiles.push(Scurl);
             Scurl = c.split("<meta http-equiv=\"refresh\" content=\"10; URL=")[1].split("\">")[0];
             Scbodys.push(c.split("<body bgcolor=\"#F0F0F0\">")[1].split("</body>")[0]);
+            c = null;
+            allowed = true;
             if(Scfiles.indexOf(Scurl) === -1) scrawl();
             else evaScrawl();
         }
