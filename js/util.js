@@ -185,13 +185,15 @@ var Scbody2 = null;
 
 function scrawl(){
     startSpinner();
-    Scfiles.push(Scurl);
+    var theurl = Scbase + Scmid + Scurl;
     $.ajax({
-        url: Scbase + Scmid + Scurl,
+        cache: false,
+        url: theurl,
         beforeSend: function (xhr) {
             xhr.setRequestHeader("Authorization", "Basic " + Gkey);
         },
-        success: function (c) {
+        success: function (c) { //  TODO c  Gives old result
+            Scfiles.push(Scurl);
             Scurl = c.split("<meta http-equiv=\"refresh\" content=\"10; URL=")[1].split("\">")[0];
             Scbodys.push(c.split("<body bgcolor=\"#F0F0F0\">")[1].split("</body>")[0]);
             if(Scfiles.indexOf(Scurl) === -1) scrawl();
