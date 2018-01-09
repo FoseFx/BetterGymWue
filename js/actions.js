@@ -59,8 +59,10 @@ $("#selectkurs-inner-wrapper").on("click", ".kurs-select", function () {
 function login(key, i) {
     $.ajax({
         type: "GET",
+        contentType: 'Content-type: text/html; charset=iso-8859-1',
         beforeSend: function (xhr) {
             xhr.setRequestHeader ("Authorization", "Basic " + key);
+            xhr.overrideMimeType('text/html;charset=iso-8859-1');
         },
         url: GURL + 'Schueler-Stundenplan/default.htm',
         success: function (r) {

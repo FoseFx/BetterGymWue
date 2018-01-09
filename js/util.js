@@ -191,9 +191,11 @@ function scrawl(){
     var theurl = Scbase + Scmid + Scurl;
     $.ajax({
         cache: false,
+        contentType: 'Content-type: text/html; charset=iso-8859-1',
         url: theurl,
         beforeSend: function (xhr) {
             xhr.setRequestHeader("Authorization", "Basic " + Gkey);
+            xhr.overrideMimeType('text/html;charset=iso-8859-1');
         },
         success: function (c) {
             Scfiles.push(Scurl);
@@ -374,7 +376,7 @@ function evaScrawl() {
 
         var d = date.getDate() + "." + (date.getMonth() + 1) + ".";
         console.log(date);
-        var str = "<div class=\"tag scrollbar\">\n" +
+        var str = "<div class=\"tag\">\n" +
             "                    <h1>" + tagesNamen[date.getDay()] + " " + d +"</h1>\n" +
             "                    <hr>\n" +
             "                    <table>\n" +
@@ -468,33 +470,23 @@ function evaScrawl() {
                 if(value2.klasse.indexOf(Gstufe) !== -1){
                     value2.ctnd.forEach(function (value3) {
                         var ty = value3.type;
-                        if (ty === "Vertretung") ty = "V";
+                        if (ty === "Vertretung") ty = "Vert.";
 
-                        var inf = value3.info;
-                        if(inf === "Selbstst�ndiges Arbeiten") inf = "Selbst. Arb.";
+                        var inf = value3.info.toLowerCase();
+                        inf = inf.replace("selbständiges arbeiten", "Selbst. Arb.").replace("selbstständiges arbeiten", "Selbst. Arb.");
+                        inf = inf.replace("aufgaben", "Aufg.");
 
-                        var stunde = "<tr><td>" + value3.stunde +"</td>";
-                        var oldstunde = "<tr><td>" + value3.stunde - 1 + "</td>";
-                        var toAppend = "<td>" +value3.kurs + "</td><td>" + ty + "</td><td>" + value3.nraum + "</td><td>" + inf + "</td></tr>";
+                        var toAppend = "<tr><td><b>" + value3.stunde +"</b></td><td>" +value3.kurs + "</td><td>" + ty + "</td><td>" + value3.nraum + "</td><td>" + inf + "</td></tr>";
 
-                        //TODO
-                        if(value3.date === d){
-                            if(vertInfo.find("tbody").html().indexOf( oldstunde + toAppend) === -1)
-                               vertInfo.find("tbody").append(stunde + toAppend);
-                            else{
-                                vertInfo.find("tbody").find("tr").each(function () {
-                                    if ($(this).html() === oldstunde.substr(3) + toAppend.substr(0, toAppend.length - 1)) $(this).html("<td>" + $(this).children[0] + "/" + ($(this).children[0] + 1) + "</td>" + toAppend);
-                                });
-                            }
-                        }
-                        ///Todo
+                        if(value3.date === d)
+                           vertInfo.find("tbody").append(toAppend);
                     });
                 }
             });
         });
         if(vertInfo.find("tbody").children().length !== 0)
             ret.append(vertInfo);
-
+        ret.append("<div class='spacer'></div>");
         $("#inner-tag-wrapper").append(ret);
     });
     $("#anzeigen-wrapper").removeClass("hidden");

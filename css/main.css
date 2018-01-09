@@ -60,6 +60,22 @@ hr {
 
 
 }
+table{
+    border-collapse: collapse;
+}
 .hi{
     width: 70% !important;
+}
+tr{
+    border: solid grey;
+    border-width: 1px 0;
+}
+tr:first-child {
+    border-top: none;
+}
+tr:last-child{
+    border-bottom: none;
+}
+.spacer{
+    padding-bottom: 50px;
 }
