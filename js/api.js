@@ -1,8 +1,10 @@
 function getStufen() {
     $.ajax({
+        contentType: 'Content-type: text/html; charset=iso-8859-1',
         url: GURL + "Schueler-Stundenplan/frames/navbar.htm",
         beforeSend: function (xhr) {
             xhr.setRequestHeader("Authorization", "Basic " + Gkey);
+            xhr.overrideMimeType('text/html;charset=iso-8859-1');
         },
         type: "GET",
         success: function (r) {
@@ -21,9 +23,11 @@ function getStufen() {
 function getKurse(woche) {
 
     $.ajax({
+        contentType: 'Content-type: text/html; charset=iso-8859-1',
         url: GURL + "Schueler-Stundenplan/frames/navbar.htm",
         beforeSend: function (xhr) {
             xhr.setRequestHeader("Authorization", "Basic " + Gkey);
+            xhr.overrideMimeType('text/html;charset=iso-8859-1');
         },
         type: "GET",
         success: function (RawHtml) {
@@ -40,9 +44,11 @@ function getKurse(woche) {
             var url = GURL + "Schueler-Stundenplan/" + week + "/c/c" + to5erString(GStufeid) + ".htm";
             console.log(url);
             $.ajax({
+                contentType: 'Content-type: text/html; charset=iso-8859-1',
                 url: url,
                 beforeSend: function (xhr) {
                     xhr.setRequestHeader("Authorization", "Basic " + Gkey);
+                    xhr.overrideMimeType('text/html;charset=iso-8859-1');
                 },
                 success: function (r) {
                     evaKurse(r, woche);
