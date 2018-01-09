@@ -335,3 +335,43 @@ input[type=submit]:hover {
     width: 80%;
     margin: 30px auto 0;
 }
+#controls{
+    width: 40px;
+    height: 40px;
+    background: #dde2ea;
+    position: fixed;
+    bottom: 0;
+    right: 10px;
+    display: block;
+    border-radius: 5px;
+    box-shadow: 3px 5px 14px -3px #94979e;
+    transition: all 0.3s linear;
+}
+.active{
+    width: 300px !important;
+    height: 200px !important;
+}
+
+#wrench{
+    margin: 0 auto;
+    padding: 5px;
+    transition: all 0.3s linear;
+}
+
+#controls > a{
+    color: #444;
+    text-decoration: none;
+    opacity: 0;
+    transition: all 0.3s linear;
+    text-align: center;
+    width: 300px;
+    display: block;
+}
+
+.active #wrench{
+    opacity: 0;
+    display: none;
+}
+.active > a{
+    opacity: 1 !important;
+}

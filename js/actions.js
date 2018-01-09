@@ -190,3 +190,23 @@ $("#leftarrow, #leftbig").click(function () {
 $("#rightarrow, #rightbig").click(function () {
     slide(false);
 });
+
+function controls(someVar) {
+    if(someVar)$("#controls").addClass("active");
+    else $("#controls").removeClass("active");
+}
+function kursChange() {
+    for(var i = 0; i < checkCookie("kl"); i++)
+        delete_cookie("k" + i);
+    delete_cookie("kl");
+    location.reload();
+}
+function stufeChange() {
+    delete_cookie("stufe");
+    delete_cookie("stufeid");
+    location.reload();
+}
+
+function delete_cookie( name ) {
+    document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+}
