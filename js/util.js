@@ -467,7 +467,27 @@ function evaScrawl() {
             value.forEach(function (value2, j2) {
                 if(value2.klasse.indexOf(Gstufe) !== -1){
                     value2.ctnd.forEach(function (value3) {
-                        if(value3.date === d) vertInfo.find("tbody").append("<tr><td>" + value3.stunde +"</td><td>" + value3.kurs + "</td><td>" + value3.type + "</td><td>" + value3.nraum + "</td></tr>");
+                        var ty = value3.type;
+                        if (ty === "Vertretung") ty = "V";
+
+                        var inf = value3.info;
+                        if(inf === "Selbstst�ndiges Arbeiten") inf = "Selbst. Arb.";
+
+                        var stunde = "<tr><td>" + value3.stunde +"</td>";
+                        var oldstunde = "<tr><td>" + value3.stunde - 1 + "</td>";
+                        var toAppend = "<td>" +value3.kurs + "</td><td>" + ty + "</td><td>" + value3.nraum + "</td><td>" + inf + "</td></tr>";
+
+                        //TODO
+                        if(value3.date === d){
+                            if(vertInfo.find("tbody").html().indexOf( oldstunde + toAppend) === -1)
+                               vertInfo.find("tbody").append(stunde + toAppend);
+                            else{
+                                vertInfo.find("tbody").find("tr").each(function () {
+                                    if ($(this).html() === oldstunde.substr(3) + toAppend.substr(0, toAppend.length - 1)) $(this).html("<td>" + $(this).children[0] + "/" + ($(this).children[0] + 1) + "</td>" + toAppend);
+                                });
+                            }
+                        }
+                        ///Todo
                     });
                 }
             });
