@@ -391,26 +391,7 @@ function evaScrawl() {
 
         var week = (date.getWeek() % 2 === 0)? 0:1;
 
-        var ttobj = GTimeTable[week].days[date.getDay() - 1];
-        ttobj.forEach(function (t2, i) {
-            var s = "";
-            if(t2 === {}) s = "<tr><td colspan='5'>Pause</td></tr>";
-            else if(t2.type === "klasse"){
-                s = "<tr><td>" + (i + 1) + "</td><td>" + t2.fach + "</td><td>" + t2.raum + "</td><td>" + t2.lehrer + "</td></tr>";
-            }
-            else if(t2.type === "kurs"){
-                GMyKurse.forEach(function (t3) {
-                    if(t3.title !== t2.fach)return;
-                    var raum = null;
-                    t2.raeume.forEach(function (value) { if(value.kurs === t3.fach) raum = value.raum; });
-                    raum = (raum === null)? "- - -":raum;
-                    s = "<tr><td>" + (i + 1) + "</td><td>" + t3.fach + "</td><td>" + raum + "</td><td>" + t3.lehrer + "</td></tr>";
-                });
-            }
-            s = s.replace("undefined", "?");
-            s = s.replace("null", "");
-            $(obj).append(s);
-        });
+
 
         var important = [];
         cVertretung.forEach(function (tag) {
@@ -429,18 +410,74 @@ function evaScrawl() {
             });
         });
         console.log(important);
-
+/*
         important.forEach(function (t2) {
             var stunde = t2.stunde;
             $(obj).children().each(function () {
                 if($($(this).children()[0]).html() !== stunde) return;
                 if(t2.type === "Vertretung") $(this).append("<b id='moveto" + stunde + "'></b>");
-                
+
                 $(this).children("td").each(function () {
                     $(this).appendTo("moveto" + stunde);
                 });
             });
         });
+*/
+
+
+
+        var ttobj = GTimeTable[week].days[date.getDay() - 1];
+        ttobj.forEach(function (t2, i) {
+            var s = "";
+            if(t2 === {}) s = "<tr><td colspan='5'>Pause</td></tr>";
+            else if(t2.type === "klasse"){
+                s = "<tr><td class='stundeLUL'>" + (i + 1) + "</td><td class='fachLUL'>" + t2.fach + "</td><td class='raumLUL'>" + t2.raum + "</td><td class='lehrerLUL'>" + t2.lehrer + "</td></tr>";
+            }
+            else if(t2.type === "kurs"){
+                GMyKurse.forEach(function (t3) {
+                    if(t3.title !== t2.fach)return;
+                    var raum = null;
+                    t2.raeume.forEach(function (value) { if(value.kurs === t3.fach) raum = value.raum; });
+                    raum = (raum === null)? "- - -":raum;
+                    s = "<tr><td class='stundeLUL'>" + (i + 1) + "</td><td class='fachLUL'>" + t3.fach + "</td><td class='raumLUL'>" + raum + "</td><td class='lehrerLUL'>" + t3.lehrer + "</td></tr>";
+                });
+            }
+            var $s = $(s);
+            cVertretung.forEach(function (cVvalue) {
+                if(typeof s === "undefined") return;
+                if(cVvalue.length === 0)return;
+                if(cVvalue[0].ctnd[0].date !== d) return;
+                cVvalue.forEach(function (value2) {
+                    if(value2.klasse.indexOf(Gstufe) === -1) return;
+                    value2.ctnd.forEach(function (value) {
+                        var tsie = value.type;
+                        var vst = value.stunde;
+                        var sst = $s.find(".stundeLUL").html();
+                        var vkur = value.kurs.toLowerCase();
+                        var skur = $s.find(".fachLUL").html();
+                        skur = (typeof skur !== "undefined")? skur.toLowerCase(): skur;
+                        var co = "";
+                        if(tsie == "Vertretung") co = "blue";
+                        else if(tsie == "Entfall") co = "red";
+                        else co = "green";
+
+                        // noinspection EqualityComparisonWithCoercionJS
+                        if(vst == sst && vkur == skur){
+                            $s.find(".raumLUL").html(value.nraum);
+                            $s.css("color", co);
+                        }
+                    });
+                });
+            });
+
+            s = $s.wrap("<p/>").parent().html();
+            if(typeof s === "undefined") return;
+            s = s.replace("undefined", "?");
+            s = s.replace("null", "");
+            $(obj).append(s);
+        });
+
+
 
         //Header tabelle
         var headtab = $("<h3>Info</h3>\n" +
@@ -465,6 +502,7 @@ function evaScrawl() {
             "       \n" +
             "   </tbody>\n" +
             "</table>");
+        console.log(cVertretung);
         cVertretung.forEach(function (value, j) {
             value.forEach(function (value2, j2) {
                 if(value2.klasse.indexOf(Gstufe) !== -1){
