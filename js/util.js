@@ -471,10 +471,13 @@ function evaScrawl() {
                     value2.ctnd.forEach(function (value3) {
                         var ty = value3.type;
                         if (ty === "Vertretung") ty = "Vert.";
+                        if (ty === "Raum-Vtr.") ty = "Raum";
+                        if (ty === "Entfall") ty = "Ent.";
 
                         var inf = value3.info.toLowerCase();
                         inf = inf.replace("selbständiges arbeiten", "Selbst. Arb.").replace("selbstständiges arbeiten", "Selbst. Arb.");
                         inf = inf.replace("aufgaben", "Aufg.");
+                        inf = inf.replace("raumwechsel", "RaumW.");
 
                         var toAppend = "<tr><td><b>" + value3.stunde +"</b></td><td>" +value3.kurs + "</td><td>" + ty + "</td><td>" + value3.nraum + "</td><td>" + inf + "</td></tr>";
 
