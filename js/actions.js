@@ -107,6 +107,33 @@ function accessStufe() {
     }
 }
 
+function orderGKURSE() {
+    GKURSE.forEach(function (w) {
+
+        var titles = [];
+        w.kurse.forEach(function (value) {
+            var dosth = true;
+            titles.forEach(function (value2) {
+                if (titles.length === 0)
+                    return true;
+                if(value2[0] === value.title) dosth = false;
+            });
+            if(dosth)
+                titles.push([value.title, [value]]);
+            else
+                titles.forEach(function (value2, i) {
+                    if(value2[0] === value.title) titles[i][1].push(value);
+                });
+        });
+        w.kurse = [];
+        titles.forEach(function (value) {
+            value[1].forEach(function (value2) {
+                w.kurse.push(value2);
+            });
+        });
+    });
+}
+
 function TTLoaded() {
     document.cookie = "tt=" + JSON.stringify(GTimeTable) + EXP;
     if(checkCookie("kl") !== null) {
@@ -115,6 +142,7 @@ function TTLoaded() {
         return;
     }
     $("#selectkurs-wrapper").removeClass("hidden");
+    orderGKURSE();
     GKURSE.forEach(function (t) {
         var prevTitle = null;
         t.kurse.forEach(function (o) {
