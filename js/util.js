@@ -508,15 +508,26 @@ function evaScrawl() {
                 if(value2.klasse.indexOf(Gstufe) !== -1){
                     value2.ctnd.forEach(function (value3) {
                         var ty = value3.type;
-                        if (ty === "Vertretung") ty = "Vert.";
+                        if (ty === "Vertretung") ty = "Vert";
                         if (ty === "Raum-Vtr.") ty = "Raum";
-                        if (ty === "Entfall") ty = "Ent.";
+                        if (ty === "Entfall") ty = "Entf";
+                        if (ty === "Sondereins.") ty = "Sonder";
 
-                        var inf = value3.info.toLowerCase();
+                        var inf = value3.info;
+                        var dict = [
+                            ["selbständiges arbeiten", "Selbst. Arb."],
+                            ["selbstständiges arbeiten", "Selbst. Arb."],
+                            ["aufgaben", "Aufg."],
+                            ["raumwechsel", "RaumW."]
+                        ];
+                        dict.forEach(function (mmm) {
+                            inf = inf.replace(new RegExp(mmm[0], "ig"), mmm[1]);
+                        });
+                        /*
                         inf = inf.replace("selbständiges arbeiten", "Selbst. Arb.").replace("selbstständiges arbeiten", "Selbst. Arb.");
                         inf = inf.replace("aufgaben", "Aufg.");
                         inf = inf.replace("raumwechsel", "RaumW.");
-
+                        */
                         var toAppend = "<tr><td><b>" + value3.stunde +"</b></td><td>" +value3.kurs + "</td><td>" + ty + "</td><td>" + value3.nraum + "</td><td>" + inf + "</td></tr>";
 
                         if(value3.date === d)
