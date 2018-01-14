@@ -232,7 +232,7 @@ function kursChange() {
 function stufeChange() {
     delete_cookie("stufe");
     delete_cookie("stufeid");
-    location.reload();
+    kursChange();
 }
 
 function delete_cookie( name ) {
