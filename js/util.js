@@ -1,6 +1,4 @@
 $(document).ready(function () {
-    delete_cookie("tt");
-
     var a = false;
     document.cookie.split(";").forEach(function (t) {if(t == "a=true") a = true;});
     stopSpinner();
