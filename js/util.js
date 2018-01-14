@@ -1,4 +1,6 @@
 $(document).ready(function () {
+    delete_cookie("tt");
+
     var a = false;
     document.cookie.split(";").forEach(function (t) {if(t == "a=true") a = true;});
     stopSpinner();
@@ -523,11 +525,6 @@ function evaScrawl() {
                         dict.forEach(function (mmm) {
                             inf = inf.replace(new RegExp(mmm[0], "ig"), mmm[1]);
                         });
-                        /*
-                        inf = inf.replace("selbständiges arbeiten", "Selbst. Arb.").replace("selbstständiges arbeiten", "Selbst. Arb.");
-                        inf = inf.replace("aufgaben", "Aufg.");
-                        inf = inf.replace("raumwechsel", "RaumW.");
-                        */
                         var toAppend = "<tr><td><b>" + value3.stunde +"</b></td><td>" +value3.kurs + "</td><td>" + ty + "</td><td>" + value3.nraum + "</td><td>" + inf + "</td></tr>";
 
                         if(value3.date === d)
