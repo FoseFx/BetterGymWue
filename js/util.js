@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    $("#leftarrow").css("opacity", "0");
     var a = false;
     document.cookie.split(";").forEach(function (t) {if(t == "a=true") a = true;});
     stopSpinner();

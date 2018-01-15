@@ -211,12 +211,24 @@ function slide(left) {
     var tage = $(".tag").toArray();
     $(tage[(left)? 0 : 1]).show();
     $(tage[(left)? 1 : 0]).hide();
+    if(left){
+        $("#rightarrow").css("opacity", "0.75");
+        $("#leftarrow").css("opacity", "0");
+    }else{
+        $("#leftarrow").css("opacity", "0.75");
+        $("#rightarrow").css("opacity", "0");
+    }
+
 }
 $("#leftarrow, #leftbig").click(function () {
     slide(true);
 });
 $("#rightarrow, #rightbig").click(function () {
     slide(false);
+});
+$(window).keydown(function (e) {
+    if(e.key == "ArrowRight")slide(false);
+    if(e.key == "ArrowLeft")slide(true);
 });
 
 function controls(someVar) {
