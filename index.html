@@ -55,7 +55,7 @@
     </div>
 </div>
 
-<div id="page-wraper scrollbar">
+<div id="page-wraper">
 
     <div id="login-wrapper">
         <form id="login-form">
@@ -110,34 +110,38 @@
 
     </div>
 
+    <div id="controls" class="">
+        <img onclick="controls(true)" id="wrench" src="img/settings.svg" width="30px">
+        <br>
+        <a href="javascript:stufeChange()">Stufe und Kurse löschen</a><br/>
+        <a href="javascript:kursChange()">Kurse löschen</a><br>
+        <a style="font-weight: 100;" href="javascript:controls(false)">Close</a>
+    </div>
+
+    <div id="ttbtn">
+        <img onclick="ttClicked()" src="img/tt.svg" width="30px" id="ttimg"><br>
+    </div>
+
 </div>
 
-<div id="controls" class="">
-    <img onclick="javascript:controls(true)" id="wrench" src="img/settings.svg" width="30px">
-    <br>
-    <a href="javascript:stufeChange()">Stufe und Kurse löschen</a><br/>
-    <a href="javascript:kursChange()">Kurse löschen</a><br>
-    <a style="font-weight: 100;" href="javascript:controls(false)">Close</a>
+<div id="ttDispl">
+    <img onclick="closeTT()" id="closeTT" src="img/close.svg" width="50px">
 </div>
 
-<div id="ttbtn">
-    <img src="img/tt.svg" width="30px" id="ttimg"><br>
-
-</div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 <script src="js/vars.js?v=1"></script>
 
-<!--
+
 <script src="js/api.js?v=2"></script>
 <script src="js/util.js?v=2"></script>
 <script src="js/actions.js?v=2"></script>
--->
 
+<!--
 <script src="js/api.min.js?v=3"></script>
 <script src="js/util.min.js?v=3"></script>
 <script src="js/actions.min.js?v=3"></script>
-
+-->
 </body>
 </html>

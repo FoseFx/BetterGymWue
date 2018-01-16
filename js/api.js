@@ -43,6 +43,7 @@ function getKurse(woche) {
 
             var url = GURL + "Schueler-Stundenplan/" + week + "/c/c" + to5erString(GStufeid) + ".htm";
             console.log(url);
+            GTTUrls.push([url, (woche === "a")]);
             $.ajax({
                 contentType: 'Content-type: text/html; charset=iso-8859-1',
                 url: url,
