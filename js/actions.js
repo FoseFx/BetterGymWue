@@ -247,6 +247,61 @@ function stufeChange() {
     kursChange();
 }
 
+var wasHere = false;
+function ttClicked() {
+    if(typeof GTTUrls[0] === "undefined") return;
+
+
+    $("#page-wraper").css("opacity", "0");
+    setTimeout(function () {
+        $("#page-wraper").css("display", 'none');
+        $("#ttDispl").css("display", "flex");
+        setTimeout(function () { $("#ttDispl").css("opacity", "1") }, 300);
+    }, 300);
+
+    if(wasHere) return;
+    wasHere = true;
+    var right;
+    GTTUrls.forEach(function (value) { if(value[1] === (getWeekOfYear(new Date) % 2 === 0)) right = value[0] });
+    $.ajax({
+        contentType: 'Content-type: text/html; charset=iso-8859-1',
+        url: right,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("Authorization", "Basic " + Gkey);
+            xhr.overrideMimeType('text/html;charset=iso-8859-1');
+        },
+        type: "GET",
+        error: function () {
+            $("page-wraper").css("display", "block");
+            setTimeout(function (args) { $("#page-wraper").css("opacity", "1") }, 100);
+        },
+        success: function (e) {
+            var test = $(e).children("table")[0];
+            var q = "";
+            $(test).addClass("ttTable");
+            GMyKurse.forEach(function (value) { q += "font:contains('" + value.fach + "'),"});
+            q = q.substr(0, q.length - 1);
+
+            $(test).find(q).parent().parent().css("background-color", "yellow");
+            $("#ttDispl").append(test);
+        }
+    });
+}
+
+function closeTT() {
+    $("#ttDispl").css("display", "none");
+    setTimeout(function () {
+        $("#ttDispl").css("opacity", "0");
+        setTimeout(function () {
+            $("#page-wraper").css("display", 'block');
+            setTimeout(function (args) {
+                $("#page-wraper").css("opacity", "1");
+            }, 300);
+        }, 300);
+    }, 300);
+
+}
+
 function delete_cookie( name ) {
     document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }

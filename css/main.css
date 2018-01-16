@@ -60,22 +60,41 @@ hr {
 
 
 }
-table{
-    border-collapse: collapse;
+.hi{
+    border-collapse: collapse!important;
 }
 .hi{
     width: 70% !important;
 }
-tr{
+.hi tr{
     border: solid grey;
     border-width: 1px 0;
 }
-tr:first-child {
+.hi tr:first-child {
     border-top: none;
 }
-tr:last-child{
+.hi tr:last-child{
     border-bottom: none;
 }
 .spacer{
     padding-bottom: 50px;
+}
+#ttDispl{
+    width: 100%;
+    height: 100vh;
+    display: none;
+    opacity: 0;
+    transition: all 0.2s ease;
+    justify-content: center;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+#closeTT{
+    position: fixed;
+    top: 5px;
+    right: 5px;
+}
+.ttTable{
+    overflow-x: auto;
+    display: block;
 }
