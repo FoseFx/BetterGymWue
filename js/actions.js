@@ -279,10 +279,15 @@ function ttClicked() {
             var test = $(e).children("table")[0];
             var q = "";
             $(test).addClass("ttTable");
-            GMyKurse.forEach(function (value) { q += "font:contains('" + value.fach + "'),"});
+            var t = [];
+            GMyKurse.forEach(function (value) { q += "font:contains('" + value.fach + "'),"; t.push(value.fach);});
             q = q.substr(0, q.length - 1);
-
-            $(test).find(q).parent().parent().css("background-color", "yellow");
+            console.log(q);
+            $(test).find(q).each(function () {
+                var $self = $(this);
+                var ctnd = $self.html().replace(new RegExp("\n", "g"), "").replace(new RegExp(" ", "g"), "");
+                if($self.parent().index() === 0 && t.indexOf(ctnd) !== -1) $self.parent().parent().css("background-color", "yellow");
+            });
             $("#ttDispl").append(test);
         }
     });
