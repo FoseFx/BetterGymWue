@@ -53,7 +53,7 @@ function fuck(){
 
 
 if(!isset($_GET["k"])) die("No");
-$rows = db_select("SELECT id FROM pos WHERE available = 0 ORDER BY id ASC LIMIT 1");
+$rows = db_select("SELECT id FROM pos WHERE available = 0 LIMIT 1");
 
 if($rows === false){
     die(fuck());
