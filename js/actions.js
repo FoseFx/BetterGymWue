@@ -137,7 +137,6 @@ function orderGKURSE() {
 function TTLoaded() {
     //document.cookie = "tt=" + JSON.stringify(GTimeTable) + EXP;
     if(checkCookie("kl") !== null) {
-        stopSpinner();
         scrawl();
         return;
     }
@@ -189,12 +188,75 @@ $("#kurseSelected").click(function (e) {
                 GMyKurse.forEach(function (t3, i) { if(t3.fach === e.fach) posi = i; });
                 if(posi === null){
                     GMyKurse.push(e);
-
                 }
             }
         });
     });});
+    if($("#kurs-cloud-cb").is(":checked")){
+        $.ajax({
+            url: "https://www.fosefx.com/betterGymWue/kursAPI.php",
+            type: "GET",
+            data: "k=" + JSON.stringify(GMyKurse),
+            success: function (e) {
+                doAfterKursClick();
+                $("body").append("<div id='bigIDBox'><p>Dein Kurs Code:</p><span class='bigKursNumber'>" + e + "</span><br><a onclick='$(\"#bigIDBox\").remove()'>Ok</a></div>");
+            },
+            error: function (e) {
+                alert("Verbindung zur Datenbank fehlgeschlagen: " + e);
+            }
 
+        });
+
+
+    }else doAfterKursClick();
+
+
+});
+
+$("#getKurseWithID").click(function (e) {
+    e.preventDefault();
+    $("body").append("<div id='diff' onclick='$(\"#diff, #bigIDBox\").remove()'></div><div id='bigIDBox'><p>Kurs-ID eingeben:</p><br><input id='KursIDBox' type='tel' maxlength='4' minlength='4'><br><br><button class='yes' onclick='loadWIthID()'><span>Ok</span></button><br><br><a onclick='$(\"#diff, #bigIDBox\").remove()'>Schließen</a></div>");
+    $("#KursIDBox").focus();
+});
+
+var allowLoad = true;
+function loadWIthID() {
+    if(!allowLoad) return;
+    
+    allowLoad = false;
+    var $box = $("#KursIDBox");
+    var id = $box.val();
+    $box.prop("disabled", true);
+    
+    $.ajax({
+        url: "https://www.fosefx.com/betterGymWue/kursAPI.php",
+        type: "get",
+        data: "get=" + id,
+        success: function (e) {
+            e = $.parseJSON(e);
+            if(e.result === false){
+                $box.prop("disabled", false).val("");
+                allowLoad = true;
+                $("#bigIDBox").addClass("shake shake-constant");
+                setTimeout(function () {
+                    $("#bigIDBox").removeClass("shake shake-constant");
+                }, 200);
+                return;
+            }
+            GMyKurse = e.kurse;
+            $("#diff, #bigIDBox").remove();
+            doAfterKursClick();
+        },
+        error: function (e) {
+            console.log(e);
+            alert("Verbindung mit Datenbank fehlgeschlagen");
+            allowLoad = true;
+            $box.prop("disabled", false);
+        }
+    });
+}
+
+function doAfterKursClick() {
     var c = {a: GMyKurse};
     var cc = JSON.stringify(c);
     var ccc = splitter(cc, 3500);
@@ -206,7 +268,8 @@ $("#kurseSelected").click(function (e) {
 
     $("#selectkurs-wrapper").addClass("hidden");
     scrawl();
-});
+}
+
 function slide(left) {
     var tage = $(".tag").toArray();
     $(tage[(left)? 0 : 1]).show();
