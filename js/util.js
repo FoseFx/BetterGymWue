@@ -358,7 +358,7 @@ function evaScrawl() {
     });
 
     cVertretung.reverse();
-
+    cInfo.reverse();
     console.log(cVertretung);
     console.log(cInfo);
     stopSpinner();
