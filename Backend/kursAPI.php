@@ -1,4 +1,7 @@
 <?php
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET');
+header('Content-Type: text/plain');
 function db_connect(){
     static $connection;
     $config = parse_ini_file('../../config.ini');
@@ -51,24 +54,56 @@ function fuck(){
 }
 
 
+if(!isset($_GET["k"]) && !isset($_GET["get"])) die("No");
 
-if(!isset($_GET["k"])) die("No");
-$rows = db_select("SELECT id FROM pos WHERE available = 0 LIMIT 1");
+if(isset($_GET["k"])) set();
+else if(isset($_GET["get"])) get();
+else echo "wtf";
 
-if($rows === false){
-    die(fuck());
+function set(){
+    $rows = db_select("SELECT id FROM pos WHERE available = 0 LIMIT 1");
+
+    if($rows === false){
+        die(fuck());
+    }
+    $id = $rows[0]['id'];
+    $kurse = $_GET["k"];
+    $res = db_query("UPDATE pos SET id = $id, available = 1 WHERE (id = $id)");
+    if($res === false) die(fuck());
+
+    $stmt = mysqli_prepare(db_connect(), "INSERT INTO `kurse` (`id`, `wert`) VALUES ('$id', ?)");
+    mysqli_stmt_bind_param($stmt, "s", $kurse);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_bind_result($stmt, $result);
+    mysqli_stmt_fetch($stmt);
+    mysqli_stmt_close($stmt);
+    mysqli_close(db_connect());
+
+    echo $id;
+    die();
 }
-$id = $rows[0]['id'];
-$kurse = $_GET["k"];
-$res = db_query("UPDATE pos SET id = $id, available = 1 WHERE (id = $id)");
-if($res === false) die(fuck());
 
-$stmt = mysqli_prepare(db_connect(), "INSERT INTO `kurse` (`id`, `wert`) VALUES ('$id', ?)");
-mysqli_stmt_bind_param($stmt, "s", $kurse);
-mysqli_stmt_execute($stmt);
-mysqli_stmt_bind_result($stmt, $result);
-mysqli_stmt_fetch($stmt);
-mysqli_stmt_close($stmt);
-mysqli_close(db_connect());
+function get(){
 
-echo $id;
+    $stmt = mysqli_prepare(db_connect(), "SELECT wert FROM kurse WHERE id = ?");
+    mysqli_stmt_bind_param($stmt, "s", $_GET["get"]);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_bind_result($stmt, $result);
+    mysqli_stmt_fetch($stmt);
+    mysqli_stmt_close($stmt);
+    mysqli_close(db_connect());
+
+    $good = true;
+
+    if (is_null($result))
+        $good = false;
+    $converted_res = ($good) ? 'true' : 'false';
+
+    $back = "{" . "\"result\": " . $converted_res;
+
+    if($good) $back = $back . ", \"kurse\": " . $result;
+    $back = $back . "}";
+
+    echo $back;
+    die();
+}
