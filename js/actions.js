@@ -229,7 +229,7 @@ function loadWIthID() {
     $box.prop("disabled", true);
     
     $.ajax({
-        url: "https://www.fosefx.com/betterGymWue/kursAPI.php",
+        url: GKursAPIURL,
         type: "get",
         data: "get=" + id,
         success: function (e) {
