@@ -44,13 +44,13 @@ function db_select($query) {
 }
 
 function fuck(){
-    /*
-    $config = parse_ini_file('../../config.ini');
-    $adminmail = $config["email"];
-    mail($adminmail, "msql Insert failed", "Strange?" );
-    */
 
     $connection = db_connect();
+
+    $config = parse_ini_file('../../config.ini');
+    $adminmail = $config["email"];
+    mail($adminmail, "Some Errors", mysqli_error($connection) );
+
     return mysqli_error($connection);
 }
 
