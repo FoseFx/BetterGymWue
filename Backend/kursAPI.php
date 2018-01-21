@@ -54,8 +54,8 @@ function fuck(){
     return mysqli_error($connection);
 }
 
-
-if(!isset($_GET["k"]) && !isset($_GET["get"])) die("No");
+if(isset($_GET["hash"])) die(hash_file("sha256", "kursAPI.php"));
+if(!isset($_GET["k"]) && !isset($_GET["get"]) || (isset($_GET["k"]) && isset($_GET["get"])) ) die("No");
 
 if(isset($_GET["k"])) set();
 else if(isset($_GET["get"])) get();
