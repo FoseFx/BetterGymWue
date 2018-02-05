@@ -314,46 +314,21 @@ var wasHere = false;
 function ttClicked() {
     if(typeof GTTUrls[0] === "undefined") return;
 
-
     $("#page-wraper").css("opacity", "0");
     setTimeout(function () {
         $("#page-wraper").css("display", 'none');
-        $("#ttDispl").css("display", "flex");
+        $("#ttDispl").css("display", "flex").css("flex-wrap", "wrap");
         setTimeout(function () { $("#ttDispl").css("opacity", "1") }, 300);
     }, 300);
 
     if(wasHere) return;
     wasHere = true;
-    var right;
-    GTTUrls.forEach(function (value) { if(value[1] === (getWeekOfYear(new Date) % 2 === 0)) right = value[0] });
-    $.ajax({
-        contentType: 'Content-type: text/html; charset=iso-8859-1',
-        url: right,
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader("Authorization", "Basic " + Gkey);
-            xhr.overrideMimeType('text/html;charset=iso-8859-1');
-        },
-        type: "GET",
-        error: function () {
-            $("page-wraper").css("display", "block");
-            setTimeout(function (args) { $("#page-wraper").css("opacity", "1") }, 100);
-        },
-        success: function (e) {
-            var test = $(e).children("table")[0];
-            var q = "";
-            $(test).addClass("ttTable");
-            var t = [];
-            GMyKurse.forEach(function (value) { q += "font:contains('" + value.fach + "'),"; t.push(value.fach);});
-            q = q.substr(0, q.length - 1);
-            console.log(q);
-            $(test).find(q).each(function () {
-                var $self = $(this);
-                var ctnd = $self.html().replace(new RegExp("\n", "g"), "").replace(new RegExp(" ", "g"), "");
-                if($self.parent().index() === 0 && t.indexOf(ctnd) !== -1) $self.parent().parent().css("background-color", "yellow");
-            });
-            $("#ttDispl").append(test);
-        }
+    GTTUrls.forEach(function (value, index) {
+        var v;
+        if(index === 0) v = GTTUrls[1][0];else v = GTTUrls[0][0];
+        if(value[1] === (getWeekOfYear(new Date) % 2 === 0)) getTTtoShow(value[0], v);
     });
+
 }
 
 function closeTT() {
@@ -372,4 +347,36 @@ function closeTT() {
 
 function delete_cookie( name ) {
     document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+}
+function getTTtoShow(right, doafter){
+    $.ajax({
+        contentType: 'Content-type: text/html; charset=iso-8859-1',
+        url: right,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("Authorization", "Basic " + Gkey);
+            xhr.overrideMimeType('text/html;charset=iso-8859-1');
+        },
+        type: "GET",
+        error: function () {
+            $("page-wraper").css("display", "block");
+            setTimeout(function () { $("#page-wraper").css("opacity", "1") }, 100);
+        },
+        success: function (e) {
+            var test = $(e).children("table")[0];
+            var q = "";
+            $(test).addClass("ttTable");
+            var t = [];
+            GMyKurse.forEach(function (value) { q += "font:contains('" + value.fach + "'),"; t.push(value.fach);});
+            q = q.substr(0, q.length - 1);
+            console.log(q);
+            $(test).find(q).each(function () {
+                var $self = $(this);
+                var ctnd = $self.html().replace(new RegExp("\n", "g"), "").replace(new RegExp(" ", "g"), "");
+                if($self.parent().index() === 0 && t.indexOf(ctnd) !== -1) $self.parent().parent().css("background-color", "yellow");
+            });
+            if(!doafter) $(test).css("margin", "20px 0 0 0");
+            $("#ttDispl").append(test);
+            if(doafter) getTTtoShow(doafter);
+        }
+    });
 }
