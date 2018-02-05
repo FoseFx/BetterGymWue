@@ -489,8 +489,11 @@ function evaScrawl() {
             "</table>");
         cInfo.forEach(function (value, i) {
             if (cVertretung[i][0].ctnd[0].date !== d) return;
-            if(value === [] || value[0] === undefined || value[1] === undefined) return;
-            headtab.find(".headerTab").append("<tr><td>" + value[0] + "</td><td>" + value[1] + "</td></tr>");
+            if(value === [] || value[0] === undefined) return;
+            if(value[1] !== undefined){
+                headtab.find(".headerTab").append("<tr><td>" + value[0] + "</td><td>" + value[1] + "</td></tr>");
+            }else
+                headtab.find(".headerTab").append("<tr><td>" + value[0] + "</td></tr>");
         });
         if($(headtab).find("tbody").children().length !== 0)
             ret.append($(headtab));
