@@ -376,170 +376,181 @@ function evaScrawl() {
         if(woche === 1 && date1.getDate() == date.getDate()) date.setDate(date.getDate() + 1);
 
         var d = date.getDate() + "." + (date.getMonth() + 1) + ".";
-        console.log(date);
-        var str = "<div class=\"tag\">\n" +
-            "                    <h1>" + tagesNamen[date.getDay()] + " " + d +"</h1>\n" +
-            "                    <hr>\n" +
-            "                    <table>\n" +
-            "                        <tbody class='lul'>\n" +
-            "                            <tr><td><b>Std.</b></td><td><b>Fach</b></td><td><b>Raum</b></td><td><b>Lehrer</b></td></td><td></td></tr>\n" +
-            "                        </tbody>\n" +
-            "                    </table>\n" +
-            "                </div>";
+        console.log(d);
 
-        var ret = $(str);
-        var obj = $(ret).find("tbody.lul")[0];
+        allThatComplicatedStuff(tagesNamen, date, d, cVertretung, cInfo);
 
-        var week = (date.getWeek() % 2 === 0)? 0:1;
-
-
-
-        var important = [];
-        cVertretung.forEach(function (tag) {
-            tag.forEach(function (header) {
-                if(header.klasse.indexOf(Gstufe) === -1) return;
-                header.ctnd.forEach(function (ctnd) {
-                    if(ctnd.date !== d) return;
-                    GMyKurse.forEach(function (t2) { if(t2.fach === ctnd.kurs || ctnd.kurs === "&nbsp;")important.push(ctnd); });
-                    GTimeTable[week].days.forEach(function (t2) { t2.forEach(function (t3) {
-                        if(t3 === {}) return;
-                        if (t3 === null) return;
-                        if(t3.type !== "klasse") return;
-                        if(t3.fach === ctnd.kurs) important.push(ctnd);
-                    });});
-                });
-            });
-        });
-        console.log(important);
-/*
-        important.forEach(function (t2) {
-            var stunde = t2.stunde;
-            $(obj).children().each(function () {
-                if($($(this).children()[0]).html() !== stunde) return;
-                if(t2.type === "Vertretung") $(this).append("<b id='moveto" + stunde + "'></b>");
-
-                $(this).children("td").each(function () {
-                    $(this).appendTo("moveto" + stunde);
-                });
-            });
-        });
-*/
-
-
-
-        var ttobj = GTimeTable[week].days[date.getDay() - 1];
-        ttobj.forEach(function (t2, i) {
-            var s = "";
-            if(t2 === {}) s = "<tr><td colspan='5'>Pause</td></tr>";
-            else if(t2.type === "klasse"){
-                s = "<tr><td class='stundeLUL'>" + (i + 1) + "</td><td class='fachLUL'>" + t2.fach + "</td><td class='raumLUL'>" + t2.raum + "</td><td class='lehrerLUL'>" + t2.lehrer + "</td></tr>";
-            }
-            else if(t2.type === "kurs"){
-                GMyKurse.forEach(function (t3) {
-                    if(t3.title !== t2.fach)return;
-                    var raum = null;
-                    t2.raeume.forEach(function (value) { if(value.kurs === t3.fach) raum = value.raum; });
-                    raum = (raum === null)? "- - -":raum;
-                    s = "<tr><td class='stundeLUL'>" + (i + 1) + "</td><td class='fachLUL'>" + t3.fach + "</td><td class='raumLUL'>" + raum + "</td><td class='lehrerLUL'>" + t3.lehrer + "</td></tr>";
-                });
-            }
-            var $s = $(s);
-            cVertretung.forEach(function (cVvalue) {
-                if(typeof s === "undefined") return;
-                if(cVvalue.length === 0)return;
-                if(cVvalue[0].ctnd[0].date !== d) return;
-                cVvalue.forEach(function (value2) {
-                    if(value2.klasse.indexOf(Gstufe) === -1) return;
-                    value2.ctnd.forEach(function (value) {
-                        var tsie = value.type;
-                        var vst = value.stunde;
-                        var sst = $s.find(".stundeLUL").html();
-                        var vkur = value.kurs.toLowerCase();
-                        var skur = $s.find(".fachLUL").html();
-                        skur = (typeof skur !== "undefined")? skur.toLowerCase(): skur;
-                        var co = "";
-                        if(tsie == "Vertretung") co = "blue";
-                        else if(tsie == "Entfall") co = "red";
-                        else co = "green";
-
-                        // noinspection EqualityComparisonWithCoercionJS
-                        if(vst == sst && vkur == skur){
-                            $s.find(".raumLUL").html(value.nraum);
-                            $s.css("color", co);
-                        }
-                    });
-                });
-            });
-
-            s = $s.wrap("<p/>").parent().html();
-            if(typeof s === "undefined") return;
-            s = s.replace("undefined", "?");
-            s = s.replace("null", "");
-            $(obj).append(s);
-        });
-
-
-
-        //Header tabelle
-        var headtab = $("<h3>Info</h3>\n" +
-            "<table class='hi'>\n" +
-            "    <tbody class=\"headerTab\">\n" +
-            "        \n" +
-            "    </tbody>\n" +
-            "</table>");
-        cInfo.forEach(function (value, i) {
-            if (cVertretung[i][0].ctnd[0].date !== d) return;
-            if(value === [] || value[0] === undefined) return;
-            if(value[1] !== undefined){
-                headtab.find(".headerTab").append("<tr><td>" + value[0] + "</td><td>" + value[1] + "</td></tr>");
-            }else
-                headtab.find(".headerTab").append("<tr><td>" + value[0] + "</td></tr>");
-        });
-        if($(headtab).find("tbody").children().length !== 0)
-            ret.append($(headtab));
-
-        //Vertretungsinfo für Stufe
-
-        var vertInfo = $("<h3>" + Gstufe +"</h3>\n" +
-            "<table class='hi'>\n" +
-            "   <tbody>\n" +
-            "       \n" +
-            "   </tbody>\n" +
-            "</table>");
-        console.log(cVertretung);
-        cVertretung.forEach(function (value, j) {
-            value.forEach(function (value2, j2) {
-                if(value2.klasse.indexOf(Gstufe) !== -1){
-                    value2.ctnd.forEach(function (value3) {
-                        var ty = value3.type;
-                        if (ty === "Vertretung") ty = "Vert";
-                        if (ty === "Raum-Vtr.") ty = "Raum";
-                        if (ty === "Entfall") ty = "Entf";
-                        if (ty === "Sondereins.") ty = "Sonder";
-
-                        var inf = value3.info;
-                        var dict = [
-                            ["selbständiges arbeiten", "Selbst. Arb."],
-                            ["selbstständiges arbeiten", "Selbst. Arb."],
-                            ["aufgaben", "Aufg."],
-                            ["raumwechsel", "RaumW."]
-                        ];
-                        dict.forEach(function (mmm) {
-                            inf = inf.replace(new RegExp(mmm[0], "ig"), mmm[1]);
-                        });
-                        var toAppend = "<tr><td><b>" + value3.stunde +"</b></td><td>" +value3.kurs + "</td><td>" + ty + "</td><td>" + value3.nraum + "</td><td>" + inf + "</td></tr>";
-
-                        if(value3.date === d)
-                           vertInfo.find("tbody").append(toAppend);
-                    });
-                }
-            });
-        });
-        if(vertInfo.find("tbody").children().length !== 0)
-            ret.append(vertInfo);
-        ret.append("<div class='spacer'></div>");
-        $("#inner-tag-wrapper").append(ret);
     });
     $("#anzeigen-wrapper").removeClass("hidden");
 
+}
+function allThatComplicatedStuff(tagesNamen, date, d, cVertretung, cInfo) {
+    var str = "<div class=\"tag\">\n" +
+        "                    <h1>" + tagesNamen[date.getDay()] + " " + d +"</h1>\n" +
+        "                    <hr>\n" +
+        "                    <table>\n" +
+        "                        <tbody class='lul'>\n" +
+        "                            <tr><td><b>Std.</b></td><td><b>Fach</b></td><td><b>Raum</b></td><td><b>Lehrer</b></td></td><td></td></tr>\n" +
+        "                        </tbody>\n" +
+        "                    </table>\n" +
+        "                </div>";
+
+    var ret = $(str);
+    var obj = $(ret).find("tbody.lul")[0];
+
+    var week = (date.getWeek() % 2 === 0)? 0:1;
+
+
+
+    var important = [];
+    cVertretung.forEach(function (tag) {
+        tag.forEach(function (header) {
+            if(header.klasse.indexOf(Gstufe) === -1) return;
+            header.ctnd.forEach(function (ctnd) {
+                if(ctnd.date !== d) return;
+                GMyKurse.forEach(function (t2) { if(t2.fach === ctnd.kurs || ctnd.kurs === "&nbsp;")important.push(ctnd); });
+                GTimeTable[week].days.forEach(function (t2) { t2.forEach(function (t3) {
+                    if(t3 === {}) return;
+                    if (t3 === null) return;
+                    if(t3.type !== "klasse") return;
+                    if(t3.fach === ctnd.kurs) important.push(ctnd);
+                });});
+            });
+        });
+    });
+    console.log(important);
+    /*
+            important.forEach(function (t2) {
+                var stunde = t2.stunde;
+                $(obj).children().each(function () {
+                    if($($(this).children()[0]).html() !== stunde) return;
+                    if(t2.type === "Vertretung") $(this).append("<b id='moveto" + stunde + "'></b>");
+
+                    $(this).children("td").each(function () {
+                        $(this).appendTo("moveto" + stunde);
+                    });
+                });
+            });
+    */
+
+
+
+    var ttobj = GTimeTable[week].days[date.getDay() - 1];
+    ttobj.forEach(function (t2, i) {
+        var s = "";
+        if(t2 === {}) s = "<tr><td colspan='5'>Pause</td></tr>";
+        else if(t2.type === "klasse"){
+            s = "<tr><td class='stundeLUL'>" + (i + 1) + "</td><td class='fachLUL'>" + t2.fach + "</td><td class='raumLUL'>" + t2.raum + "</td><td class='lehrerLUL'>" + t2.lehrer + "</td></tr>";
+        }
+        else if(t2.type === "kurs"){
+            GMyKurse.forEach(function (t3) {
+                if(t3.title !== t2.fach)return;
+                var raum = null;
+                t2.raeume.forEach(function (value) { if(value.kurs === t3.fach) raum = value.raum; });
+                raum = (raum === null)? "- - -":raum;
+                s = "<tr><td class='stundeLUL'>" + (i + 1) + "</td><td class='fachLUL'>" + t3.fach + "</td><td class='raumLUL'>" + raum + "</td><td class='lehrerLUL'>" + t3.lehrer + "</td></tr>";
+            });
+        }
+        var $s = $(s);
+        cVertretung.forEach(function (cVvalue) {
+            if(typeof s === "undefined") return;
+            if(cVvalue.length === 0)return;
+            if(cVvalue[0].ctnd[0].date !== d) return;
+            cVvalue.forEach(function (value2) {
+                if(value2.klasse.indexOf(Gstufe) === -1) return;
+                value2.ctnd.forEach(function (value) {
+                    var tsie = value.type;
+                    var vst = value.stunde;
+                    var sst = $s.find(".stundeLUL").html();
+                    var vkur = value.kurs.toLowerCase();
+                    var skur = $s.find(".fachLUL").html();
+                    skur = (typeof skur !== "undefined")? skur.toLowerCase(): skur;
+                    var co = "";
+                    if(tsie == "Vertretung") co = "blue";
+                    else if(tsie == "Entfall") co = "red";
+                    else co = "green";
+
+                    // noinspection EqualityComparisonWithCoercionJS
+                    if(vst == sst && vkur == skur){
+                        $s.find(".raumLUL").html(value.nraum);
+                        $s.css("color", co);
+                    }
+                });
+            });
+        });
+
+        s = $s.wrap("<p/>").parent().html();
+        if(typeof s === "undefined") return;
+        s = s.replace("undefined", "?");
+        s = s.replace("null", "");
+        $(obj).append(s);
+    });
+
+
+
+    //Header tabelle
+    var headtab = $("<h3>Info</h3>\n" +
+        "<table class='hi'>\n" +
+        "    <tbody class=\"headerTab\">\n" +
+        "        \n" +
+        "    </tbody>\n" +
+        "</table>");
+    cInfo.forEach(function (value, i) {
+        if (cVertretung[i][0].ctnd[0].date !== d) return;
+        if(value === [] || value[0] === undefined) return;
+        if(value[1] !== undefined){
+            headtab.find(".headerTab").append("<tr><td>" + value[0] + "</td><td>" + value[1] + "</td></tr>");
+        }else
+            headtab.find(".headerTab").append("<tr><td>" + value[0] + "</td></tr>");
+    });
+    Schulplaner.forEach(function (value) {
+        if(value.tag != d) return;
+        if(Gstufe.indexOf(value.stufe) != -1 || value.stufe == "*")
+            headtab.find("tbody").append("<tr><td><i style='background: yellow'>" + ((value.stufe == "*")? "": value.stufe) + value.wert.replace("\n", "<br>") + "</i></td></tr>");
+    });
+
+    if($(headtab).find("tbody").children().length !== 0)
+        ret.append($(headtab));
+
+    //Vertretungsinfo für Stufe
+
+    var vertInfo = $("<h3>" + Gstufe +"</h3>\n" +
+        "<table class='hi'>\n" +
+        "   <tbody>\n" +
+        "       \n" +
+        "   </tbody>\n" +
+        "</table>");
+    console.log(cVertretung);
+    cVertretung.forEach(function (value, j) {
+        value.forEach(function (value2, j2) {
+            if(value2.klasse.indexOf(Gstufe) !== -1){
+                value2.ctnd.forEach(function (value3) {
+                    var ty = value3.type;
+                    if (ty === "Vertretung") ty = "Vert";
+                    if (ty === "Raum-Vtr.") ty = "Raum";
+                    if (ty === "Entfall") ty = "Entf";
+                    if (ty === "Sondereins.") ty = "Sonder";
+
+                    var inf = value3.info;
+                    var dict = [
+                        ["selbständiges arbeiten", "Selbst. Arb."],
+                        ["selbstständiges arbeiten", "Selbst. Arb."],
+                        ["aufgaben", "Aufg."],
+                        ["raumwechsel", "RaumW."]
+                    ];
+                    dict.forEach(function (mmm) {
+                        inf = inf.replace(new RegExp(mmm[0], "ig"), mmm[1]);
+                    });
+                    var toAppend = "<tr><td><b>" + value3.stunde +"</b></td><td>" +value3.kurs + "</td><td>" + ty + "</td><td>" + value3.nraum + "</td><td>" + inf + "</td></tr>";
+
+                    if(value3.date === d)
+                        vertInfo.find("tbody").append(toAppend);
+                });
+            }
+        });
+    });
+    if(vertInfo.find("tbody").children().length !== 0)
+        ret.append(vertInfo);
+    ret.append("<div class='spacer'></div>");
+    $("#inner-tag-wrapper").append(ret);
 }
