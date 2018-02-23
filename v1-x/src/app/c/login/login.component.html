@@ -1,0 +1,24 @@
+<div style="height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden" *ngIf="show">
+  <div class="card border-light mb-3 center" style="max-width: 30rem;">
+    <div class="card-header">Login<span class="text-muted"> (GymWue Daten)</span></div>
+    <div class="card-body">
+
+      <form #loginForm="ngForm" (submit)="formSubmitted()">
+        <div class="form-group">
+          <label>
+            Nutzer:<br>
+            <select class="form-control custom-select" style="width: 20rem" ngModel name="nutzer" required>
+              <option value="schueler">schueler</option>
+              <!--<option value="lehrer">lehrer</option>-->
+            </select>
+          </label><br>
+          <label>
+            Passwort:
+            <input type="password" placeholder="Passwort" class="form-control" style="width: 20rem" ngModel name="psw" required>
+          </label>
+        </div>
+        <button class="btn " [ngClass]="{'disabled': !form.valid, 'btn-primary': fine, 'btn-danger': !fine}">Login</button>
+      </form>
+    </div>
+  </div>
+</div>

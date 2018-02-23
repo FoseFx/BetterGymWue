@@ -1,1 +1,9 @@
-/* You can add global styles to this file, and also import other style files */
+.center{
+  display: block;
+  margin: 0 auto;
+}
+@media (max-width: 340px){
+  .display-3{
+    font-size: 3.5rem;
+  }
+}
