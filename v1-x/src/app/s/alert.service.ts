@@ -28,7 +28,7 @@ export class AlertService {
       setTimeout(() => {
         $('#alert' + this.id).remove();
       }, 300);
-    }, 1000);
+    }, 3000);
   }
 
 }
