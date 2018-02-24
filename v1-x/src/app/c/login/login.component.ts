@@ -9,7 +9,7 @@ import {version} from 'punycode';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, AfterViewInit {
 
   constructor(private baseService: BaseService, private router: Router, private route: ActivatedRoute) { }
 
@@ -39,4 +39,8 @@ export class LoginComponent implements OnInit {
     }));
   }
 
+
+  ngAfterViewInit(): void {
+
+  }
 }

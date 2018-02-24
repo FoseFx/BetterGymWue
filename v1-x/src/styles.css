@@ -7,3 +7,13 @@
     font-size: 3.5rem;
   }
 }
+.alert{
+  width: 33%;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  transition: opacity 0.3s linear;
+}
+.invisible{
+  opacity: 0;
+}

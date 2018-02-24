@@ -3,6 +3,7 @@ import {Router} from '@angular/router';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {CONFIG} from '../conf';
 import {validate} from 'codelyzer/walkerFactory/walkerFn';
+import {Observable} from 'rxjs/Observable';
 @Injectable()
 export class BaseService {
 
@@ -46,14 +47,16 @@ export class BaseService {
           resolve(false);
         }
       );
-
-
-
     });
-
-
-
   }
 
+  makeConnections(url: string) {
+    if (this.credentials)
+      return this.httpClient.get(url, {
+        headers: new HttpHeaders({'Authorization': 'Basic ' + btoa(this.credentials.u + ':' + this.credentials.p)}),
+        responseType: 'text'
+      });
+    else return null;
+  }
 
 }

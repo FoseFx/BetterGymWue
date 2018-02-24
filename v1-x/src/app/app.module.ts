@@ -13,13 +13,19 @@ import { LoginComponent } from './c/login/login.component';
 import {GuardService} from './s/guard.service';
 import {HttpClientModule} from '@angular/common/http';
 import { SelectComponent } from './c/select/select.component';
+import { StufeComponent } from './c/select/stufe/stufe.component';
+import {NetwService} from './s/netw.service';
+import {AlertService} from './s/alert.service';
+import { KurseComponent } from './c/select/kurse/kurse.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AgbComponent,
     LoginComponent,
-    SelectComponent
+    SelectComponent,
+    StufeComponent,
+    KurseComponent
   ],
   imports: [
     BrowserModule,
@@ -27,7 +33,7 @@ import { SelectComponent } from './c/select/select.component';
     RouterModule.forRoot(routes),
     HttpClientModule
   ],
-  providers: [BaseService, GuardService],
+  providers: [BaseService, GuardService, NetwService, AlertService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
