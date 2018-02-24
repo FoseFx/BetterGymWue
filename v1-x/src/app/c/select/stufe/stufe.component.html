@@ -1,5 +1,7 @@
-<div class="card border-primary mb-3 center" style="max-width: 50em; margin-top: 50px">
-  <div class="card-header">Stufe<span *ngIf="selectedValue">: <b>{{selectedValue}}</b></span></div>
+<div class="card mb-3 center"
+     style="max-width: 50em; margin-top: 50px"
+      [ngClass]="{'border-primary': selectedValue !== tempSelectedValue}">
+  <div class="card-header">Stufe</div>
   <div class="card-body">
     <h4 class="card-title">Wähle deine Stufe/Klasse aus:</h4>
     <p class="card-text">
@@ -8,9 +10,12 @@
         <option *ngFor="let s of stufen; let i = index;">{{s}}</option>
       </select>
       <button class="btn btn-primary center" style="margin-top: 5px"
-              [ngClass]="{'disabled': tempSelectedValue.length === 0}"
+              [ngClass]="{'disabled': tempSelectedValue.length === 0, 'btn-success': tempSelectedValue === selectedValue}"
               (click)="selectedValue = tempSelectedValue">Weiter</button>
     </p>
   </div>
 </div>
-<app-kurse style="width: 100%; transition: opacity 0.5s ease;" [ngClass]="{'invisible': !selectedValue}"></app-kurse>
+<app-kurse [stufe]="selectedValue"
+           style="width: 100%; transition: opacity 0.5s ease;"
+           [ngClass]="{'invisible': !selectedValue}"
+></app-kurse>

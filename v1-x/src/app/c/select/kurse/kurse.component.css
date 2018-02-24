@@ -1,5 +1,23 @@
 .kurs{
-  width: 6em;
+  width: 8em;
   height: 6em;
   overflow: hidden;
+  margin: 2px;
+}
+.top{
+  position: absolute;
+  top: 2px;
+  left: 0;
+}
+.btm{
+  position: absolute;
+  bottom: 2px;
+  right: -2px;
+}
+.mdl {
+  font-weight: bold;
+}
+.btn > span {
+  display: block;
+  width: 4rem;
 }
