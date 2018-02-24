@@ -15,7 +15,7 @@ export class GuardService implements CanActivate {
     }
     if (route.component !== LoginComponent) {
       if (!this.baseService.credentials) {
-        this.router.navigate(['/login']);
+        this.router.navigate(['/']);
         return false;
       }
     }
