@@ -81,7 +81,8 @@ if ($_GET && $_GET['url']) {
     header('Access-Control-Allow-Origin: *');
 
     http_response_code($status);
-    echo $result;
+
+    echo utf8_encode($result);
 }
 else {
     http_response_code(400);

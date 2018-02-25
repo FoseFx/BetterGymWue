@@ -10,6 +10,7 @@ export class BaseService {
   public acceptedAGB: boolean;
   allowedBrowser: boolean;
   public credentials: {u: string, p: string};
+  public myKurse;
 
   constructor(private router: Router, private httpClient: HttpClient) {
     if (typeof(Storage) === 'undefined') {
@@ -20,7 +21,15 @@ export class BaseService {
 
     this.acceptedAGB = (!!localStorage.acceptedAGB) ? (localStorage.acceptedAGB === 'true') : false;
     this.credentials = (!!localStorage.credentials) ? JSON.parse(localStorage.credentials) : undefined;
+    this.myKurse = (!!localStorage.myKurse) ? JSON.parse(localStorage.myKurse) : undefined;
   }
+
+  set MyKurse(val){
+    this.myKurse = val;
+    localStorage.myKurse = JSON.stringify(val);
+  }
+
+
   acceptAGB() {
     this.acceptedAGB = true;
     localStorage.acceptedAGB = true;
@@ -33,7 +42,7 @@ export class BaseService {
       this.httpClient.get(CONFIG.credentialsCheckUrl, {
         headers: new HttpHeaders({'Authorization': 'Basic ' + btoa(u + ':' + p)}),
         responseType: 'text'
-      }).subscribe( // todo URL
+      }).subscribe(
         (value) => {
           if (value) {
             localStorage.credentials = JSON.stringify({u: u, p: p});
@@ -51,11 +60,15 @@ export class BaseService {
   }
 
   makeConnections(url: string) {
-    if (this.credentials)
+    if (this.credentials){
+      let he = new HttpHeaders(
+        {'Authorization': 'Basic ' + btoa(this.credentials.u + ':' + this.credentials.p)}
+        );
       return this.httpClient.get(url, {
-        headers: new HttpHeaders({'Authorization': 'Basic ' + btoa(this.credentials.u + ':' + this.credentials.p)}),
+        headers: he,
         responseType: 'text'
       });
+    }
     else return null;
   }
 
