@@ -13,7 +13,13 @@
   bottom: 0;
   right: 0;
   transition: opacity 0.3s linear;
+  z-index: 9999;
 }
 .invisible{
   opacity: 0;
 }
+
+/** z- indexes **/
+/*
+  9999 = ALERT
+ */
