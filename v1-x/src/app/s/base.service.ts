@@ -11,6 +11,8 @@ export class BaseService {
   allowedBrowser: boolean;
   public credentials: {u: string, p: string};
   public myKurse;
+  public myStufe;
+  public myStufeID;
 
   constructor(private router: Router, private httpClient: HttpClient) {
     if (typeof(Storage) === 'undefined') {
@@ -22,13 +24,20 @@ export class BaseService {
     this.acceptedAGB = (!!localStorage.acceptedAGB) ? (localStorage.acceptedAGB === 'true') : false;
     this.credentials = (!!localStorage.credentials) ? JSON.parse(localStorage.credentials) : undefined;
     this.myKurse = (!!localStorage.myKurse) ? JSON.parse(localStorage.myKurse) : undefined;
+    this.myStufe = (!!localStorage.myStufe) ? localStorage.myStufe : undefined;
+    this.myStufeID = (!!localStorage.myStufeID) ? localStorage.myStufeID : undefined;
   }
 
   set MyKurse(val){
     this.myKurse = val;
     localStorage.myKurse = JSON.stringify(val);
   }
-
+  set MyStufe(val: string[]){
+    this.myStufe = val[0];
+    this.myStufeID = val[1];
+    localStorage.myStufe = val[0];
+    localStorage.myStufeID = val[1];
+  }
 
   acceptAGB() {
     this.acceptedAGB = true;

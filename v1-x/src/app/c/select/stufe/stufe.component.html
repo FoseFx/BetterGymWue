@@ -11,7 +11,7 @@
       </select>
       <button class="btn btn-primary center" style="margin-top: 5px"
               [ngClass]="{'disabled': tempSelectedValue.length === 0, 'btn-success': tempSelectedValue === selectedValue}"
-              (click)="selectedValue = tempSelectedValue">Weiter</button>
+              (click)="setValue()">Weiter</button>
     </p>
   </div>
 </div>

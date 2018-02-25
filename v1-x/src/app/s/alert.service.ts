@@ -10,7 +10,8 @@ export class AlertService {
 
   constructor() {}
 
-  alert(text: string, type?: number) {
+  alert(text: string, type?: number, time?: number) {
+    time = time || 3000;
     let t = 'alert-success';
     if (type) {
       if (type === this.DANGER) t = 'alert-danger';
@@ -28,7 +29,7 @@ export class AlertService {
       setTimeout(() => {
         $('#alert' + this.id).remove();
       }, 300);
-    }, 3000);
+    }, time);
   }
 
 }

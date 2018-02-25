@@ -5,6 +5,7 @@ import {AlertService} from '../../../s/alert.service';
 import {nullSafeIsEquivalent} from '@angular/compiler/src/output/output_ast';
 import {BaseService} from '../../../s/base.service';
 import {ActivatedRoute} from '@angular/router';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-kurse',
@@ -18,6 +19,7 @@ export class KurseComponent implements OnInit {
   stufeKurse: {title: string, fach: string, lehrer: string, selected?: boolean, ph?: boolean}[];
   titles: {t: string, state: number}[] = [];
   valid = false;
+  cloud = true;
 
   @Input() set stufe(val: string) {
     this._stufe = val;
@@ -97,17 +99,45 @@ export class KurseComponent implements OnInit {
     if (!this.valid) return;
     let mykurse = [];
     this.stufeKurse.forEach((val) => {
-      if (val.selected && !val.ph) mykurse.push(val);
+      if (val.selected && !val.ph) mykurse.push({title: val.title, fach: val.fach, lehrer: val.lehrer});
     });
     this.baseService.MyKurse = mykurse;
     console.log(mykurse);
+    if(this.cloud) {
+      this.netwService.saveKurse(mykurse)
+        .then(
+        (id) =>{this.alert.alert('Dein Kurs-Cloud Code: <b>' + id + '</b> unbedingt merken!', this.alert.OK, 10000);}
+        ).catch((err) => {
+          console.log(err.statusText);
+      });
+    }
+    // TODO Route to next step
 
   }
 
+  loadFormCloud(){
+    let id = $("#kcidi").val();
+    if (!id) return;
+    $("#kcidi").addClass('disabled');
+    $("#kcb").addClass('disabled');
+    this.netwService.fetchCloud(+id)
+      .then((kurse) => {
+        console.log(kurse);
+        this.baseService.MyKurse = kurse;
+        // todo navigate to next step
+      })
+      .catch((err) => {
+        this.alert.alert('DB Connection Failed: ' + err.statusText, this.alert.DANGER);
+        $("#kcb").addClass('btn-danger').removeClass('btn-primary').removeClass('disabled');
+        $("#kcidi").removeClass('disabled');
+      });
+  }
+
   ngOnInit() {
-    if(!this.route.snapshot.queryParams['force'])
-      if (this.baseService.myKurse)
-        // todo navigate to next site
-        'todo';
+
+  }
+
+  clickCloud(){
+    this.cloud = !this.cloud;
   }
 }
