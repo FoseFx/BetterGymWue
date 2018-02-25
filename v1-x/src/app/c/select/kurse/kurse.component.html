@@ -1,17 +1,31 @@
-<div class="card border-primary mb-3 center"
+<div class="card mb-3 center"
+     [ngClass]="{'border-primary': !valid, 'border-success': valid}"
      style="max-width: 55em; margin-top: 10px;">
   <div class="card-header">Kurse für <b>{{_stufe}}</b></div>
   <div class="card-body">
     <h4 class="card-title">Wähle deine Kurse:</h4>
+    <h5>
+      <span *ngFor="let t of titles; let i = index;"
+              [ngClass]="{'notSelected': t.state < 1,'ok': t.state === 1,'tooMuch': t.state > 1}"
+              style="margin-right: 5px">{{t.t}}</span>
+    </h5>
+    <button class="btn btn-primary center"
+            [ngClass]="{'disabled': !valid}"
+            (click)="kursSubmit()">Fertig!</button><br>
 
-    <button class="btn kurs"
-            *ngFor="let k of stufeKurse; let i = index;"
-            [ngClass]="{'btn-light': !k.selected, 'btn-success': k.selected}"
-            (click)="k.selected = !k.selected"
-    >
-      <span class="top">{{k.title}}</span>
-      <span class="mdl">{{k.fach}}</span>
-      <span class="btm">{{k.lehrer}}</span>
-    </button>
+    <div class="kurs-container">
+        <button class="btn kurs"
+                *ngFor="let k of stufeKurse; let i = index;"
+                [ngClass]="{'btn-light': !k.selected, 'btn-success': k.selected, 'newLineBefore': k.ph === true}"
+                (click)="kursSelected(k)"
+        >
+          <span class="top">{{k.title}}</span>
+          <span class="mdl">{{k.fach}}</span>
+          <span class="btm">{{k.lehrer}}</span>
+        </button>
+
+
+
+    </div>
   </div>
 </div>
