@@ -29,7 +29,7 @@
 .newLineBefore{
   flex-basis: 100%;
   opacity: 0;
-  cursor: initial;
+  cursor: initial!important;
   display: block;
   height: 4em;
 }
