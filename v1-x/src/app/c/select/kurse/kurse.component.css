@@ -1,6 +1,6 @@
 .kurs{
-  width: 8em;
-  height: 6em;
+  width: 7em;
+  height: 7em;
   overflow: hidden;
   margin: 2px;
 }
@@ -20,4 +20,31 @@
 .btn > span {
   display: block;
   width: 4rem;
+}
+.kurs-container{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.newLineBefore{
+  flex-basis: 100%;
+  opacity: 0;
+  cursor: initial;
+  display: block;
+  height: 4em;
+}
+.btn-success{
+  color: white!important;
+}
+.ok{
+  color: green;
+  font-weight: normal;
+}
+.tooMuch{
+  color: red;
+  font-weight: bold;
+}
+.notSelected{
+  color: #444;
+  font-style: italic;
 }
