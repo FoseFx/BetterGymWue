@@ -82,7 +82,7 @@ if ($_GET && $_GET['url']) {
 
     http_response_code($status);
 
-    echo utf8_encode($result);
+    echo $result;
 }
 else {
     http_response_code(400);

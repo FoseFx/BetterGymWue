@@ -6,6 +6,7 @@ import {AlertService} from './alert.service';
 import {reject} from 'q';
 import * as $ from 'jquery';
 import {baseBuildCommandOptions} from '@angular/cli/commands/build';
+import {escape} from 'querystring';
 
 @Injectable()
 export class NetwService {
@@ -13,6 +14,7 @@ export class NetwService {
   private _kurse = [{kurse: []},{kurse: []}];
   private _stufen;
   public wochen = [];
+  saveKurseTrys = 0;
 
   constructor(private baseService: BaseService, private alertService: AlertService, private httpClient: HttpClient) {
     this._stufen = (localStorage.stufen) ? JSON.parse(localStorage.stufen) : undefined;
@@ -102,9 +104,21 @@ export class NetwService {
       let id = Math.floor(Math.random() * 9999);
       while (id.toString().length !== 4) id = Math.floor(Math.random() * 9999);
       let kurseAO = toObject(kurse);
+      if (this.saveKurseTrys === 0) id = 4933;
       this.httpClient.put(CONFIG.dbUrl + id + '.json', kurseAO).subscribe(
-        (wert) => { resolve(id); },
-        (err) => { reject(err); }
+        (wert) => {
+            localStorage.kursID = id;
+            resolve(id);
+          },
+        (err) => {
+          if (this.saveKurseTrys < 5){
+            console.log(err);
+            this.saveKurseTrys++;
+            this.saveKurse(kurse).then((id) => {
+              resolve(id);
+            });
+          }else reject(err);
+        }
       );
     });
   }
@@ -118,7 +132,10 @@ export class NetwService {
           else if (njson.error){
             reject({statusText: njson.error});
           }
-          else resolve(njson);
+          else {
+            localStorage.kursID = id;
+            resolve(njson);
+          }
         },
         (err) => { reject(err) },
       );
