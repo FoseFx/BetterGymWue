@@ -4,6 +4,8 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {CONFIG} from '../conf';
 import {validate} from 'codelyzer/walkerFactory/walkerFn';
 import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
+declare function unescape(s:string): string;
 @Injectable()
 export class BaseService {
 
@@ -70,12 +72,16 @@ export class BaseService {
 
   makeConnections(url: string) {
     if (this.credentials){
-      let he = new HttpHeaders(
-        {'Authorization': 'Basic ' + btoa(this.credentials.u + ':' + this.credentials.p)}
-        );
+      let he = new HttpHeaders({
+          'Authorization': 'Basic ' + btoa(this.credentials.u + ':' + this.credentials.p),
+          'Content-Type': 'Content-type: text/html; charset=iso-8859-1'
+        });
       return this.httpClient.get(url, {
         headers: he,
         responseType: 'text'
+      }).map((r) => {
+        //return unescape(encodeURI(r)); todo fix problems with encoding
+        return r;
       });
     }
     else return null;
