@@ -17,6 +17,7 @@ import { StufeComponent } from './c/select/stufe/stufe.component';
 import {NetwService} from './s/netw.service';
 import {AlertService} from './s/alert.service';
 import { KurseComponent } from './c/select/kurse/kurse.component';
+import { ShowComponent } from './c/show/show.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { KurseComponent } from './c/select/kurse/kurse.component';
     LoginComponent,
     SelectComponent,
     StufeComponent,
-    KurseComponent
+    KurseComponent,
+    ShowComponent
   ],
   imports: [
     BrowserModule,
