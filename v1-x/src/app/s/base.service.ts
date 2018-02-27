@@ -29,7 +29,7 @@ export class BaseService {
     this.myKurse = (!!localStorage.myKurse) ? JSON.parse(localStorage.myKurse) : undefined;
     this.myStufe = (!!localStorage.myStufe) ? localStorage.myStufe : undefined;
     this.myStufeID = (!!localStorage.myStufeID) ? localStorage.myStufeID : undefined;
-    this.TT = (!!localStorage.TT) ? localStorage.TT : undefined;
+    this.TT = (!!localStorage.TT) ? JSON.parse(localStorage.TT) : undefined;
   }
 
   set MyKurse(val){
@@ -42,9 +42,11 @@ export class BaseService {
     localStorage.myStufe = val[0];
     localStorage.myStufeID = val[1];
   }
-  set tt(val){
+  setTT(val){
+    console.log("setzte tt ");
+    console.log(val);
     this.TT = val;
-    localStorage.TT = val;
+    localStorage.TT = JSON.stringify(val);
   }
 
   acceptAGB() {

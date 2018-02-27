@@ -290,8 +290,11 @@ export class NetwService {
   }
 
   getTT(stufe){
-    this.tempTTs.forEach((val) => { if (val.stufe == stufe) return val.tt; });
-    return null;
+    console.log(stufe);
+    console.log(this.tempTTs);
+    let r = null;
+    this.tempTTs.forEach((val) => { if (val.stufe === stufe) r = val.tt; });
+    return r;
   }
 }
 function toObject(array: any[]){
