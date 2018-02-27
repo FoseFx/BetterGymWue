@@ -111,7 +111,7 @@ export class KurseComponent implements OnInit {
           console.log(err.statusText);
       });
     }
-    this.baseService.tt = this.netwService.getTT(this._stufe);
+    this.baseService.setTT(this.netwService.getTT(this._stufe));
     // todo routen
 
   }
@@ -125,7 +125,8 @@ export class KurseComponent implements OnInit {
       .then((kurse) => {
         console.log(kurse);
         this.baseService.MyKurse = kurse;
-        // todo navigate to next step
+        this.baseService.setTT(this.netwService.getTT(this._stufe));
+        // todo route
       })
       .catch((err) => {
         this.alert.alert('DB Connection Failed: ' + err.statusText, this.alert.DANGER);
