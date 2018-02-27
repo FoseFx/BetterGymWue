@@ -15,6 +15,7 @@ export class NetwService {
   private _stufen;
   public wochen = [];
   saveKurseTrys = 0;
+  private tempTTs: {stufe: string, tt: {}[]}[] = [];
 
   constructor(private baseService: BaseService, private alertService: AlertService, private httpClient: HttpClient) {
     this._stufen = (localStorage.stufen) ? JSON.parse(localStorage.stufen) : undefined;
@@ -29,13 +30,13 @@ export class NetwService {
       if (res === null) reject('Failure: Connection could not be made');
       res.subscribe(
         (r) => {
-          this.evaKurse(r, ((this.wochen[0] % 2) === 0) ? 'a' : 'b');
+          this.evaKurse(r, ((this.wochen[0] % 2) === 0) ? 'a' : 'b', stufe);
 
           //woche 2
           const res2 = this.baseService.makeConnections(CONFIG.baseKursURL + this.wochen[1] + '/c/c' + this.generate5(stufeid) + '.htm');
           res2.subscribe(
             (r) => {
-              this.evaKurse(r, ((this.wochen[1] % 2) === 0) ? 'a' : 'b');
+              this.evaKurse(r, ((this.wochen[1] % 2) === 0) ? 'a' : 'b', stufe);
               let k = [];
               this._kurse[0].kurse.forEach((val) => {
                 this._kurse[1].kurse.forEach((val2) => {
@@ -142,7 +143,7 @@ export class NetwService {
     });
   }
 
-  evaKurse(r, ABWOCHE){
+  evaKurse(r, ABWOCHE, stufe){
     let arr = [];
     let orig = $(r.replace(/\r?\n|\r/g, '').toUpperCase());
     let main = orig.children('table')[0];
@@ -274,6 +275,23 @@ export class NetwService {
     for(let i = 0; i < 5; i++){
       tt.days[i].splice(6, 0, {});
     }
+    let b = true;
+    this.tempTTs.forEach((val, i) => {
+      if (val.stufe === stufe) {
+        val.tt.push(tt);
+        b = false;
+      }
+    });
+    if (b)
+      this.tempTTs.push({
+        stufe: stufe,
+        tt: [tt]
+      });
+  }
+
+  getTT(stufe){
+    this.tempTTs.forEach((val) => { if (val.stufe == stufe) return val.tt; });
+    return null;
   }
 }
 function toObject(array: any[]){

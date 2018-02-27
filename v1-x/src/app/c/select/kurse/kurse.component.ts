@@ -111,7 +111,8 @@ export class KurseComponent implements OnInit {
           console.log(err.statusText);
       });
     }
-    // TODO Route to next step
+    this.baseService.tt = this.netwService.getTT(this._stufe);
+    // todo routen
 
   }
 
