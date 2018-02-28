@@ -3,5 +3,6 @@ export const CONFIG = {
   baseURL: baseUrl,
   credentialsCheckUrl: baseUrl + 'Schueler-Stundenplan/frames/navbar.htm', // also get Stufen
   baseKursURL: baseUrl + 'Schueler-Stundenplan/', // baseKursURL + WOCHE + /c/c + STUFENDIFF
-  dbUrl: 'https://bettergymwue.firebaseio.com/kurse/'
+  dbUrl: 'https://bettergymwue.firebaseio.com/kurse/',
+  vertURL: baseUrl + 'Schueler/'
 };
