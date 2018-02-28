@@ -4,7 +4,7 @@ import {NetwService} from '../../../s/netw.service';
 import {AlertService} from '../../../s/alert.service';
 import {nullSafeIsEquivalent} from '@angular/compiler/src/output/output_ast';
 import {BaseService} from '../../../s/base.service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import * as $ from 'jquery';
 
 @Component({
@@ -76,7 +76,7 @@ export class KurseComponent implements OnInit {
       });
   }
 
-  constructor(private netwService: NetwService, private alert: AlertService, private baseService: BaseService, private route: ActivatedRoute) { }
+  constructor(private netwService: NetwService, private alert: AlertService, private baseService: BaseService, private route: ActivatedRoute, private  router: Router) { }
 
   kursSelected(k: {title: string, fach: string, lehrer: string, selected?: boolean, ph?: boolean} ){
     if(k.ph) return;
@@ -112,7 +112,7 @@ export class KurseComponent implements OnInit {
       });
     }
     this.baseService.setTT(this.netwService.getTT(this._stufe));
-    // todo routen
+    this.router.navigate(['show']);
 
   }
 
@@ -126,7 +126,7 @@ export class KurseComponent implements OnInit {
         console.log(kurse);
         this.baseService.MyKurse = kurse;
         this.baseService.setTT(this.netwService.getTT(this._stufe));
-        // todo route
+        this.router.navigate(['show']);
       })
       .catch((err) => {
         this.alert.alert('DB Connection Failed: ' + err.statusText, this.alert.DANGER);
