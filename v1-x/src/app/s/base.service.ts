@@ -43,8 +43,6 @@ export class BaseService {
     localStorage.myStufeID = val[1];
   }
   setTT(val){
-    console.log("setzte tt ");
-    console.log(val);
     this.TT = val;
     localStorage.TT = JSON.stringify(val);
   }

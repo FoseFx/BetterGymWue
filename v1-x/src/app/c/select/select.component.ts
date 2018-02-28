@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {BaseService} from '../../s/base.service';
 
 @Component({
@@ -10,13 +10,12 @@ import {BaseService} from '../../s/base.service';
 export class SelectComponent implements OnInit {
 
   show = false;
-  constructor(private route: ActivatedRoute, private baseService: BaseService) { }
+  constructor(private route: ActivatedRoute, private baseService: BaseService, private router: Router) { }
 
   ngOnInit() {
     if(!this.route.snapshot.queryParams['force']){
       if (this.baseService.myKurse && this.baseService.myStufe && this.baseService.myStufeID)
-      // todo navigate to next site
-        'todo';
+        this.router.navigate(['show']);
       else this.show = true;
     } else {
       this.show = true;

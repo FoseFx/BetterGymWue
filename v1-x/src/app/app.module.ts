@@ -18,6 +18,7 @@ import {NetwService} from './s/netw.service';
 import {AlertService} from './s/alert.service';
 import { KurseComponent } from './c/select/kurse/kurse.component';
 import { ShowComponent } from './c/show/show.component';
+import { TtcontainerComponent } from './c/show/ttcontainer/ttcontainer.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { ShowComponent } from './c/show/show.component';
     SelectComponent,
     StufeComponent,
     KurseComponent,
-    ShowComponent
+    ShowComponent,
+    TtcontainerComponent
   ],
   imports: [
     BrowserModule,

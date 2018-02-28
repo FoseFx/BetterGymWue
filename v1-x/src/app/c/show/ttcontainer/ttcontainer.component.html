@@ -1,0 +1,20 @@
+<div class="container">
+
+  <h1>{{_tt.date | date: 'dd.M.yy'}}</h1>
+  <p class="lead">{{_tt.date | date: 'w.'}} Kalenderwoche</p>
+
+  <table class="table table-hover">
+    <tbody>
+    <tr *ngFor="let e of displayArray; let i = index;">
+      <td *ngIf="e!=undefined">{{i + 1}}</td>
+      <td *ngIf="e!=undefined">{{e.fach}}</td>
+      <td *ngIf="e!=undefined">{{e.raum}}</td>
+      <td *ngIf="e!=undefined">{{e.lehrer}}</td>
+      <td *ngIf="e!=undefined && e.vert">
+        <span class="badge badge-pill"
+              [ngClass]="{'badge-primary': e.vert == 'V', 'badge-danger': e.vert == 'E'}">!</span>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>

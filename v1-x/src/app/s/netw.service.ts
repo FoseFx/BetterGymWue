@@ -21,6 +21,50 @@ export class NetwService {
     this._stufen = (localStorage.stufen) ? JSON.parse(localStorage.stufen) : undefined;
   }
 
+  get VertretungsDaten(){
+
+    let tag = 'f1';
+    let start = 'subst_001.htm';
+    let file = 'subst_001.htm';
+    let sides = [];
+
+
+    let p = new Promise((resolve, reject) => {
+      this.baseService.makeConnections(CONFIG.vertURL + tag + file).subscribe(
+        (wert) => {
+          let eva = this.evaVD(wert);
+          file = eva[0];
+          sides.push(eva[1]);
+          if (file == start) {
+            // todo compile and reject
+          } else p.then((r) => { resolve(r); });
+        },
+        (err) => {
+          this.alertService.alert('Failure: ' + err.statusText, this.alertService.DANGER);
+        }
+      );
+
+    });
+    return p;
+
+  }
+
+  private evaVD(ret){
+    let returnArray = [];
+
+    returnArray[0] = ret.split("<meta http-equiv=\"refresh\" content=\"10; URL=")[1].split("\">")[0];
+
+    let obj = {};
+
+    $(ret).find("table").children("tbody").children("tr").each(function (v, index) {
+      if (index == 0) return;
+      v = $(v);
+      if (v.children().length == 1) obj[+v.children().html().split(" ")[0]] = [];
+      else{
+        // todo content
+      }
+    });
+  }
 
   getkurse(stufe: string, stufeid: number): Promise<any> {
     return new Promise((resolve, reject) => {
@@ -92,7 +136,7 @@ export class NetwService {
     });
   }
 
-  generate5(id: number): string {
+  private generate5(id: number): string {
     let s = '' + id;
     while (s.length < 5) {
       s = '0' + s;
@@ -143,7 +187,7 @@ export class NetwService {
     });
   }
 
-  evaKurse(r, ABWOCHE, stufe){
+  private evaKurse(r, ABWOCHE, stufe){
     let arr = [];
     let orig = $(r.replace(/\r?\n|\r/g, '').toUpperCase());
     let main = orig.children('table')[0];
@@ -304,3 +348,4 @@ function toObject(array: any[]){
   });
   return Obj;
 }
+
