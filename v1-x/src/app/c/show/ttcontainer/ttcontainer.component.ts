@@ -1,12 +1,13 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, AfterViewInit} from '@angular/core';
 import {BaseService} from '../../../s/base.service';
+import {NetwService} from '../../../s/netw.service';
 
 @Component({
   selector: 'show-ttcontainer',
   templateUrl: './ttcontainer.component.html',
   styleUrls: ['./ttcontainer.component.css']
 })
-export class TtcontainerComponent {
+export class TtcontainerComponent implements AfterViewInit{
 
   _tt: {
     date: Date,
@@ -29,10 +30,13 @@ export class TtcontainerComponent {
   @Input() set tt(val){
     this._tt = val;
     this.filterVisible();
-    this.checkVertretung();
+  }
+  _index;
+  @Input() set index(val){
+    this._index = val;
   }
 
-  constructor(private baseService: BaseService) { }
+  constructor(private baseService: BaseService, private netwService: NetwService) { }
 
   filterVisible(){
     let that = this;
@@ -51,7 +55,13 @@ export class TtcontainerComponent {
   }
 
   checkVertretung(){
+    this.netwService.getVertretungsDaten((this._index == 0) ? 'f1' : 'f2', this._index).then((w)=>{
+      console.log(w); // todo
+    });
+  }
 
+  ngAfterViewInit(){
+    this.checkVertretung();
   }
 
 }

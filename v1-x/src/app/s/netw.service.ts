@@ -11,59 +11,94 @@ import {escape} from 'querystring';
 @Injectable()
 export class NetwService {
 
-  private _kurse = [{kurse: []},{kurse: []}];
+  private _kurse = [{kurse: []}, {kurse: []}];
   private _stufen;
   public wochen = [];
   saveKurseTrys = 0;
-  private tempTTs: {stufe: string, tt: {}[]}[] = [];
+  private tempTTs: { stufe: string, tt: {}[] }[] = [];
 
   constructor(private baseService: BaseService, private alertService: AlertService, private httpClient: HttpClient) {
     this._stufen = (localStorage.stufen) ? JSON.parse(localStorage.stufen) : undefined;
   }
 
-  get VertretungsDaten(){
+  private start = 'subst_001.htm';
+  private file = ['subst_001.htm', 'subst_001.htm'];
+  private sides = [];
+  VD;
 
-    let tag = 'f1';
-    let start = 'subst_001.htm';
-    let file = 'subst_001.htm';
-    let sides = [];
+  getVertretungsDaten(tag: string, i: number) {
 
-
-    let p = new Promise((resolve, reject) => {
-      this.baseService.makeConnections(CONFIG.vertURL + tag + file).subscribe(
+    return new Promise((resolve, reject) => {
+      this.baseService.makeConnections(CONFIG.vertURL + tag + '/' + this.file[i]).subscribe(
         (wert) => {
           let eva = this.evaVD(wert);
-          file = eva[0];
-          sides.push(eva[1]);
-          if (file == start) {
-            // todo compile and reject
-          } else p.then((r) => { resolve(r); });
+          this.file[i] = eva[0];
+          this.sides.push(eva[1]);
+          resolve();
         },
         (err) => {
           this.alertService.alert('Failure: ' + err.statusText, this.alertService.DANGER);
         }
       );
-
+    }).then(() => {
+      if (this.file[i] == this.start) {
+        // todo compile and resolve
+        this.VD =  this.compileVD(this.sides);
+        return this.VD;
+      } else return this.getVertretungsDaten(tag, i);
     });
-    return p;
 
   }
 
+
   private evaVD(ret){
     let returnArray = [];
-
     returnArray[0] = ret.split("<meta http-equiv=\"refresh\" content=\"10; URL=")[1].split("\">")[0];
-
-    let obj = {};
-
-    $(ret).find("table").children("tbody").children("tr").each(function (v, index) {
+    let arr = [];
+    $(ret).find("table.mon_list").children("tbody").children("tr.list").each(function (index, v) {
       if (index == 0) return;
       v = $(v);
-      if (v.children().length == 1) obj[+v.children().html().split(" ")[0]] = [];
+      if (v.children().length == 1) arr.push({stufe: $(v.children()[0]).html().split(" ")[0]});
       else{
-        // todo content
+        let s = [];
+        if($(v.children()[2]).html().match("-") != null) $(v.children()[2]).html().split("-").forEach((idk) => {s.push(idk.replace(" ", ""))});
+        else s.push($(v.children()[2]).html().replace(" ", ""));
+        s.forEach((ss) => {
+          arr[arr.length - 1].date = $(v.children()[0]).html().replace(" ", "");
+          arr[arr.length - 1].fach = $(v.children()[2]).html().replace(" ", "");
+          arr[arr.length - 1].type = $(v.children()[3]).html().replace(" ", "").replace("<b>", "").replace("</b>", "");
+          arr[arr.length - 1].oldRaum = $(v.children()[4]).html().replace(" ", "");
+          arr[arr.length - 1].newRaum = $(v.children()[5]).html().replace(" ", "");
+          arr[arr.length - 1].info = $(v.children()[6]).html().replace(" ", "");
+          arr[arr.length - 1].stunde = ss;
+        });
       }
     });
+    returnArray[1] = arr;
+    return returnArray;
+  }
+
+  private compileVD(slides){
+    let arr = [];
+    slides.forEach((a) => {
+      let i = undefined;
+      a.forEach((t) => {
+        arr.forEach((arrT, ind) =>{
+          if (t.stufe == arrT.stufe) i = ind;
+        });
+      });
+      if (i){
+        a.forEach((idk, ii) => {
+          arr[i].push(idk);
+        });
+      }else {
+        arr.push([]);
+        a.forEach((idk) => {
+          arr[arr.length - 1].push(idk);
+        });
+      }
+    });
+    return arr;
   }
 
   getkurse(stufe: string, stufeid: number): Promise<any> {
