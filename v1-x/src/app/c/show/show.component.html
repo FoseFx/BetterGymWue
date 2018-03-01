@@ -1,5 +1,5 @@
 <div class="container">
 
-  <show-ttcontainer *ngFor="let tt of tts;" [tt]="tt"></show-ttcontainer>
+  <show-ttcontainer *ngFor="let tt of tts; let i = index;" [tt]="tt" [index]="i"></show-ttcontainer>
 
 </div>
