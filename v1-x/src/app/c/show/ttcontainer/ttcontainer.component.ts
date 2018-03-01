@@ -57,6 +57,19 @@ export class TtcontainerComponent implements AfterViewInit{
   checkVertretung(){
     this.netwService.getVertretungsDaten((this._index == 0) ? 'f1' : 'f2', this._index).then((w)=>{
       console.log(w); // todo
+      let VD  = undefined;
+      for (let Vobj in w[1]){
+        if (Vobj == this.baseService.myStufe) VD = w[1][Vobj];
+      }
+      console.log(VD);
+      if (!VD) return;
+      let relevant = [];
+      VD.forEach((row) => { this.baseService.myKurse.forEach(function (val) {
+          if (val.fach == row.fach) relevant.push(row);
+      }); });
+      // todo Klasse relevant
+
+
     });
   }
 

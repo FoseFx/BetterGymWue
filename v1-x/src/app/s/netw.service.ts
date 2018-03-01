@@ -74,31 +74,22 @@ export class NetwService {
         });
       }
     });
-    returnArray[1] = arr;
+    let info = [];
+    $(ret).find("table.info").children("tbody").children("tr").each(function (index, v) {
+      info.push($(v).text());
+    });
+    returnArray[1] = [arr, info];
     return returnArray;
   }
 
   private compileVD(slides){
-    let arr = [];
+    let compr = {};
+    let info = [];
     slides.forEach((a) => {
-      let i = undefined;
-      a.forEach((t) => {
-        arr.forEach((arrT, ind) =>{
-          if (t.stufe == arrT.stufe) i = ind;
-        });
-      });
-      if (i){
-        a.forEach((idk, ii) => {
-          arr[i].push(idk);
-        });
-      }else {
-        arr.push([]);
-        a.forEach((idk) => {
-          arr[arr.length - 1].push(idk);
-        });
-      }
+      a[0].forEach((t) => { if (compr[t.stufe]) compr[t.stufe].push(t); else compr[t.stufe] = [t]; });
+      if (a[1][0]) info.push(a[1]);
     });
-    return arr;
+    return [info, compr];
   }
 
   getkurse(stufe: string, stufeid: number): Promise<any> {
