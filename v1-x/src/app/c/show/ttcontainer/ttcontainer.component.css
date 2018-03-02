@@ -5,3 +5,14 @@
 .table{
   text-align: center!important;
 }
+.entfall{
+  color: red;
+  font-weight: bold;
+}
+.vertretung{
+  color: lightgreen;
+  font-weight: bold;
+}
+.raumV{
+  color: goldenrod;
+}

@@ -16,6 +16,7 @@ export class BaseService {
   public myStufe;
   public myStufeID;
   public TT;
+  public KlassenKurse; // guter Name
 
   constructor(private router: Router, private httpClient: HttpClient) {
     if (typeof(Storage) === 'undefined') {
@@ -30,6 +31,7 @@ export class BaseService {
     this.myStufe = (!!localStorage.myStufe) ? localStorage.myStufe : undefined;
     this.myStufeID = (!!localStorage.myStufeID) ? localStorage.myStufeID : undefined;
     this.TT = (!!localStorage.TT) ? JSON.parse(localStorage.TT) : undefined;
+    this.KlassenKurse = (!!localStorage.KlassenKurse) ? JSON.parse(localStorage.KlassenKurse) : undefined;
   }
 
   set MyKurse(val){
@@ -43,8 +45,22 @@ export class BaseService {
     localStorage.myStufeID = val[1];
   }
   setTT(val){
+    let v1 = val[0];
+    val[0] = val[1];
+    val[1] = v1;
     this.TT = val;
     localStorage.TT = JSON.stringify(val);
+    let a = [];
+    console.log(val);
+    val.forEach((wocheV, wocheI) => {
+      wocheV.days.forEach((tag) => {
+        tag.forEach((stunde) => {
+          if(stunde.type == "klasse" && a.indexOf(stunde.fach) === -1) a.push(stunde.fach);
+        });
+      });
+    });
+    this.KlassenKurse = a;
+    localStorage.KlassenKurse = JSON.stringify(a);
   }
 
   acceptAGB() {
