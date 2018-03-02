@@ -5,7 +5,11 @@
 
   <table class="table table-hover">
     <tbody>
-    <tr *ngFor="let e of displayArray; let i = index;">
+    <tr *ngFor="let e of displayArray; let i = index;" [ngClass]="{
+                                                                  'entfall': getOnMyPos(i).type.match('e'),
+                                                                  'vertretung': getOnMyPos(i).type == 'v',
+                                                                  'raumV': getOnMyPos(i).type == 'r'
+                                                                }">
       <td *ngIf="e!=undefined">{{i + 1}}</td>
       <td *ngIf="e!=undefined">{{e.fach}}</td>
       <td *ngIf="e!=undefined">{{e.raum}}</td>
@@ -14,6 +18,33 @@
         <span class="badge badge-pill"
               [ngClass]="{'badge-primary': e.vert == 'V', 'badge-danger': e.vert == 'E'}">!</span>
       </td>
+    </tr>
+    </tbody>
+  </table>
+  <br>
+
+  <h3 *ngIf="info.length > 0">Info:</h3>
+  <table *ngIf="info.length > 0">
+    <tbody>
+    <tr *ngFor="let i of info">{{i}}</tr>
+    </tbody>
+  </table>
+
+  <br>
+
+  <h2 *ngIf="VDStufe.length > 0">{{baseService.myStufe + ": "}}</h2>
+  <table *ngIf="VDStufe.length > 0" class="table table-sm">
+    <tbody>
+    <tr *ngFor="let v of VDStufe;">
+      <td><b>{{v.stunde}}</b></td>
+      <td>{{v.fach}}</td>
+
+      <td [title]="((v.type == 'v') ? 'Vertretung' : (v.type == 'e')? 'Entfall': 'Raumvertretung')">
+        <b>{{v.type.toUpperCase()}}</b>
+      </td>
+
+      <td>{{v.newRaum}}</td>
+      <td>{{v.info}}</td>
     </tr>
     </tbody>
   </table>

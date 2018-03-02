@@ -61,15 +61,28 @@ export class NetwService {
       if (v.children().length == 1) arr.push({stufe: $(v.children()[0]).html().split(" ")[0]});
       else{
         let s = [];
-        if($(v.children()[2]).html().match("-") != null) $(v.children()[2]).html().split("-").forEach((idk) => {s.push(idk.replace(" ", ""))});
-        else s.push($(v.children()[2]).html().replace(" ", ""));
+        if($(v.children()[1]).html().match("-") != null)
+          $(v.children()[1]).html().split("-").forEach((idk) => {s.push(idk.replace(" ", ""))});
+        else s.push($(v.children()[1]).html().replace(" ", ""));
         s.forEach((ss) => {
+          let infoo = $(v.children()[6]).html();
+
+          let t = $(v.children()[3]).html().replace(" ", "").replace("<b>", "").replace("</b>", "");
+          if (t.toLowerCase() == "entfall") t = "e";
+          else if (t.toLowerCase() == "vertretung") {
+            t = "v";
+            if (infoo.toLowerCase().match("selbstständiges arbeiten") ||
+                infoo.toLowerCase().match("selbständiges arbeiten") ||
+                infoo.toLowerCase().match("selbstäniges arbeiten")
+            ) t = "e (v)";
+          }else if (t.toLowerCase() == "raum-vtr.") t = "r";
+          infoo.replace();
+          arr[arr.length - 1].type = t;
           arr[arr.length - 1].date = $(v.children()[0]).html().replace(" ", "");
           arr[arr.length - 1].fach = $(v.children()[2]).html().replace(" ", "");
-          arr[arr.length - 1].type = $(v.children()[3]).html().replace(" ", "").replace("<b>", "").replace("</b>", "");
           arr[arr.length - 1].oldRaum = $(v.children()[4]).html().replace(" ", "");
           arr[arr.length - 1].newRaum = $(v.children()[5]).html().replace(" ", "");
-          arr[arr.length - 1].info = $(v.children()[6]).html().replace(" ", "");
+          arr[arr.length - 1].info = infoo;
           arr[arr.length - 1].stunde = ss;
         });
       }
@@ -174,8 +187,8 @@ export class NetwService {
     return new Promise<number>((resolve, reject) => {
       let id = Math.floor(Math.random() * 9999);
       while (id.toString().length !== 4) id = Math.floor(Math.random() * 9999);
-      let kurseAO = toObject(kurse);
-      if (this.saveKurseTrys === 0) id = 4933;
+      let kurseAO: {stufe?: string} = toObject(kurse);
+      kurseAO.stufe = this.baseService.myStufe; //todo
       this.httpClient.put(CONFIG.dbUrl + id + '.json', kurseAO).subscribe(
         (wert) => {
             localStorage.kursID = id;
@@ -203,9 +216,12 @@ export class NetwService {
           else if (njson.error){
             reject({statusText: njson.error});
           }
+          else if (njson.stufe !== this.baseService.myStufe){
+            reject({statusText: 'ID gehört zu Stufe/Klasse ' + njson.stufe});
+          }
           else {
             localStorage.kursID = id;
-            resolve(njson);
+            resolve(toArray(njson));
           }
         },
         (err) => { reject(err) },
@@ -373,5 +389,15 @@ function toObject(array: any[]){
     Obj[i] = val;
   });
   return Obj;
+}
+
+function toArray(obj){
+  if(Array.isArray(obj)) return obj;
+  let arr = [];
+  delete obj.stufe;
+  for (let key in obj){
+    arr.push(obj[key]);
+  }
+  return arr;
 }
 
