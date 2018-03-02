@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {BaseService} from '../../s/base.service';
 import {AlertService} from '../../s/alert.service';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-show',
@@ -9,6 +10,7 @@ import {AlertService} from '../../s/alert.service';
 })
 export class ShowComponent implements OnInit {
 
+  selI = 0;
   tts: {
     tag,
     date: Date
@@ -25,15 +27,14 @@ export class ShowComponent implements OnInit {
       let date = new Date();
 
       if (i === 1) date.setDate(date.getDate() + 1);
-      while (date.getDate() === 0 || date.getDate() === 6)
+      while (date.getDay() === 0 || date.getDay() === 6)
         date.setDate(date.getDate() + 1);
       if (i == 0) firstDate = date;
       if(i === 1 && firstDate.getDate() == date.getDate())
         date.setDate(date.getDate() + 1);
-
       this.tts.push({tag: val.days[date.getDay() - 1], date: date});
     });
-
+    $(".modal-backdrop").remove();
   }
 
 }

@@ -1,5 +1,12 @@
-<div class="container">
+<div class="full">
 
-  <show-ttcontainer *ngFor="let tt of tts; let i = index;" [tt]="tt" [index]="i"></show-ttcontainer>
+  <div class="container">
+    <show-ttcontainer *ngFor="let tt of tts; let i = index;"
+                      [tt]="tt"
+                      [index]="i"
+                      [ngClass]="{'hidden': selI != i}"></show-ttcontainer>
+  </div>
+  <button class="btn" (click)="selI = 0">left</button>
+  <button class="btn" (click)="selI = 1">right</button>
 
 </div>
