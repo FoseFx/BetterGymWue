@@ -1,6 +1,6 @@
 @import "reset.css";
-@import "~@angular/material/prebuilt-themes/indigo-pink.css";
-
+/*@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+*/
 .center{
   display: block;
   margin: 0 auto;
@@ -16,7 +16,7 @@
   bottom: 0;
   right: 0;
   transition: opacity 0.3s linear;
-  z-index: 9999;
+  z-index: 99999;
 }
 .invisible, .invisible *{
   opacity: 0;
@@ -33,9 +33,16 @@ input[type=number]::-webkit-inner-spin-button {
   appearance: none;
   margin: 0;
 }
-
+.disabled{
+  pointer-events: none!important;
+  cursor: default!important;
+  opacity: 0.5;
+}
+*{
+  outline: none!important;
+}
 
 /** z- indexes **/
 /*
-  9999 = ALERT
+  99999 = ALERT
  */
