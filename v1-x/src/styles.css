@@ -1,3 +1,6 @@
+@import "reset.css";
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
 .center{
   display: block;
   margin: 0 auto;
@@ -15,9 +18,22 @@
   transition: opacity 0.3s linear;
   z-index: 9999;
 }
-.invisible{
+.invisible, .invisible *{
   opacity: 0;
 }
+
+.mat-form-field-underline.mat-disabled{
+  padding-top: 10px!important;
+  padding-bottom: 10px!important;
+}
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+
 
 /** z- indexes **/
 /*
