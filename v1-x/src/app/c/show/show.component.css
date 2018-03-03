@@ -1,23 +1,26 @@
 .full{
   width: 100%;
-  height: 100vh;
+  height: calc(100vh - 64px);
   display: block;
-  position: fixed;
-  top: 0;
-  left: 0;
+  top: 64px;
   overflow: hidden;
 }
+
+@media (max-width: 599px){
+  .full{
+    height: calc(100vh - 56px);
+    top: 64px;
+  }
+}
+
 .hidden{
   display: none;
 }
 .container{
-  height: 80%;
+  height: 100%;
   width: 90%!important;
-  margin-top: 5%;
-  overflow: hidden;
-}
-.container:hover{
-  overflow-y: auto;
+  margin-top: 1%;
+  overflow: auto;
 }
 .container::-webkit-scrollbar{
   width: 5px;
@@ -30,4 +33,11 @@
   outline: 1px solid slategrey;
   padding: 10% auto;
   border-radius: 3px;
+}
+.buttons{
+  font-size: 100px;
+  position: fixed;
+  bottom: 10px;
+  cursor: pointer;
+  transition: opacity;
 }

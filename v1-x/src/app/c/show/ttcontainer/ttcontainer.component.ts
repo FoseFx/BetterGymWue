@@ -47,11 +47,13 @@ export class TtcontainerComponent implements AfterViewInit{
     type: string
   }[] = [];
   readableDate;
+  tag = "";
 
 
   @Input() set tt(val){
     this._tt = val;
     this.filterVisible();
+    this.tag = ["Mo", "Di", "Mi", "Do", "Fr"][this._tt.date.getDay() - 1 ];
     this.readableDate = this._tt.date.getDate() + "." + (this._tt.date.getMonth() + 1) + ".";
   }
   _index;
@@ -83,23 +85,27 @@ export class TtcontainerComponent implements AfterViewInit{
       for (let Vobj in w[1]){
         if (Vobj == this.baseService.myStufe) VD = w[1][Vobj];
       }
-      console.log(VD);
       if (!VD) return;
-      if (!VD[0]) return;
-      if (VD[0].date != this.readableDate) return;
+
+
+      let VDT = [];
+      VD.forEach((v) => {
+        if (v.date === this.readableDate) VDT.push(v);
+      });
 
       let relevant = [];
-      VD.forEach((row) => {
-        this.baseService.myKurse.forEach(function (val) {
+      VDT.forEach((row) => {
+        console.log(row);
+        if (row.date != this.readableDate) return;
+        this.baseService.myKurse.forEach((val) => {
           if (val.fach == row.fach) relevant.push(row);
         });
-        this.baseService.KlassenKurse.forEach(function (val) {
+        this.baseService.KlassenKurse.forEach((val) => {
           if (val == row.fach) relevant.push(row);
         });
       });
-      console.log(relevant);
       this.info = w[0];
-      this.VDStufe = VD;
+      this.VDStufe = VDT;
       this.VDMe = relevant;
 
     });

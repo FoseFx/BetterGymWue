@@ -1,12 +1,13 @@
 <div class="full">
 
   <div class="container">
-    <show-ttcontainer *ngFor="let tt of tts; let i = index;"
-                      [tt]="tt"
-                      [index]="i"
-                      [ngClass]="{'hidden': selI != i}"></show-ttcontainer>
+
+    <mat-tab-group>
+      <mat-tab *ngFor="let tt of tts; let i = index;" [label]="tt.date | date: 'dd.M.yy' ">
+        <show-ttcontainer [tt]="tt" [index]="i"></show-ttcontainer>
+      </mat-tab>
+    </mat-tab-group>
+
   </div>
-  <button class="btn" (click)="selI = 0">left</button>
-  <button class="btn" (click)="selI = 1">right</button>
 
 </div>

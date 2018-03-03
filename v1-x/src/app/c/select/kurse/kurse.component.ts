@@ -132,8 +132,10 @@ export class KurseComponent implements OnInit {
     this.netwService.fetchCloud(+id)
       .then((kurse) => {
         console.log(kurse);
+        $("#kursModal").remove();
         this.baseService.MyKurse = kurse;
         this.baseService.setTT(this.netwService.getTT(this._stufe));
+        this.baseService.kursID = id;
         this.router.navigate(['show']);
       })
       .catch((err) => {
@@ -144,6 +146,8 @@ export class KurseComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    $("#kcb").click( () => {
+      this.loadFormCloud();
+    });
   }
 }
