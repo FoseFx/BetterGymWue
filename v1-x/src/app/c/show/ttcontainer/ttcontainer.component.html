@@ -33,7 +33,7 @@
   <br>
 
   <h2 *ngIf="VDStufe.length > 0">{{baseService.myStufe + ": "}}</h2>
-  <table *ngIf="VDStufe.length > 0" class="table table-sm">
+  <table *ngIf="VDStufe.length > 0" class="table table-sm btmtbl">
     <tbody>
     <tr *ngFor="let v of VDStufe;">
       <td><b>{{v.stunde}}</b></td>
@@ -48,4 +48,5 @@
     </tr>
     </tbody>
   </table>
+  <br>
 </div>
