@@ -2,14 +2,14 @@
   width: 100%;
   height: calc(100vh - 64px);
   display: block;
-  top: 64px;
+  /*top: 64px;*/
   overflow: hidden;
 }
 
 @media (max-width: 599px){
   .full{
     height: calc(100vh - 56px);
-    top: 64px;
+    /*top: 64px;*/
   }
 }
 
