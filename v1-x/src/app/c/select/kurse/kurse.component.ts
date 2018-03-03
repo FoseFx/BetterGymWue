@@ -19,7 +19,15 @@ export class KurseComponent implements OnInit {
   stufeKurse: {title: string, fach: string, lehrer: string, selected?: boolean, ph?: boolean}[];
   titles: {t: string, state: number}[] = [];
   valid = false;
-  cloud = true;
+  _cloud = true;
+
+  set cloud(val){
+    this._cloud = val;
+    console.log(val);
+  }
+  get cloud(){
+    return this._cloud;
+  }
 
   @Input() set stufe(val: string) {
     this._stufe = val;
@@ -137,9 +145,5 @@ export class KurseComponent implements OnInit {
 
   ngOnInit() {
 
-  }
-
-  clickCloud(){
-    this.cloud = !this.cloud;
   }
 }

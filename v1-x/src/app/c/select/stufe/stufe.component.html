@@ -5,10 +5,13 @@
   <div class="card-body">
     <h4 class="card-title">Wähle deine Stufe/Klasse aus:</h4>
     <p class="card-text">
-      <select class="form-control" (change)="tempSelectedValue = $event.target.value">
-        <option></option>
-        <option *ngFor="let s of stufen; let i = index;">{{s}}</option>
-      </select>
+
+      <mat-form-field style="width: 100%">
+        <mat-select (change)="tempSelectedValue = $event.value">
+          <mat-option *ngFor="let s of stufen; let i = index;" [value]="s">{{s}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
       <button class="btn btn-primary center" style="margin-top: 5px"
               [ngClass]="{'disabled': tempSelectedValue.length === 0, 'btn-success': tempSelectedValue === selectedValue}"
               (click)="setValue()">Weiter</button>

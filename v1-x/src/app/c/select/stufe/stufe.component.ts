@@ -26,5 +26,4 @@ export class StufeComponent implements OnInit {
     this.selectedValue = this.tempSelectedValue;
     this.baseService.MyStufe = [this.selectedValue, (this.stufen.indexOf(this.selectedValue) + 1) + ''];
   }
-
 }
