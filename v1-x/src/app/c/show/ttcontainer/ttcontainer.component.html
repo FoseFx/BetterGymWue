@@ -1,7 +1,7 @@
 <div class="container">
 
-  <h1>{{_tt.date | date: 'dd.M.yy'}}</h1>
-  <p class="lead">{{_tt.date | date: 'w.'}} Kalenderwoche</p>
+  <h1 class="text-right">{{tag + " " + (_tt.date | date: 'dd.M.yy')}}</h1>
+  <p class="lead text-right">{{_tt.date | date: 'w.'}} Kalenderwoche</p>
 
   <table class="table table-hover">
     <tbody>

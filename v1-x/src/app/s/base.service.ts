@@ -17,6 +17,7 @@ export class BaseService {
   public myStufeID;
   public TT;
   public KlassenKurse; // guter Name
+  public kursID;
 
   constructor(private router: Router, private httpClient: HttpClient) {
     if (typeof(Storage) === 'undefined') {
@@ -32,6 +33,7 @@ export class BaseService {
     this.myStufeID = (!!localStorage.myStufeID) ? localStorage.myStufeID : undefined;
     this.TT = (!!localStorage.TT) ? JSON.parse(localStorage.TT) : undefined;
     this.KlassenKurse = (!!localStorage.KlassenKurse) ? JSON.parse(localStorage.KlassenKurse) : undefined;
+    this.kursID = (!!localStorage.kursID) ? localStorage.kursID : undefined;
   }
 
   set MyKurse(val){

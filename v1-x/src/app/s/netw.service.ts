@@ -102,6 +102,15 @@ export class NetwService {
       a[0].forEach((t) => { if (compr[t.stufe]) compr[t.stufe].push(t); else compr[t.stufe] = [t]; });
       if (a[1][0]) info.push(a[1]);
     });
+    // sort
+    for (let stufe in compr){
+      compr[stufe].sort(function (a, b) {
+        if (a.stunde > b.stufe) return 1;
+        if (a.stufe < b.stufe) return -1;
+        else return 0;
+      });
+    }
+
     return [info, compr];
   }
 

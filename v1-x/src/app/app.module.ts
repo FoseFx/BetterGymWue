@@ -20,7 +20,11 @@ import { KurseComponent } from './c/select/kurse/kurse.component';
 import { ShowComponent } from './c/show/show.component';
 import { TtcontainerComponent } from './c/show/ttcontainer/ttcontainer.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MatCheckboxModule, MatFormFieldModule, MatInputModule, MatSelectModule} from '@angular/material';
+import {
+  MatButtonModule,
+  MatCheckboxModule, MatDrawer, MatDrawerContainer, MatFormFieldModule, MatIconModule, MatInputModule, MatListModule, MatSelectModule,
+  MatSidenavModule, MatTabsModule, MatToolbarModule
+} from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -42,7 +46,13 @@ import {MatCheckboxModule, MatFormFieldModule, MatInputModule, MatSelectModule} 
     MatInputModule,
     MatFormFieldModule,
     MatSelectModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatSidenavModule,
+    MatListModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatIconModule,
+    MatTabsModule
   ],
   providers: [BaseService, GuardService, NetwService, AlertService],
   bootstrap: [AppComponent]
