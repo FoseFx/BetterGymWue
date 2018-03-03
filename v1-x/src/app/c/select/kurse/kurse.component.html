@@ -9,12 +9,10 @@
               [ngClass]="{'notSelected': t.state < 1,'ok': t.state === 1,'tooMuch': t.state > 1}"
               style="margin-right: 5px">{{t.t}}</span>
     </h5>
-    <div class="form-check" style="text-align: center">
-      <label class="form-check-label" (click)="clickCloud()">
-        <input class="form-check-input" type="checkbox" [checked]="cloud" (click)="clickCloud()">
-        Auf Kurs Cloud speichern
-      </label>
-    </div><br>
+
+    <mat-checkbox style="text-align: center; display: block; margin: 0 auto" [(ngModel)]="cloud">Auf Kurs Cloud speichern</mat-checkbox>
+
+    <br>
     <button class="btn btn-primary center"
             [ngClass]="{'disabled': !valid}"
             (click)="kursSubmit()">Fertig!</button><br>
@@ -55,7 +53,9 @@
               ID
             </td>
             <td>
-              <input type="number" class="form-control" placeholder="ID: 0000" id="kcidi" maxlength="4" min="1111" max="9999">
+              <mat-form-field style="width: 100%">
+                <input matInput type="number" style="width: 100%" maxlength="4" minlength="4" placeholder="ID" id="kcidi" required>
+              </mat-form-field>
             </td>
           </tr>
           </tbody>

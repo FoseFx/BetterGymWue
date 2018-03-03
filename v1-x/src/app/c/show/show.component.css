@@ -12,7 +12,22 @@
 }
 .container{
   height: 80%;
-  overflow-y: auto;
   width: 90%!important;
   margin-top: 5%;
+  overflow: hidden;
+}
+.container:hover{
+  overflow-y: auto;
+}
+.container::-webkit-scrollbar{
+  width: 5px;
+}
+.container::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+.container::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  outline: 1px solid slategrey;
+  padding: 10% auto;
+  border-radius: 3px;
 }

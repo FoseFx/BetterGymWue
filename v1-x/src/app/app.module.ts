@@ -19,6 +19,8 @@ import {AlertService} from './s/alert.service';
 import { KurseComponent } from './c/select/kurse/kurse.component';
 import { ShowComponent } from './c/show/show.component';
 import { TtcontainerComponent } from './c/show/ttcontainer/ttcontainer.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MatCheckboxModule, MatFormFieldModule, MatInputModule, MatSelectModule} from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,12 @@ import { TtcontainerComponent } from './c/show/ttcontainer/ttcontainer.component
     BrowserModule,
     FormsModule,
     RouterModule.forRoot(routes),
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatCheckboxModule
   ],
   providers: [BaseService, GuardService, NetwService, AlertService],
   bootstrap: [AppComponent]

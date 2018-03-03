@@ -4,19 +4,18 @@
     <div class="card-body">
 
       <form #loginForm="ngForm" (submit)="formSubmitted()">
-        <div class="form-group">
-          <label>
-            Nutzer:<br>
-            <select class="form-control custom-select" style="width: 20rem" ngModel name="nutzer" required>
-              <option value="schueler">schueler</option>
-              <!--<option value="lehrer">lehrer</option>-->
-            </select>
-          </label><br>
-          <label>
-            Passwort:
-            <input type="password" placeholder="Passwort" class="form-control" style="width: 20rem" ngModel name="psw" required>
-          </label>
-        </div>
+        <mat-form-field style="width: 20rem!important;">
+          <mat-select placeholder="Nutzer" ngModel name="nutzer" required>
+            <mat-option value="schueler">schueler</mat-option>
+          </mat-select>
+        </mat-form-field><br>
+
+
+        <mat-form-field style="width: 20rem!important; "
+        floatLabel="auto">
+          <input matInput type="password" placeholder="Passwort" style="box-shadow: none" ngModel name="psw" required> <!--style="width: 20rem"-->
+        </mat-form-field>
+        <br>
         <button class="btn " [ngClass]="{'disabled': !loginForm.valid, 'btn-primary': fine, 'btn-danger': !fine}">Login</button>
       </form>
     </div>
