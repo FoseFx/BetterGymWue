@@ -18,6 +18,7 @@ export class BaseService {
   public TT;
   public KlassenKurse; // guter Name
   public kursID;
+  public noswipe = false;
 
   constructor(private router: Router, private httpClient: HttpClient) {
     if (typeof(Storage) === 'undefined') {

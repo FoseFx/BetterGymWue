@@ -1,4 +1,4 @@
-import { BrowserModule } from '@angular/platform-browser';
+import {BrowserModule, HAMMER_GESTURE_CONFIG, HammerGestureConfig} from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -54,7 +54,16 @@ import {
     MatIconModule,
     MatTabsModule
   ],
-  providers: [BaseService, GuardService, NetwService, AlertService],
+  providers: [
+    BaseService,
+    GuardService,
+    NetwService,
+    AlertService,
+    {
+      provide: HAMMER_GESTURE_CONFIG,
+      useClass: HammerGestureConfig
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
