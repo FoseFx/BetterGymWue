@@ -22,8 +22,10 @@ import { TtcontainerComponent } from './c/show/ttcontainer/ttcontainer.component
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
   MatButtonModule,
-  MatCheckboxModule, MatDrawer, MatDrawerContainer, MatFormFieldModule, MatIconModule, MatInputModule, MatListModule, MatSelectModule,
-  MatSidenavModule, MatTabsModule, MatToolbarModule
+  MatDividerModule, MatFormFieldModule, MatIconModule, MatInputModule,
+  MatListModule,
+  MatSelectModule,
+  MatSidenavModule, MatSlideToggleModule, MatTabsModule, MatToolbarModule
 } from '@angular/material';
 declare var Hammer: any;
 
@@ -61,13 +63,14 @@ export class MyHammerConfig extends HammerGestureConfig  {
     MatInputModule,
     MatFormFieldModule,
     MatSelectModule,
-    MatCheckboxModule,
     MatSidenavModule,
     MatListModule,
     MatToolbarModule,
     MatButtonModule,
     MatIconModule,
-    MatTabsModule
+    MatTabsModule,
+    MatDividerModule,
+    MatSlideToggleModule
   ],
   providers: [
     BaseService,

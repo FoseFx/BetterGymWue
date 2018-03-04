@@ -6,3 +6,12 @@ input[type=checkbox]{
   all: initial;
   outline: none;
 }
+input[type=checkbox]::before{
+  all: initial!important;
+}
+input[type="checkbox"]:checked:after, .checkbox input[type="checkbox"]:checked:after, .checkbox-inline input[type="checkbox"]:checked:after{
+  all: initial!important;
+}
+input[type="checkbox"]:after, .checkbox input[type="checkbox"]:after, .checkbox-inline input[type="checkbox"]:after{
+  all: initial!important;
+}

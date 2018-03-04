@@ -14,9 +14,7 @@ mat-toolbar{
 }
 
 .head{
-  background: url("../../../assets/nav.jpg");
-  background-repeat: no-repeat;
-  background-position: right top;
+  background: url("../../../assets/nav.jpg") no-repeat right top;
   color: white;
   padding: 65px 5px 5px 15px;
 }.head *{
@@ -24,4 +22,10 @@ mat-toolbar{
  }
 small{
   color: lightgrey!important;
+}
+mat-nav-list{
+  color: #444444;
+}
+i{
+  color: rgba(0, 0, 0, 0.7);
 }

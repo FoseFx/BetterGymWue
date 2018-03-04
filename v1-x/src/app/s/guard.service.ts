@@ -3,6 +3,7 @@ import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from '
 import {Observable} from 'rxjs/Observable';
 import {BaseService} from './base.service';
 import {LoginComponent} from '../c/login/login.component';
+import {ShowComponent} from '../c/show/show.component';
 @Injectable()
 export class GuardService implements CanActivate {
 
@@ -17,6 +18,11 @@ export class GuardService implements CanActivate {
       if (!this.baseService.credentials) {
         this.router.navigate(['/']);
         return false;
+      }
+    }
+    if(route.component === ShowComponent){
+      if(!this.baseService.myKurse){
+        this.router.navigate(['/']);
       }
     }
     return true;
