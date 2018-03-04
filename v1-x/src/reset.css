@@ -1,8 +1,8 @@
 input, textarea, select, option {
   all: initial!important;
-  font-family: inherit;
+  font-family: inherit!important;
 }
 input[type=checkbox]{
-  all: unset;
+  all: initial;
   outline: none;
 }

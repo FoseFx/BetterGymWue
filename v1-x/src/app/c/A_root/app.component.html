@@ -15,16 +15,13 @@
 
   </mat-drawer>
 
-  <div style="height: 100%; width: 100%">
+  <div id="cntnd" #cntnd (swiperight)="swipe('r', $event)" (swipeleft)="swipe('l', $event)" style="height: 100%; width: 100%">
 
     <mat-toolbar color="primary">
       <button mat-icon-button>
         <mat-icon area-label="Open/Close Menu" (click)="hamNav.toggle()">menu</mat-icon>
       </button>
-      <span>&nbsp; <img src="../../../assets/logoWhite.png" height="50px"> Better Gym Wue</span>
-
-      <!-- This fills the remaining space of the current row -->
-      <span class="example-fill-remaining-space"></span>
+      <span>&nbsp; Better Gym Wue</span>
 
     </mat-toolbar>
 
