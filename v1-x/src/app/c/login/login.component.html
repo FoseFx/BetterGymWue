@@ -1,5 +1,5 @@
 <div style="height: calc(100vh - 64px); display: flex; align-items: center; justify-content: center; overflow: hidden" *ngIf="show">
-  <div class="card border-light mb-3 center" style="max-width: 30rem;">
+  <div class="card mb-3 center" style="max-width: 30rem;" [ngClass]="{'border-danger': !fine, 'border-light': fine}">
     <div class="card-header">Login<span class="text-muted"> (GymWue Daten)</span></div>
     <div class="card-body">
 
@@ -16,7 +16,7 @@
           <input matInput type="password" placeholder="Passwort" style="box-shadow: none" ngModel name="psw" required> <!--style="width: 20rem"-->
         </mat-form-field>
         <br>
-        <button mat-raised-button color="accent" [ngClass]="{'disabled': !loginForm.valid, 'btn-primary': fine, 'btn-danger': !fine}">Login</button>
+        <button mat-raised-button color="accent" [ngClass]="{'disabled': !loginForm.valid}">Login</button>
       </form>
     </div>
   </div>
