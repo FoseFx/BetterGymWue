@@ -5,17 +5,22 @@
       <h2>Better Gym Wue</h2>
       <h3><small class="text-muted">Made by @FoseFx</small></h3>
     </div>
-    <mat-nav-list class="disabled"> <!-- todo -->
+    <mat-nav-list > <!-- todo -->
       <a mat-list-item><i class="material-icons">home</i>&nbsp; Home</a>
       <a [ngClass]="{'disabled': !baseService.kursID}" mat-list-item><i class="material-icons">cloud</i>&nbsp; Kurs-Cloud ID</a>
+      <mat-divider></mat-divider>
       <a [ngClass]="{'disabled': !baseService.myKurse}" mat-list-item><i class="material-icons">school</i>&nbsp; Lehrer Zugang hinzufügen</a>
+      <mat-divider></mat-divider>
+      <a mat-list-item [ngClass]="{'disabled': !baseService.myKurse}" (click)="removeKurse()"><i class="material-icons">delete</i>&nbsp; Kurse löschen</a>
+      <a mat-list-item [ngClass]="{'disabled': !baseService.myKurse}" (click)="refreshTT()"><i class="material-icons">refresh</i>&nbsp; Stundenplan aktualisieren</a>
+      <mat-divider></mat-divider>
       <a mat-list-item><i class="material-icons">gavel</i>&nbsp; Wichtige Hinweise</a>
       <a mat-list-item><i class="material-icons">account_circle</i>&nbsp; Über</a>
     </mat-nav-list>
 
   </mat-drawer>
 
-  <div id="cntnd" #cntnd (swiperight)="swipe('r', $event)" (swipeleft)="swipe('l', $event)" style="height: 100%; width: 100%">
+  <div id="cntnd" #cntnd (swiperight)="swipe('r', $event)" (swipeleft)="swipe('l', $event)" style="height: 100%; width: 100%; overflow-x: hidden">
 
     <mat-toolbar style="position:relative;z-index: 100;" color="primary">
       <button mat-icon-button>

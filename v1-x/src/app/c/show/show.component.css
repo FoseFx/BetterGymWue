@@ -21,6 +21,13 @@
   width: 90%!important;
   margin-top: 1%;
 }
+@media (max-width: 450px){
+  .container{
+    width: 99%!important;
+    margin-top: 0;
+  }
+}
+
 .buttons{
   font-size: 100px;
   position: fixed;

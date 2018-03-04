@@ -1,6 +1,7 @@
 import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import {BaseService} from '../../s/base.service';
 import * as $ from 'jquery';
+import {NetwService} from '../../s/netw.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -8,7 +9,7 @@ import * as $ from 'jquery';
 })
 export class AppComponent implements AfterViewInit{
 
-  constructor(public baseService: BaseService){};
+  constructor(public baseService: BaseService, private netwService: NetwService){};
 
 
   @ViewChild('hamNav') hamnav;
@@ -26,5 +27,26 @@ export class AppComponent implements AfterViewInit{
     }
   }
 
+  removeKurse(){
+    this.baseService.myKurse = undefined;
+    delete localStorage.myKurse;
+    this.baseService.kursID = undefined;
+    delete localStorage.kursID;
+    rl()
+  }
 
+  refreshTT(){
+    this.removeKurse();
+    this.baseService.TT = undefined;
+    delete localStorage.TT;
+    this.baseService.KlassenKurse = undefined;
+    delete localStorage.KlassenKurse;
+    rl()
+  }
+
+}
+function rl(){
+  setTimeout(() => {
+    location.reload();
+  }, 500);
 }
