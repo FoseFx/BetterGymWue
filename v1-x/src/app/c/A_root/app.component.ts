@@ -17,7 +17,6 @@ export class AppComponent implements AfterViewInit{
   ngAfterViewInit(){
     console.log(this.hamnav);
   }
-
   swipe(type, e){
     if ($(".fuckYou").has(e.target).length != 0) return;
     if(type === 'r' && this.hamnav.opened === false){

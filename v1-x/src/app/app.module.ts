@@ -25,6 +25,21 @@ import {
   MatCheckboxModule, MatDrawer, MatDrawerContainer, MatFormFieldModule, MatIconModule, MatInputModule, MatListModule, MatSelectModule,
   MatSidenavModule, MatTabsModule, MatToolbarModule
 } from '@angular/material';
+declare var Hammer: any;
+
+export class MyHammerConfig extends HammerGestureConfig  {
+  buildHammer(element: HTMLElement) {
+    return new Hammer(element, {
+      touchAction: 'auto',
+      inputClass: Hammer.SUPPORT_POINTER_EVENTS ? Hammer.PointerEventInput : Hammer.TouchInput,
+      recognizers: [
+      [Hammer.Swipe, {
+        direction: Hammer.DIRECTION_HORIZONTAL
+      }]
+    ]
+    });
+  }
+}
 
 @NgModule({
   declarations: [
@@ -61,9 +76,11 @@ import {
     AlertService,
     {
       provide: HAMMER_GESTURE_CONFIG,
-      useClass: HammerGestureConfig
+      useClass: MyHammerConfig
     }
   ],
+
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+

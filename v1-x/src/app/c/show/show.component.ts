@@ -35,6 +35,7 @@ export class ShowComponent implements OnInit, AfterViewInit {
     }
   }
   swipe(e){
+    console.log(e.target);
     let eType = e.type;
     if (eType === this.SWIPE_ACTION.RIGHT && this.selected > 0){
       this.selected--;
