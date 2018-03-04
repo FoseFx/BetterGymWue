@@ -4,7 +4,7 @@
 
   display: block;
   /*top: 64px;*/
-  overflow: hidden;
+  overflow: auto;
 }
 
 @media (max-width: 599px){
@@ -27,4 +27,7 @@
   bottom: 10px;
   cursor: pointer;
   transition: opacity;
+}
+.fuckYou{
+  min-height: calc(100vh - 66px);
 }

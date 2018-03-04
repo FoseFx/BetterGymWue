@@ -1,4 +1,4 @@
-<mat-drawer-container autosize style="width: 100%; height: 100%">
+<mat-drawer-container autosize style="width: 100%; height: 100%; overflow-x: hidden">
 
   <mat-drawer #hamNav mode="side" class="hamnav">
     <div class="head">
@@ -17,18 +17,16 @@
 
   <div id="cntnd" #cntnd (swiperight)="swipe('r', $event)" (swipeleft)="swipe('l', $event)" style="height: 100%; width: 100%">
 
-    <mat-toolbar color="primary">
+    <mat-toolbar style="position:relative;z-index: 100;" color="primary">
       <button mat-icon-button>
         <mat-icon area-label="Open/Close Menu" (click)="hamNav.toggle()">menu</mat-icon>
       </button>
       <span>&nbsp; Better Gym Wue</span>
-
     </mat-toolbar>
 
 
-
-
-    <router-outlet id="rootRoute"></router-outlet>
+    <div *ngIf="hamNav.opened" style="width: 100%; height: 100vh; position:fixed; z-index: 2; top: 0; left: 0;"></div>
+    <router-outlet style="z-index: 0!important;" id="rootRoute"></router-outlet>
   </div>
 </mat-drawer-container>
 
