@@ -3,7 +3,16 @@
   display: block;
   height: 100%;
   background: rgba(68, 68, 68, 0.07);
+  z-index: 100;
 }
+.hamnav *{
+  position: relative;
+  z-index: 101;
+}
+mat-toolbar{
+  z-index: 100;
+}
+
 .head{
   background: url("../../../assets/nav.jpg");
   background-repeat: no-repeat;
