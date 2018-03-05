@@ -48,9 +48,7 @@ export class BaseService {
     localStorage.myStufeID = val[1];
   }
   setTT(val){
-    let v1 = val[0];
-    val[0] = val[1];
-    val[1] = v1;
+
     this.TT = val;
     localStorage.TT = JSON.stringify(val);
     let a = [];

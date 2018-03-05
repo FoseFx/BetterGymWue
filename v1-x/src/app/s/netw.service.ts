@@ -61,10 +61,8 @@ export class NetwService {
       if (v.children().length == 1) arr.push({stufe: $(v.children()[0]).html().split(" ")[0]});
       else{
         let s = [];
-        if($(v.children()[1]).html().match("-") != null)
-          $(v.children()[1]).html().split("-").forEach((idk) => {s.push(idk.replace(" ", ""))});
-        else s.push($(v.children()[1]).html().replace(" ", ""));
-        s.forEach((ss) => {
+        $(v.children()[1]).html().split("-").forEach((idk) => {s.push(idk.replace(" ", ""))});
+        s.forEach((ss, index) => {
           let infoo = $(v.children()[6]).html();
 
           let t = $(v.children()[3]).html().replace(" ", "").replace("<b>", "").replace("</b>", "");
@@ -76,7 +74,9 @@ export class NetwService {
                 infoo.toLowerCase().match("selbstäniges arbeiten")
             ) t = "e (v)";
           }else if (t.toLowerCase() == "raum-vtr.") t = "r";
+          else if (t.toLowerCase() == "klausur") t = "k";
           infoo.replace();
+          if(index !== 0) arr.push({stufe: arr[arr.length-1].stufe});
           arr[arr.length - 1].type = t;
           arr[arr.length - 1].date = $(v.children()[0]).html().replace(" ", "");
           arr[arr.length - 1].fach = $(v.children()[2]).html().replace(" ", "");
@@ -84,6 +84,7 @@ export class NetwService {
           arr[arr.length - 1].newRaum = $(v.children()[5]).html().replace(" ", "");
           arr[arr.length - 1].info = infoo;
           arr[arr.length - 1].stunde = ss;
+
         });
       }
     });
@@ -91,6 +92,7 @@ export class NetwService {
     $(ret).find("table.info").children("tbody").children("tr").each(function (index, v) {
       info.push($(v).text());
     });
+    console.log(arr);
     returnArray[1] = [arr, info];
     return returnArray;
   }
