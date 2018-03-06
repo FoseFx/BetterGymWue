@@ -44,6 +44,7 @@ export class AppComponent implements AfterViewInit{
     rl()
   }
 
+
 }
 function rl(){
   setTimeout(() => {

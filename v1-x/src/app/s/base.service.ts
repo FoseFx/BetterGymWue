@@ -20,6 +20,8 @@ export class BaseService {
   public kursID;
   public noswipe = false;
 
+  public milchglas = false;
+
   constructor(private router: Router, private httpClient: HttpClient) {
     if (typeof(Storage) === 'undefined') {
       this.allowedBrowser = false;

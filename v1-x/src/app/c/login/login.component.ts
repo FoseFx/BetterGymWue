@@ -24,6 +24,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
   }
   formSubmitted() {
     if (!this.form.valid) return;
+    this.baseService.milchglas = true;
     const u = this.form.value.nutzer;
     const p = this.form.value.psw;
     this.verify(u, p);
@@ -31,6 +32,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
   verify(u: string, p: string) {
     this.baseService.checkCredentials(u, p).then((value => {
+      this.baseService.milchglas = false;
       if (value) {
         this.router.navigate(['/select']);
       } else {
