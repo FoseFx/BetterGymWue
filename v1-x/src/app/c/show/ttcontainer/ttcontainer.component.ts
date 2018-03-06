@@ -7,9 +7,9 @@ import {NetwService} from '../../../s/netw.service';
   templateUrl: './ttcontainer.component.html',
   styleUrls: ['./ttcontainer.component.css']
 })
-export class TtcontainerComponent implements AfterViewInit{
+export class TtcontainerComponent implements AfterViewInit, OnInit{
 
-  info = [];
+  info: string[] = [];
   _tt: {
     date: Date,
     tag: {
@@ -24,7 +24,8 @@ export class TtcontainerComponent implements AfterViewInit{
     fach: string,
     lehrer: string,
     raum: string,
-    vert?: string
+    vert?: string,
+    nd?: number
   }[] = [];
   VDStufe: {
     date: string,
@@ -34,7 +35,8 @@ export class TtcontainerComponent implements AfterViewInit{
     oldRaum: string,
     stufe: string,
     stunde:string,
-    type: string
+    type: string,
+    nd?:number
   }[] = [];
   VDMe: {
     date: string,
@@ -44,13 +46,16 @@ export class TtcontainerComponent implements AfterViewInit{
     oldRaum: string,
     stufe: string,
     stunde:string,
-    type: string
+    type: string,
+    nd?:number
   }[] = [];
   readableDate;
   tag = "";
-
+  setted = false;
 
   @Input() set tt(val){
+    if(this.setted) return;
+    this.setted = true;
     this._tt = val;
     this.filterVisible();
     this.tag = ["Mo", "Di", "Mi", "Do", "Fr"][this._tt.date.getDay() - 1 ];
@@ -80,6 +85,7 @@ export class TtcontainerComponent implements AfterViewInit{
   }
 
   checkVertretung(){
+    this.baseService.milchglas = true;
     this.netwService.getVertretungsDaten((this._index == 0) ? 'f1' : 'f2', this._index).then((w)=>{
       let VD  = undefined;
       for (let Vobj in w[1]){
@@ -95,7 +101,7 @@ export class TtcontainerComponent implements AfterViewInit{
 
       let relevant = [];
       VDT.forEach((row) => {
-        console.log(row);
+        //console.log(row);
         if (row.date != this.readableDate) return;
         this.baseService.myKurse.forEach((val) => {
           if (val.fach == row.fach) relevant.push(row);
@@ -104,11 +110,16 @@ export class TtcontainerComponent implements AfterViewInit{
           if (val == row.fach) relevant.push(row);
         });
       });
-      this.info = w[0];
+      this.info = Array.from(w[0][0]);
       this.VDStufe = VDT;
       this.VDMe = relevant;
-
+      this.baseService.milchglas = false;
+    }).catch(() => {
+      this.baseService.milchglas = false;
     });
+  }
+  ngOnInit(){
+    console.log(this.VDMe);
   }
   ngAfterViewInit(){
     this.checkVertretung();
@@ -128,4 +139,5 @@ export class TtcontainerComponent implements AfterViewInit{
     this.VDMe.forEach((me) => { if (me.stunde == index + 1) rel = me; });
     return rel;
   }
+
 }

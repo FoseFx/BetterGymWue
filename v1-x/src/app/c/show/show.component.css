@@ -23,7 +23,7 @@
 }
 @media (max-width: 450px){
   .container{
-    width: 99%!important;
+    width: 100%!important;
     margin-top: 0;
   }
 }
