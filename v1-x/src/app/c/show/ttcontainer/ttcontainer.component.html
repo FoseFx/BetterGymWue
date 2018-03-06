@@ -8,7 +8,8 @@
     <tr *ngFor="let e of displayArray; let i = index;" [ngClass]="{
                                                                   'entfall': getOnMyPos(i).type.match('e'),
                                                                   'vertretung': getOnMyPos(i).type == 'v',
-                                                                  'raumV': getOnMyPos(i).type == 'r'
+                                                                  'raumV': getOnMyPos(i).type == 'r',
+                                                                  'klausur': getOnMyPos(i).type == 'k'
                                                                 }">
       <td *ngIf="e!=undefined">{{i + 1}}</td>
       <td *ngIf="e!=undefined">{{e.fach}}</td>
@@ -39,7 +40,7 @@
       <td><b>{{v.stunde}}</b></td>
       <td>{{v.fach}}</td>
 
-      <td [title]="((v.type == 'v') ? 'Vertretung' : (v.type == 'e')? 'Entfall': 'Raumvertretung')">
+      <td [title]="((v.type == 'v') ? 'Vertretung' : (v.type == 'e')? 'Entfall': (v.type == 'k') ? 'Klausur': 'Raumvertretung')">
         <b>{{v.type.toUpperCase()}}</b>
       </td>
 
