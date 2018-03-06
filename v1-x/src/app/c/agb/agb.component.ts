@@ -16,7 +16,6 @@ export class AgbComponent implements OnInit {
   constructor(public baseService: BaseService, private activeR: ActivatedRoute) { }
 
   ngOnInit() {
-    console.log(this.activeR.snapshot.queryParams['ua'] === '');
-    this.redirected = this.activeR.snapshot.queryParams['ua'] === '';
+    this.redirected = this.baseService.acceptedAGB;
   }
 }

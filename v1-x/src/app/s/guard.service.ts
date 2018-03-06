@@ -4,6 +4,7 @@ import {Observable} from 'rxjs/Observable';
 import {BaseService} from './base.service';
 import {LoginComponent} from '../c/login/login.component';
 import {ShowComponent} from '../c/show/show.component';
+import {CloudComponent} from '../c/cloud/cloud.component';
 @Injectable()
 export class GuardService implements CanActivate {
 
@@ -11,7 +12,7 @@ export class GuardService implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     if (!this.baseService.acceptedAGB) {
-      this.router.navigate(['/agb'], {queryParams: {ua: ''}});
+      this.router.navigate(['/agb']);
       return false;
     }
     if (route.component !== LoginComponent) {
@@ -24,6 +25,9 @@ export class GuardService implements CanActivate {
       if(!this.baseService.myKurse){
         this.router.navigate(['/']);
       }
+    }
+    if(route.component === CloudComponent){
+      if(!this.baseService.kursID) this.router.navigate(['/']);
     }
     return true;
   }

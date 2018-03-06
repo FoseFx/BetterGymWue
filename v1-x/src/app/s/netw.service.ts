@@ -62,7 +62,7 @@ export class NetwService {
       else{
         let s = [];
         $(v.children()[1]).html().split("-").forEach((idk) => {s.push(idk.replace(" ", ""))});
-        s.forEach((ss, iii) => {
+        s.forEach((ss, iii, array) => {
           let infoo = $(v.children()[6]).html();
           let t = $(v.children()[3]).html().replace(" ", "").replace("<b>", "").replace("</b>", "");
           if (t.toLowerCase() == "entfall") t = "e";
@@ -75,7 +75,6 @@ export class NetwService {
           }else if (t.toLowerCase() == "raum-vtr.") t = "r";
           else if (t.toLowerCase() == "klausur") t = "k";
           infoo.replace();
-          //if(iii !== 0) arr.push({stufe: arr[arr.length-1].stufe});
           arr[arr.length - 1].cntnd.push({
             type: t,
             date: $(v.children()[0]).html().replace(" ", ""),
@@ -83,16 +82,23 @@ export class NetwService {
             oldRaum: $(v.children()[4]).html().replace(" ", ""),
             newRaum: $(v.children()[5]).html().replace(" ", ""),
             info: infoo,
-            stunde: ss
+            stunde: ss,
           });
-          //arr[arr.length - 1].date = $(v.children()[0]).html().replace(" ", "");
-          //arr[arr.length - 1].fach = $(v.children()[2]).html().replace(" ", "");
-          //arr[arr.length - 1].oldRaum = $(v.children()[4]).html().replace(" ", "");
-          //arr[arr.length - 1].newRaum = $(v.children()[5]).html().replace(" ", "");
-          //arr[arr.length - 1].info = infoo;
-          //arr[arr.length - 1].stunde = ss;
-          //console.log(ss);
-          //console.log(Array.from(arr)[arr.length - 1]);
+          if (array.length !== 1 && iii === (array.length -1)){
+            let alls = "";
+            array.forEach((ts) => {alls += ts + " - "});
+            alls = alls.substr(0, alls.length - 3);
+            arr[arr.length - 1].cntnd.push({
+              type: t,
+              date: $(v.children()[0]).html().replace(" ", ""),
+              fach: $(v.children()[2]).html().replace(" ", ""),
+              oldRaum: $(v.children()[4]).html().replace(" ", ""),
+              newRaum: $(v.children()[5]).html().replace(" ", ""),
+              info: infoo,
+              stunde: alls,
+              nd: 1
+            });
+          }
         });
       }
     });
@@ -105,21 +111,23 @@ export class NetwService {
   }
 
   private compileVD(slides){
-    console.log(slides);
     let compr = {};
     let info = [];
     slides.forEach((a) => {
       a[0].forEach((t) => {
         let arr = [];
         t.cntnd.forEach((r) => {
-          arr.push({stufe: t.stufe,
-            date: r.date,
-            fach: r.fach,
-            oldRaum: r.oldRaum,
-            newRaum: r.newRaum,
-            info: r.info,
-            stunde: r.stunde,
-            type: r.type});
+          arr.push({
+            stufe: decodeHtml(t.stufe),
+            date: decodeHtml(r.date),
+            fach: decodeHtml(r.fach),
+            oldRaum: decodeHtml(r.oldRaum),
+            newRaum: decodeHtml(r.newRaum),
+            info: decodeHtml(r.info),
+            stunde: decodeHtml(r.stunde),
+            type: decodeHtml(r.type),
+            nd: r.nd
+            });
         });
         arr.forEach((arrE) => {
           if (compr[arrE.stufe]) compr[arrE.stufe].push(arrE); else compr[arrE.stufe] = [arrE];
@@ -135,7 +143,12 @@ export class NetwService {
         else return 0;
       });
     }
-    console.log(compr);
+    //cleanup
+    this.start = 'subst_001.htm';
+    this.file = ['subst_001.htm', 'subst_001.htm'];
+    this.sides = [];
+    this.VD = undefined;
+
     return [info, compr];
   }
 
@@ -435,3 +448,8 @@ function toArray(obj){
   return arr;
 }
 
+function decodeHtml(html) {
+  var txt = document.createElement("textarea");
+  txt.innerHTML = html;
+  return txt.value;
+}

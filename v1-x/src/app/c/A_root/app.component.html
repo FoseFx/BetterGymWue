@@ -6,16 +6,20 @@
       <h3><small class="text-muted">Made by @FoseFx</small></h3>
     </div>
     <mat-nav-list > <!-- todo -->
-      <a mat-list-item><i class="material-icons">home</i>&nbsp; Home</a>
-      <a [ngClass]="{'disabled': !baseService.kursID}" mat-list-item><i class="material-icons">cloud</i>&nbsp; Kurs-Cloud ID</a>
+      <a mat-list-item routerLink="/" (click)="hamNav.close()"><i class="material-icons">home</i>&nbsp; Home</a>
+      <a [ngClass]="{'disabled': !baseService.kursID}" mat-list-item routerLink="cloud" (click)="hamNav.close()"><i class="material-icons">cloud</i>&nbsp; Kurs-Cloud ID</a>
       <mat-divider></mat-divider>
-      <a [ngClass]="{'disabled': !baseService.myKurse}" mat-list-item><i class="material-icons">school</i>&nbsp; Lehrer Zugang hinzufügen</a>
+
+      <!-- todo [ngClass]="{'disabled': !baseService.myKurse}"-->
+
+      <a  class="disabled" mat-list-item><i class="material-icons">school</i>&nbsp; Lehrer Zugang hinzufügen</a>
+
       <mat-divider></mat-divider>
       <a mat-list-item [ngClass]="{'disabled': !baseService.myKurse}" (click)="removeKurse()"><i class="material-icons">delete</i>&nbsp; Kurse löschen</a>
       <a mat-list-item [ngClass]="{'disabled': !baseService.myKurse}" (click)="refreshTT()"><i class="material-icons">refresh</i>&nbsp; Stundenplan aktualisieren</a>
       <mat-divider></mat-divider>
-      <a mat-list-item><i class="material-icons">gavel</i>&nbsp; Wichtige Hinweise</a>
-      <a mat-list-item><i class="material-icons">account_circle</i>&nbsp; Über</a>
+      <a mat-list-item routerLink="agb" (click)="hamNav.close()"><i class="material-icons">gavel</i>&nbsp; Wichtige Hinweise</a>
+      <a mat-list-item routerLink="about" (click)="hamNav.close()"><i class="material-icons">account_circle</i>&nbsp; Über</a>
     </mat-nav-list>
 
   </mat-drawer>
@@ -30,6 +34,12 @@
     </mat-toolbar>
 
 
+    <div *ngIf="baseService.milchglas" style="width: 100%; height: 100vh; position:fixed; z-index: 2; top: 0; left: 0; opacity: 0.7; background: white; display: flex; justify-content: center; align-items: center">
+      <div class="spinner center">
+        <div class="dot1"></div>
+        <div class="dot2"></div>
+      </div>
+    </div>
     <div *ngIf="hamNav.opened" style="width: 100%; height: 100vh; position:fixed; z-index: 2; top: 0; left: 0;"></div>
     <router-outlet style="z-index: 0!important;" id="rootRoute"></router-outlet>
   </div>

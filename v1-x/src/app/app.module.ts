@@ -27,6 +27,8 @@ import {
   MatSelectModule,
   MatSidenavModule, MatSlideToggleModule, MatTabsModule, MatToolbarModule
 } from '@angular/material';
+import { CloudComponent } from './c/cloud/cloud.component';
+import { AboutComponent } from './c/about/about.component';
 declare var Hammer: any;
 
 export class MyHammerConfig extends HammerGestureConfig  {
@@ -52,7 +54,9 @@ export class MyHammerConfig extends HammerGestureConfig  {
     StufeComponent,
     KurseComponent,
     ShowComponent,
-    TtcontainerComponent
+    TtcontainerComponent,
+    CloudComponent,
+    AboutComponent
   ],
   imports: [
     BrowserModule,

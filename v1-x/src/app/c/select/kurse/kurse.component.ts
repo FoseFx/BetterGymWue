@@ -32,6 +32,7 @@ export class KurseComponent implements OnInit {
   @Input() set stufe(val: string) {
     this._stufe = val;
     if (!val) return;
+
     this.stufeKurse = undefined;
 
     // Is already downloaded?
@@ -44,6 +45,7 @@ export class KurseComponent implements OnInit {
     });
     if (this.stufeKurse) return;
     // no, it isn't
+    this.baseService.milchglas = true;
     this.netwService.stufen.then(
       (st) => {
         let i;
@@ -78,7 +80,9 @@ export class KurseComponent implements OnInit {
 
             this.kurse.push({stufe:this._stufe, kurse: v, titles: this.titles});
             this.stufeKurse = v;
+            this.baseService.milchglas = false;
           }).catch((err) => {
+            this.baseService.milchglas = false;
             this.alert.alert(err, this.alert.DANGER);
           });
       });
@@ -105,6 +109,7 @@ export class KurseComponent implements OnInit {
 
   kursSubmit(){
     if (!this.valid) return;
+    this.baseService.milchglas = true;
     let mykurse = [];
     this.stufeKurse.forEach((val) => {
       if (val.selected && !val.ph) mykurse.push({title: val.title, fach: val.fach, lehrer: val.lehrer});
@@ -120,6 +125,7 @@ export class KurseComponent implements OnInit {
       });
     }
     this.baseService.setTT(this.netwService.getTT(this._stufe));
+    this.baseService.milchglas = false;
     this.router.navigate(['show']);
 
   }
