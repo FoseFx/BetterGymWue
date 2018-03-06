@@ -56,15 +56,14 @@ export class NetwService {
     returnArray[0] = ret.split("<meta http-equiv=\"refresh\" content=\"10; URL=")[1].split("\">")[0];
     let arr = [];
     $(ret).find("table.mon_list").children("tbody").children("tr.list").each(function (index, v) {
-      if (index == 0) return;
+      if (index === 0) return;
       v = $(v);
-      if (v.children().length == 1) arr.push({stufe: $(v.children()[0]).html().split(" ")[0]});
+      if (v.children().length == 1) arr.push({stufe: $(v.children()[0]).html().split(" ")[0], cntnd: []});
       else{
         let s = [];
         $(v.children()[1]).html().split("-").forEach((idk) => {s.push(idk.replace(" ", ""))});
-        s.forEach((ss, index) => {
+        s.forEach((ss, iii) => {
           let infoo = $(v.children()[6]).html();
-
           let t = $(v.children()[3]).html().replace(" ", "").replace("<b>", "").replace("</b>", "");
           if (t.toLowerCase() == "entfall") t = "e";
           else if (t.toLowerCase() == "vertretung") {
@@ -76,15 +75,24 @@ export class NetwService {
           }else if (t.toLowerCase() == "raum-vtr.") t = "r";
           else if (t.toLowerCase() == "klausur") t = "k";
           infoo.replace();
-          if(index !== 0) arr.push({stufe: arr[arr.length-1].stufe});
-          arr[arr.length - 1].type = t;
-          arr[arr.length - 1].date = $(v.children()[0]).html().replace(" ", "");
-          arr[arr.length - 1].fach = $(v.children()[2]).html().replace(" ", "");
-          arr[arr.length - 1].oldRaum = $(v.children()[4]).html().replace(" ", "");
-          arr[arr.length - 1].newRaum = $(v.children()[5]).html().replace(" ", "");
-          arr[arr.length - 1].info = infoo;
-          arr[arr.length - 1].stunde = ss;
-
+          //if(iii !== 0) arr.push({stufe: arr[arr.length-1].stufe});
+          arr[arr.length - 1].cntnd.push({
+            type: t,
+            date: $(v.children()[0]).html().replace(" ", ""),
+            fach: $(v.children()[2]).html().replace(" ", ""),
+            oldRaum: $(v.children()[4]).html().replace(" ", ""),
+            newRaum: $(v.children()[5]).html().replace(" ", ""),
+            info: infoo,
+            stunde: ss
+          });
+          //arr[arr.length - 1].date = $(v.children()[0]).html().replace(" ", "");
+          //arr[arr.length - 1].fach = $(v.children()[2]).html().replace(" ", "");
+          //arr[arr.length - 1].oldRaum = $(v.children()[4]).html().replace(" ", "");
+          //arr[arr.length - 1].newRaum = $(v.children()[5]).html().replace(" ", "");
+          //arr[arr.length - 1].info = infoo;
+          //arr[arr.length - 1].stunde = ss;
+          //console.log(ss);
+          //console.log(Array.from(arr)[arr.length - 1]);
         });
       }
     });
@@ -92,16 +100,31 @@ export class NetwService {
     $(ret).find("table.info").children("tbody").children("tr").each(function (index, v) {
       info.push($(v).text());
     });
-    console.log(arr);
     returnArray[1] = [arr, info];
     return returnArray;
   }
 
   private compileVD(slides){
+    console.log(slides);
     let compr = {};
     let info = [];
     slides.forEach((a) => {
-      a[0].forEach((t) => { if (compr[t.stufe]) compr[t.stufe].push(t); else compr[t.stufe] = [t]; });
+      a[0].forEach((t) => {
+        let arr = [];
+        t.cntnd.forEach((r) => {
+          arr.push({stufe: t.stufe,
+            date: r.date,
+            fach: r.fach,
+            oldRaum: r.oldRaum,
+            newRaum: r.newRaum,
+            info: r.info,
+            stunde: r.stunde,
+            type: r.type});
+        });
+        arr.forEach((arrE) => {
+          if (compr[arrE.stufe]) compr[arrE.stufe].push(arrE); else compr[arrE.stufe] = [arrE];
+        });
+      });
       if (a[1][0]) info.push(a[1]);
     });
     // sort
@@ -112,7 +135,7 @@ export class NetwService {
         else return 0;
       });
     }
-
+    console.log(compr);
     return [info, compr];
   }
 
