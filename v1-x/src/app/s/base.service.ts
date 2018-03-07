@@ -11,7 +11,7 @@ export class BaseService {
 
   public acceptedAGB: boolean;
   allowedBrowser: boolean;
-  public credentials: {u: string, p: string};
+  public credentials: {u: string, p: string, l?: {u: string, p: string}};
   public myKurse;
   public myStufe;
   public myStufeID;
