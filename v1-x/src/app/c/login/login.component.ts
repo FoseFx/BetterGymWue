@@ -11,7 +11,7 @@ import {version} from 'punycode';
 })
 export class LoginComponent implements OnInit, AfterViewInit {
 
-  constructor(private baseService: BaseService, private router: Router, private route: ActivatedRoute) { }
+  constructor(public baseService: BaseService, private router: Router, private route: ActivatedRoute) { }
 
   @ViewChild('loginForm') form: NgForm;
   fine = true;
@@ -21,6 +21,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
     if (this.baseService.credentials && !this.route.snapshot.queryParams['force']) {
       this.router.navigate(['/select']);
     } else this.show = true;
+    console.log(this.baseService.credentials);
   }
   formSubmitted() {
     if (!this.form.valid) return;

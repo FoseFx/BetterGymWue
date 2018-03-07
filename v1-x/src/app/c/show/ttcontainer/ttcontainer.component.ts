@@ -109,8 +109,12 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
         this.baseService.KlassenKurse.forEach((val) => {
           if (val == row.fach) relevant.push(row);
         });
+        try{if(/^\s+$/.test(row.fach)) relevant.push(row);} catch (e){}
+        if(row.fach == undefined) relevant.push(row);
       });
-      this.info = Array.from(w[0][0]);
+      try{
+        this.info = Array.from(w[0][0]);
+      } catch (e){console.log(e);}
       this.VDStufe = VDT;
       this.VDMe = relevant;
       this.baseService.milchglas = false;
@@ -126,18 +130,32 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
   }
 
   getOnMyPos(index){
-    let rel = {
-      date: "",
-      fach: "",
-      info: "",
-      newRaum: "",
-      oldRaum: "",
-      stufe: "",
-      stunde:"",
-      type: ""
-    };
-    this.VDMe.forEach((me) => { if (me.stunde == index + 1) rel = me; });
-    return rel;
+    if(this.VDMe.length == 0) return {date: "", fach: "", info: "", newRaum: "", oldRaum: "", stufe: "", stunde:"", type: ""};
+    let rel: {
+      date: string,
+      fach: string,
+      info: string,
+      newRaum: string,
+      oldRaum: string,
+      stufe: string,
+      stunde:string,
+      type: string
+    }[] = [];
+    this.VDMe.forEach((me) => { if (me.stunde == (index + 1) && !me.nd) {
+      rel.push(me)
+    }});
+
+    if(rel.length == 1) return rel[0];
+    if(rel.length == 0) return {date: "", fach: "", info: "", newRaum: "", oldRaum: "", stufe: "", stunde:"", type: ""};
+    rel.sort(function (a, b) {
+      // K > E > V > R
+      if( (a.type == "k" && (b.type == "e" || b.type == "v" || b.type == "r")) ||
+        (a.type == "e" && (b.type == "v" || b.type == "r")) ||
+        (a.type == "v" && b.type == "r")) return -1;
+      else if (a.type == b.type)return 0;
+      else return 1;
+    });
+    return rel[0];
   }
 
 }
