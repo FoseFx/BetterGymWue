@@ -86,7 +86,9 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
 
   checkVertretung(){
     this.baseService.milchglas = true;
-    this.netwService.getVertretungsDaten((this._index == 0) ? 'f1' : 'f2', this._index).then((w)=>{
+    this.netwService.getVertretungsDaten(this.readableDate, this._index).then((w)=>{
+      console.log(this.readableDate);
+      console.log(w);
       let VD  = undefined;
       for (let Vobj in w[1]){
         if (Vobj == this.baseService.myStufe) VD = w[1][Vobj];
