@@ -5,8 +5,8 @@ if($_GET['hash'] == 'true'){
 }
 
 header('Access-Control-Allow-Origin: *');
-header( 'Access-Control-Allow-Headers: authorization, Content-type' );
-header('Access-Control-Allow-Methods: GET');
+header( 'Access-Control-Allow-Headers: authorization, Content-type, Accept-Charset, Accept' );
+header('Access-Control-Allow-Methods: GET, OPTIONS');
 header('Content-Type: text/html');
 
 if (!function_exists('getallheaders'))
