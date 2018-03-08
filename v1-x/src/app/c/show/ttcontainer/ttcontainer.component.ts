@@ -115,7 +115,7 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
         if(row.fach == undefined) relevant.push(row);
       });
       try{
-        this.info = Array.from(w[0][0]);
+        this.info = this.info.concat(Array.from(w[0][0]));
       } catch (e){console.log(e);}
       this.VDStufe = VDT;
       this.VDMe = relevant;
@@ -128,6 +128,10 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
     console.log(this.VDMe);
   }
   ngAfterViewInit(){
+    this.netwService.getSchulplanerInfo(this.readableDate).then((value: string) => {
+      console.log(value);
+      this.info = this.info.concat(value);
+    });
     this.checkVertretung();
   }
 
