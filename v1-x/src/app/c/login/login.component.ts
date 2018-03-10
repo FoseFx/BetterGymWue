@@ -39,7 +39,9 @@ export class LoginComponent implements OnInit, AfterViewInit {
       } else {
         this.fine = false;
       }
-    }));
+    })).catch(() => {
+      this.baseService.milchglas = false;
+    });
   }
 
 

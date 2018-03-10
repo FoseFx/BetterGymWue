@@ -114,9 +114,18 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
         try{if(/^\s+$/.test(row.fach)) relevant.push(row);} catch (e){}
         if(row.fach == undefined) relevant.push(row);
       });
+
+
+      VDT.sort(function (a, b) {
+        return cmp(a.stunde[0], b.stunde[0]) || cmp(a.type, b.type);
+      });
+
+
       try{
         this.info = this.info.concat(Array.from(w[0][0]));
       } catch (e){console.log(e);}
+
+
       this.VDStufe = VDT;
       this.VDMe = relevant;
       this.baseService.milchglas = false;
@@ -131,6 +140,8 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
     this.netwService.getSchulplanerInfo(this.readableDate).then((value: string) => {
       console.log(value);
       this.info = this.info.concat(value);
+    }).catch(() => {
+      this.baseService.milchglas = false;
     });
     this.checkVertretung();
   }
@@ -148,7 +159,11 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
       type: string
     }[] = [];
     this.VDMe.forEach((me) => { if (me.stunde == (index + 1) && !me.nd) {
-      rel.push(me)
+      if(me.type == 'k'){
+        if(this.isMyKlausur(me.info)) rel.push(me);
+      }else{
+        rel.push(me)
+      }
     }});
 
     if(rel.length == 1) return rel[0];
@@ -163,5 +178,16 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
     });
     return rel[0];
   }
+  isMyKlausur(info):boolean{
+    this.baseService.myKurse.forEach((kurs) => {
+      if(info.match(kurs.fach) != null) return true;
+    });
+    return false;
+  }
 
+}
+
+
+function cmp(x, y) {
+  return x > y ? 1 : (x < y ? -1 : 0);
 }

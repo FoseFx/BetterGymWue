@@ -4,7 +4,9 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {CONFIG} from '../conf';
 import {validate} from 'codelyzer/walkerFactory/walkerFn';
 import {Observable} from 'rxjs/Observable';
+import * as $ from 'jquery';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/observable/fromPromise';
 declare function unescape(s:string): string;
 @Injectable()
 export class BaseService {
@@ -95,8 +97,9 @@ export class BaseService {
     });
   }
 
-  makeConnections(url: string) {
+  makeConnections(url: string):Observable<any>{
     if (this.credentials){
+      /*
       let he = new HttpHeaders({
           'Authorization': 'Basic ' + btoa(this.credentials.u + ':' + this.credentials.p),
           'Content-Type': 'Content-type: text/html; charset=iso-8859-1'
@@ -108,6 +111,27 @@ export class BaseService {
         //return unescape(encodeURI(r)); todo fix problems with encoding
         return r;
       });
+      */
+      let credentials = this.credentials;
+
+      let p = new Promise((resolve, reject) => {
+        $.ajax({
+          contentType: 'Content-type: text/html; charset=iso-8859-1',
+          url: url,
+          beforeSend: function(xhr){
+            xhr.setRequestHeader("Authorization", "Basic " + btoa(credentials.u + ':' + credentials.p));
+            xhr.overrideMimeType('text/html;charset=iso-8859-1');
+          },
+          type: "GET",
+          success: (html) => {
+            resolve(html);
+          },
+          error: (err, r,t) => {
+            reject(t);
+          }
+        });
+      });
+      return Observable.fromPromise(p);
     }
     else return null;
   }

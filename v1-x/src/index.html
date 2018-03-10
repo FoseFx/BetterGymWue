@@ -21,7 +21,7 @@
 
 
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link rel="stylesheet" href="https://bootswatch.com/4/materia/bootstrap.css">
+  <link rel="stylesheet" href="bootstrap.css">
 
 
 
@@ -32,7 +32,8 @@
 
 
 <script>
-  if("serviceWorker" in navigator){
+  var prod = true;
+  if("serviceWorker" in navigator && prod){
     window.addEventListener('load', function () {
       navigator.serviceWorker.register('/service-worker.js').then(function (reg) {
         console.log("ServiceWorker Registered " + reg.scope);
@@ -41,8 +42,6 @@
         console.log('ServiceWorker registration failed: ', err);
       });
     });
-
-
   }
 
 </script>
