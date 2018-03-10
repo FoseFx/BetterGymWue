@@ -31,7 +31,7 @@ export class NetwService {
       this.baseService.makeConnections(CONFIG.vertURL + urlmiddle + '/' + file[i]).subscribe(
         (wert) => {
           if($(wert).find(".mon_title").html().match(tag) === null){
-            reject(true);
+            reject(urlmiddle);
           }
           let eva = this.evaVD(wert);
           file[i] = eva[0];
@@ -40,7 +40,8 @@ export class NetwService {
         },
         (err) => {
           this.alertService.alert('Failure: ' + err.statusText, this.alertService.DANGER);
-        }
+          reject('fail');
+        },
       );
     }).then((t) => {
       let tag = t[0];
@@ -49,13 +50,18 @@ export class NetwService {
       let file = t[3];
       let sides = t[4];
       if (file[i] == this.start) {
-        // todo compile and resolve
         return this.compileVD(sides);
       } else return this.getVertretungsDaten(tag, i, urlmiddle, file, sides);
     })
-      .catch(() => {
-        console.log("rej");
-        return this.getVertretungsDaten(tag, i, 'f2')
+      .catch((err) => {
+        if(err != 'fail'){
+          console.log("rej " + err);
+          if(err != 'f2') return this.getVertretungsDaten(tag, i, 'f2');
+          else return new Promise((resolve, reject) => {reject('loop')});
+        }else{
+          this.baseService.milchglas = false;
+          return new Promise((resolve, reject) => {reject()});
+        }
       });
 
   }
@@ -70,6 +76,9 @@ export class NetwService {
           let valueAll2 = (valueAll == "null")? [] : JSON.parse(valueAll);
           resolve(val2.concat(valueAll2));
         });
+      },
+      (err) => {
+        reject(err);
       });
     });
   }
@@ -97,7 +106,11 @@ export class NetwService {
             ) t = "e (v)";
           }else if (t.toLowerCase() == "raum-vtr.") t = "r";
           else if (t.toLowerCase() == "klausur") t = "k";
-          infoo.replace();
+          infoo = infoo.toLowerCase().replace("selbstständiges arbeiten", "Selbst. Arb.");
+          infoo = infoo.toLowerCase().replace("selbständiges arbeiten", "Selbst. Arb.");
+          infoo = infoo.toLowerCase().replace("selbstäniges arbeiten", "Selbst. Arb.");
+          infoo = infoo.toUpperCase().replace("&NBSP;", " ");
+
           arr[arr.length - 1].cntnd.push({
             type: t,
             date: $(v.children()[0]).html().replace(" ", ""),
