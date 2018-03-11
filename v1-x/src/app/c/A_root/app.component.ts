@@ -44,6 +44,11 @@ export class AppComponent implements AfterViewInit{
     rl()
   }
 
+  get credentialsLiegen(){
+    if (!this.baseService.credentials) return false;
+    return !this.baseService.credentials.l;
+
+  }
 
 }
 function rl(){
