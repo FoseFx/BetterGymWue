@@ -74,23 +74,32 @@ export class BaseService {
     this.router.navigate(['/'], {queryParams: {ua: ''}});
   }
 
-  checkCredentials(u: string, p: string) {
+  checkCredentials(u: string, p: string, lehrer?:boolean) {
+    lehrer = lehrer || false;
     return new Promise((resolve, reject) => {
-
-      this.httpClient.get(CONFIG.credentialsCheckUrl, {
+      this.httpClient.get((lehrer)? CONFIG.credentialsCheckLehrerUrl : CONFIG.credentialsCheckUrl, {
         headers: new HttpHeaders({'Authorization': 'Basic ' + btoa(u + ':' + p)}),
         responseType: 'text'
       }).subscribe(
         (value) => {
-          if (value) {
+          if (value && !lehrer) {
             localStorage.credentials = JSON.stringify({u: u, p: p});
             this.credentials = {u: u, p: p};
+            resolve(true);
+          }else if(value && lehrer){
+            let obj = JSON.parse(localStorage.credentials);
+            obj.l = {u: u, p: p};
+            console.log(obj);
+            localStorage.credentials = JSON.stringify(obj);
+            this.credentials = obj;
             resolve(true);
           }
         },
         (err) => {
-          delete localStorage.credentials;
-          this.credentials = undefined;
+          if(!lehrer){
+            delete localStorage.credentials;
+            this.credentials = undefined;
+          }
           resolve(false);
         }
       );
@@ -99,19 +108,6 @@ export class BaseService {
 
   makeConnections(url: string):Observable<any>{
     if (this.credentials){
-      /*
-      let he = new HttpHeaders({
-          'Authorization': 'Basic ' + btoa(this.credentials.u + ':' + this.credentials.p),
-          'Content-Type': 'Content-type: text/html; charset=iso-8859-1'
-        });
-      return this.httpClient.get(url, {
-        headers: he,
-        responseType: 'text'
-      }).map((r) => {
-        //return unescape(encodeURI(r)); todo fix problems with encoding
-        return r;
-      });
-      */
       let credentials = this.credentials;
 
       let p = new Promise((resolve, reject) => {
@@ -127,7 +123,8 @@ export class BaseService {
             resolve(html);
           },
           error: (err, r,t) => {
-            reject(t);
+            let e = {statusText: r};
+            reject(e);
           }
         });
       });
