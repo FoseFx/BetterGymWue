@@ -4,7 +4,8 @@
     <div class="card-body">
 
       <form #loginForm="ngForm" (submit)="formSubmitted()">
-        <p style="width: 20rem" class="text-danger" *ngIf="select.value == 'lehrer'">Der Lehrer Zugang erweitert den Schüler Zugang und ist nicht eigenständig! (Noch nicht implementiert)</p>
+        <p style="width: 20rem" class="text-danger" *ngIf="select.value == 'lehrer'">Der Lehrer Zugang erweitert den Schüler Zugang und ist nicht eigenständig!</p>
+        <p style="width: 20rem" class="text-danger" *ngIf="select.value == 'lehrer' && falseLehrerLogin">Kein Schüler Zugang gesetzt!</p>
         <mat-form-field style="width: 20rem!important;">
           <mat-select placeholder="Nutzer" ngModel name="nutzer" required #select>
             <mat-option value="schueler">schueler</mat-option>
@@ -17,7 +18,7 @@
           <input matInput type="password" placeholder="Passwort" style="box-shadow: none" ngModel name="psw" required> <!--style="width: 20rem"-->
         </mat-form-field>
         <br>
-        <button mat-raised-button color="accent" *ngIf="select.value !== 'lehrer' || baseService.credentials.l" [ngClass]="{'disabled': !loginForm.valid}">Login</button>
+        <button mat-raised-button color="accent" [ngClass]="{'disabled': !loginForm.valid}">Login</button>
       </form>
     </div>
   </div>

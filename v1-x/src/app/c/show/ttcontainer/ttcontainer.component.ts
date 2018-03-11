@@ -117,7 +117,7 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
 
 
       VDT.sort(function (a, b) {
-        return cmp(a.stunde[0], b.stunde[0]) || cmp(a.type, b.type);
+        return cmp(a.stunde[0], b.stunde[0]) || cmp(a.kurs, b.kurs) ||cmp(a.type, b.type);
       });
 
 
