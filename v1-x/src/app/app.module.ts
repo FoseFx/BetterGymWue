@@ -22,13 +22,14 @@ import { TtcontainerComponent } from './c/show/ttcontainer/ttcontainer.component
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
   MatButtonModule,
-  MatDividerModule, MatFormFieldModule, MatIconModule, MatInputModule,
+  MatDividerModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule,
   MatListModule,
   MatSelectModule,
   MatSidenavModule, MatSlideToggleModule, MatTabsModule, MatToolbarModule
 } from '@angular/material';
 import { CloudComponent } from './c/cloud/cloud.component';
 import { AboutComponent } from './c/about/about.component';
+import { StundenplanComponent } from './c/stundenplan/stundenplan.component';
 declare var Hammer: any;
 
 export class MyHammerConfig extends HammerGestureConfig  {
@@ -56,7 +57,8 @@ export class MyHammerConfig extends HammerGestureConfig  {
     ShowComponent,
     TtcontainerComponent,
     CloudComponent,
-    AboutComponent
+    AboutComponent,
+    StundenplanComponent
   ],
   imports: [
     BrowserModule,
@@ -74,7 +76,8 @@ export class MyHammerConfig extends HammerGestureConfig  {
     MatIconModule,
     MatTabsModule,
     MatDividerModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatExpansionModule
   ],
   providers: [
     BaseService,

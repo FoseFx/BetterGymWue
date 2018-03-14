@@ -15,7 +15,7 @@ export class NetwService {
   private _stufen;
   public wochen = [];
   saveKurseTrys = 0;
-  private tempTTs: { stufe: string, tt: {}[] }[] = [];
+  public tempTTs: { stufe: string, tt: {}[] }[] = [];
 
   constructor(private baseService: BaseService, private alertService: AlertService, private httpClient: HttpClient) {
     this._stufen = (localStorage.stufen) ? JSON.parse(localStorage.stufen) : undefined;
@@ -185,13 +185,11 @@ export class NetwService {
   getkurse(stufe: string, stufeid: number): Promise<any> {
     return new Promise((resolve, reject) => {
       if (!this.wochen[0] || !this.wochen[1]) reject('Internal Error: #01');
-
       const res = this.baseService.makeConnections(CONFIG.baseKursURL + this.wochen[0] + '/c/c' + this.generate5(stufeid) + '.htm');
       if (res === null) reject('Failure: Connection could not be made');
       res.subscribe(
         (r) => {
           this.evaKurse(r, ((this.wochen[0] % 2) === 0) ? 'a' : 'b', stufe);
-
           //woche 2
           const res2 = this.baseService.makeConnections(CONFIG.baseKursURL + this.wochen[1] + '/c/c' + this.generate5(stufeid) + '.htm');
           res2.subscribe(

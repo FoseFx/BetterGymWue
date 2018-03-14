@@ -5,6 +5,7 @@ import {BaseService} from './base.service';
 import {LoginComponent} from '../c/login/login.component';
 import {ShowComponent} from '../c/show/show.component';
 import {CloudComponent} from '../c/cloud/cloud.component';
+import {StundenplanComponent} from '../c/stundenplan/stundenplan.component';
 @Injectable()
 export class GuardService implements CanActivate {
 
@@ -21,7 +22,7 @@ export class GuardService implements CanActivate {
         return false;
       }
     }
-    if(route.component === ShowComponent){
+    if(route.component === ShowComponent || route.component === StundenplanComponent){
       if(!this.baseService.myKurse){
         this.router.navigate(['/']);
       }
