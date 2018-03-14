@@ -106,7 +106,8 @@ export class BaseService {
     });
   }
 
-  makeConnections(url: string):Observable<any>{
+  makeConnections(url: string, lehrer?:boolean):Observable<any>{
+    lehrer = lehrer || false;
     if (this.credentials){
       let credentials = this.credentials;
 
@@ -115,7 +116,7 @@ export class BaseService {
           contentType: 'Content-type: text/html; charset=iso-8859-1',
           url: url,
           beforeSend: function(xhr){
-            xhr.setRequestHeader("Authorization", "Basic " + btoa(credentials.u + ':' + credentials.p));
+            xhr.setRequestHeader("Authorization", "Basic " + ((!lehrer) ? btoa(credentials.u + ':' + credentials.p) : btoa(credentials.l.u+ ':' +credentials.l.p)));
             xhr.overrideMimeType('text/html;charset=iso-8859-1');
           },
           type: "GET",

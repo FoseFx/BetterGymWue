@@ -7,3 +7,15 @@
 .sel{
   font-weight: bold;
 }
+tbody{
+  table-layout: fixed;
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+tbody:nth-child(2n+0){
+  background: lightgrey;
+}
+td{
+  text-align: center;
+}

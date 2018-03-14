@@ -1,8 +1,8 @@
 <div class="container">
-  <mat-tab-group>
-    <mat-tab *ngFor="let tt of tts" [label]="tt.woche">
+  <div *ngFor="let tt of tts">
+    <br>
+    <h2>{{tt.woche + " Woche"}}</h2>
       <mat-accordion>
-
         <mat-expansion-panel *ngFor="let day of tt.tt; let dayi = index;" [expanded]="false">
           <mat-expansion-panel-header>
             <mat-panel-title>
@@ -16,32 +16,36 @@
           </mat-expansion-panel-header>
 
           <table class="table table-hover">
-            <tbody>
-            <tr *ngFor="let stunde of day; let stundei = index;">
+            <tbody *ngFor="let stunde of day; let stundei = index;">
+            <tr>
               <td><b>{{stundei + 1}}</b></td>
-              <td>
+              <td *ngFor="let k of stunde;" [ngClass]="{'sel': k.sel}">
+                {{k.fach}}
+              </td>
+              <!--              <td>
+                              <table class="table table-sm">
+                                <tbody>
+                                <tr *ngFor="let k of stunde;" [ngClass]="{'sel': k.sel}">
+                                  <td>{{k.fach}}</td>
+                                  <td>{{k.raum}}</td>
+                                </tr>
+                                </tbody>
+                              </table>
 
-                <table class="table table-sm">
-                  <tbody>
-                  <tr *ngFor="let k of stunde;" [ngClass]="{'sel': k.sel}">
-                    <td>{{k.fach}}</td>
-                    <td>{{k.raum}}</td>
-                  </tr>
-                  </tbody>
-                </table>
-
+              </td>
+  -->
+            </tr>
+            <tr>
+              <td></td>
+              <td *ngFor="let k of stunde;" [ngClass]="{'sel': k.sel}">
+                {{k.raum}}
               </td>
             </tr>
 
-
             </tbody>
           </table>
-
-
         </mat-expansion-panel>
-
       </mat-accordion>
-    </mat-tab>
-  </mat-tab-group>
-
+    <br><br>
+  </div>
 </div>
