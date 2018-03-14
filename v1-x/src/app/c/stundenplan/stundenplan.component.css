@@ -1,0 +1,9 @@
+.ttc{
+  width: 100%;
+  display: block;
+  height: auto;
+  overflow-x: auto;
+}
+.sel{
+  font-weight: bold;
+}
