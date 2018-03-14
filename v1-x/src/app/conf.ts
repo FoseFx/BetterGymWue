@@ -5,5 +5,6 @@ export const CONFIG = {
   credentialsCheckLehrerUrl: baseUrl + 'Lehrer-Stundenplan/frames/navbar.htm',
   baseKursURL: baseUrl + 'Schueler-Stundenplan/', // baseKursURL + WOCHE + /c/c + STUFENDIFF
   dbUrl: 'https://bettergymwue.firebaseio.com/kurse/',
-  vertURL: baseUrl + 'Schueler/'
+  vertURL: baseUrl + 'Schueler/',
+  lehrerURL: baseUrl + 'Lehrer/' // .. f1/subst_001.htm
 };
