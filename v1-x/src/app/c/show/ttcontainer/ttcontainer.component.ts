@@ -1,7 +1,7 @@
 import {Component, Input, OnInit, AfterViewInit} from '@angular/core';
 import {BaseService} from '../../../s/base.service';
 import {NetwService} from '../../../s/netw.service';
-
+import * as $ from 'jquery';
 @Component({
   selector: 'show-ttcontainer',
   templateUrl: './ttcontainer.component.html',
@@ -36,7 +36,8 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
     stufe: string,
     stunde:string,
     type: string,
-    nd?:number
+    nd?:number,
+    lehrer?:string
   }[] = [];
   VDMe: {
     date: string,
@@ -47,7 +48,8 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
     stufe: string,
     stunde:string,
     type: string,
-    nd?:number
+    nd?:number,
+    lehrer?:string
   }[] = [];
   readableDate;
   tag = "";
@@ -133,6 +135,13 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
       this.baseService.milchglas = false;
     });
   }
+  unHTML(string:string):string{
+    if(string.indexOf("<") != -1){
+      return $(string).text()
+    }else{
+      return string;
+    }
+  }
   ngOnInit(){
     console.log(this.VDMe);
   }
@@ -144,6 +153,7 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
       this.baseService.milchglas = false;
     });
     this.checkVertretung();
+    console.log(this.getOnMyPos(0));
   }
 
   getOnMyPos(index){
@@ -159,7 +169,8 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
       type: string
     }[] = [];
     this.VDMe.forEach((me) => { if (me.stunde == (index + 1) && !me.nd) {
-      if(me.type == 'k'){
+      if(me.type.toLowerCase() == 'k'){
+        console.log(this.isMyKlausur(me.info));
         if(this.isMyKlausur(me.info)) rel.push(me);
       }else{
         rel.push(me)
@@ -179,10 +190,11 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
     return rel[0];
   }
   isMyKlausur(info):boolean{
+    let val = false;
     this.baseService.myKurse.forEach((kurs) => {
-      if(info.match(kurs.fach) != null) return true;
+      if(info.indexOf(kurs.fach.toUpperCase()) != -1) val = true;
     });
-    return false;
+    return val;
   }
 
 }
