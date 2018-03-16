@@ -150,7 +150,8 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
     console.log(this.VDMe);
   }
   ngAfterViewInit(){
-    this.netwService.getSchulplanerInfo(this.readableDate).then((value: string) => {
+    this.netwService.getSchulplanerInfo(this.readableDate).then((value: string[]) => {
+      value.forEach((v, i, a) => {value[i] += 'SCHULPLANER_INFO'});
       console.log(value);
       this.info = this.info.concat(value);
     }).catch(() => {

@@ -1,0 +1,29 @@
+.entfall{
+  color: red;
+  font-weight: bold;
+}
+.vertretung{
+  color: lightgreen;
+  font-weight: bold;
+}
+.raumV{
+  color: goldenrod;
+}
+.btmtbl{
+  margin-bottom: 30px;
+}
+.klausur{
+  color: blue!important;
+  font-style: oblique!important;
+}
+.mine{
+  font-weight: bold;
+  color: chocolate!important;
+}
+.bold{
+  font-weight: bold;
+}
+.schulplaner{
+  font-style: italic;
+  background: rgba(255, 255, 0, 0.2);
+}
