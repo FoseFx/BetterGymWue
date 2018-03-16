@@ -22,7 +22,7 @@
     </tbody>
   </table>
   <br>
-
+  <h2><small class="text-muted" *ngIf="!(online | async)">{{'Alte Version von ' + (offlineDate | date: 'HH:mm') + ' Uhr am ' + (offlineDate | date: 'dd.MM.')}}</small></h2>
   <h3 *ngIf="info.length > 0">Info:</h3>
   <table *ngIf="info.length > 0" class="table table-sm">
     <tbody>
@@ -35,8 +35,8 @@
   <br>
 
   <h2 *ngIf="VDStufe.length > 0">{{baseService.myStufe + ": "}} &nbsp;
-  <mat-slide-toggle *ngIf="VDStufe.length > 0 && baseService.credentials.l" [(ngModel)]="preLehrer">Lehrer</mat-slide-toggle>
-    <br><small class="text-muted" *ngIf="!!offlineDate">{{'Alte Version von ' + offlineDate}}</small>
+  <mat-slide-toggle *ngIf="VDStufe.length > 0 && baseService.credentials.l && (online | async)" [(ngModel)]="preLehrer">Lehrer</mat-slide-toggle>
+  <mat-slide-toggle *ngIf="!(online | async)" disabled [checked]="offlinepreLehrer">Lehrer</mat-slide-toggle>
   </h2>
   <table *ngIf="VDStufe.length > 0" class="table table-sm btmtbl">
     <tbody>
