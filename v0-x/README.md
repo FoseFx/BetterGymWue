@@ -1,4 +1,6 @@
-# BetterGymWue
+#Outdated!
+Diese Version von BGW ist outdated! Die neuere Version ist ebenfalls im Respo!
+#Old BetterGymWue
 
 
 ----------
