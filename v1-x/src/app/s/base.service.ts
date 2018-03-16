@@ -21,6 +21,7 @@ export class BaseService {
   public KlassenKurse; // guter Name
   public kursID;
   public noswipe = false;
+  private _preLehrer:boolean;
 
   public milchglas = false;
 
@@ -39,6 +40,16 @@ export class BaseService {
     this.TT = (!!localStorage.TT) ? JSON.parse(localStorage.TT) : undefined;
     this.KlassenKurse = (!!localStorage.KlassenKurse) ? JSON.parse(localStorage.KlassenKurse) : undefined;
     this.kursID = (!!localStorage.kursID) ? localStorage.kursID : undefined;
+    this._preLehrer = (!!localStorage.preLehrer) ? (localStorage.preLehrer == 'true') : true;
+  }
+
+  set preLehrer(val){
+    this._preLehrer = val;
+    localStorage.preLehrer = val;
+  }
+
+  get preLehrer() {
+    return this._preLehrer;
   }
 
   set MyKurse(val){

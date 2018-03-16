@@ -27,14 +27,13 @@ export class NetwService {
     urlmiddle = urlmiddle || 'f1';
     file = file || ['subst_001.htm', 'subst_001.htm'];
     sides = sides || [];
-    if(!this.baseService.credentials.l) return new Promise((resolve, reject) => {
+    if(!this.baseService.credentials.l || !this.baseService.preLehrer) return new Promise((resolve, reject) => {
       this.baseService.makeConnections(CONFIG.vertURL + urlmiddle + '/' + file[i]).subscribe(
         (wert) => {
           if($(wert).find(".mon_title").html().match(tag) === null){
             reject(urlmiddle);
           }
           let eva = this.evaVD(wert);
-          console.log(eva);
           file[i] = eva[0];
           sides.push(eva[1]);
           resolve([tag, i, urlmiddle, file, sides]);

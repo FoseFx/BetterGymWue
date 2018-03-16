@@ -2,6 +2,7 @@ import {Component, Input, OnInit, AfterViewInit} from '@angular/core';
 import {BaseService} from '../../../s/base.service';
 import {NetwService} from '../../../s/netw.service';
 import * as $ from 'jquery';
+import {Router} from '@angular/router';
 @Component({
   selector: 'show-ttcontainer',
   templateUrl: './ttcontainer.component.html',
@@ -68,7 +69,7 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
     this._index = val;
   }
 
-  constructor(public baseService: BaseService, private netwService: NetwService) { }
+  constructor(public baseService: BaseService, private netwService: NetwService, private router:Router) { }
 
   filterVisible(){
     let that = this;
@@ -100,7 +101,10 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
 
       let VDT = [];
       VD.forEach((v) => {
-        if (v.date === this.readableDate) VDT.push(v);
+        if (v.date === this.readableDate) {
+          if(v.fach == "---" && v.lehrer == "-----" && v.info.replace(" ", "") == "") return;
+          else VDT.push(v);
+        }
       });
 
       let relevant = [];
@@ -170,7 +174,6 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
     }[] = [];
     this.VDMe.forEach((me) => { if (me.stunde == (index + 1) && !me.nd) {
       if(me.type.toLowerCase() == 'k'){
-        console.log(this.isMyKlausur(me.info));
         if(this.isMyKlausur(me.info)) rel.push(me);
       }else{
         rel.push(me)
@@ -196,6 +199,12 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
     });
     return val;
   }
+
+  set preLehrer(val:boolean){
+    this.baseService.preLehrer = val;
+    setTimeout(() => {this.router.navigate(['/'])}, 20);
+  }
+  get preLehrer(){return this.baseService.preLehrer}
 
 }
 
