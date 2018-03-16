@@ -63,7 +63,6 @@ export class ShowComponent implements OnInit, AfterViewInit {
       if(i === 1 && firstDate.getDate() == date.getDate())
         date.setDate(date.getDate() + 1);
       let weeksTT = tt[(getWeekNumber(date) % 2 == 0) ? 0: 1];
-      console.log(weeksTT);
       this.tts.push({tag: weeksTT.days[date.getDay() - 1], date: date});
     });
     $(".modal-backdrop").remove();

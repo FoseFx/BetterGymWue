@@ -30,3 +30,7 @@
 .bold{
   font-weight: bold;
 }
+.schulplaner{
+  font-style: italic;
+  background: rgba(255, 255, 0, 0.2);
+}
