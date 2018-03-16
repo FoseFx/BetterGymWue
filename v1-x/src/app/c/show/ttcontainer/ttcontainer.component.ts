@@ -1,9 +1,10 @@
-import {Component, Input, OnInit, AfterViewInit} from '@angular/core';
+import {Component, Input, OnInit, AfterViewInit, ChangeDetectorRef} from '@angular/core';
 import {BaseService} from '../../../s/base.service';
 import {NetwService} from '../../../s/netw.service';
 import * as $ from 'jquery';
 import {Router} from '@angular/router';
 import {Observable} from 'rxjs/Rx'
+
 @Component({
   selector: 'show-ttcontainer',
   templateUrl: './ttcontainer.component.html',
@@ -57,7 +58,8 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
   tag = "";
   setted = false;
   online: Observable<boolean>;
-  offlineDate:Date = undefined;
+  offlineDate:Date;
+  offlinepreLehrer = false;
 
   @Input() set tt(val){
     if(this.setted) return;
@@ -72,7 +74,7 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
     this._index = val;
   }
 
-  constructor(public baseService: BaseService, private netwService: NetwService, private router:Router) {
+  constructor(public baseService: BaseService, private netwService: NetwService, private router:Router, private ref: ChangeDetectorRef) {
     this.online = Observable.merge(
       Observable.of(navigator.onLine),
       Observable.fromEvent(window, 'online').mapTo(true),
@@ -96,20 +98,13 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
     });
   }
 
-  checkVertretung(offline?:boolean){
-    offline = offline || false;
-
+  checkVertretung(){
     this.baseService.milchglas = true;
-    if(offline && !!localStorage.lastVD) {
-      this.offlineDate = JSON.parse(localStorage.lastVD).d;
-      this.evaVertretung(JSON.parse(localStorage.lastVD).w);
-    }
-    else this.netwService.getVertretungsDaten(this.readableDate, this._index).then((w)=>{
+    this.netwService.getVertretungsDaten(this.readableDate, this._index).then((w)=>{
       this.evaVertretung(w);
-      localStorage.lastVD = JSON.stringify({
-        d: new Date(),
-        w: w
-      });
+
+      this.baseService.setLastVD(this._index, w, this.baseService.preLehrer);
+
       this.baseService.milchglas = false;
     }).catch(() => {
       this.baseService.milchglas = false;
@@ -124,8 +119,6 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
       if (Vobj == this.baseService.myStufe) VD = w[1][Vobj];
     }
     if (!VD) return;
-
-
     let VDT = [];
     VD.forEach((v) => {
       if (v.date === this.readableDate) {
@@ -133,7 +126,6 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
         else VDT.push(v);
       }
     });
-
     let relevant = [];
     VDT.forEach((row) => {
       //console.log(row);
@@ -148,7 +140,6 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
       if(row.fach == undefined) relevant.push(row);
     });
 
-
     VDT.sort(function (a, b) {
       return cmp(a.stunde[0], b.stunde[0]) || cmp(a.kurs, b.kurs) ||cmp(a.type, b.type);
     });
@@ -161,6 +152,8 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
 
     this.VDStufe = VDT;
     this.VDMe = relevant;
+    console.log(this.VDStufe);
+    console.log(this.VDMe);
   }
 
   unHTML(string:string):string{
@@ -173,14 +166,18 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
   ngOnInit(){
     console.log(this.VDMe);
   }
+
   ngAfterViewInit(){
     this.online.subscribe(
       (on) => {
+        console.log("On");
+        this.info = [];
         if(!on) {
           this.getVDfromCache();
           return;
-        }
+        }else delete localStorage.lastVD;
         this.netwService.getSchulplanerInfo(this.readableDate).then((value: string[]) => {
+          this.offlineDate = undefined;
           value.forEach((v, i, a) => {value[i] += 'SCHULPLANER_INFO'});
           console.log(value);
           this.info = this.info.concat(value);
@@ -194,7 +191,14 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
   }
 
   getVDfromCache(){
-
+    this.VDStufe = [];
+    this.VDMe = [];
+    if(!localStorage.lastVD) return;
+    let lastVD = JSON.parse(localStorage.lastVD);
+    if(!lastVD.w[this._index]) return;
+    this.offlineDate = new Date(lastVD.d);
+    this.offlinepreLehrer = lastVD.lehrer;
+    this.evaVertretung(lastVD.w[this._index]);
   }
   getOnMyPos(index){
     if(this.VDMe.length == 0) return {date: "", fach: "", info: "", newRaum: "", oldRaum: "", stufe: "", stunde:"", type: ""};
@@ -243,7 +247,6 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
   get preLehrer(){return this.baseService.preLehrer}
 
 }
-
 
 function cmp(x, y) {
   return x > y ? 1 : (x < y ? -1 : 0);
