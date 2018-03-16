@@ -27,7 +27,7 @@
   <table *ngIf="info.length > 0" class="table table-sm">
     <tbody>
     <tr *ngFor="let inf of info">
-      <td [ngClass]="{'bold':inf.toLowerCase().indexOf('<b>') != -1}">{{ unHTML(inf) }}</td>
+      <td [ngClass]="{'bold':inf.toLowerCase().indexOf('<b>') != -1,'schulplaner': inf.indexOf('SCHULPLANER_INFO') != -1}">{{ unHTML(inf.replace("SCHULPLANER_INFO", "")) }}</td>
     </tr>
     </tbody>
   </table>
