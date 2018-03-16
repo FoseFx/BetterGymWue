@@ -50,8 +50,7 @@ export class ShowComponent implements OnInit, AfterViewInit {
     let tt = this.baseService.TT;
     if (!tt) { this.alert.alert("Kein Stundenplan gesetzt", this.alert.DANGER); return; }
 
-    let weeksTT = tt[(getWeekNumber(new Date()) % 2 == 0) ? 0: 1];
-    console.log(weeksTT);
+
     let firstDate;
 
     [0, 1].forEach((val, i) => {
@@ -63,6 +62,8 @@ export class ShowComponent implements OnInit, AfterViewInit {
       if (i == 0) firstDate = date;
       if(i === 1 && firstDate.getDate() == date.getDate())
         date.setDate(date.getDate() + 1);
+      let weeksTT = tt[(getWeekNumber(date) % 2 == 0) ? 0: 1];
+      console.log(weeksTT);
       this.tts.push({tag: weeksTT.days[date.getDay() - 1], date: date});
     });
     $(".modal-backdrop").remove();
