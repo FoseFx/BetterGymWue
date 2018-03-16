@@ -36,10 +36,11 @@
 
   <h2 *ngIf="VDStufe.length > 0">{{baseService.myStufe + ": "}} &nbsp;
   <mat-slide-toggle *ngIf="VDStufe.length > 0 && baseService.credentials.l" [(ngModel)]="preLehrer">Lehrer</mat-slide-toggle>
+    <br><small class="text-muted" *ngIf="!!offlineDate">{{'Alte Version von ' + offlineDate}}</small>
   </h2>
   <table *ngIf="VDStufe.length > 0" class="table table-sm btmtbl">
     <tbody>
-    <tr><th>St.</th><th>Kurs</th><th>Typ</th><th>Raum</th><th>Lehrer</th><th>Info</th></tr>
+    <tr><th>St.</th><th>Kurs</th><th>Typ</th><th>Raum</th><th *ngIf="(baseService.credentials.l && baseService.preLehrer)">Lehrer</th><th>Info</th></tr>
     <tr *ngFor="let v of VDStufe;">
       <td *ngIf="v.nd"><b>{{v.stunde}}</b></td>
       <td *ngIf="v.nd">{{v.fach}}</td>
@@ -49,11 +50,11 @@
       </td>
 
       <td *ngIf="v.nd">{{v.newRaum}}</td>
-      <td *ngIf="v.nd && !baseService.credentials.l" title="Kein Lehrerzugang gesetzt"><i>?</i></td>
-      <td *ngIf="v.nd && baseService.credentials.l">{{v.lehrer}}</td>
+      <td *ngIf="v.nd && (baseService.credentials.l && baseService.preLehrer)">{{v.lehrer}}</td>
       <td *ngIf="v.nd">{{v.info}}</td>
     </tr>
     </tbody>
+
   </table>
   <br>
 </div>

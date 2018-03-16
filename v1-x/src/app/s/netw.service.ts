@@ -384,7 +384,7 @@ export class NetwService {
       let id = Math.floor(Math.random() * 9999);
       while (id.toString().length !== 4) id = Math.floor(Math.random() * 9999);
       let kurseAO: {stufe?: string} = toObject(kurse);
-      kurseAO.stufe = this.baseService.myStufe; //todo
+      kurseAO.stufe = this.baseService.myStufe;
       this.httpClient.put(CONFIG.dbUrl + id + '.json', kurseAO).subscribe(
         (wert) => {
             localStorage.kursID = id;

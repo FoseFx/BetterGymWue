@@ -3,6 +3,7 @@ import {BaseService} from '../../../s/base.service';
 import {NetwService} from '../../../s/netw.service';
 import * as $ from 'jquery';
 import {Router} from '@angular/router';
+import {Observable} from 'rxjs/Rx'
 @Component({
   selector: 'show-ttcontainer',
   templateUrl: './ttcontainer.component.html',
@@ -55,6 +56,8 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
   readableDate;
   tag = "";
   setted = false;
+  online: Observable<boolean>;
+  offlineDate:Date = undefined;
 
   @Input() set tt(val){
     if(this.setted) return;
@@ -69,7 +72,13 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
     this._index = val;
   }
 
-  constructor(public baseService: BaseService, private netwService: NetwService, private router:Router) { }
+  constructor(public baseService: BaseService, private netwService: NetwService, private router:Router) {
+    this.online = Observable.merge(
+      Observable.of(navigator.onLine),
+      Observable.fromEvent(window, 'online').mapTo(true),
+      Observable.fromEvent(window, 'offline').mapTo(false)
+    )
+  }
 
   filterVisible(){
     let that = this;
@@ -87,58 +96,73 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
     });
   }
 
-  checkVertretung(){
+  checkVertretung(offline?:boolean){
+    offline = offline || false;
+
     this.baseService.milchglas = true;
-    this.netwService.getVertretungsDaten(this.readableDate, this._index).then((w)=>{
-      console.log(this.readableDate);
-      console.log(w);
-      let VD  = undefined;
-      for (let Vobj in w[1]){
-        if (Vobj == this.baseService.myStufe) VD = w[1][Vobj];
-      }
-      if (!VD) return;
-
-
-      let VDT = [];
-      VD.forEach((v) => {
-        if (v.date === this.readableDate) {
-          if(v.fach == "---" && v.lehrer == "-----" && v.info.replace(" ", "") == "") return;
-          else VDT.push(v);
-        }
+    if(offline && !!localStorage.lastVD) {
+      this.offlineDate = JSON.parse(localStorage.lastVD).d;
+      this.evaVertretung(JSON.parse(localStorage.lastVD).w);
+    }
+    else this.netwService.getVertretungsDaten(this.readableDate, this._index).then((w)=>{
+      this.evaVertretung(w);
+      localStorage.lastVD = JSON.stringify({
+        d: new Date(),
+        w: w
       });
-
-      let relevant = [];
-      VDT.forEach((row) => {
-        //console.log(row);
-        if (row.date != this.readableDate) return;
-        this.baseService.myKurse.forEach((val) => {
-          if (val.fach == row.fach) relevant.push(row);
-        });
-        this.baseService.KlassenKurse.forEach((val) => {
-          if (val == row.fach) relevant.push(row);
-        });
-        try{if(/^\s+$/.test(row.fach)) relevant.push(row);} catch (e){}
-        if(row.fach == undefined) relevant.push(row);
-      });
-
-
-      VDT.sort(function (a, b) {
-        return cmp(a.stunde[0], b.stunde[0]) || cmp(a.kurs, b.kurs) ||cmp(a.type, b.type);
-      });
-
-
-      try{
-        this.info = this.info.concat(Array.from(w[0][0]));
-      } catch (e){console.log(e);}
-
-
-      this.VDStufe = VDT;
-      this.VDMe = relevant;
       this.baseService.milchglas = false;
     }).catch(() => {
       this.baseService.milchglas = false;
     });
   }
+
+  evaVertretung(w){
+    console.log(this.readableDate);
+    console.log(w);
+    let VD  = undefined;
+    for (let Vobj in w[1]){
+      if (Vobj == this.baseService.myStufe) VD = w[1][Vobj];
+    }
+    if (!VD) return;
+
+
+    let VDT = [];
+    VD.forEach((v) => {
+      if (v.date === this.readableDate) {
+        if(v.fach == "---" && v.lehrer == "-----" && v.info.replace(" ", "") == "") return;
+        else VDT.push(v);
+      }
+    });
+
+    let relevant = [];
+    VDT.forEach((row) => {
+      //console.log(row);
+      if (row.date != this.readableDate) return;
+      this.baseService.myKurse.forEach((val) => {
+        if (val.fach == row.fach) relevant.push(row);
+      });
+      this.baseService.KlassenKurse.forEach((val) => {
+        if (val == row.fach) relevant.push(row);
+      });
+      try{if(/^\s+$/.test(row.fach)) relevant.push(row);} catch (e){}
+      if(row.fach == undefined) relevant.push(row);
+    });
+
+
+    VDT.sort(function (a, b) {
+      return cmp(a.stunde[0], b.stunde[0]) || cmp(a.kurs, b.kurs) ||cmp(a.type, b.type);
+    });
+
+
+    try{
+      this.info = this.info.concat(Array.from(w[0][0]));
+    } catch (e){console.log(e);}
+
+
+    this.VDStufe = VDT;
+    this.VDMe = relevant;
+  }
+
   unHTML(string:string):string{
     if(string.indexOf("<") != -1){
       return $(string).text()
@@ -150,17 +174,28 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
     console.log(this.VDMe);
   }
   ngAfterViewInit(){
-    this.netwService.getSchulplanerInfo(this.readableDate).then((value: string[]) => {
-      value.forEach((v, i, a) => {value[i] += 'SCHULPLANER_INFO'});
-      console.log(value);
-      this.info = this.info.concat(value);
-    }).catch(() => {
-      this.baseService.milchglas = false;
-    });
-    this.checkVertretung();
-    console.log(this.getOnMyPos(0));
+    this.online.subscribe(
+      (on) => {
+        if(!on) {
+          this.getVDfromCache();
+          return;
+        }
+        this.netwService.getSchulplanerInfo(this.readableDate).then((value: string[]) => {
+          value.forEach((v, i, a) => {value[i] += 'SCHULPLANER_INFO'});
+          console.log(value);
+          this.info = this.info.concat(value);
+        }).catch(() => {
+          this.baseService.milchglas = false;
+        });
+        this.checkVertretung();
+        console.log(this.getOnMyPos(0));
+      }
+    );
   }
 
+  getVDfromCache(){
+
+  }
   getOnMyPos(index){
     if(this.VDMe.length == 0) return {date: "", fach: "", info: "", newRaum: "", oldRaum: "", stufe: "", stunde:"", type: ""};
     let rel: {
