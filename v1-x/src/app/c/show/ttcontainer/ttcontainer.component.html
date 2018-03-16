@@ -34,7 +34,9 @@
 
   <br>
 
-  <h2 *ngIf="VDStufe.length > 0">{{baseService.myStufe + ": "}}</h2>
+  <h2 *ngIf="VDStufe.length > 0">{{baseService.myStufe + ": "}} &nbsp;
+  <mat-slide-toggle *ngIf="VDStufe.length > 0 && baseService.credentials.l" [(ngModel)]="preLehrer">Lehrer</mat-slide-toggle>
+  </h2>
   <table *ngIf="VDStufe.length > 0" class="table table-sm btmtbl">
     <tbody>
     <tr><th>St.</th><th>Kurs</th><th>Typ</th><th>Raum</th><th>Lehrer</th><th>Info</th></tr>
