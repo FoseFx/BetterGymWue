@@ -56,7 +56,6 @@ export class NetwService {
       })
       .catch((err) => {
         if(err != 'fail'){
-          console.log("rej " + err);
           if(err != 'f2') return this.getVertretungsDaten(tag, i, 'f2');
           else return new Promise((resolve, reject) => {reject('loop')});
         }else{

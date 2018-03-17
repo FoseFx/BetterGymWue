@@ -147,16 +147,11 @@ export class BaseService {
 
   private _ws = [];
   setLastVD(index:number, w, lehrer:boolean){
+    console.log("setLastVD: " + index + ", " + lehrer);
     let andererIndex = (index == 0) ? 1:0;
-    if(!this._ws[andererIndex]){
-      // erster Durchlauf
-      this._ws[index] = w;
-    }else{
-      // zweiter durchlauf
-      this._ws[index] = w;
-      localStorage.lastVD = JSON.stringify({d: new Date(), w: this._ws, lehrer: lehrer});
-      this._ws = [];
-    }
+    // erster Durchlauf
+    this._ws[index] = w;
+    localStorage.lastVD = JSON.stringify({d: new Date(), w: this._ws, lehrer: lehrer});
   }
 
 }
