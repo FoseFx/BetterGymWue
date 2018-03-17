@@ -1,5 +1,27 @@
 <div class="container center" style="margin-top: 10px; text-align: center">
+  <br><br>
   <h1 class="center">Dein Kurs-Cloud Code:</h1>
   <h2 class="text-muted center">{{baseService.kursID}}</h2>
+  <br>
+  <p><a [href]="'https://bettergymwue.firebaseio.com/kurse/' + baseService.kursID + '.json?print=pretty'">API-Link</a></p>
+  <div style="text-align: left">
+    <h3>Konfiguration:</h3>
+    <h3><small class="text-muted">Stufe/Klasse: </small>{{baseService.myStufe}}</h3><br>
+    <table *ngIf="baseService.myKurse.length > 0" class="table table-hover table-sm" style="width: 75%;margin: 0 auto; text-align: center">
+      <tbody>
+      <tr><th>Slot</th><th>Kurs</th><th>Lehrer</th></tr>
+      <tr *ngFor="let kurs of baseService.myKurse">
+        <td>{{kurs.title}}</td>
+        <td>{{kurs.fach}}</td>
+        <td>{{kurs.lehrer}}</td>
+      </tr>
+      </tbody>
+    </table><br>
+    <h2>Wie kann ich das ändern?</h2>
+    <i class="material-icons" style="color: #444; font-size: 40px;float: left;">format_quote</i><p>Gar nicht. Das System ist so aufgebaut, dass jede ID genau einmal gesetzt werden kann und dann nicht mehr bearbeitet werden kann. Dies hat den Vorteil, dass man keine Verifizierung (User/Psw) benötigt. Um dir eine neue ID zu generieren, kannst du deine Kurse löschen und neu eingeben.</p>
+  </div>
   <a routerLink="/" class="btn btn-link">Home</a>
+  <br>
+  <br>
+  <br>
 </div>
