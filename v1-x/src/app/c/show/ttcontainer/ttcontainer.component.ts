@@ -112,8 +112,6 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
   }
 
   evaVertretung(w){
-    console.log(this.readableDate);
-    console.log(w);
     let VD  = undefined;
     for (let Vobj in w[1]){
       if (Vobj == this.baseService.myStufe) VD = w[1][Vobj];
@@ -170,12 +168,12 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
   ngAfterViewInit(){
     this.online.subscribe(
       (on) => {
-        console.log("On");
         this.info = [];
         if(!on) {
           this.getVDfromCache();
           return;
-        }else delete localStorage.lastVD;
+        }
+        delete localStorage.lastVD;
         this.netwService.getSchulplanerInfo(this.readableDate).then((value: string[]) => {
           this.offlineDate = undefined;
           value.forEach((v, i, a) => {value[i] += 'SCHULPLANER_INFO'});
@@ -185,7 +183,6 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
           this.baseService.milchglas = false;
         });
         this.checkVertretung();
-        console.log(this.getOnMyPos(0));
       }
     );
   }
@@ -195,8 +192,8 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
     this.VDMe = [];
     if(!localStorage.lastVD) return;
     let lastVD = JSON.parse(localStorage.lastVD);
-    if(!lastVD.w[this._index]) return;
     this.offlineDate = new Date(lastVD.d);
+    if(!lastVD.w[this._index]) return;
     this.offlinepreLehrer = lastVD.lehrer;
     this.evaVertretung(lastVD.w[this._index]);
   }
