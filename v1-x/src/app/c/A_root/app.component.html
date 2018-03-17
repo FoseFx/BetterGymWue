@@ -7,7 +7,7 @@
     </div>
     <mat-nav-list >
       <a mat-list-item routerLink="/" (click)="hamNav.close()"><i class="material-icons">home</i>&nbsp; Home</a>
-      <a [ngClass]="{'disabled': !baseService.kursID}" mat-list-item routerLink="cloud" (click)="hamNav.close()"><i class="material-icons">cloud</i>&nbsp; Kurs-Cloud ID</a>
+      <a mat-list-item routerLink="cloud" (click)="hamNav.close()"><i class="material-icons">cloud</i>&nbsp; Kurs-Cloud</a>
       <mat-divider></mat-divider>
 
       <a [ngClass]="{'disabled': !credentialsLiegen}" mat-list-item routerLink="/" [queryParams]="{'force': true}" (click)="hamNav.close()"><i class="material-icons">school</i>&nbsp; Lehrer Zugang hinzufügen</a>

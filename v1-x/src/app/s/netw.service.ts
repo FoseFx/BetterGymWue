@@ -387,6 +387,7 @@ export class NetwService {
       this.httpClient.put(CONFIG.dbUrl + id + '.json', kurseAO).subscribe(
         (wert) => {
             localStorage.kursID = id;
+            this.baseService.kursID = id;
             resolve(id);
           },
         (err) => {
