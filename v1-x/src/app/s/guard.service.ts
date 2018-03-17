@@ -22,14 +22,15 @@ export class GuardService implements CanActivate {
         return false;
       }
     }
-    if(route.component === ShowComponent || route.component === StundenplanComponent){
+    if(route.component === ShowComponent || route.component === StundenplanComponent || route.component === CloudComponent){
       if(!this.baseService.myKurse){
         this.router.navigate(['/']);
       }
     }
-    if(route.component === CloudComponent){
+/*    if(route.component === CloudComponent){
       if(!this.baseService.kursID) this.router.navigate(['/']);
     }
+*/
     return true;
   }
 }
