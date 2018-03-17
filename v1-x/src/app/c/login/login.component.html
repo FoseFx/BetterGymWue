@@ -8,8 +8,8 @@
         <p style="width: 20rem" class="text-danger" *ngIf="select.value == 'lehrer' && falseLehrerLogin">Kein Schüler Zugang gesetzt!</p>
         <mat-form-field style="width: 20rem!important;">
           <mat-select placeholder="Nutzer" ngModel name="nutzer" required #select>
-            <mat-option value="schueler">schueler</mat-option>
-            <mat-option value="lehrer">lehrer</mat-option>
+            <mat-option value="schueler" [disabled]="!!baseService.credentials">schueler</mat-option>
+            <mat-option value="lehrer" [disabled]="!baseService.credentials">lehrer</mat-option>
           </mat-select>
         </mat-form-field><br>
 
