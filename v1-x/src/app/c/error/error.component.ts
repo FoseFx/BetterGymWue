@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-error',
@@ -7,9 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ErrorComponent implements OnInit {
 
-  constructor() { }
+  constructor(public route: ActivatedRoute) { }
 
+  get lenght():number{
+    return Object.keys(this.route.snapshot.queryParams).length
+  }
   ngOnInit() {
+    console.log(this.route.snapshot.queryParams);
   }
 
 }

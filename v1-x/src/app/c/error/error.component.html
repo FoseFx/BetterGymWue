@@ -1,5 +1,9 @@
-<div class="container">
+<div class="container" *ngIf="lenght == 0">
   <h1>Hier ist nichts!</h1>
   <h2><small class="text-muted">Warum auch immer, aber hier ist nichts!</small></h2>
   <p><a routerLink="/">Zurück</a></p>
+</div>
+<div class="container" *ngIf="!!route.snapshot.queryParams.oldBrowser">
+  <h1>Dein Browser wird nicht unterstützt!</h1>
+  <h2><small class="text-muted"><a href="https://chrome.google.com">Google Chrome</a></small></h2>
 </div>
