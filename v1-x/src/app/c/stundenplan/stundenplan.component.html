@@ -16,24 +16,13 @@
           </mat-expansion-panel-header>
 
           <table class="table table-hover">
-            <tbody *ngFor="let stunde of day; let stundei = index;">
+            <tbody *ngFor="let stunde of day; let stundei = index;" [ngClass]="{'mb': stundei %2 !== 0}">
+
             <tr>
               <td><b>{{stundei + 1}}</b></td>
               <td *ngFor="let k of stunde;" [ngClass]="{'sel': k.sel}">
                 {{k.fach}}
               </td>
-              <!--              <td>
-                              <table class="table table-sm">
-                                <tbody>
-                                <tr *ngFor="let k of stunde;" [ngClass]="{'sel': k.sel}">
-                                  <td>{{k.fach}}</td>
-                                  <td>{{k.raum}}</td>
-                                </tr>
-                                </tbody>
-                              </table>
-
-              </td>
-  -->
             </tr>
             <tr>
               <td></td>
@@ -41,7 +30,6 @@
                 {{k.raum}}
               </td>
             </tr>
-
             </tbody>
           </table>
         </mat-expansion-panel>
