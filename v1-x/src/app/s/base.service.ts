@@ -28,7 +28,7 @@ export class BaseService {
   constructor(private router: Router, private httpClient: HttpClient) {
     if (typeof(Storage) === 'undefined') {
       this.allowedBrowser = false;
-      // todo auf error page routen
+      this.router.navigate(['error'], {queryParams: {'oldBrowser': 'true'}});
       return;
     }
 
