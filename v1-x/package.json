@@ -9,7 +9,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "build_app" : "ng build --prod --aot && sw-precache --root=dist --config=precache-config.js && uglifyjs-folder dist -e"
+    "build_app" : "ng build --prod --aot && sw-precache --root=dist --config=precache-config.js && uglifyjs-folder dist -e -x .js -o dist"
   },
   "private": true,
   "dependencies": {
