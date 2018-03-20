@@ -12,7 +12,7 @@
                                                                 }">
       <td *ngIf="e!=undefined && !e.nd">{{i + 1}}</td>
       <td *ngIf="e!=undefined && !e.nd">{{e.fach}}</td>
-      <td *ngIf="e!=undefined && !e.nd">{{e.raum}}</td>
+      <td *ngIf="e!=undefined && !e.nd">{{(getOnMyPos(i).newRaum)? getOnMyPos(i).newRaum : e.raum}}</td>
       <td *ngIf="e!=undefined && !e.nd">{{e.lehrer}}</td>
       <td *ngIf="e!=undefined && e.vert">
         <span class="badge badge-pill"
