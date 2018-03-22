@@ -102,9 +102,7 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
     this.baseService.milchglas = true;
     this.netwService.getVertretungsDaten(this.readableDate, this._index).then((w)=>{
       this.evaVertretung(w);
-
       this.baseService.setLastVD(this._index, w, this.baseService.preLehrer);
-
       this.baseService.milchglas = false;
     }).catch(() => {
       this.baseService.milchglas = false;
@@ -197,8 +195,10 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
     this.offlinepreLehrer = lastVD.lehrer;
     this.evaVertretung(lastVD.w[this._index]);
   }
+  myPos = [];
   getOnMyPos(index){
     if(this.VDMe.length == 0) return {date: "", fach: "", info: "", newRaum: "", oldRaum: "", stufe: "", stunde:"", type: ""};
+    if(this.myPos[index]) return this.myPos[index];
     let rel: {
       date: string,
       fach: string,
@@ -217,7 +217,10 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
       }
     }});
 
-    if(rel.length == 1) return rel[0];
+    if(rel.length == 1) {
+      this.myPos[index] = rel[0];
+      return rel[0];
+    }
     if(rel.length == 0) return {date: "", fach: "", info: "", newRaum: "", oldRaum: "", stufe: "", stunde:"", type: ""};
     rel.sort(function (a, b) {
       // K > E > V > R
@@ -227,6 +230,7 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
       else if (a.type == b.type)return 0;
       else return 1;
     });
+    this.myPos[index] = rel[0];
     return rel[0];
   }
   isMyKlausur(info):boolean{
