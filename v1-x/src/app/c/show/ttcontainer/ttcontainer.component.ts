@@ -4,6 +4,8 @@ import {NetwService} from '../../../s/netw.service';
 import * as $ from 'jquery';
 import {Router} from '@angular/router';
 import {Observable} from 'rxjs/Rx'
+import {ngAppResolve} from '@angular/cli/models/webpack-configs';
+import {Subscription} from 'rxjs/Subscription';
 
 @Component({
   selector: 'show-ttcontainer',
@@ -73,6 +75,7 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
   @Input() set index(val){
     this._index = val;
   }
+  onlineSub: Subscription;
 
   constructor(public baseService: BaseService, private netwService: NetwService, private router:Router, private ref: ChangeDetectorRef) {
     this.online = Observable.merge(
@@ -163,8 +166,13 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
     console.log(this.VDMe);
   }
 
+  reload(){
+    this.onlineSub.unsubscribe();
+    this.ngAfterViewInit();
+  }
+
   ngAfterViewInit(){
-    this.online.subscribe(
+    this.onlineSub = this.online.subscribe(
       (on) => {
         this.info = [];
         if(!on) {
