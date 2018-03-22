@@ -2,6 +2,7 @@
 
   <h1 class="text-right">{{tag + " " + (_tt.date | date: 'dd.M.yy')}}</h1>
   <p class="lead text-right">{{_tt.date | date: 'w.'}} Kalenderwoche</p>
+  <button mat-button (click)="reload()"><i class="material-icons">refresh</i></button>
   <table class="table table-hover">
     <tbody>
     <tr *ngFor="let e of displayArray; let i = index;" [ngClass]="{
@@ -12,7 +13,7 @@
                                                                 }">
       <td *ngIf="e!=undefined && !e.nd">{{i + 1}}</td>
       <td *ngIf="e!=undefined && !e.nd">{{e.fach}}</td>
-      <td *ngIf="e!=undefined && !e.nd">{{(getOnMyPos(i).newRaum)? getOnMyPos(i).newRaum : e.raum}}</td>
+      <td *ngIf="e!=undefined && !e.nd" [ngClass]="{'bold': !!getOnMyPos(i).newRaum}">{{(getOnMyPos(i).newRaum)? getOnMyPos(i).newRaum : e.raum}}</td>
       <td *ngIf="e!=undefined && !e.nd">{{e.lehrer}}</td>
       <td *ngIf="e!=undefined && e.vert">
         <span class="badge badge-pill"
