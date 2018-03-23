@@ -31,6 +31,7 @@ import { CloudComponent } from './c/cloud/cloud.component';
 import { AboutComponent } from './c/about/about.component';
 import { StundenplanComponent } from './c/stundenplan/stundenplan.component';
 import { ErrorComponent } from './c/error/error.component';
+import { HelpComponent } from './c/help/help.component';
 declare var Hammer: any;
 
 export class MyHammerConfig extends HammerGestureConfig  {
@@ -60,7 +61,8 @@ export class MyHammerConfig extends HammerGestureConfig  {
     CloudComponent,
     AboutComponent,
     StundenplanComponent,
-    ErrorComponent
+    ErrorComponent,
+    HelpComponent
   ],
   imports: [
     BrowserModule,
