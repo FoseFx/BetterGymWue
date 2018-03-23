@@ -18,6 +18,14 @@
   transition: opacity 0.3s linear;
   z-index: 99999;
 }
+
+@media (max-width: 600px){
+  .alert{
+    width: 80%;
+  }
+}
+
+
 .invisible, .invisible *{
   opacity: 0;
 }
@@ -103,4 +111,9 @@ body{
       transform: scale(1.0);
       -webkit-transform: scale(1.0);
     }
+}
+
+
+#g-recaptcha-response{
+  display: none!important;
 }
