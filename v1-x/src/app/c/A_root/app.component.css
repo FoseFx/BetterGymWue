@@ -2,7 +2,7 @@
   font-family: Roboto, "Helvetica Neue", sans-serif;
   display: block;
   height: 100%;
-  background: rgba(68, 68, 68, 0.07);
+  background: whitesmoke;
   z-index: 100;
 }
 .hamnav *{
@@ -30,3 +30,14 @@ i{
   color: rgba(0, 0, 0, 0.7);
 }
 
+.notToolbar{
+  top: 64px;
+  height: calc(100vh - 64px);
+}
+@media (max-width: 599px){
+  .notToolbar{
+    top: 56px;
+    height: calc(100vh - 56px);
+    overflow: auto;
+  }
+}
