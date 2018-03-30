@@ -1,6 +1,4 @@
 @import "reset.css";
-/*@import "~@angular/material/prebuilt-themes/indigo-pink.css";
-*/
 .center{
   display: block;
   margin: 0 auto;
@@ -111,9 +109,4 @@ body{
       transform: scale(1.0);
       -webkit-transform: scale(1.0);
     }
-}
-
-
-#g-recaptcha-response{
-  display: none!important;
 }

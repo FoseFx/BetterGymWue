@@ -185,8 +185,6 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
           value.forEach((v, i, a) => {value[i] += 'SCHULPLANER_INFO'});
           console.log(value);
           this.info = this.info.concat(value);
-        }).catch(() => {
-          this.baseService.milchglas = false;
         });
         this.checkVertretung();
       }

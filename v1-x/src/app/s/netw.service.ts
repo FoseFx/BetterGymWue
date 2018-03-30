@@ -59,7 +59,6 @@ export class NetwService {
           if(err != 'f2') return this.getVertretungsDaten(tag, i, 'f2');
           else return new Promise((resolve, reject) => {reject('loop')});
         }else{
-          this.baseService.milchglas = false;
           return new Promise((resolve, reject) => {reject()});
         }
       });
