@@ -22,7 +22,7 @@ import { TtcontainerComponent } from './c/show/ttcontainer/ttcontainer.component
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
   MatButtonModule,
-  MatDividerModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule,
+  MatDividerModule, MatFormFieldModule, MatIconModule, MatInputModule,
   MatListModule,
   MatSelectModule,
   MatSidenavModule, MatSlideToggleModule, MatTabsModule, MatToolbarModule
@@ -80,8 +80,7 @@ export class MyHammerConfig extends HammerGestureConfig  {
     MatIconModule,
     MatTabsModule,
     MatDividerModule,
-    MatSlideToggleModule,
-    MatExpansionModule
+    MatSlideToggleModule
   ],
   providers: [
     BaseService,
