@@ -1,39 +1,37 @@
-<div class="container">
-  <div *ngFor="let tt of tts">
-    <br>
-    <h2>{{tt.woche + " Woche"}}</h2>
-      <mat-accordion>
-        <mat-expansion-panel *ngFor="let day of tt.tt; let dayi = index;" [expanded]="false">
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              {{ ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag'][dayi] }}
-            </mat-panel-title>
-            <mat-panel-description>
 
-              <span *ngFor="let stunde of day"><span *ngFor="let k of stunde"><span *ngIf="k.sel">{{k.fach + "&nbsp;"}} </span></span></span>
 
-            </mat-panel-description>
-          </mat-expansion-panel-header>
+<mat-tab-group style="width: 100%!important;">
 
-          <table class="table table-hover">
-            <tbody *ngFor="let stunde of day; let stundei = index;" [ngClass]="{'mb': stundei %2 !== 0}">
+  <mat-tab *ngFor="let woche of tts" [label]="woche.woche">
 
-            <tr>
-              <td><b>{{stundei + 1}}</b></td>
-              <td *ngFor="let k of stunde;" [ngClass]="{'sel': k.sel}">
-                {{k.fach}}
+
+    <mat-tab-group class="small-tabs" style="width: 100%!important;">
+
+      <mat-tab *ngFor="let tag of woche.tt; let i = index" [label]="TAGE[i]">
+        <br><br>
+        <table class="table table-hover text-center">
+          <tbody>
+          <ng-container *ngFor="let stunde of tag; let stundei = index">
+            <tr *ngIf="!stunde[0].isDouble">
+              <td>{{stundei + 1}}<span *ngIf="stunde[0].hasDouble">{{'/' + (stundei + 2)}}</span></td>
+              <td *ngFor="let fach of stunde">
+                <span [ngClass]="{'font-weight-bold': fach.sel}">{{fach.fach}}</span><br>
+                <span [ngClass]="{'font-weight-bold': fach.sel}">{{fach.raum}}</span>
               </td>
             </tr>
-            <tr>
-              <td></td>
-              <td *ngFor="let k of stunde;" [ngClass]="{'sel': k.sel}">
-                {{k.raum}}
-              </td>
-            </tr>
-            </tbody>
-          </table>
-        </mat-expansion-panel>
-      </mat-accordion>
-    <br><br>
-  </div>
-</div>
+          </ng-container>
+
+          </tbody>
+        </table>
+
+      </mat-tab>
+
+
+    </mat-tab-group>
+
+
+
+  </mat-tab>
+
+
+</mat-tab-group>

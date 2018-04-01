@@ -1,0 +1,19 @@
+.small-tabs {
+
+  /deep/ .mat-tab-list{
+    width: 100%!important;
+  }
+  /deep/ .mat-tab-labels{
+    display: flex!important;
+    flex-direction: row!important;
+    flex-wrap: nowrap!important;
+  }
+
+  /deep/ .mat-tab-label, /deep/ .mat-tab-label-active {
+    flex-grow: 1!important;
+    min-width: 0!important;
+    padding: 0 5px!important;
+    margin: 0!important;
+  }
+
+}
