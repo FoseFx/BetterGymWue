@@ -7,9 +7,10 @@ import {AlertService} from '../../s/alert.service';
 @Component({
   selector: 'app-stundenplan',
   templateUrl: './stundenplan.component.html',
-  styleUrls: ['./stundenplan.component.css']
+  styleUrls: ['./stundenplan.component.css', './tabs.scss']
 })
 export class StundenplanComponent implements OnInit {
+  TAGE = ['Mo', 'Di', 'Mi', 'Do', 'Fr'];
   tts = [];
   constructor(private baseService:BaseService, private alert: AlertService) { }
 
@@ -27,7 +28,7 @@ export class StundenplanComponent implements OnInit {
       t.days.forEach((tag) => {
         let d = [];
         let l = 0;
-        tag.forEach((stunde) => {
+        tag.forEach((stunde, stundeindex) => {
           if(stunde.type == 'klasse') d.push([{fach: stunde.fach, raum: stunde.raum, sel: true}]);
           else{
             let s = [];
@@ -39,6 +40,25 @@ export class StundenplanComponent implements OnInit {
                 sel: this.getPos(k.kurs) != -1
               });
             });
+            /** **/
+            let isDouble = false;
+            if(stundeindex > 0){
+              let davor = d[stundeindex - 1];
+              if(davor === undefined) davor = d[stundeindex -2];
+              if(davor === undefined) davor = d[stundeindex -3];
+
+              s.forEach((value, index) => {
+                davor.forEach((opposite) => {
+                  if(opposite.fach === value.fach && opposite.raum === value.raum && opposite.sel === value.sel) isDouble = true;
+                });
+              });
+              if (isDouble) davor[0].hasDouble = true;
+            }
+            /** **/
+            s.sort(function (a, b) {
+              return (a.sel < b.sel) ? 1 : (a.sel > b.sel) ? -1: 0;
+            });
+            if (isDouble) s[0].isDouble = true;
             d.push(s);
           }
         });
