@@ -41,3 +41,8 @@ i{
     overflow: auto;
   }
 }
+@media (max-width: 300px){
+  .title{
+    display: none ;
+  }
+}
