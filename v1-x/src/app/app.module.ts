@@ -79,7 +79,6 @@ export class MyHammerConfig extends HammerGestureConfig  {
     MatButtonModule,
     MatIconModule,
     MatTabsModule,
-    MatDividerModule,
     MatSlideToggleModule
   ],
   providers: [
