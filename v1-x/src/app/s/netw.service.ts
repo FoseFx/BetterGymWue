@@ -427,6 +427,10 @@ export class NetwService {
   private evaKurse(r, ABWOCHE, stufe){
     let arr = [];
     let orig = $(r.replace(/\r?\n|\r/g, '').toUpperCase());
+    ABWOCHE = orig.find("font");
+    ABWOCHE = ABWOCHE[ABWOCHE.length - 1].innerText.split("- ")[1].split(" (")[0].split(" ")[1].toLowerCase();
+    console.log(ABWOCHE);
+    let what = (ABWOCHE === "a")? 0:1;
     let main = orig.children('table')[0];
     $(main).children('tbody').children('tr')[0].remove();
     main = $(main).children('tbody')[0];
@@ -488,7 +492,7 @@ export class NetwService {
               lehrer: lehrer
             };
             let orig = null;
-            let what = (ABWOCHE === "a")? 0:1;
+
 
             for(let i = 0; i < this._kurse[what].kurse.length; i++)
               if(kurs.fach === this._kurse[what].kurse[i].fach) orig = i;
@@ -559,14 +563,14 @@ export class NetwService {
     let b = true;
     this.tempTTs.forEach((val, i) => {
       if (val.stufe === stufe) {
-        val.tt.push(tt);
+        val.tt[what] = (tt);
         b = false;
       }
     });
     if (b)
       this.tempTTs.push({
         stufe: stufe,
-        tt: [tt]
+        tt: (what === 0) ? [tt] : [, tt]
       });
   }
 
