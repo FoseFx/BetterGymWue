@@ -10,7 +10,7 @@ export class AboutComponent implements OnInit {
   msg;
   upDATE;
   up = false;
-  version = '1.0.4 Beta';
+  version = '1.0.5 Beta';
   constructor(private httpC: HttpClient) { }
 
   ngOnInit() {

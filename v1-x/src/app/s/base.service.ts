@@ -22,8 +22,8 @@ export class BaseService {
   public kursID;
   public noswipe = false;
   private _preLehrer:boolean;
-
   public milchglas = false;
+  public selectedTab = 0;
 
   constructor(private router: Router, private httpClient: HttpClient) {
     if (typeof(Storage) === 'undefined') {
@@ -56,12 +56,14 @@ export class BaseService {
     this.myKurse = val;
     localStorage.myKurse = JSON.stringify(val);
   }
+
   set MyStufe(val: string[]){
     this.myStufe = val[0];
     this.myStufeID = val[1];
     localStorage.myStufe = val[0];
     localStorage.myStufeID = val[1];
   }
+
   setTT(val){
 
     this.TT = val;
@@ -146,6 +148,7 @@ export class BaseService {
   }
 
   private _ws = [];
+
   setLastVD(index:number, w, lehrer:boolean){
     console.log("setLastVD: " + index + ", " + lehrer);
     let andererIndex = (index == 0) ? 1:0;

@@ -6,6 +6,7 @@ import {Router} from '@angular/router';
 import {Observable} from 'rxjs/Rx'
 import {ngAppResolve} from '@angular/cli/models/webpack-configs';
 import {Subscription} from 'rxjs/Subscription';
+import {ShowComponent} from '../show.component';
 
 @Component({
   selector: 'show-ttcontainer',
@@ -148,11 +149,8 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
       this.info = this.info.concat(Array.from(w[0][0]));
     } catch (e){console.log(e);}
 
-
     this.VDStufe = VDT;
     this.VDMe = relevant;
-    console.log(this.VDStufe);
-    console.log(this.VDMe);
   }
 
   unHTML(string:string):string{
@@ -162,6 +160,7 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
       return string;
     }
   }
+
   ngOnInit(){
     console.log(this.VDMe);
   }
@@ -201,7 +200,9 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
     this.offlinepreLehrer = lastVD.lehrer;
     this.evaVertretung(lastVD.w[this._index]);
   }
+
   myPos = [];
+
   getOnMyPos(index){
     if(this.VDMe.length == 0) return {date: "", fach: "", info: "", newRaum: "", oldRaum: "", stufe: "", stunde:"", type: ""};
     if(this.myPos[index]) return this.myPos[index];
@@ -239,6 +240,7 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
     this.myPos[index] = rel[0];
     return rel[0];
   }
+
   isMyKlausur(info):boolean{
     let val = false;
     this.baseService.myKurse.forEach((kurs) => {
@@ -249,9 +251,11 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
 
   set preLehrer(val:boolean){
     this.baseService.preLehrer = val;
-    setTimeout(() => {this.router.navigate(['/'])}, 20);
+    setTimeout(() => {this.router.navigate(['/']);}, 20);
   }
+
   get preLehrer(){return this.baseService.preLehrer}
+
 
 }
 

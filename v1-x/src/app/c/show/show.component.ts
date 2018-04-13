@@ -3,6 +3,7 @@ import {BaseService} from '../../s/base.service';
 import {AlertService} from '../../s/alert.service';
 import * as $ from 'jquery';
 import {MatTab, MatTabGroup} from '@angular/material';
+import {Observable} from 'rxjs/Observable';
 
 @Component({
   selector: 'app-show',
@@ -19,7 +20,6 @@ export class ShowComponent implements OnInit, AfterViewInit {
   @ViewChild(MatTabGroup) group;
   @ViewChildren(MatTab) tabs;
   tab_num = 0;
-  selected = 0;
   SWIPE_ACTION = {
     LEFT: 'swipeleft',
     RIGHT: 'swiperight'
@@ -33,21 +33,22 @@ export class ShowComponent implements OnInit, AfterViewInit {
       location.reload();
     }
   }
+
   swipe(e){
     let eType = e.type;
-    if (eType === this.SWIPE_ACTION.RIGHT && this.selected > 0){
-      this.selected--;
-    }else if (eType === this.SWIPE_ACTION.LEFT && this.selected < this.tab_num -1 ){
-      this.selected++;
+    if (eType === this.SWIPE_ACTION.RIGHT && this.baseService.selectedTab > 0){
+      this.baseService.selectedTab--;
+    }else if (eType === this.SWIPE_ACTION.LEFT && this.baseService.selectedTab < this.tab_num -1 ){
+      this.baseService.selectedTab++;
     }
   }
 
-  constructor(private baseService: BaseService, private alert: AlertService) { }
+  constructor(public baseService: BaseService, private alert: AlertService) {}
 
   ngOnInit() {
+    console.log(this.baseService.selectedTab);
     let tt = this.baseService.TT;
     if (!tt) { this.alert.alert("Kein Stundenplan gesetzt", this.alert.DANGER); return; }
-
 
     let firstDate;
 
@@ -61,12 +62,15 @@ export class ShowComponent implements OnInit, AfterViewInit {
       if(i === 1 && firstDate.getDate() == date.getDate())
         date.setDate(date.getDate() + 1);
       let weeksTT = tt[(getWeekNumber(date) % 2 == 0) ? 0: 1];
-      console.log(tt);
-      console.log(weeksTT);
       this.tts.push({tag: weeksTT.days[date.getDay() - 1], date: date});
     });
     $(".modal-backdrop").remove();
   }
+
+  change(val){
+    this.baseService.selectedTab = val.index;
+  }
+
 }
 function getWeekNumber(d) {
   // Copy date so don't modify original
