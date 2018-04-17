@@ -13,7 +13,7 @@ import {ShowComponent} from '../show.component';
   templateUrl: './ttcontainer.component.html',
   styleUrls: ['./ttcontainer.component.css']
 })
-export class TtcontainerComponent implements AfterViewInit, OnInit{
+export class TtcontainerComponent implements AfterViewInit{
 
   info: string[] = [];
   _tt: {
@@ -147,7 +147,7 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
 
     try{
       this.info = this.info.concat(Array.from(w[0][0]));
-    } catch (e){console.log(e);}
+    } catch (e){console.log(e.message);}
 
     this.VDStufe = VDT;
     this.VDMe = relevant;
@@ -159,10 +159,6 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
     }else{
       return string;
     }
-  }
-
-  ngOnInit(){
-    console.log(this.VDMe);
   }
 
   reload(){
@@ -223,12 +219,16 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
         rel.push(me)
       }
     }});
+    const fallback = {date: "", fach: "", info: "", newRaum: "", oldRaum: "", stufe: "", stunde:"", type: ""};
 
     if(rel.length == 1) {
+      if (rel[0].type !== 'k' && rel[0].type !== 'e' && rel[0].type !== 'v' && rel[0].type !== 'r') {
+        return fallback;
+      }
       this.myPos[index] = rel[0];
       return rel[0];
     }
-    if(rel.length == 0) return {date: "", fach: "", info: "", newRaum: "", oldRaum: "", stufe: "", stunde:"", type: ""};
+    if(rel.length == 0) return fallback;
     rel.sort(function (a, b) {
       // K > E > V > R
       if( (a.type == "k" && (b.type == "e" || b.type == "v" || b.type == "r")) ||
@@ -237,6 +237,9 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
       else if (a.type == b.type)return 0;
       else return 1;
     });
+    if (rel[0].type !== 'k' && rel[0].type !== 'e' && rel[0].type !== 'v' && rel[0].type !== 'r') {
+      return fallback;
+    }
     this.myPos[index] = rel[0];
     return rel[0];
   }
@@ -255,7 +258,6 @@ export class TtcontainerComponent implements AfterViewInit, OnInit{
   }
 
   get preLehrer(){return this.baseService.preLehrer}
-
 
 }
 
