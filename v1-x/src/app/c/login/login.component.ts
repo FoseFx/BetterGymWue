@@ -29,7 +29,6 @@ export class LoginComponent implements OnInit, AfterViewInit {
     ) {
       this.router.navigate(['/select']);
     } else this.show = true;
-    console.log(this.baseService.credentials);
   }
   formSubmitted() {
     if (!this.form.valid) return;
