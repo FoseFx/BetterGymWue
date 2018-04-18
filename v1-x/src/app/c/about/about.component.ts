@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import {BaseService} from '../../s/base.service';
 
 @Component({
   selector: 'app-about',
@@ -10,18 +11,17 @@ export class AboutComponent implements OnInit {
   msg;
   upDATE;
   up = false;
-  version = '1.1.0 Beta';
-  constructor(private httpC: HttpClient) { }
+  version = this.base.VERSION;
+  constructor(private base: BaseService) { }
 
   ngOnInit() {
-    this.httpC.get("https://api.github.com/repos/FoseFx/BetterGymWue/commits").subscribe(
-      (cntnt) => {
-        let c = cntnt[0];
-        this.upDATE = c.commit.author.date;
-        this.msg = c.commit.message;
-        if(!this.msg.match(this.version)) this.up = true;
-      }
-    )
+    this.base.needsUpdate()
+      .then((arr) => {
+        this.msg = arr[1];
+        this.upDATE = arr[0];
+        this.up = true;
+      })
+      .catch();
   }
 
 }

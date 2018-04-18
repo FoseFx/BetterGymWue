@@ -11,13 +11,14 @@
                                                                   'klausur': getOnMyPos(i).type == 'k'
                                                                 }">
       <td *ngIf="e!=undefined && !e.nd">{{i + 1}}</td>
-      <td *ngIf="e!=undefined && !e.nd">{{e.fach}}</td>
-      <td *ngIf="e!=undefined && !e.nd" [ngClass]="{'bold': !!getOnMyPos(i).newRaum}">{{(getOnMyPos(i).newRaum)? getOnMyPos(i).newRaum : e.raum}}</td>
-      <td *ngIf="e!=undefined && !e.nd">{{e.lehrer}}</td>
-      <td *ngIf="e!=undefined && e.vert">
+      <td *ngIf="e!=undefined && !e.nd && !e.isFreistunde">{{e.fach}}</td>
+      <td *ngIf="e!=undefined && !e.nd && !e.isFreistunde" [ngClass]="{'bold': !!getOnMyPos(i).newRaum}">{{(getOnMyPos(i).newRaum)? getOnMyPos(i).newRaum : e.raum}}</td>
+      <td *ngIf="e!=undefined && !e.nd && !e.isFreistunde">{{e.lehrer}}</td>
+      <td *ngIf="e!=undefined && e.vert && !e.isFreistunde">
         <span class="badge badge-pill"
               [ngClass]="{'badge-primary': e.vert == 'V', 'badge-danger': e.vert == 'E'}">!</span>
       </td>
+      <td colspan="3" *ngIf="e!=undefined && !e.nd && e.isFreistunde">Frei</td>
     </tr>
     </tbody>
   </table>
