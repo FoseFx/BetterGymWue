@@ -303,6 +303,7 @@ export class NetwService {
 
   getkurse(stufe: string, stufeid: number): Promise<any> {
     return new Promise((resolve, reject) => {
+      console.log(this.wochen);
       if (!this.wochen[0] || !this.wochen[1]) reject('Internal Error: #01');
       const res = this.baseService.makeConnections(CONFIG.baseKursURL + this.wochen[0] + '/c/c' + this.generate5(stufeid) + '.htm');
       if (res === null) reject('Failure: Connection could not be made');
@@ -355,7 +356,7 @@ export class NetwService {
           const w = wert.split('<option value="');
           this.wochen[0] = w[1][0] + w[1][1];
           this.wochen[1] = w[2][0] + w[2][1];
-
+          console.log(this.wochen);
           const a = wert.split('var classes = ')[1].split(';')[0].replace(/(")|(\[)|(])|( )/g, '').split(',');
           localStorage.stufen = JSON.stringify(a);
           this._stufen = a;
