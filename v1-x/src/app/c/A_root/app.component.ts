@@ -1,23 +1,44 @@
-import {AfterViewInit, Component, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {BaseService} from '../../s/base.service';
 import * as $ from 'jquery';
 import {NetwService} from '../../s/netw.service';
+import {RefreshttService} from '../../s/refreshtt.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements AfterViewInit{
+export class AppComponent implements OnInit{
 
-  constructor(public baseService: BaseService, private netwService: NetwService){};
+  constructor(public baseService: BaseService, private netwService: NetwService, private refresh: RefreshttService){};
 
 
   @ViewChild('hamNav') hamnav;
   @ViewChild('cntnd') content;
 
-  ngAfterViewInit(){
-    console.log(this.hamnav);
+  done = false;
+  updateAv = false;
+
+  ngOnInit(){
+    let last = localStorage.lastTTcheck;
+    if(last == undefined){
+      localStorage.lastTTcheck = new Date();
+      last = new Date();
+    }
+    else last = Date.parse(last);
+    last = new Date(last);
+    last.setDate(last.getDate() + 7);
+    if (last < new Date()){
+      console.log("exec");
+      localStorage.lastTTcheck = new Date();
+      this.refreshTT();
+    }else this.done = true;
+    if(!this.done) return;
+
+    this.baseService.needsUpdate().then(() => {this.updateAv = true;}).catch();
+
   }
+
   swipe(type, e){
     if ($(".fuckYou").has(e.target).length != 0) return;
     if(type === 'r' && this.hamnav.opened === false){
@@ -28,20 +49,14 @@ export class AppComponent implements AfterViewInit{
   }
 
   removeKurse(){
-    this.baseService.myKurse = undefined;
-    delete localStorage.myKurse;
-    this.baseService.kursID = undefined;
-    delete localStorage.kursID;
+    this.refresh.removeKurse();
     rl()
   }
 
   refreshTT(){
-    this.removeKurse();
-    this.baseService.TT = undefined;
-    delete localStorage.TT;
-    this.baseService.KlassenKurse = undefined;
-    delete localStorage.KlassenKurse;
-    rl()
+    this.refresh.refreshTT().then(()=>{
+      rl()
+    });
   }
 
   get credentialsLiegen(){

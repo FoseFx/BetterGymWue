@@ -31,7 +31,8 @@ export class TtcontainerComponent implements AfterViewInit{
     lehrer: string,
     raum: string,
     vert?: string,
-    nd?: number
+    nd?: number,
+    isFreistunde?: boolean
   }[] = [];
   VDStufe: {
     date: string,
@@ -97,7 +98,7 @@ export class TtcontainerComponent implements AfterViewInit{
         if (!sel) return;
         let raum = "---";
         stunde.raeume.forEach((r) => { if (r.kurs == sel.fach) raum = r.raum; });
-        that.displayArray[i] = {fach: sel.fach, raum: raum, lehrer: sel.lehrer};
+        that.displayArray[i] = {fach: sel.fach, raum: raum, lehrer: sel.lehrer, isFreistunde: (raum == '---')};
       }
     });
   }

@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, Injector} from '@angular/core';
 import {Router} from '@angular/router';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {CONFIG} from '../conf';
@@ -7,10 +7,11 @@ import {Observable} from 'rxjs/Observable';
 import * as $ from 'jquery';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/fromPromise';
+import {NetwService} from './netw.service';
 declare function unescape(s:string): string;
 @Injectable()
 export class BaseService {
-
+  public VERSION = "1.1.1 Beta";
   public acceptedAGB: boolean;
   allowedBrowser: boolean;
   public credentials: {u: string, p: string, l?: {u: string, p: string}};
@@ -43,6 +44,25 @@ export class BaseService {
     this._preLehrer = (!!localStorage.preLehrer) ? (localStorage.preLehrer == 'true') : true;
   }
 
+  needsUpdate(){
+    return new Promise((resolve, reject) => {
+      let upDATE;
+      let msg;
+      let up;
+      this.httpClient.get("https://api.github.com/repos/FoseFx/BetterGymWue/commits").subscribe(
+        (cntnt) => {
+          let c = cntnt[0];
+          upDATE = c.commit.author.date;
+          msg = c.commit.message;
+          if(!msg.match(this.VERSION)) up = true;
+          if(up)
+            resolve([upDATE, msg]);
+          else reject();
+        }
+      )
+    })
+  }
+
   set preLehrer(val){
     this._preLehrer = val;
     localStorage.preLehrer = val;
@@ -63,6 +83,7 @@ export class BaseService {
     localStorage.myStufe = val[0];
     localStorage.myStufeID = val[1];
   }
+
 
   setTT(val){
 
@@ -156,5 +177,7 @@ export class BaseService {
     this._ws[index] = w;
     localStorage.lastVD = JSON.stringify({d: new Date(), w: this._ws, lehrer: lehrer});
   }
+
+
 
 }

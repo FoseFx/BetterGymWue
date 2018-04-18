@@ -1,7 +1,10 @@
 <div class="container center">
   <br>
   <h1>Better Gym Wue <span class="text-muted">v. {{version}}</span></h1>
-  <h2 *ngIf="up" class="text-muted">Update ({{upDATE | date}}):<br> {{msg}}</h2>
+  <div *ngIf="up">
+    <h2 class="text-muted">Update ({{upDATE | date}}):</h2>
+    <p class="text-muted" style="margin-left: 10px"><b>{{msg}}</b></p>
+  </div>
   <p>Dieser Service wird nicht von dem Gymnasium der Stadt Würselen unterstützt oder gesponsert und ist ein alleiniges Projekt von FoseFx </p>
   <br>
 
