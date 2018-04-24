@@ -12,6 +12,9 @@ import {AlertService} from '../../s/alert.service';
 export class StundenplanComponent implements OnInit {
   TAGE = ['Mo', 'Di', 'Mi', 'Do', 'Fr'];
   tts = [];
+  selectedDay = 0;
+  d = new Date();
+
   constructor(private baseService:BaseService, private alert: AlertService) { }
 
   ngOnInit() {
@@ -67,7 +70,9 @@ export class StundenplanComponent implements OnInit {
       this.tts.push(obj);
     });
     console.log(this.tts);
+    this.selectedDay = (this.d.getDay() > 0 && this.d.getDay() < 5)? this.d.getDay() - 1: 0;
   }
+
   getPos(fach):number{
     let val = -1;
     this.baseService.myKurse.forEach((k, i) => {
@@ -75,4 +80,10 @@ export class StundenplanComponent implements OnInit {
     });
     return val;
   }
+
+  resetDay(){
+    this.selectedDay = 0;
+  }
+
+
 }

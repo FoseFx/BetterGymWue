@@ -260,6 +260,8 @@ export class TtcontainerComponent implements AfterViewInit{
 
   get preLehrer(){return this.baseService.preLehrer}
 
+  woche(idk){return (+idk%2 == 0)? 'A':'B';}
+
 }
 
 function cmp(x, y) {
