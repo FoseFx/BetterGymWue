@@ -11,7 +11,7 @@ import {NetwService} from './netw.service';
 declare function unescape(s:string): string;
 @Injectable()
 export class BaseService {
-  public VERSION = "1.1.1 Beta";
+  public VERSION = "1.1.2 Beta";
   public acceptedAGB: boolean;
   allowedBrowser: boolean;
   public credentials: {u: string, p: string, l?: {u: string, p: string}};
