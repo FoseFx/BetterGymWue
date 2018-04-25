@@ -1,8 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {isNullOrUndefined} from 'util';
 import {NetwService} from '../../../s/netw.service';
 import {AlertService} from '../../../s/alert.service';
-import {nullSafeIsEquivalent} from '@angular/compiler/src/output/output_ast';
 import {BaseService} from '../../../s/base.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import * as $ from 'jquery';
@@ -131,9 +129,10 @@ export class KurseComponent implements OnInit {
   }
 
   loadFormCloud(){
-    let id = $("#kcidi").val();
+    let $kcidi = $("#kcidi");
+    let id = $kcidi.val();
     if (!id) return;
-    $("#kcidi").addClass('disabled');
+    $kcidi.addClass('disabled');
     $("#kcb").addClass('disabled');
     this.netwService.fetchCloud(+id)
       .then((kurse) => {

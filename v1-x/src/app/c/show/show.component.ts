@@ -3,7 +3,6 @@ import {BaseService} from '../../s/base.service';
 import {AlertService} from '../../s/alert.service';
 import * as $ from 'jquery';
 import {MatTab, MatTabGroup} from '@angular/material';
-import {Observable} from 'rxjs/Observable';
 
 @Component({
   selector: 'app-show',
@@ -73,15 +72,8 @@ export class ShowComponent implements OnInit, AfterViewInit {
 
 }
 function getWeekNumber(d) {
-  // Copy date so don't modify original
   d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
-  // Set to nearest Thursday: current date + 4 - current day number
-  // Make Sunday's day number 7
   d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
-  // Get first day of year
   let yearStart:any = new Date(Date.UTC(d.getUTCFullYear(),0,1));
-  // Calculate full weeks to nearest Thursday
-  let weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
-  // Return array of year and week number
-  return weekNo;
+  return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
 }

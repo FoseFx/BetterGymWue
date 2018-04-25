@@ -22,7 +22,7 @@ import { TtcontainerComponent } from './c/show/ttcontainer/ttcontainer.component
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
   MatButtonModule,
-  MatDividerModule, MatFormFieldModule, MatIconModule, MatInputModule,
+  MatFormFieldModule, MatIconModule, MatInputModule,
   MatListModule,
   MatSelectModule,
   MatSidenavModule, MatSlideToggleModule, MatTabsModule, MatToolbarModule

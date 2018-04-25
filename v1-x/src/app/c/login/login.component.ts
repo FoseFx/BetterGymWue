@@ -1,8 +1,7 @@
 import {Component, OnInit, ViewChild, AfterViewInit} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {BaseService} from '../../s/base.service';
-import {ActivatedRoute, ActivatedRouteSnapshot, Router} from '@angular/router';
-import {version} from 'punycode';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-login',

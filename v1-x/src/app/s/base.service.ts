@@ -1,17 +1,15 @@
-import {Injectable, Injector} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {CONFIG} from '../conf';
-import {validate} from 'codelyzer/walkerFactory/walkerFn';
 import {Observable} from 'rxjs/Observable';
 import * as $ from 'jquery';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/fromPromise';
-import {NetwService} from './netw.service';
 declare function unescape(s:string): string;
 @Injectable()
 export class BaseService {
-  public VERSION = "1.1.2 Beta";
+  public VERSION = "1.1.3 Beta";
   public acceptedAGB: boolean;
   allowedBrowser: boolean;
   public credentials: {u: string, p: string, l?: {u: string, p: string}};
@@ -91,7 +89,7 @@ export class BaseService {
     localStorage.TT = JSON.stringify(val);
     let a = [];
     console.log(val);
-    val.forEach((wocheV, wocheI) => {
+    val.forEach((wocheV) => {
       wocheV.days.forEach((tag) => {
         tag.forEach((stunde) => {
           if(stunde.type == "klasse" && a.indexOf(stunde.fach) === -1) a.push(stunde.fach);
@@ -110,7 +108,7 @@ export class BaseService {
 
   checkCredentials(u: string, p: string, lehrer?:boolean) {
     lehrer = lehrer || false;
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       this.httpClient.get((lehrer)? CONFIG.credentialsCheckLehrerUrl : CONFIG.credentialsCheckUrl, {
         headers: new HttpHeaders({'Authorization': 'Basic ' + btoa(u + ':' + p)}),
         responseType: 'text'
@@ -157,7 +155,7 @@ export class BaseService {
           success: (html) => {
             resolve(html);
           },
-          error: (err, r,t) => {
+          error: (err, r) => {
             let e = {statusText: r};
             reject(e);
           }
@@ -172,9 +170,6 @@ export class BaseService {
 
   setLastVD(index:number, w, lehrer:boolean){
     console.log("setLastVD: " + index + ", " + lehrer);
-    let andererIndex = (index == 0) ? 1:0;
-    // erster Durchlauf
-    this._ws[index] = w;
     localStorage.lastVD = JSON.stringify({d: new Date(), w: this._ws, lehrer: lehrer});
   }
 

@@ -1,8 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
-import * as $ from 'jquery';
 import {BaseService} from '../../s/base.service';
-import {ActivatedRoute, ActivatedRouteSnapshot} from '@angular/router';
 
 @Component({
   selector: 'app-agb',
@@ -13,7 +10,7 @@ export class AgbComponent implements OnInit {
 
   redirected: boolean;
 
-  constructor(public baseService: BaseService, private activeR: ActivatedRoute) { }
+  constructor(public baseService: BaseService) { }
 
   ngOnInit() {
     this.redirected = this.baseService.acceptedAGB;
