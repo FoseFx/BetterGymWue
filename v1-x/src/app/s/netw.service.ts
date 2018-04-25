@@ -3,10 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {CONFIG} from '../conf';
 import {BaseService} from './base.service';
 import {AlertService} from './alert.service';
-import {reject} from 'q';
 import * as $ from 'jquery';
-import {baseBuildCommandOptions} from '@angular/cli/commands/build';
-import {escape} from 'querystring';
 
 @Injectable()
 export class NetwService {
@@ -602,7 +599,7 @@ function toArray(obj){
 }
 
 function decodeHtml(html) {
-  var txt = document.createElement("textarea");
+  let txt = document.createElement("textarea");
   txt.innerHTML = html;
   return txt.value;
 }

@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {BaseService} from '../../s/base.service';
-import {CONFIG} from '../../conf';
-import {NetwService} from '../../s/netw.service';
 import {AlertService} from '../../s/alert.service';
 
 @Component({
