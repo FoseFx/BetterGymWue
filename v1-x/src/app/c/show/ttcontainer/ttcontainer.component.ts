@@ -1,12 +1,10 @@
-import {Component, Input, OnInit, AfterViewInit, ChangeDetectorRef} from '@angular/core';
+import {Component, Input, AfterViewInit, ChangeDetectorRef} from '@angular/core';
 import {BaseService} from '../../../s/base.service';
 import {NetwService} from '../../../s/netw.service';
 import * as $ from 'jquery';
 import {Router} from '@angular/router';
 import {Observable} from 'rxjs/Rx'
-import {ngAppResolve} from '@angular/cli/models/webpack-configs';
 import {Subscription} from 'rxjs/Subscription';
-import {ShowComponent} from '../show.component';
 
 @Component({
   selector: 'show-ttcontainer',
@@ -152,6 +150,7 @@ export class TtcontainerComponent implements AfterViewInit{
 
     this.VDStufe = VDT;
     this.VDMe = relevant;
+    console.log(this.VDMe);
   }
 
   unHTML(string:string):string{
@@ -201,7 +200,8 @@ export class TtcontainerComponent implements AfterViewInit{
   myPos = [];
 
   getOnMyPos(index){
-    if(this.VDMe.length == 0) return {date: "", fach: "", info: "", newRaum: "", oldRaum: "", stufe: "", stunde:"", type: ""};
+    const fallback = {date: "", fach: "", info: "", newRaum: "", oldRaum: "", stufe: "", stunde:"", type: ""};
+    if(this.VDMe.length == 0) return fallback;
     if(this.myPos[index]) return this.myPos[index];
     let rel: {
       date: string,
@@ -220,10 +220,9 @@ export class TtcontainerComponent implements AfterViewInit{
         rel.push(me)
       }
     }});
-    const fallback = {date: "", fach: "", info: "", newRaum: "", oldRaum: "", stufe: "", stunde:"", type: ""};
 
     if(rel.length == 1) {
-      if (rel[0].type !== 'k' && rel[0].type !== 'e' && rel[0].type !== 'v' && rel[0].type !== 'r') {
+      if (rel[0].type !== 'k' && rel[0].type !== 'e'&& rel[0].type !== 'e (v)' && rel[0].type !== 'v' && rel[0].type !== 'r') {
         return fallback;
       }
       this.myPos[index] = rel[0];
@@ -235,7 +234,7 @@ export class TtcontainerComponent implements AfterViewInit{
       if( (a.type == "k" && (b.type == "e" || b.type == "v" || b.type == "r")) ||
         (a.type == "e" && (b.type == "v" || b.type == "r")) ||
         (a.type == "v" && b.type == "r")) return -1;
-      else if (a.type == b.type)return 0;
+      else if (a.type == b.type) return 0;
       else return 1;
     });
     if (rel[0].type !== 'k' && rel[0].type !== 'e' && rel[0].type !== 'v' && rel[0].type !== 'r') {
