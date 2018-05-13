@@ -1,0 +1,86 @@
+<div class="container center">
+  <br>
+  <h1>Better Gym Wue <span class="text-muted">v. {{version}}</span></h1>
+  <div *ngIf="up">
+    <h2 class="text-muted">Update ({{upDATE | date}}):</h2>
+    <p class="text-muted" style="margin-left: 10px"><b>{{msg}}</b></p>
+  </div>
+  <p>Dieser Service wird nicht von dem Gymnasium der Stadt Würselen unterstützt oder gesponsert und ist ein alleiniges Projekt von FoseFx </p>
+  <br>
+
+  <h2>Legende:<br><br><small class="text-muted">Info-Box:</small></h2>
+  <br>
+  <table style="width: 80%; text-align: center; margin: 0 auto;" class="table table-sm">
+    <tbody>
+    <tr><td class="bold">Überschrift</td></tr>
+    <tr><td>Normale Informationen</td></tr>
+    <tr><td class="schulplaner">Informationen aus dem Schulplaner</td></tr>
+    </tbody>
+  </table>
+  <br>
+  <h2><small class="text-muted">Vertretungsdaten:</small></h2>
+  <br>
+  <table class="table table-hover" style="width: 80%; margin: 0 auto; text-align: center">
+    <tbody>
+    <tr><td>Normaler Unterricht</td></tr>
+    <tr><td class="vertretung">Vertretung</td></tr>
+    <tr><td class="entfall">Entfall (oder Selbst. Arbeiten)</td></tr>
+    <tr><td class="raumV">Raumvertretung</td></tr>
+    <tr><td class="klausur">Klausur</td></tr>
+    </tbody>
+  </table>
+
+  <br>
+
+  <h2>Best Practice</h2>
+  <p>
+    Ich würde euch empfehlen immer erst auf den Schüler Vertretungsplan zu schauen und erst wenn ihr Vertretung habt auf dem Lehrerplan nach dieser Stunde zu suchen, da dieser sehr unübersichtlich ist.
+  </p>
+
+  <br>
+  <p>Der Code ist <a href="https://github.com/FoseFx/BetterGymWue">in diesem GitHub Respo</a> zu finden</p>
+
+  <br><br><br><br>
+  <h2>FAQ</h2>
+  <h5>Wer hat das gemacht?</h5>
+  <i class="material-icons" style="color: #444; font-size: 40px;float: left;">format_quote</i><p><a href="http://fosefx.com/">Ich.</a></p>
+  <div style="clear: left"></div>
+
+  <h5>Gibt es irgendetwas was ich wissen muss?</h5>
+  <i class="material-icons" style="color: #444; font-size: 40px;float: left;">format_quote</i><p> Die Kurs Cloud wir zu jedem Halbjahr zurückgesetzt.</p>
+  <div style="clear: left"></div>
+
+  <h5>Wie viel mobile Daten werden verbraucht?</h5>
+  <i class="material-icons" style="color: #444; font-size: 40px;float: left;">format_quote</i><p>Beim ersten laden (inklusive Setup von Kursen etc.) werden in etwa <span class="text-muted">1.6 MB</span> verbraucht. Danach sollten nur etwa <span class="text-muted">40 KB</span> anfallen!</p>
+
+  <div style="clear: left"></div>
+  <h5> Brauch ich ständig internet?</h5>
+  <i class="material-icons" style="color: #444; font-size: 40px;float: left;">format_quote</i><p>Nein. Für eine Verbindung zu den Vertretungsdaten natürlich schon.</p>
+  <div style="clear: left"></div>
+
+  <h5>Warum nicht die <a>App</a>?</h5>
+  <ul>
+    <li>Keine Sicherheitsprobleme (wie hart gecodete Passwörter)</li>
+    <li>Bessere Visuals</li>
+    <li>Progressive Web App</li>
+    <li><ul>
+      <li>Multiplatform Support (Apples iOS, Android, Windows[Phones], OsX, Linux, sogar dein f*cking Fernseher oder Auto)</li>
+      <li>Support für alte Geräte (solange der Browser nicht zu alt ist)</li>
+    </ul></li>
+    <li>Kurs Cloud</li>
+    <li>Easy2Use</li>
+  </ul>
+  <div style="clear: left"></div>
+
+  <h5>Sind meine Daten sicher?</h5>
+  <i class="material-icons" style="color: #444; font-size: 40px;float: left;">format_quote</i><p>Ja. Um <a href="https://de.wikipedia.org/wiki/Cross-Origin_Resource_Sharing">CORS</a> Verbote zu umgehen verwende ich ein Proxy Script, welches die angefragten Daten kurz zwischengespeichert. Der Code dafür ist ebenfalls im  <a href="https://github.com/FoseFx/BetterGymWue">Github Respo</a>. <b>Deine in der Kurscloud angegebenen Daten sind es nicht!</b> Das System ist autorisierungsfrei aufgebaut, keine Nutzer, keine Passwörter. Das löschen dieser ist nicht mehr möglich, da es keine Möglichkeit gibt zu Beweisen, dass du die ID registriert hast. (Das überschreiben aber auch nicht).</p>
+
+  <div style="clear: left"></div>
+
+  <h5>Wo werden meine Daten gespeichert?</h5>
+  <i class="material-icons" style="color: #444; font-size: 40px;float: left;">format_quote</i><p>Ich verwende Firebase Realtime DB um die Kursdaten zu speichern. <b>Ist das nicht unsicher?</b> Nein. Google sagt da: <span class="text-muted">"Neither party will use or disclose the other party's Confidential Information without the other's prior written consent except for the purpose of performing its obligations under this Agreement or if required by law, regulation or court order; in which case, the party being compelled to disclose Confidential Information will give the other party as much notice as is reasonably practicable prior to disclosing the Confidential Information if permitted by law"</span></p>
+  <div style="clear: left"></div>
+
+  <br><br>
+</div>
+
