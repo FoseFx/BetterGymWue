@@ -114,7 +114,7 @@ export class KurseComponent implements OnInit {
     });
     this.baseService.MyKurse = mykurse;
     console.log(mykurse);
-    if(this.cloud) {
+    if(this._cloud === true) {
       this.netwService.saveKurse(mykurse)
         .then(
         (id) =>{this.alert.alert('Dein Kurs-Cloud Code: <b>' + id + '</b> unbedingt merken!', this.alert.OK, 10000);}
