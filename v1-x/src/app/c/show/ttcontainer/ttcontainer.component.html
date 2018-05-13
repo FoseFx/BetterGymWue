@@ -36,8 +36,8 @@
   <br>
 
   <h2 *ngIf="VDStufe.length > 0">{{baseService.myStufe + ": "}} &nbsp;
-  <mat-slide-toggle *ngIf="VDStufe.length > 0 && baseService.credentials.l && (online | async)" [(ngModel)]="preLehrer">Lehrer</mat-slide-toggle>
-  <mat-slide-toggle *ngIf="!(online | async)" disabled [checked]="offlinepreLehrer">Lehrer</mat-slide-toggle>
+    <mat-slide-toggle *ngIf="VDStufe.length > 0 && baseService.credentials.l && (online | async)" [(ngModel)]="preLehrer">Lehrer</mat-slide-toggle>
+    <mat-slide-toggle *ngIf="!(online | async)" disabled [checked]="offlinepreLehrer">Lehrer</mat-slide-toggle>
   </h2>
   <table *ngIf="VDStufe.length > 0" class="table table-sm btmtbl">
     <tbody>
