@@ -7,7 +7,7 @@ import {BaseService} from '../../../s/base.service';
 import {NetwService} from '../../../s/netw.service';
 import * as $ from 'jquery';
 import {Router} from '@angular/router';
-import {Observable} from 'rxjs'
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'show-ttcontainer',
@@ -85,7 +85,7 @@ export class TtcontainerComponent implements AfterViewInit{
       observableOf(navigator.onLine),
       observableFromEvent(window, 'online').pipe(mapTo(true)),
       observableFromEvent(window, 'offline').pipe(mapTo(false))
-    )
+    );
   }
 
   filterVisible(){
@@ -158,7 +158,7 @@ export class TtcontainerComponent implements AfterViewInit{
 
   unHTML(string:string):string{
     if(string.indexOf("<") != -1){
-      return $(string).text()
+      return $(string).text();
     }else{
       return string;
     }

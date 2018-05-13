@@ -7,7 +7,7 @@
     "callable-types": true,
     "class-name": true,
     "comment-format": [
-      true,
+      false,
       "check-space"
     ],
     "curly": false,
@@ -33,7 +33,7 @@
     ],
     "member-access": false,
     "member-ordering": [
-      true,
+      false,
       {
         "order": [
           "static-field",
@@ -70,13 +70,13 @@
     "no-string-throw": true,
     "no-switch-case-fall-through": true,
     "no-trailing-whitespace": false,
-    "no-unnecessary-initializer": true,
-    "no-unused-expression": true,
+    "no-unnecessary-initializer": false,
+    "no-unused-expression": false,
     "no-use-before-declare": true,
     "no-var-keyword": true,
     "object-literal-sort-keys": false,
     "one-line": [
-      true,
+      false,
       "check-open-brace",
       "check-catch",
       "check-else",
@@ -84,16 +84,16 @@
     ],
     "prefer-const": false,
     "quotemark": [
-      true,
+      false,
       "single"
     ],
     "radix": true,
     "semicolon": [
-      true,
+      false,
       "always"
     ],
     "triple-equals": [
-      true,
+      false,
       "allow-null-check"
     ],
     "typedef-whitespace": [
@@ -109,7 +109,7 @@
     "unified-signatures": true,
     "variable-name": false,
     "whitespace": [
-      true,
+      false,
       "check-branch",
       "check-decl",
       "check-operator",
@@ -123,7 +123,7 @@
       "camelCase"
     ],
     "component-selector": [
-      true,
+      false,
       "element",
       "app",
       "kebab-case"
