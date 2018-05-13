@@ -68,7 +68,7 @@ export class StundenplanComponent implements OnInit {
       this.tts.push(obj);
     });
     console.log(this.tts);
-    this.selectedDay = (this.d.getDay() > 0 && this.d.getDay() < 5)? this.d.getDay() - 1: 0;
+    this.selectedDay = (this.d.getDay() > 0 && this.d.getDay() <= 5)? this.d.getDay() - 1: 0;
   }
 
   getPos(fach):number{

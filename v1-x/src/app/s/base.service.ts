@@ -1,15 +1,16 @@
+
+import {from as observableFrom, Observable} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {CONFIG} from '../conf';
-import {Observable} from 'rxjs/Observable';
 import * as $ from 'jquery';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/fromPromise';
+
+
 declare function unescape(s:string): string;
 @Injectable()
 export class BaseService {
-  public VERSION = "1.1.3 Beta";
+  public VERSION = "1.1.4 Beta";
   public acceptedAGB: boolean;
   allowedBrowser: boolean;
   public credentials: {u: string, p: string, l?: {u: string, p: string}};
@@ -161,7 +162,7 @@ export class BaseService {
           }
         });
       });
-      return Observable.fromPromise(p);
+      return observableFrom(p);
     }
     else return null;
   }

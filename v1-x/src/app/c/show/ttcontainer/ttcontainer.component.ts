@@ -1,10 +1,13 @@
+
+import {fromEvent as observableFromEvent, of as observableOf, merge as observableMerge, Subscription} from 'rxjs';
+
+import {mapTo} from 'rxjs/operators';
 import {Component, Input, AfterViewInit, ChangeDetectorRef} from '@angular/core';
 import {BaseService} from '../../../s/base.service';
 import {NetwService} from '../../../s/netw.service';
 import * as $ from 'jquery';
 import {Router} from '@angular/router';
-import {Observable} from 'rxjs/Rx'
-import {Subscription} from 'rxjs/Subscription';
+import {Observable} from 'rxjs'
 
 @Component({
   selector: 'show-ttcontainer',
@@ -78,10 +81,10 @@ export class TtcontainerComponent implements AfterViewInit{
   onlineSub: Subscription;
 
   constructor(public baseService: BaseService, private netwService: NetwService, private router:Router, private ref: ChangeDetectorRef) {
-    this.online = Observable.merge(
-      Observable.of(navigator.onLine),
-      Observable.fromEvent(window, 'online').mapTo(true),
-      Observable.fromEvent(window, 'offline').mapTo(false)
+    this.online = observableMerge(
+      observableOf(navigator.onLine),
+      observableFromEvent(window, 'online').pipe(mapTo(true)),
+      observableFromEvent(window, 'offline').pipe(mapTo(false))
     )
   }
 
