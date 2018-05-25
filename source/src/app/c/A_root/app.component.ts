@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {BaseService} from '../../s/base.service';
 import * as $ from 'jquery';
 import {NetwService} from '../../s/netw.service';
@@ -10,7 +10,8 @@ import {RefreshttService} from '../../s/refreshtt.service';
 })
 export class AppComponent implements OnInit{
 
-  constructor(public baseService: BaseService, private netwService: NetwService, private refresh: RefreshttService){};
+  constructor(public baseService: BaseService, private netwService: NetwService,
+              private refresh: RefreshttService){};
 
 
   @ViewChild('hamNav') hamnav;
@@ -18,6 +19,7 @@ export class AppComponent implements OnInit{
 
   done = false;
   updateAv = false;
+  win = window;
 
   ngOnInit(){
     let last = localStorage.lastTTcheck;

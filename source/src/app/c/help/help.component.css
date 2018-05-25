@@ -1,0 +1,9 @@
+.fixed{
+  text-decoration-line: line-through;
+  font-style: italic;
+  color: green;
+}
+button{
+  text-align: center;
+  margin: 0 auto;
+}

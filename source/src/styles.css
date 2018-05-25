@@ -115,3 +115,27 @@ body{
       -webkit-transform: scale(1.0);
     }
 }
+mat-drawer-content{
+  overflow-y: visible!important;
+}
+
+.pulseing{
+  animation-name: pulsebg;
+  animation-duration: 10s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in;
+}
+@keyframes pulsebg {
+  0%{background-color: #ef9a9a}
+  9%{background-color: #ce93d8}
+  18%{background-color: #9fa8da}
+  27%{background-color: #90caf9}
+  36%{background-color: #80deea}
+  45%{background-color: #80cbc4}
+  54%{background-color: #a5d6a7}
+  63%{background-color: #c5e1a5}
+  72%{background-color: #e6ee9c}
+  81%{background-color: #fff59d}
+  90%{background-color: #ffab91}
+  100%{background-color: #ef9a9a}
+}

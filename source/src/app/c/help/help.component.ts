@@ -2,6 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
+import {AlertService} from '../../s/alert.service';
 
 @Component({
   selector: 'app-help',
@@ -10,13 +11,14 @@ import {Router} from '@angular/router';
 })
 export class HelpComponent implements OnInit {
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router, private alert: AlertService) { }
 
   ngOnInit() {
   }
 
   @ViewChild('supportForm') form: NgForm;
   used = false;
+
   submitted(){
     if (this.used) return;
     console.log(this.form);
@@ -40,11 +42,23 @@ export class HelpComponent implements OnInit {
         this.router.navigate(['/']);
       },
       (err) => {
-
+        this.alert.alert(err.statusText, this.alert.DANGER);
       }
     );
-
-
+  }
+  antispam = true;
+  bugs: string[];
+  ladeBugs(){
+    if(!this.antispam) return;
+    this.antispam = false;
+    this.http.get("https://bettergymwue.firebaseio.com/bugs.json").subscribe(
+      (c: string[]) => {
+        this.bugs = c;
+      },
+      (err)=> {
+        this.alert.alert(err.statusText, this.alert.DANGER);
+      }
+    )
   }
 
 }
