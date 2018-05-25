@@ -154,5 +154,8 @@ export class KurseComponent implements OnInit {
     $("#kcb").click( () => {
       this.loadFormCloud();
     });
+    $("#kcidi").keypress((ke)=> {
+      if (ke.which == 13) this.loadFormCloud();
+    });
   }
 }

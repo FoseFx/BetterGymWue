@@ -31,5 +31,15 @@
     </div>
   </div>
 
+  <div>
+    <br>
+    <h1>Bekannte Bugs</h1>
+    <ul *ngIf="bugs">
+      <li *ngFor="let bug of bugs" [ngClass]="{'fixed': bug.substr(0, 1) === '+'}">{{bug.substr(1)}}</li>
+    </ul>
+    <p *ngIf="bugs"><span class="fixed">Wird mit nächster Version behoben</span> - <span>Noch offen</span></p>
+    <button mat-raised-button color="accent" *ngIf="!bugs" (click)="ladeBugs()">Zeige Bugs</button>
+    <br><br>
+  </div>
 
 </div>

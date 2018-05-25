@@ -1,13 +1,19 @@
 <div class="container center">
   <br>
   <h1>Better Gym Wue <span class="text-muted">v. {{version}}</span></h1>
+  <p>Dieser Service wird nicht von dem Gymnasium der Stadt Würselen unterstützt oder gesponsert und ist ein alleiniges Projekt von FoseFx </p>
+
   <div *ngIf="up">
+    <div class="pulseing" style="width: 100%; height: 2px;"></div><br>
     <h2 class="text-muted">Update ({{upDATE | date}}):</h2>
     <p class="text-muted" style="margin-left: 10px"><b>{{msg}}</b></p>
+    <p>Wenn du BGW über den Chrome gezogen hast, kannst du mit einem Zug nach unten (am besten über WLAN) aktualisieren. Dies musst du ggf. mehrmals machen.</p>
+    <div class="pulseing" style="width: 100%; height: 2px;"></div>
+    <br>
   </div>
-  <p>Dieser Service wird nicht von dem Gymnasium der Stadt Würselen unterstützt oder gesponsert und ist ein alleiniges Projekt von FoseFx </p>
-  <br>
 
+
+  <hr *ngIf="!up">
   <h2>Legende:<br><br><small class="text-muted">Info-Box:</small></h2>
   <br>
   <table style="width: 80%; text-align: center; margin: 0 auto;" class="table table-sm">
@@ -29,18 +35,19 @@
     <tr><td class="klausur">Klausur</td></tr>
     </tbody>
   </table>
-
+<hr>
   <br>
 
   <h2>Best Practice</h2>
   <p>
     Ich würde euch empfehlen immer erst auf den Schüler Vertretungsplan zu schauen und erst wenn ihr Vertretung habt auf dem Lehrerplan nach dieser Stunde zu suchen, da dieser sehr unübersichtlich ist.
   </p>
-
+<hr>
   <br>
   <p>Der Code ist <a href="https://github.com/FoseFx/BetterGymWue">in diesem GitHub Respo</a> zu finden</p>
-
-  <br><br><br><br>
+  <br>
+<hr>
+  <br><br><br>
   <h2>FAQ</h2>
   <h5>Wer hat das gemacht?</h5>
   <i class="material-icons" style="color: #444; font-size: 40px;float: left;">format_quote</i><p><a href="http://fosefx.com/">Ich.</a></p>
