@@ -7,7 +7,13 @@
     <div class="pulseing" style="width: 100%; height: 2px;"></div><br>
     <h2 class="text-muted">Update ({{upDATE | date}}):</h2>
     <p class="text-muted" style="margin-left: 10px"><b>{{msg}}</b></p>
-    <p>Wenn du BGW über den Chrome gezogen hast, kannst du mit einem Zug nach unten (am besten über WLAN) aktualisieren. Dies musst du ggf. mehrmals machen.</p>
+    <p>Für Updates musst du BGW einfach aktualisieren. D.h. im Browser z.B. <b>F5</b> oder <b>Shift + F5</b>. Oder einfach auf den Button klicken:</p>
+    <div style="width: 100%; height: 150px; display: flex; align-items: center; justify-content: center;">
+      <button mat-raised-button onclick="location.reload()" style="height:44px!important;">
+        <mat-icon class="pulseing-color" style="transform: rotate(40deg) scale(-1, 1)">replay</mat-icon>
+      </button>
+    </div>
+    <p>Das musst du ggf. mehmals machen, wenn es nicht funktioniert, versuch es später nochmal.</p>
     <div class="pulseing" style="width: 100%; height: 2px;"></div>
     <br>
   </div>
