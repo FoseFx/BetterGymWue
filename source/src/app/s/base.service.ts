@@ -10,7 +10,7 @@ import * as $ from 'jquery';
 declare function unescape(s:string): string;
 @Injectable()
 export class BaseService {
-  public VERSION = "1.1.6 Beta";
+  public VERSION = "1.1.7 Beta";
   public acceptedAGB: boolean;
   allowedBrowser: boolean;
   public credentials: {u: string, p: string, l?: {u: string, p: string}};
@@ -32,7 +32,7 @@ export class BaseService {
       return;
     }
 
-    this.acceptedAGB = (!!localStorage.acceptedAGB) ? (localStorage.acceptedAGB === 'true') : false;
+    this.acceptedAGB = (!!localStorage.acceptedAGB2) ? (localStorage.acceptedAGB2 === 'true') : false;
     this.credentials = (!!localStorage.credentials) ? JSON.parse(localStorage.credentials) : undefined;
     this.myKurse = (!!localStorage.myKurse) ? JSON.parse(localStorage.myKurse) : undefined;
     this.myStufe = (!!localStorage.myStufe) ? localStorage.myStufe : undefined;
@@ -103,7 +103,7 @@ export class BaseService {
 
   acceptAGB() {
     this.acceptedAGB = true;
-    localStorage.acceptedAGB = true;
+    localStorage.acceptedAGB2 = true;
     this.router.navigate(['/'], {queryParams: {ua: ''}});
   }
 
