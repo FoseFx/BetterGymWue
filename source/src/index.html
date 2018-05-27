@@ -47,6 +47,31 @@
 
 
 <script>const prod = false;if("serviceWorker" in navigator && prod){window.addEventListener('load', function () {navigator.serviceWorker.register('/service-worker.js').then(function (reg) {console.log("ServiceWorker Registered " + reg.scope);},function (err) {console.log('ServiceWorker registration failed: ', err);});});}else {navigator.serviceWorker.getRegistrations().then(function(registrations) {for(let registration of registrations) {registration.unregister()}})}</script>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-113866862-2"></script>
+  <script>
+    function gtag(){dataLayer.push(arguments);}
+
+    if (document.cookie.indexOf("ga-disable-UA-113866862-2=true") > -1) {
+      window["ga-disable-UA-113866862-2"] = true;
+    }
+
+    if (localStorage.acceptedAGB2){
+      startTracking();
+    }
+    function startTracking(){
+      window.dataLayer = window.dataLayer || [];
+      gtag('js', new Date());
+      gtag('config', 'UA-113866862-2', {'anonymize_ip': true});
+      console.log("started tracking");
+    }
+
+    function disableTracking(){
+      document.cookie = "ga-disable-UA-113866862-2=true; expires=Thu, 31 Dec 2099 23:59:59 UTC";
+      window['ga-disable-UA-113866862-2'] = true;
+      alert('tracking ist deaktiviert');
+    }
+  </script>
 
 </body>
 </html>
