@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {BaseService} from '../../s/base.service';
 import * as $ from 'jquery';
 import {NetwService} from '../../s/netw.service';
