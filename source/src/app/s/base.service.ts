@@ -10,7 +10,7 @@ import * as $ from 'jquery';
 declare function unescape(s:string): string;
 @Injectable()
 export class BaseService {
-  public VERSION = "1.1.8 Beta";
+  public VERSION = "1.1.9 Beta";
   public acceptedAGB: boolean;
   allowedBrowser: boolean;
   public credentials: {u: string, p: string, l?: {u: string, p: string}};
@@ -171,6 +171,7 @@ export class BaseService {
 
   setLastVD(index:number, w, lehrer:boolean){
     console.log("setLastVD: " + index + ", " + lehrer);
+    this._ws[index] = w;
     localStorage.lastVD = JSON.stringify({d: new Date(), w: this._ws, lehrer: lehrer});
   }
 
