@@ -24,6 +24,8 @@ export class BaseService {
   private _preLehrer:boolean;
   public milchglas = false;
   public selectedTab = 0;
+  public dead = false;
+  private deadTested = false;
 
   constructor(private router: Router, private httpClient: HttpClient) {
     eval("gtag('event', 'startup', {'bgw_version_in_use': this.VERSION})");
@@ -32,7 +34,7 @@ export class BaseService {
       this.router.navigate(['error'], {queryParams: {'oldBrowser': 'true'}});
       return;
     }
-
+    this.dead = (!!localStorage.dead) ? (localStorage.dead === 'true') : false;
     this.acceptedAGB = (!!localStorage.acceptedAGB2) ? (localStorage.acceptedAGB2 === 'true') : false;
     this.credentials = (!!localStorage.credentials) ? JSON.parse(localStorage.credentials) : undefined;
     this.myKurse = (!!localStorage.myKurse) ? JSON.parse(localStorage.myKurse) : undefined;
@@ -45,6 +47,13 @@ export class BaseService {
   }
 
   needsUpdate(){
+    if (!this.deadTested){
+      this.httpClient.get(CONFIG.databaseURL + 'killswitch.json').subscribe((isdead:boolean) => {
+        this.dead = isdead;
+        console.log('dead? ', isdead);
+        localStorage.dead = isdead;
+        if(isdead) this.router.navigate(['/error'], {queryParams: {'dead': true}})})
+    }
     return new Promise((resolve, reject) => {
       let upDATE;
       let msg;
