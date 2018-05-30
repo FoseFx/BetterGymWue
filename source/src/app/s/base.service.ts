@@ -10,7 +10,7 @@ import * as $ from 'jquery';
 declare function unescape(s:string): string;
 @Injectable()
 export class BaseService {
-  public VERSION = "1.1.9 Beta";
+  public VERSION = "1.2.0 Beta";
   public acceptedAGB: boolean;
   allowedBrowser: boolean;
   public credentials: {u: string, p: string, l?: {u: string, p: string}};
@@ -26,6 +26,7 @@ export class BaseService {
   public selectedTab = 0;
 
   constructor(private router: Router, private httpClient: HttpClient) {
+    eval("gtag('event', 'startup', {'bgw_version_in_use': this.VERSION})");
     if (typeof(Storage) === 'undefined') {
       this.allowedBrowser = false;
       this.router.navigate(['error'], {queryParams: {'oldBrowser': 'true'}});
@@ -48,17 +49,19 @@ export class BaseService {
       let upDATE;
       let msg;
       let up;
-      this.httpClient.get("https://api.github.com/repos/FoseFx/BetterGymWue/commits").subscribe(
-        (cntnt) => {
-          let c = cntnt[0];
+      this.httpClient.get("https://api.github.com/repos/FoseFx/BetterGymWue/branches/master").subscribe(
+        (branch: {commit}) =>{
+          console.log(branch);
+          let c = branch.commit;
           upDATE = c.commit.author.date;
           msg = c.commit.message;
           if(!msg.match(this.VERSION)) up = true;
           if(up)
             resolve([upDATE, msg]);
-          else reject();
+          else
+            reject();
         }
-      )
+      );
     })
   }
 

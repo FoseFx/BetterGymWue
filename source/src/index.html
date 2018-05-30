@@ -62,7 +62,10 @@
     function startTracking(){
       window.dataLayer = window.dataLayer || [];
       gtag('js', new Date());
-      gtag('config', 'UA-113866862-2', {'anonymize_ip': true});
+      gtag('config', 'UA-113866862-2', {
+        'anonymize_ip': true,
+        'metric5': 'bgw_version_in_use'
+      });
       console.log("started tracking");
     }
 
