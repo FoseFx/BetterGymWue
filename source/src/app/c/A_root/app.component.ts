@@ -3,6 +3,7 @@ import {BaseService} from '../../s/base.service';
 import * as $ from 'jquery';
 import {NetwService} from '../../s/netw.service';
 import {RefreshttService} from '../../s/refreshtt.service';
+import {AlertService} from "../../s/alert.service";
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -11,7 +12,7 @@ import {RefreshttService} from '../../s/refreshtt.service';
 export class AppComponent implements OnInit{
 
   constructor(public baseService: BaseService, private netwService: NetwService,
-              private refresh: RefreshttService){};
+              private refresh: RefreshttService, private alert: AlertService){};
 
 
   @ViewChild('hamNav') hamnav;
@@ -38,6 +39,7 @@ export class AppComponent implements OnInit{
     if(!this.done) return;
 
     this.baseService.needsUpdate().then(() => {this.updateAv = true;}).catch();
+
 
   }
 

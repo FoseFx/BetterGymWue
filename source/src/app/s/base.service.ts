@@ -51,7 +51,6 @@ export class BaseService {
       let up;
       this.httpClient.get("https://api.github.com/repos/FoseFx/BetterGymWue/branches/master").subscribe(
         (branch: {commit}) =>{
-          console.log(branch);
           let c = branch.commit;
           upDATE = c.commit.author.date;
           msg = c.commit.message;

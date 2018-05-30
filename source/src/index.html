@@ -74,6 +74,12 @@
       window['ga-disable-UA-113866862-2'] = true;
       alert('tracking ist deaktiviert');
     }
+
+    window.addEventListener('beforeinstallprompt', (e)=> {
+      e.prompt();
+      e.userChoice.then((ee) => {console.log(ee);})
+    });
+
   </script>
 
 </body>
