@@ -25,12 +25,14 @@ export class GuardService implements CanActivate {
     if(route.component === ShowComponent || route.component === StundenplanComponent || route.component === CloudComponent){
       if(!this.baseService.myKurse){
         this.router.navigate(['/']);
+        return false;
       }
     }
-/*    if(route.component === CloudComponent){
-      if(!this.baseService.kursID) this.router.navigate(['/']);
+    if(this.baseService.dead){
+      this.router.navigate(['/error'], {queryParams: {'dead': true}});
+      return false;
     }
-*/
+
     return true;
   }
 }
