@@ -102,9 +102,9 @@ export class NetwService {
   getSchulplanerInfo(date: string){
     date = date.replace(/\./g, "-");
     return new Promise((resolve, reject) => {
-      this.baseService.makeConnections("https://bettergymwue.firebaseio.com/info/" + date + "/" + this.baseService.myStufe + ".json").subscribe((val) => {
+      this.baseService.makeConnections(CONFIG.databaseURL + "info/" + date + "/" + this.baseService.myStufe + ".json").subscribe((val) => {
         let val2 = (val != "null") ? JSON.parse(val) : [];
-        this.baseService.makeConnections("https://bettergymwue.firebaseio.com/info/" + date + "/*.json").subscribe((valueAll) => {
+        this.baseService.makeConnections(CONFIG.databaseURL + "info/" + date + "/*.json").subscribe((valueAll) => {
           let valueAll2 = (valueAll == "null")? [] : JSON.parse(valueAll);
           resolve(val2.concat(valueAll2));
         });
