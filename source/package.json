@@ -10,6 +10,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "build_app": "ng build --prod --aot && npm run after_build",
+    "build_test": "ng build && npm run after_build",
     "after_build": "replacer dist/index.html \"prod = false\" \"prod = true\" && sw-precache --root=dist --config=precache-config.js && uglifyjs-folder dist -e -x .js -o dist"
   },
   "private": true,
