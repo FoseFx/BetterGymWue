@@ -28,12 +28,13 @@ export class BaseService {
   private deadTested = false;
 
   constructor(private router: Router, private httpClient: HttpClient) {
-    eval("gtag('event', 'startup', {'bgw_version_in_use': this.VERSION})");
     if (typeof(Storage) === 'undefined') {
       this.allowedBrowser = false;
       this.router.navigate(['error'], {queryParams: {'oldBrowser': 'true'}});
       return;
     }
+    localStorage.VERSION = this.VERSION;
+    eval("gtag('event', 'startup', {'bgw_version_in_use': localStorage.VERSION})");
     this.dead = (!!localStorage.dead) ? (localStorage.dead === 'true') : false;
     this.acceptedAGB = (!!localStorage.acceptedAGB2) ? (localStorage.acceptedAGB2 === 'true') : false;
     this.credentials = (!!localStorage.credentials) ? JSON.parse(localStorage.credentials) : undefined;
