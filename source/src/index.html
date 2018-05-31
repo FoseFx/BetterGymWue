@@ -47,39 +47,43 @@
 
 
 <script>const prod = false;if("serviceWorker" in navigator && prod){window.addEventListener('load', function () {navigator.serviceWorker.register('/service-worker.js').then(function (reg) {console.log("ServiceWorker Registered " + reg.scope);},function (err) {console.log('ServiceWorker registration failed: ', err);});});}else {navigator.serviceWorker.getRegistrations().then(function(registrations) {for(let registration of registrations) {registration.unregister()}})}</script>
-  <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-113866862-2"></script>
   <script>
-    function gtag(){dataLayer.push(arguments);}
+    //function gtag(){dataLayer.push(arguments);}
+    var gtag = function () {};
+    var startTracking = function(){
+      $.getScript('https://www.googletagmanager.com/gtag/js?id=UA-113866862-2', function () {
+        gtag = function(){dataLayer.push(arguments)};
+        window.dataLayer = window.dataLayer || [];
+        gtag('js', new Date());
+        gtag('config', 'UA-113866862-2', {
+          'anonymize_ip': true
+        });
+        console.log("started tracking");
+      });
+    };
 
     if (document.cookie.indexOf("ga-disable-UA-113866862-2=true") > -1) {
       window["ga-disable-UA-113866862-2"] = true;
-    }
-
-    if (localStorage.acceptedAGB2){
-      startTracking();
-    }
-    function startTracking(){
-      window.dataLayer = window.dataLayer || [];
-      gtag('js', new Date());
-      gtag('config', 'UA-113866862-2', {
-        'anonymize_ip': true,
-        'metric5': 'bgw_version_in_use'
-      });
-      console.log("started tracking");
+      startTracking = function () {console.log("Tracking not started");};
     }
 
     function disableTracking(){
       document.cookie = "ga-disable-UA-113866862-2=true; expires=Thu, 31 Dec 2099 23:59:59 UTC";
       window['ga-disable-UA-113866862-2'] = true;
-      alert('tracking ist deaktiviert');
+      startTracking = function () {console.log("Tracking not started");};
+      alert('Tracking ist deaktiviert');
     }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      if (localStorage.acceptedAGB2){
+        startTracking();
+      }
+    });
 
     window.addEventListener('beforeinstallprompt', (e)=> {
       e.prompt();
       e.userChoice.then((ee) => {console.log(ee);})
     });
-
   </script>
 
 </body>
