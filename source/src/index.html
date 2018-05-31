@@ -56,7 +56,8 @@
         window.dataLayer = window.dataLayer || [];
         gtag('js', new Date());
         gtag('config', 'UA-113866862-2', {
-          'anonymize_ip': true
+          'anonymize_ip': true,
+          'version': localStorage.VERSION
         });
         console.log("started tracking");
       });
