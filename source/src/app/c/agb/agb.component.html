@@ -2,12 +2,11 @@
   <h1 class="display-3">Wichtige Hinweise</h1>
   <h4 >Diese Version ist im Beta-Stadium, Fehler sind nicht ausgeschlossen</h4>
   <hr class="my-4">
-  <h3>Cookies</h3>
-  <p>
-    Damit die beitgestellten Dienste optimal funktionieren, gestattet der Nutzer, dass Cookies (auch von Dritten) auf dessen System gesetzt werden dürfen. Diese Cookies enthalten ggf. sensible Daten und Passwörter.</p>
+  <h3>Bedingungen</h3>
+  <p>Der Nutzer bestätigt Schüler oder Angehöriger eines Schülers des Gymnasiums der Stadt Würselen zu sein.</p>
   <hr class="my-4">
   <h3>Kurs-Cloud</h3>
-  <p>Bei Verwendung der Kurs-Cloud erlaubt der Nutzer, dass Daten über die vom Nutzer angegeben Kurse (Kurs, Räume, Lehrer etc.) unverschlüsselt auf Datenbanken des Anbieters gespeichert werden. Diese Daten werden mit Beginn des neuen Halbjahres gelöscht und nicht an Dritte weitergegeben.</p>
+  <p>Bei Verwendung der Kurs-Cloud erlaubt der Nutzer, dass Daten über die vom Nutzer angegeben Kurse (Kurs, Räume, Lehrer etc.) unverschlüsselt auf Datenbanken des Anbieters gespeichert werden. Diese Daten werden mit Beginn des neuen Halbjahres gelöscht und nicht automatisch verarbeitet.</p>
   <hr class="my-4">
 
   <h3>Google Analytics-Datenschutzerklärung</h3>
@@ -30,6 +29,9 @@
     Sie können Ihre Einwilligung jederzeit mit Wirkung für die Zukunft widerrufen, indem Sie die Speicherung der Cookies durch eine entsprechende Einstellung Ihrer Browser-Software verhindern; wir weisen Sie jedoch darauf hin, dass Sie in diesem Fall gegebenenfalls nicht sämtliche Funktionen dieser Website vollumfänglich werden nutzen können.</p>
 
   <p>Sie können darüber hinaus die Erfassung der durch das Cookie erzeugten und auf Ihre Nutzung der Website bezogenen Daten (inkl. Ihrer IP-Adresse) an Google sowie die Verarbeitung dieser Daten durch Google verhindern, indem Sie das <a href="https://tools.google.com/dlpage/gaoptout?hl=de" target="_blank">Browser-Add-on</a> herunterladen und installieren. Opt-Out-Cookies verhindern die zukünftige Erfassung Ihrer Daten beim Besuch dieser Website. Um die Erfassung durch Universal Analytics über verschiedene Geräte hinweg zu verhindern, müssen Sie das Opt-Out auf allen genutzten Systemen durchführen. Wenn Sie hier klicken, wird das Opt-Out-Cookie gesetzt: <a href="javascript:disableTracking()"><strong>Google Analytics deaktivieren</strong></a></p>
+  <hr>
+  <h3>Firebase</h3>
+  <p>Firebase (das Back-end) speichert außerdem <b>IP-Adressen</b> (für ein paar Monate) und <b>User-Agents</b> (für ein paar Tage). Diese Daten werden nach Norm <a href="https://firebase.google.com/downloads/gdpr/2018_Firebase_ISO_27017.pdf">ISO 27017</a> aufbewahrt.</p>
 
   <p class="lead" *ngIf="!redirected">
     <button class="btn btn-success" (click)="baseService.acceptAGB()" onclick="startTracking()">Ich akzeptiere</button>

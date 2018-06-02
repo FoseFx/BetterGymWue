@@ -1,3 +1,4 @@
+<br>
 <div class="container" *ngIf="lenght == 0">
   <h1>Hier ist nichts!</h1>
   <h2><small class="text-muted">Warum auch immer, aber hier ist nichts!</small></h2>
@@ -6,4 +7,9 @@
 <div class="container" *ngIf="!!route.snapshot.queryParams.oldBrowser">
   <h1>Dein Browser wird nicht unterstützt!</h1>
   <h2><small class="text-muted"><a href="https://chrome.google.com">Google Chrome</a></small></h2>
+</div>
+<div class="container" *ngIf="route.snapshot.queryParams.dead">
+  <h1>Diese Version ist Tot.</h1>
+  <h2><small class="text-muted">Diese BGW Version ist funktioniert nicht länger.
+    <br><a style="color: blue" onclick="location.reload()">F5 drücken (oder halt hier, ggf. mehrmals)</a></small></h2>
 </div>

@@ -2,6 +2,7 @@
   "name": "BetterGymWue",
   "short_name": "BGW",
   "start_url": "/",
+  "scope": "/",
   "display" : "standalone",
   "orientation": "any",
   "description": "Verbessert den Umgang mit dem Stunden- und Vertretungsplan",
