@@ -3,6 +3,7 @@ import {NgForm} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {AlertService} from '../../s/alert.service';
+import {CONFIG} from "../../conf";
 
 @Component({
   selector: 'app-help',
@@ -37,7 +38,7 @@ export class HelpComponent implements OnInit {
 
     let r = Math.floor(100000 + Math.random() * 900000);
 
-    this.http.put("https://bettergymwue.firebaseio.com/support/" + r + ".json", req).subscribe(
+    this.http.put(CONFIG.databaseURL + "support/" + r + ".json", req).subscribe(
       () => {
         this.router.navigate(['/']);
       },
@@ -51,7 +52,7 @@ export class HelpComponent implements OnInit {
   ladeBugs(){
     if(!this.antispam) return;
     this.antispam = false;
-    this.http.get("https://bettergymwue.firebaseio.com/bugs.json").subscribe(
+    this.http.get(CONFIG.databaseURL + "bugs.json").subscribe(
       (c: string[]) => {
         this.bugs = c;
       },

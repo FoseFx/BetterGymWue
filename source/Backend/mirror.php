@@ -1,4 +1,5 @@
 <?php
+
 if($_GET['hash'] == 'true'){
     echo hash_file("sha256", "mirror.php");
     exit;
@@ -35,9 +36,13 @@ if ($_GET && $_GET['url']) {
     $headers = getallheaders();
     $headers_str = [];
     $url = $_GET['url'];
+    if (false === strpos($url, 'http://gymnasium-wuerselen.de/untis/')) {
+      http_response_code(400);
+      exit;
+    }
 
     foreach ( $headers as $key => $value){
-        if($key == 'Host')
+        if($key == 'Host' or $key == 'Cookie')
             continue;
         $headers_str[]=$key.":".$value;
     }
