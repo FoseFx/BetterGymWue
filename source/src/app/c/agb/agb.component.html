@@ -33,6 +33,7 @@
   <h3>Firebase</h3>
   <p>Firebase (das Back-end) speichert außerdem <b>IP-Adressen</b> (für ein paar Monate) und <b>User-Agents</b> (für ein paar Tage). Diese Daten werden nach Norm <a href="https://firebase.google.com/downloads/gdpr/2018_Firebase_ISO_27017.pdf">ISO 27017</a> aufbewahrt.</p>
 
+
   <p class="lead" *ngIf="!redirected">
     <button class="btn btn-success" (click)="baseService.acceptAGB()" onclick="startTracking()">Ich akzeptiere</button>
   </p>
