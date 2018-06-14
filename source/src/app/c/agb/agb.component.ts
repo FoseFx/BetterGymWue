@@ -9,6 +9,7 @@ import {BaseService} from '../../s/base.service';
 export class AgbComponent implements OnInit {
 
   redirected: boolean;
+  sdse = false;
 
   constructor(public baseService: BaseService) { }
 
