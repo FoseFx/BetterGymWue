@@ -8,6 +8,7 @@ import {NetwService} from '../../../s/netw.service';
 import * as $ from 'jquery';
 import {Router} from '@angular/router';
 import {Observable} from 'rxjs';
+import {log} from "util";
 
 @Component({
   selector: 'show-ttcontainer',
@@ -91,8 +92,8 @@ export class TtcontainerComponent implements AfterViewInit{
   filterVisible(){
     let that = this;
     this._tt.tag.forEach(function (stunde, i) {
-      if (stunde.type === "klasse") that.displayArray[i] =
-        {fach: stunde.fach, lehrer: stunde.lehrer, raum: stunde.raum};
+      if (stunde.type === "klasse")
+        that.displayArray[i] = {fach: stunde.fach, lehrer: stunde.lehrer, raum: stunde.raum};
       else if (stunde.type === "kurs"){
         let sel: {fach, title, lehrer} = undefined;
         that.baseService.myKurse.forEach((kurs) => { if (kurs.title ==  stunde.fach) sel = kurs; });
@@ -102,6 +103,7 @@ export class TtcontainerComponent implements AfterViewInit{
         that.displayArray[i] = {fach: sel.fach, raum: raum, lehrer: sel.lehrer, isFreistunde: (raum == '---')};
       }
     });
+    console.log('displayArray', this.displayArray);
   }
 
   checkVertretung(){
@@ -181,7 +183,6 @@ export class TtcontainerComponent implements AfterViewInit{
         this.netwService.getSchulplanerInfo(this.readableDate).then((value: string[]) => {
           this.offlineDate = undefined;
           value.forEach((v, i, a) => {value[i] += 'SCHULPLANER_INFO'});
-          console.log(value);
           this.info = this.info.concat(value);
         });
         this.checkVertretung();
@@ -222,8 +223,8 @@ export class TtcontainerComponent implements AfterViewInit{
       }else{
         rel.push(me)
       }
-    }});
 
+    }});
     if(rel.length == 1) {
       if (rel[0].type !== 'k' && rel[0].type !== 'e'&& rel[0].type !== 'e (v)' && rel[0].type !== 'v' && rel[0].type !== 'r') {
         return fallback;
@@ -233,15 +234,22 @@ export class TtcontainerComponent implements AfterViewInit{
     }
     if(rel.length == 0) return fallback;
     rel.sort(function (a, b) {
+      let atype = a.type.replace('e (v)', 'e');
+      let btype = b.type.replace('e (v)', 'e');
       // K > E > V > R
-      if( (a.type == "k" && (b.type == "e" || b.type == "v" || b.type == "r")) ||
-        (a.type == "e" && (b.type == "v" || b.type == "r")) ||
-        (a.type == "v" && b.type == "r")) return -1;
-      else if (a.type == b.type) return 0;
+      if((atype !== "k" && atype !== "e" && atype !== "v" && atype !== "r") &&
+        (btype === "k" || btype === "e" || btype == "v" || btype === "r")) return 1;
+      if((btype !== "k" && btype !== "e" && btype !== "v" && btype !== "r") &&
+        (atype === "k" || atype === "e" || atype == "v" || atype === "r")) return -1;
+
+      if( (atype == "k" && (btype == "e" || btype == "v" || btype == "r")) ||
+        (atype == "e" && (btype == "v" || btype == "r")) ||
+        (atype == "v" && btype == "r")) return -1;
+      else if (atype === btype) return 0;
       else return 1;
     });
-    if (rel[0].type !== 'k' && rel[0].type !== 'e' && rel[0].type !== 'v' && rel[0].type !== 'r') {
-      return fallback;
+    if (rel[0].type !== 'k' && rel[0].type !== 'e' && rel[0].type !== 'v' && rel[0].type !== 'r' && rel[0].type !== 'e (v)') {
+      rel[0] = fallback;
     }
     this.myPos[index] = rel[0];
     return rel[0];
