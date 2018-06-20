@@ -8,5 +8,6 @@ export const CONFIG = {
   dbUrl: dd + 'kurse/',
   vertURL: baseUrl + 'Schueler/',
   lehrerURL: baseUrl + 'Lehrer/', // .. f1/subst_001.htm
-  databaseURL: dd
+  databaseURL: dd,
+  subsciptionUrl: 'https://us-central1-bettergymwue.cloudfunctions.net/app/subscribe'
 };
