@@ -4,6 +4,7 @@ import * as $ from 'jquery';
 import {NetwService} from '../../s/netw.service';
 import {RefreshttService} from '../../s/refreshtt.service';
 import {AlertService} from "../../s/alert.service";
+import {WorkerService} from "../../worker.service";
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -12,7 +13,7 @@ import {AlertService} from "../../s/alert.service";
 export class AppComponent implements OnInit{
 
   constructor(public baseService: BaseService, private netwService: NetwService,
-              private refresh: RefreshttService, private alert: AlertService){};
+              private refresh: RefreshttService, private workerService: WorkerService){};
 
 
   @ViewChild('hamNav') hamnav;
@@ -39,7 +40,7 @@ export class AppComponent implements OnInit{
     if(!this.done) return;
 
     this.baseService.needsUpdate().then(() => {this.updateAv = true;}).catch();
-
+    this.workerService.checkUpdates();
 
   }
 
@@ -67,6 +68,10 @@ export class AppComponent implements OnInit{
     if (!this.baseService.credentials) return false;
     return !this.baseService.credentials.l;
 
+  }
+
+  subs(){
+    this.workerService.subscribe();
   }
 
 }

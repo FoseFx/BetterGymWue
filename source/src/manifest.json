@@ -8,6 +8,7 @@
   "description": "Verbessert den Umgang mit dem Stunden- und Vertretungsplan",
   "theme_color": "#E53935",
   "background_color": "#f4f4f4",
+  "gcm_sender_id": "757235049169",
   "icons": [
     {
       "sizes": "72x72",
