@@ -33,6 +33,7 @@ import { StundenplanComponent } from './c/stundenplan/stundenplan.component';
 import { ErrorComponent } from './c/error/error.component';
 import { HelpComponent } from './c/help/help.component';
 import {RefreshttService} from './s/refreshtt.service';
+import {WorkerService} from "./worker.service";
 declare var Hammer: any;
 
 export class MyHammerConfig extends HammerGestureConfig  {
@@ -88,6 +89,7 @@ export class MyHammerConfig extends HammerGestureConfig  {
     NetwService,
     AlertService,
     RefreshttService,
+    WorkerService,
     {
       provide: HAMMER_GESTURE_CONFIG,
       useClass: MyHammerConfig

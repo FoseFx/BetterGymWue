@@ -5,6 +5,7 @@ import {Router} from '@angular/router';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {CONFIG} from '../conf';
 import * as $ from 'jquery';
+import {WorkerService} from "../worker.service";
 
 
 declare function unescape(s:string): string;
@@ -27,7 +28,7 @@ export class BaseService {
   public dead = false;
   private deadTested = false;
 
-  constructor(private router: Router, private httpClient: HttpClient) {
+  constructor(private router: Router, private httpClient: HttpClient, private workerService: WorkerService) {
     if (typeof(Storage) === 'undefined') {
       this.allowedBrowser = false;
       this.router.navigate(['error'], {queryParams: {'oldBrowser': 'true'}});
@@ -45,6 +46,7 @@ export class BaseService {
     this.KlassenKurse = (!!localStorage.KlassenKurse) ? JSON.parse(localStorage.KlassenKurse) : undefined;
     this.kursID = (!!localStorage.kursID) ? localStorage.kursID : undefined;
     this._preLehrer = (!!localStorage.preLehrer) ? (localStorage.preLehrer == 'true') : true;
+    navigator.serviceWorker.ready.then(() => {workerService.checkUpdates();});
   }
 
   needsUpdate(){
