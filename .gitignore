@@ -4,3 +4,5 @@
 replacer
 halbjahr.csv
 wildcardify
+**/firebase.json
+**/.firebaserc
