@@ -5,6 +5,8 @@ import {NetwService} from '../../s/netw.service';
 import {RefreshttService} from '../../s/refreshtt.service';
 import {AlertService} from "../../s/alert.service";
 import {WorkerService} from "../../worker.service";
+import {animate, state, style, transition, trigger} from "@angular/animations";
+import {isNullOrUndefined} from "util";
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -71,7 +73,14 @@ export class AppComponent implements OnInit{
   }
 
   subs(){
+    this.setNotificationsEnabled(true);
     this.workerService.subscribe();
+  }
+  get notificationsUndefined(){
+    return isNullOrUndefined(localStorage.notificationsEnabled) && this.baseService.TT;
+  }
+  setNotificationsEnabled(val: boolean){
+    localStorage.notificationsEnabled = val;
   }
 
 }
