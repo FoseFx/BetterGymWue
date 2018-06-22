@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {CONFIG} from "./conf";
+import {IndexedDBService} from "./indexed-db.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class WorkerService {
-  constructor(private httpClient: HttpClient){}
+  constructor(private httpClient: HttpClient, private indexedDBService: IndexedDBService){}
 
   hasWorker = false;
   worker:ServiceWorkerRegistration = null;
@@ -25,6 +26,7 @@ export class WorkerService {
   }
 
   subscribe(){
+    this.indexedDBService.save();
     navigator.serviceWorker.getRegistration().then((reg)=> {
       reg.pushManager.subscribe({userVisibleOnly: true}).then((subs) => {
         this.subscribed = true;
