@@ -1,0 +1,14 @@
+{
+  "name": "copymycsstomyhtml",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "author": "Max",
+  "bin": {
+    "copymycsstomyhtml": "./copymycsstomyhtml.js"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "glob": "^7.1.2"
+  }
+}
