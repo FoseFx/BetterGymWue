@@ -32,11 +32,11 @@ self.addEventListener('push', function(event){
         console.log(tt);
 
         let body = ``;
-        tt.tag.forEach((g, i)=>{
-          if(!!g.fach){
-            body += myKurse.find(kurs => kurs.title === g.fach).fach;
-            if(i < tt.tag.length - 1) body += ' | ';
-          }
+        let arr = [];
+        tt.tag.forEach((g)=>{if(!!g.fach){arr.push(g)}});
+        arr.forEach((g, i)=>{
+          body += myKurse.find(kurs => kurs.title === g.fach).fach;
+          if(i < tt.tag.length - 1) body += ' | ';
         });
         let tag = ["Mo", "Di", "Mi", "Do", "Fr"][tt.date.getDay() - 1 ];
         self.registration.showNotification(`Dein Stundenplan für ${tag}`, {body:body, icon: 'assets/logo/128.png'})
