@@ -6,6 +6,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {CONFIG} from '../conf';
 import * as $ from 'jquery';
 import {WorkerService} from "../worker.service";
+import {IndexedDBService} from "../indexed-db.service";
 
 
 declare function unescape(s:string): string;
@@ -26,6 +27,7 @@ export class BaseService {
   public milchglas = false;
   public selectedTab = 0;
   public dead = false;
+  public _notificationsEnabled;
   private deadTested = false;
 
   constructor(private router: Router, private httpClient: HttpClient, private workerService: WorkerService) {
@@ -46,6 +48,7 @@ export class BaseService {
     this.KlassenKurse = (!!localStorage.KlassenKurse) ? JSON.parse(localStorage.KlassenKurse) : undefined;
     this.kursID = (!!localStorage.kursID) ? localStorage.kursID : undefined;
     this._preLehrer = (!!localStorage.preLehrer) ? (localStorage.preLehrer == 'true') : true;
+    this._notificationsEnabled = (!!localStorage.notificationsEnabled) ? localStorage.notificationsEnabled==true:undefined;
     navigator.serviceWorker.ready.then(() => {workerService.checkUpdates();});
   }
 
@@ -74,6 +77,15 @@ export class BaseService {
         }
       );
     })
+  }
+
+  set notificationsEnabled(val){
+    this._notificationsEnabled = val;
+    localStorage.notificationsEnabled = val;
+  }
+
+  get notificationsEnabled(){
+    return this._notificationsEnabled;
   }
 
   set preLehrer(val){
@@ -113,6 +125,7 @@ export class BaseService {
     });
     this.KlassenKurse = a;
     localStorage.KlassenKurse = JSON.stringify(a);
+
   }
 
   acceptAGB() {

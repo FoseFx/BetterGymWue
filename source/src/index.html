@@ -46,7 +46,10 @@
   </app-root>
 
 
-<script>const prod = false;if("serviceWorker" in navigator && prod){window.addEventListener('load', function () {navigator.serviceWorker.register('/service-worker.js').then(function (reg) {console.log("ServiceWorker Registered " + reg.scope); window['serviceWorkerObj'] = reg;},function (err) {console.log('ServiceWorker registration failed: ', err);});});}else {navigator.serviceWorker.getRegistrations().then(function(registrations) {for(let registration of registrations) {registration.unregister()}})}</script>
+<script>window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
+window.IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction || window.msIDBTransaction;
+window.IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange || window.msIDBKeyRange;
+const prod = false;if("serviceWorker" in navigator && prod){window.addEventListener('load', function () {navigator.serviceWorker.register('/service-worker.js').then(function (reg) {console.log("ServiceWorker Registered " + reg.scope); window['serviceWorkerObj'] = reg;},function (err) {console.log('ServiceWorker registration failed: ', err);});});}else {navigator.serviceWorker.getRegistrations().then(function(registrations) {for(let registration of registrations) {registration.unregister()}})}</script>
   <script>
     //function gtag(){dataLayer.push(arguments);}
     var gtag = function () {};
