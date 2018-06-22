@@ -19,7 +19,8 @@
       <a mat-list-item routerLink="agb" (click)="hamNav.close()"><i class="material-icons">gavel</i>&nbsp; Wichtige Hinweise</a>
       <a mat-list-item routerLink="about" (click)="hamNav.close()"><i class="material-icons">account_circle</i>&nbsp; Über</a>
       <hr>
-      <a mat-list-item routerLink="help" (click)="hamNav.close()"><i class="material-icons">live_help</i>&nbsp; Hilfe</a>
+      <a mat-list-item (click)="notificationSidenav()"><i class="material-icons">notifications</i>&nbsp; Notification</a>
+      <a mat-list-item routerLink="help" (click)="hamNav.close()"><i class="material-icons">live_help</i>&nbsp; Hilfe & Feedback</a>
     </mat-nav-list>
 
   </mat-drawer>
