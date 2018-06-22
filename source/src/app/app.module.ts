@@ -35,6 +35,7 @@ import { HelpComponent } from './c/help/help.component';
 import {RefreshttService} from './s/refreshtt.service';
 import {WorkerService} from "./worker.service";
 import {IBrowser} from "selenium-webdriver";
+import {IndexedDBService} from "./indexed-db.service";
 declare var Hammer: any;
 
 export class MyHammerConfig extends HammerGestureConfig  {
@@ -92,6 +93,7 @@ export class MyHammerConfig extends HammerGestureConfig  {
     AlertService,
     RefreshttService,
     WorkerService,
+    IndexedDBService,
     {
       provide: HAMMER_GESTURE_CONFIG,
       useClass: MyHammerConfig

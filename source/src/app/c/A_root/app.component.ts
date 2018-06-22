@@ -7,6 +7,7 @@ import {AlertService} from "../../s/alert.service";
 import {WorkerService} from "../../worker.service";
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {isNullOrUndefined} from "util";
+import {IndexedDBService} from "../../indexed-db.service";
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -77,10 +78,10 @@ export class AppComponent implements OnInit{
     this.workerService.subscribe();
   }
   get notificationsUndefined(){
-    return isNullOrUndefined(localStorage.notificationsEnabled) && this.baseService.TT;
+    return isNullOrUndefined(this.baseService.notificationsEnabled) && this.baseService.TT;
   }
   setNotificationsEnabled(val: boolean){
-    localStorage.notificationsEnabled = val;
+    this.baseService.notificationsEnabled = val;
   }
 
 }
