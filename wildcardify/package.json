@@ -1,0 +1,13 @@
+{
+  "name": "wildcardify",
+  "version": "1.0.0",
+  "description": "",
+  "main": "wildcardify.js",
+  "bin": {
+    "wildcardify": "./wildcardify.js"
+  },
+  "dependencies": {
+    "glob": "*",
+    "glop": "^0.3.1"
+  }
+}
