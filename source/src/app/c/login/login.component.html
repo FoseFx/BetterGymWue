@@ -1,25 +1,30 @@
 <div style="height: calc(100vh - 64px); display: flex; align-items: center; justify-content: center; overflow: hidden" *ngIf="show">
-  <div class="card mb-3 center" style="max-width: 30rem;" [ngClass]="{'border-danger': !fine, 'border-light': fine}">
-    <div class="card-header">Login<span class="text-muted"> (GymWue Daten)</span></div>
-    <div class="card-body">
+   <mat-card>
+    <mat-card-header>
+      <div mat-card-avatar><mat-icon style="font-size: 3em; color: #444">account_circle</mat-icon></div>
+      <mat-card-title>Login</mat-card-title>
+      <mat-card-subtitle>(GymWue Daten)</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
 
       <form #loginForm="ngForm" (submit)="formSubmitted()">
         <p style="width: 20rem" class="text-danger" *ngIf="select.value == 'lehrer'">Der Lehrer Zugang erweitert den Schüler Zugang und ist nicht eigenständig!</p>
         <p style="width: 20rem" class="text-danger" *ngIf="select.value == 'lehrer' && falseLehrerLogin">Kein Schüler Zugang gesetzt!</p>
-        <mat-form-field style="width: 20rem!important;">
+        <mat-form-field>
           <mat-select placeholder="Nutzer" ngModel name="nutzer" required #select>
             <mat-option value="schueler" [disabled]="!!baseService.credentials">schueler</mat-option>
             <mat-option value="lehrer" [disabled]="!baseService.credentials">lehrer</mat-option>
           </mat-select>
         </mat-form-field><br>
 
-        <mat-form-field style="width: 20rem!important; "
-        floatLabel="auto">
+        <mat-form-field
+                        floatLabel="auto">
           <input matInput type="password" placeholder="Passwort" style="box-shadow: none" ngModel name="psw" required> <!--style="width: 20rem"-->
         </mat-form-field>
         <br>
-        <button mat-raised-button color="accent" [ngClass]="{'disabled': !loginForm.valid}">Login</button>
+        <button mat-raised-button color="accent" [ngClass]="{'disabled': !loginForm.valid}">Login</button><span style="color: red" *ngIf="!fine">&nbsp;&nbsp;&nbsp;Das ist nicht richtig.</span>
       </form>
-    </div>
-  </div>
+
+    </mat-card-content>
+  </mat-card>
 </div>

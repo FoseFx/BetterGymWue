@@ -25,6 +25,7 @@ export class AppComponent implements OnInit{
   done = false;
   updateAv = false;
   win = window;
+  fakenotificationUndefined = false;
 
   ngOnInit(){
     let last = localStorage.lastTTcheck;
@@ -75,13 +76,21 @@ export class AppComponent implements OnInit{
 
   subs(){
     this.setNotificationsEnabled(true);
+    this.fakenotificationUndefined = false;
     this.workerService.subscribe();
   }
   get notificationsUndefined(){
+    if(this.fakenotificationUndefined) return true;
     return isNullOrUndefined(this.baseService.notificationsEnabled) && this.baseService.TT;
   }
   setNotificationsEnabled(val: boolean){
+    if(!val) this.fakenotificationUndefined = false;
     this.baseService.notificationsEnabled = val;
+  }
+
+  notificationSidenav(){
+    this.fakenotificationUndefined = true;
+    this.hamnav.close();
   }
 
 }
