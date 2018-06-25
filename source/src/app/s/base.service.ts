@@ -5,7 +5,7 @@ import {Router} from '@angular/router';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {CONFIG} from '../conf';
 import * as $ from 'jquery';
-import {WorkerService} from "../worker.service";
+import {WorkerService} from "./worker.service";
 import {IndexedDBService} from "../indexed-db.service";
 
 

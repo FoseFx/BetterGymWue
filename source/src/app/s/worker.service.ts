@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {CONFIG} from "./conf";
-import {IndexedDBService} from "./indexed-db.service";
+import {CONFIG} from "../conf";
+import {IndexedDBService} from "../indexed-db.service";
+import {logger} from "codelyzer/util/logger";
 
 @Injectable({
   providedIn: 'root'
@@ -36,6 +37,16 @@ export class WorkerService {
         console.log(err);
       })
     });
+  }
+
+  unsubscribe(){
+    navigator.serviceWorker.getRegistration().then(reg=>{
+      reg.pushManager.getSubscription().then(sub=>{
+        sub.unsubscribe().then(e=>{
+          console.log(sub.toJSON());
+        })
+      })
+    }).catch(e=>{console.error(e)})
   }
 
   updateServer(){
