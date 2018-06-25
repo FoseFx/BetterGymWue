@@ -4,7 +4,7 @@ import * as $ from 'jquery';
 import {NetwService} from '../../s/netw.service';
 import {RefreshttService} from '../../s/refreshtt.service';
 import {AlertService} from "../../s/alert.service";
-import {WorkerService} from "../../worker.service";
+import {WorkerService} from "../../s/worker.service";
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {isNullOrUndefined} from "util";
 import {IndexedDBService} from "../../indexed-db.service";
@@ -84,7 +84,10 @@ export class AppComponent implements OnInit{
     return isNullOrUndefined(this.baseService.notificationsEnabled) && this.baseService.TT;
   }
   setNotificationsEnabled(val: boolean){
-    if(!val) this.fakenotificationUndefined = false;
+    if(!val) {
+      this.workerService.unsubscribe();
+      this.fakenotificationUndefined = false;
+    }
     this.baseService.notificationsEnabled = val;
   }
 
@@ -92,6 +95,7 @@ export class AppComponent implements OnInit{
     this.fakenotificationUndefined = true;
     this.hamnav.close();
   }
+
 
 }
 function rl(){

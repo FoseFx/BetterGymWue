@@ -33,7 +33,7 @@ import { StundenplanComponent } from './c/stundenplan/stundenplan.component';
 import { ErrorComponent } from './c/error/error.component';
 import { HelpComponent } from './c/help/help.component';
 import {RefreshttService} from './s/refreshtt.service';
-import {WorkerService} from "./worker.service";
+import {WorkerService} from "./s/worker.service";
 import {IBrowser} from "selenium-webdriver";
 import {IndexedDBService} from "./indexed-db.service";
 declare var Hammer: any;

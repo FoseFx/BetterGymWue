@@ -35,10 +35,12 @@ self.addEventListener('push', function(event){
         let arr = [];
         tt.tag.forEach((g)=>{if(!!g.fach){arr.push(g)}});
         arr.forEach((g, i)=>{
-          body += myKurse.find(kurs => kurs.title === g.fach).fach;
-          if(i < tt.tag.length - 1) body += ' | ';
+          let kurs = myKurse.find(kurs => kurs.title === g.fach);
+          if(kurs)
+            body += kurs.fach;
+          if(i < arr.length - 1) body += ' ';
         });
-        let tag = ["Mo", "Di", "Mi", "Do", "Fr"][tt.date.getDay() - 1 ];
+        let tag = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"][tt.date.getDay() - 1 ];
         self.registration.showNotification(`Dein Stundenplan für ${tag}`, {body:body, icon: 'assets/logo/128.png'})
       };
 
@@ -65,3 +67,11 @@ function getWeekNumber(d) {
   let yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
   return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
 }
+
+
+self.addEventListener('notificationclick', function (event) {
+  event.notification.close();
+  event.waitUntil(
+    clients.openWindow('/')
+  );
+});

@@ -10,7 +10,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "build:prod": "npm run build && npm run after_build",
-    "build_test": "ng build && npm run after_build",
+    "build:test": "ng build && npm run after_build",
     "sw_precache": "sw-precache --root=dist --config=precache-config.js",
     "minify": "uglifyjs-folder dist -e -y -x .js -o dist",
     "after_build": "replacer dist/index.html \"prod = false\" \"prod = true\" && rm dist/3rdpartylicenses.txt && copymycsstomyhtml && npm run sw_precache && npm run minify"
