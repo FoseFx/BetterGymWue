@@ -1,6 +1,6 @@
 **/.idea
 **/node_modules
-functions
-replacer
+**/functions
 halbjahr.csv
-wildcardify
+**/firebase.json
+**/.firebaserc

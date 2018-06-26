@@ -4,6 +4,10 @@ import * as $ from 'jquery';
 import {NetwService} from '../../s/netw.service';
 import {RefreshttService} from '../../s/refreshtt.service';
 import {AlertService} from "../../s/alert.service";
+import {WorkerService} from "../../s/worker.service";
+import {animate, state, style, transition, trigger} from "@angular/animations";
+import {isNullOrUndefined} from "util";
+import {IndexedDBService} from "../../indexed-db.service";
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -12,7 +16,7 @@ import {AlertService} from "../../s/alert.service";
 export class AppComponent implements OnInit{
 
   constructor(public baseService: BaseService, private netwService: NetwService,
-              private refresh: RefreshttService, private alert: AlertService){};
+              private refresh: RefreshttService, private workerService: WorkerService){};
 
 
   @ViewChild('hamNav') hamnav;
@@ -21,6 +25,7 @@ export class AppComponent implements OnInit{
   done = false;
   updateAv = false;
   win = window;
+  fakenotificationUndefined = false;
 
   ngOnInit(){
     let last = localStorage.lastTTcheck;
@@ -39,7 +44,7 @@ export class AppComponent implements OnInit{
     if(!this.done) return;
 
     this.baseService.needsUpdate().then(() => {this.updateAv = true;}).catch();
-
+    this.workerService.checkUpdates();
 
   }
 
@@ -68,6 +73,34 @@ export class AppComponent implements OnInit{
     return !this.baseService.credentials.l;
 
   }
+
+  subs(){
+    if(this.baseService.notificationsEnabled) return;
+    this.setNotificationsEnabled(true);
+    this.fakenotificationUndefined = false;
+    this.workerService.subscribe();
+  }
+  get notificationsUndefined(){
+    if(this.fakenotificationUndefined) return true;
+    return isNullOrUndefined(this.baseService.notificationsEnabled) && this.baseService.TT;
+  }
+  setNotificationsEnabled(val: boolean){
+    if(!val) {
+      if(this.baseService.notificationsEnabled) this.workerService.unsubscribe();
+      this.fakenotificationUndefined = false;
+    }
+    this.baseService.notificationsEnabled = val;
+  }
+
+  notificationSidenav(){
+    this.fakenotificationUndefined = true;
+    this.hamnav.close();
+  }
+
+  get no_notification_message(){
+    return this.baseService.notificationsEnabled? "Nicht mehr": "Nein";
+  }
+
 
 }
 function rl(){

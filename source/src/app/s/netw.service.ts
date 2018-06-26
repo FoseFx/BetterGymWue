@@ -133,6 +133,7 @@ export class NetwService {
             let t = $(v.children()[3]).html().replace(" ", "").replace("<b>", "").replace("</b>", "");
 
             if (t.toLowerCase() == "entfall") t = "e";
+            else if (t.toUpperCase() === "STATT-VERTRETUNG") t = "statt-v";
             else if (t.toLowerCase() == "vertretung") {
               t = "v";
               if (infoo.toLowerCase().match("selbstständiges arbeiten") ||

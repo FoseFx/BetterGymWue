@@ -5,12 +5,14 @@ import {Router} from '@angular/router';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {CONFIG} from '../conf';
 import * as $ from 'jquery';
+import {WorkerService} from "./worker.service";
+import {IndexedDBService} from "../indexed-db.service";
 
 
 declare function unescape(s:string): string;
 @Injectable()
 export class BaseService {
-  public VERSION = "1.2.2 Beta";
+  public VERSION = "1.2.5 Beta";
   public acceptedAGB: boolean;
   allowedBrowser: boolean;
   public credentials: {u: string, p: string, l?: {u: string, p: string}};
@@ -25,9 +27,10 @@ export class BaseService {
   public milchglas = false;
   public selectedTab = 0;
   public dead = false;
+  public _notificationsEnabled;
   private deadTested = false;
 
-  constructor(private router: Router, private httpClient: HttpClient) {
+  constructor(private router: Router, private httpClient: HttpClient, private workerService: WorkerService) {
     if (typeof(Storage) === 'undefined') {
       this.allowedBrowser = false;
       this.router.navigate(['error'], {queryParams: {'oldBrowser': 'true'}});
@@ -45,6 +48,8 @@ export class BaseService {
     this.KlassenKurse = (!!localStorage.KlassenKurse) ? JSON.parse(localStorage.KlassenKurse) : undefined;
     this.kursID = (!!localStorage.kursID) ? localStorage.kursID : undefined;
     this._preLehrer = (!!localStorage.preLehrer) ? (localStorage.preLehrer == 'true') : true;
+    this._notificationsEnabled = (!!localStorage.notificationsEnabled) ? localStorage.notificationsEnabled == "true" :undefined;
+    navigator.serviceWorker.ready.then(() => {workerService.checkUpdates();});
   }
 
   needsUpdate(){
@@ -72,6 +77,15 @@ export class BaseService {
         }
       );
     })
+  }
+
+  set notificationsEnabled(val){
+    this._notificationsEnabled = val;
+    localStorage.notificationsEnabled = val;
+  }
+
+  get notificationsEnabled(){
+    return this._notificationsEnabled;
   }
 
   set preLehrer(val){
@@ -111,6 +125,7 @@ export class BaseService {
     });
     this.KlassenKurse = a;
     localStorage.KlassenKurse = JSON.stringify(a);
+
   }
 
   acceptAGB() {

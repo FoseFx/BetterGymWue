@@ -45,7 +45,10 @@
   </app-root>
 
 
-<script>const prod = true;if("serviceWorker" in navigator && prod){window.addEventListener('load', function () {navigator.serviceWorker.register('/service-worker.js').then(function (reg) {console.log("ServiceWorker Registered " + reg.scope);},function (err) {console.log('ServiceWorker registration failed: ', err);});});}else {navigator.serviceWorker.getRegistrations().then(function(registrations) {for(let registration of registrations) {registration.unregister()}})}</script>
+<script>window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
+window.IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction || window.msIDBTransaction;
+window.IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange || window.msIDBKeyRange;
+const prod = true;if("serviceWorker" in navigator && prod){window.addEventListener('load', function () {navigator.serviceWorker.register('/service-worker.js').then(function (reg) {console.log("ServiceWorker Registered " + reg.scope); window['serviceWorkerObj'] = reg;},function (err) {console.log('ServiceWorker registration failed: ', err);});});}else {navigator.serviceWorker.getRegistrations().then(function(registrations) {for(let registration of registrations) {registration.unregister()}})}</script>
   <script>
     //function gtag(){dataLayer.push(arguments);}
     var gtag = function () {};
@@ -86,5 +89,5 @@
     });
   </script>
 
-<script type="text/javascript" src="runtime.a66f828dca56eeb90e02.js"></script><script type="text/javascript" src="polyfills.af787ecd062ee36ad18c.js"></script><script type="text/javascript" src="scripts.2e18d790d88b28a93dae.js"></script><script type="text/javascript" src="main.f2cfd94f126ffc20740d.js"></script></body>
+<script type="text/javascript" src="runtime.a66f828dca56eeb90e02.js"></script><script type="text/javascript" src="polyfills.af787ecd062ee36ad18c.js"></script><script type="text/javascript" src="scripts.2e18d790d88b28a93dae.js"></script><script type="text/javascript" src="main.ff18aa31faf1c759ad72.js"></script></body>
 </html>
