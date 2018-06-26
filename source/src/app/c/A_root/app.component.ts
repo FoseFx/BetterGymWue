@@ -75,6 +75,7 @@ export class AppComponent implements OnInit{
   }
 
   subs(){
+    if(this.baseService.notificationsEnabled) return;
     this.setNotificationsEnabled(true);
     this.fakenotificationUndefined = false;
     this.workerService.subscribe();
@@ -85,7 +86,7 @@ export class AppComponent implements OnInit{
   }
   setNotificationsEnabled(val: boolean){
     if(!val) {
-      this.workerService.unsubscribe();
+      if(this.baseService.notificationsEnabled) this.workerService.unsubscribe();
       this.fakenotificationUndefined = false;
     }
     this.baseService.notificationsEnabled = val;
@@ -94,6 +95,10 @@ export class AppComponent implements OnInit{
   notificationSidenav(){
     this.fakenotificationUndefined = true;
     this.hamnav.close();
+  }
+
+  get no_notification_message(){
+    return this.baseService.notificationsEnabled? "Nicht mehr": "Nein";
   }
 
 

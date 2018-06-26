@@ -42,8 +42,9 @@
         <mat-card-title>Möchtest du jeden Tag um 7:00 Uhr eine Benachrichtigung mit dem Stundenplan bekommen?</mat-card-title>
       </mat-card-header>
       <mat-card-actions>
-        <button mat-button (click)="subs()" >Ja</button>
-        <button mat-button (click)="setNotificationsEnabled(false)">Nein</button>
+        <button mat-button (click)="subs()" [disabled]="baseService.notificationsEnabled">Ja</button>
+        <button mat-button (click)="setNotificationsEnabled(false)">{{no_notification_message}}</button>
+        <button mat-button *ngIf="baseService.notificationsEnabled" (click)="fakenotificationUndefined = false">Schließen</button>
       </mat-card-actions>
     </mat-card>
 
