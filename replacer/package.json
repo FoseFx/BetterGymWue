@@ -1,0 +1,9 @@
+{
+  "name": "replacer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "replacer.js",
+  "bin": {
+    "replacer": "./replacer.js"
+  }
+}

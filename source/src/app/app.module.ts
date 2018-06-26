@@ -21,7 +21,7 @@ import { ShowComponent } from './c/show/show.component';
 import { TtcontainerComponent } from './c/show/ttcontainer/ttcontainer.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
-  MatButtonModule,
+  MatButtonModule, MatCardModule,
   MatFormFieldModule, MatIconModule, MatInputModule,
   MatListModule,
   MatSelectModule,
@@ -33,6 +33,9 @@ import { StundenplanComponent } from './c/stundenplan/stundenplan.component';
 import { ErrorComponent } from './c/error/error.component';
 import { HelpComponent } from './c/help/help.component';
 import {RefreshttService} from './s/refreshtt.service';
+import {WorkerService} from "./s/worker.service";
+import {IBrowser} from "selenium-webdriver";
+import {IndexedDBService} from "./indexed-db.service";
 declare var Hammer: any;
 
 export class MyHammerConfig extends HammerGestureConfig  {
@@ -80,7 +83,8 @@ export class MyHammerConfig extends HammerGestureConfig  {
     MatButtonModule,
     MatIconModule,
     MatTabsModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatCardModule
   ],
   providers: [
     BaseService,
@@ -88,6 +92,8 @@ export class MyHammerConfig extends HammerGestureConfig  {
     NetwService,
     AlertService,
     RefreshttService,
+    WorkerService,
+    IndexedDBService,
     {
       provide: HAMMER_GESTURE_CONFIG,
       useClass: MyHammerConfig

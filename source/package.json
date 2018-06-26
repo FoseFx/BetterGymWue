@@ -5,13 +5,16 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --prod",
+    "build": "ng build --prod --aot",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "build_app": "ng build --prod --aot && npm run after_build",
-    "build_test": "ng build && npm run after_build",
-    "after_build": "replacer dist/index.html \"prod = false\" \"prod = true\" && sw-precache --root=dist --config=precache-config.js && uglifyjs-folder dist -e -x .js -o dist"
+    "build:prod": "npm run build && npm run after_build",
+    "build:test": "ng build && npm run prod_replacer_script && npm run sw_precache && http-server-spa ./dist index.html",
+    "sw_precache": "sw-precache --root=dist --config=precache-config.js",
+    "minify": "uglifyjs-folder dist -e -y -x .js -o dist",
+    "prod_replacer_script": "replacer dist/index.html \"prod = false\" \"prod = true\"",
+    "after_build": "npm run prod_replacer_script && rm dist/3rdpartylicenses.txt && copymycsstomyhtml && npm run sw_precache && npm run minify"
   },
   "private": true,
   "dependencies": {
