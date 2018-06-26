@@ -12,7 +12,7 @@ import {IndexedDBService} from "../indexed-db.service";
 declare function unescape(s:string): string;
 @Injectable()
 export class BaseService {
-  public VERSION = "1.2.2 Beta";
+  public VERSION = "1.2.5 Beta";
   public acceptedAGB: boolean;
   allowedBrowser: boolean;
   public credentials: {u: string, p: string, l?: {u: string, p: string}};
@@ -48,7 +48,7 @@ export class BaseService {
     this.KlassenKurse = (!!localStorage.KlassenKurse) ? JSON.parse(localStorage.KlassenKurse) : undefined;
     this.kursID = (!!localStorage.kursID) ? localStorage.kursID : undefined;
     this._preLehrer = (!!localStorage.preLehrer) ? (localStorage.preLehrer == 'true') : true;
-    this._notificationsEnabled = (!!localStorage.notificationsEnabled) ? localStorage.notificationsEnabled==true:undefined;
+    this._notificationsEnabled = (!!localStorage.notificationsEnabled) ? localStorage.notificationsEnabled == "true" :undefined;
     navigator.serviceWorker.ready.then(() => {workerService.checkUpdates();});
   }
 

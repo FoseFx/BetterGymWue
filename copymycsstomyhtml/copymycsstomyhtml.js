@@ -8,8 +8,8 @@ let exec = require('child_process').exec;
 
 glob("dist/style*.css", {}, function (er, files) {
     if(er) throw new Error(er);
+    if(!files[0]) return;
     let file = path.join(process.cwd(), files[0]);
-    console.log(file);
     let content = fs.readFileSync(file, 'utf-8');
     const indexpath = path.join(process.cwd(), '/dist/index.html');
     let index = fs.readFileSync(indexpath, 'utf-8');
