@@ -36,15 +36,16 @@ self.addEventListener('push', function(event){
         tt.tag.forEach((g)=>{if(!!g.fach){arr.push(g)}});
         arr.forEach((g, i)=>{
           let kurs = myKurse.find(kurs => kurs.title === g.fach);
-          if(kurs)
-            body += kurs.fach;
+          if(kurs){
+            if(g.raeume.find(k=>k.kurs === kurs.title))
+              body += kurs.fach;
+            else body += 'Frei';
+          }
           if(i < arr.length - 1) body += ' ';
         });
         let tag = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"][tt.date.getDay() - 1 ];
-        self.registration.showNotification(`Dein Stundenplan für ${tag}`, {body:body, icon: 'assets/logo/128.png'})
+        self.registration.showNotification(`Stundenplan für ${tag} (indev)`, {body:body, icon: 'assets/logo/128.png'})
       };
-
-      // store.put({data: });
       tx.oncomplete = function (  ) {
         db.close();
       }
