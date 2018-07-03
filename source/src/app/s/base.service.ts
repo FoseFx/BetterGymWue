@@ -12,7 +12,7 @@ import {IndexedDBService} from "../indexed-db.service";
 declare function unescape(s:string): string;
 @Injectable()
 export class BaseService {
-  public VERSION = "1.2.6 Beta";
+  public VERSION = "1.2.7 Beta";
   public acceptedAGB: boolean;
   allowedBrowser: boolean;
   public credentials: {u: string, p: string, l?: {u: string, p: string}};
