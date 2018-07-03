@@ -36,8 +36,9 @@ self.addEventListener('push', function(event){
         tt.tag.forEach((g)=>{if(!!g.fach){arr.push(g)}});
         arr.forEach((g, i)=>{
           let kurs = myKurse.find(kurs => kurs.title === g.fach);
+          debugger;
           if(kurs){
-            if(g.raeume.find(k=>k.kurs === kurs.title))
+            if(g.raeume.find(k=>k.kurs === kurs.fach))
               body += kurs.fach;
             else body += 'Frei';
           }
