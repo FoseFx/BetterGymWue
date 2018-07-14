@@ -1,6 +1,12 @@
 self.addEventListener('push', function(event){
-    console.log('push',event);
 
+    console.log('push',event);
+    let payload = event.data.text();
+
+    if(payload !== "noti"){
+      self.registration.showNotification('BGW:', {body: payload, icon: 'assets/logo/128.png'});
+      return;
+    }
 
     let request = indexedDB.open("OfflineData", 2), db, tx, store;
 
@@ -36,7 +42,6 @@ self.addEventListener('push', function(event){
         tt.tag.forEach((g)=>{if(!!g.fach){arr.push(g)}});
         arr.forEach((g, i)=>{
           let kurs = myKurse.find(kurs => kurs.title === g.fach);
-          debugger;
           if(kurs){
             if(g.raeume.find(k=>k.kurs === kurs.fach))
               body += kurs.fach;
@@ -45,7 +50,7 @@ self.addEventListener('push', function(event){
           if(i < arr.length - 1) body += ' ';
         });
         let tag = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"][tt.date.getDay() - 1 ];
-        self.registration.showNotification(`Stundenplan für ${tag} (indev)`, {body:body, icon: 'assets/logo/128.png'})
+        self.registration.showNotification(`Stundenplan für ${tag}`, {body:body, icon: 'assets/logo/128.png'})
       };
       tx.oncomplete = function (  ) {
         db.close();

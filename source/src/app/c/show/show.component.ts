@@ -45,7 +45,6 @@ export class ShowComponent implements OnInit, AfterViewInit {
   constructor(public baseService: BaseService, private alert: AlertService) {}
 
   ngOnInit() {
-    console.log(this.baseService.selectedTab);
     let tt = this.baseService.TT;
     if (!tt) { this.alert.alert("Kein Stundenplan gesetzt", this.alert.DANGER); return; }
 
