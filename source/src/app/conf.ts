@@ -10,5 +10,8 @@ export const CONFIG = {
   lehrerURL: baseUrl + 'Lehrer/', // .. f1/subst_001.htm
   databaseURL: dd,
   subsciptionUrl: 'https://us-central1-bettergymwue.cloudfunctions.net/app/subscribe',
-  unsubscribeUrl: 'https://us-central1-bettergymwue.cloudfunctions.net/app/unsubscribe'
+  unsubscribeUrl: 'https://us-central1-bettergymwue.cloudfunctions.net/app/unsubscribe',
+  ferienUrl: dd + "ferien/ferien.json",
+  ferienEndsUrl: dd + "ferien/ends.json",
+  resets: dd + "resets.json"
 };

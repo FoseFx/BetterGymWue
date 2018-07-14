@@ -12,7 +12,7 @@ import {IndexedDBService} from "../indexed-db.service";
 declare function unescape(s:string): string;
 @Injectable()
 export class BaseService {
-  public VERSION = "1.2.7 Beta";
+  public VERSION = "1.2.8 Beta";
   public acceptedAGB: boolean;
   allowedBrowser: boolean;
   public credentials: {u: string, p: string, l?: {u: string, p: string}};
@@ -28,6 +28,9 @@ export class BaseService {
   public selectedTab = 0;
   public dead = false;
   public _notificationsEnabled;
+  public ferien = false;
+  public ferienEndsOn = "";
+  public justResetted = false;
   private deadTested = false;
 
   constructor(private router: Router, private httpClient: HttpClient, private workerService: WorkerService) {
@@ -49,7 +52,57 @@ export class BaseService {
     this.kursID = (!!localStorage.kursID) ? localStorage.kursID : undefined;
     this._preLehrer = (!!localStorage.preLehrer) ? (localStorage.preLehrer == 'true') : true;
     this._notificationsEnabled = (!!localStorage.notificationsEnabled) ? localStorage.notificationsEnabled == "true" :undefined;
+    this.justResetted = (!!localStorage.justResetted) ? (localStorage.justResetted == "true"): false;
+    localStorage.justResetted = false;
     navigator.serviceWorker.ready.then(() => {workerService.checkUpdates();});
+    this.checkFerien();
+    this.needsReset();
+  }
+
+  needsReset(){
+    this.httpClient.get(CONFIG.resets).subscribe(
+      (resets:number)=>{
+        if(!localStorage.resets) localStorage.resets = resets;
+        else {
+          if(+localStorage.resets < resets){
+            localStorage.resets = resets;
+            localStorage.justResetted = true;
+            delete localStorage.stufen;
+            delete localStorage.myStufeID;
+            delete localStorage.myStufe;
+            delete localStorage.myKurse;
+            delete localStorage.kursID;
+            delete localStorage.TT;
+            delete localStorage.KlassenKurse;
+            location.reload();
+          }
+        }
+      },
+      (err)=>{
+        console.error('needsReset',err);
+      }
+    )
+  }
+
+  checkFerien(){
+    this.httpClient.get(CONFIG.ferienUrl).subscribe(
+      (bool:boolean) => {
+        this.ferien = bool;
+        if(this.ferien){
+          this.httpClient.get(CONFIG.ferienEndsUrl).subscribe(
+            (ends:string) => {
+              this.ferienEndsOn = ends;
+            },
+            (e) =>{
+              console.error('getFerienEndError', e);
+            }
+          );
+        }
+      },
+      (e) =>{
+        console.error('checkFerienError', e);
+      }
+    );
   }
 
   needsUpdate(){

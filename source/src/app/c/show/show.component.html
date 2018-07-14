@@ -1,8 +1,13 @@
 <div class="full">
 
   <div class="container">
-
-    <mat-tab-group class="fuckYou" [selectedIndex]="baseService.selectedTab" (swipeleft)="swipe($event)" (swiperight)="swipe($event)" (selectChange)="change($event)">
+    <div *ngIf="baseService.ferien">
+      <br><br><br>
+      <h1>Es sind Ferien, was tust du hier?</h1>
+      <h2><small class="text-muted">Der Unterricht beginnt wieder am {{baseService.ferienEndsOn}}.</small></h2>
+      <h3><small class="text-muted">Die Kurs Cloud wird am Tag davor zurückgesetzt.</small></h3>
+    </div>
+    <mat-tab-group *ngIf="!baseService.ferien" class="fuckYou" [selectedIndex]="baseService.selectedTab" (swipeleft)="swipe($event)" (swiperight)="swipe($event)" (selectChange)="change($event)">
       <mat-tab *ngFor="let tt of tts; let i = index;" [label]="tt.date | date: 'dd.M.yy' ">
         <show-ttcontainer [tt]="tt" [index]="i"></show-ttcontainer>
       </mat-tab>
