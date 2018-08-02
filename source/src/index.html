@@ -85,8 +85,8 @@ const prod = false;if("serviceWorker" in navigator && prod){window.addEventListe
     });
 
     window.addEventListener('beforeinstallprompt', (e)=> {
-      e.prompt();
-      e.userChoice.then((ee) => {console.log(ee);})
+      e.preventDefault();
+      window.installpromptevent = e;
     });
   </script>
 

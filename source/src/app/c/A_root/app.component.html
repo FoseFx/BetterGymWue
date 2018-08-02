@@ -5,7 +5,12 @@
       <h2>Better Gym Wue</h2>
       <h3><small class="text-muted">Made by @FoseFx</small></h3>
     </div>
-    <mat-nav-list >
+    <mat-nav-list>
+      <ng-container *ngIf="!!win.installpromptevent">
+        <hr><br>
+        <a mat-list-item (click)="install()"><b><i class="material-icons">get_app</i>&nbsp; Installieren</b></a>
+        <br><hr>
+      </ng-container>
       <a mat-list-item routerLink="/" (click)="hamNav.close()"><i class="material-icons">home</i>&nbsp; Home</a>
       <a mat-list-item routerLink="cloud" (click)="hamNav.close()"><i class="material-icons">cloud</i>&nbsp; Kurs-Cloud</a>
       <hr>

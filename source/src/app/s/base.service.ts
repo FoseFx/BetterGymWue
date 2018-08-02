@@ -7,12 +7,14 @@ import {CONFIG} from '../conf';
 import * as $ from 'jquery';
 import {WorkerService} from "./worker.service";
 import {IndexedDBService} from "../indexed-db.service";
+import {fromEvent} from "rxjs/internal/observable/fromEvent";
+import {AlertService} from "./alert.service";
 
 
 declare function unescape(s:string): string;
 @Injectable()
 export class BaseService {
-  public VERSION = "1.2.8 Beta";
+  public VERSION = "1.2.9 Beta";
   public acceptedAGB: boolean;
   allowedBrowser: boolean;
   public credentials: {u: string, p: string, l?: {u: string, p: string}};
@@ -33,7 +35,7 @@ export class BaseService {
   public justResetted = false;
   private deadTested = false;
 
-  constructor(private router: Router, private httpClient: HttpClient, private workerService: WorkerService) {
+  constructor(private router: Router, private httpClient: HttpClient, private workerService: WorkerService, private alertService: AlertService) {
     if (typeof(Storage) === 'undefined') {
       this.allowedBrowser = false;
       this.router.navigate(['error'], {queryParams: {'oldBrowser': 'true'}});
@@ -184,6 +186,7 @@ export class BaseService {
   acceptAGB() {
     this.acceptedAGB = true;
     localStorage.acceptedAGB2 = true;
+    this.install();
     this.router.navigate(['/'], {queryParams: {ua: ''}});
   }
 
@@ -248,6 +251,21 @@ export class BaseService {
   }
 
   private _ws = [];
+
+  install(){
+    if (!!window.installpromptevent){
+      window.installpromptevent.prompt();
+      window.installpromptevent.userChoice.then((choice)=>{
+        console.log('choice',choice);
+        if(choice.outcome === "accepted" ){
+          delete window.installpromptevent;
+          this.alertService.alert("Installiert! Du kannst die App jetzt öffnen");
+        }else if (choice.outcome === "dismissed"){
+          this.alertService.alert("Installation fehlgeschlagen. Probiere es über das Menü erneut", this.alertService.DANGER)
+        }
+      });
+    }
+  }
 
   setLastVD(index:number, w, lehrer:boolean){
     console.log("setLastVD: " + index + ", " + lehrer);

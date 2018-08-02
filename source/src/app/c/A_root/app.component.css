@@ -52,3 +52,7 @@ hr{
     padding: 0;
   }
 }
+
+mat-nav-list{
+  padding-bottom: 1em;
+}
