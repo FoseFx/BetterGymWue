@@ -24,7 +24,15 @@ export class AppComponent implements OnInit{
 
   done = false;
   updateAv = false;
-  win = window;
+  get win(){
+    return window;
+  }
+
+  install(){
+    this.baseService.install();
+    this.hamnav.close();
+  }
+
   fakenotificationUndefined = false;
 
   ngOnInit(){
