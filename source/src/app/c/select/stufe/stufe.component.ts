@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {NetwService} from '../../../s/netw.service';
+import {NetwService} from '../../../s/network/netw.service';
 import {BaseService} from '../../../s/base.service';
 
 @Component({

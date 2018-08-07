@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {BaseService} from '../../s/base.service';
 import * as $ from 'jquery';
-import {NetwService} from '../../s/netw.service';
+import {NetwService} from '../../s/network/netw.service';
 import {RefreshttService} from '../../s/refreshtt.service';
 import {AlertService} from "../../s/alert.service";
 import {WorkerService} from "../../s/worker.service";
