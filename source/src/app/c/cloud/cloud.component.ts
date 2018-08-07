@@ -1,6 +1,6 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {BaseService} from '../../s/base.service';
-import {NetwService} from '../../s/netw.service';
+import {NetwService} from '../../s/network/netw.service';
 
 @Component({
   selector: 'app-cloud',

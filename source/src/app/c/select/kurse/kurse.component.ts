@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {NetwService} from '../../../s/netw.service';
+import {NetwService} from '../../../s/network/netw.service';
 import {AlertService} from '../../../s/alert.service';
 import {BaseService} from '../../../s/base.service';
 import {ActivatedRoute, Router} from '@angular/router';

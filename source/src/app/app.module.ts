@@ -14,7 +14,7 @@ import {GuardService} from './s/guard.service';
 import {HttpClientModule} from '@angular/common/http';
 import { SelectComponent } from './c/select/select.component';
 import { StufeComponent } from './c/select/stufe/stufe.component';
-import {NetwService} from './s/netw.service';
+import {NetwService} from './s/network/netw.service';
 import {AlertService} from './s/alert.service';
 import { KurseComponent } from './c/select/kurse/kurse.component';
 import { ShowComponent } from './c/show/show.component';

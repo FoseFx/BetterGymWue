@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {NetwService} from './netw.service';
+import {NetwService} from './network/netw.service';
 import {BaseService} from './base.service';
 
 @Injectable()

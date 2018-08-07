@@ -4,7 +4,7 @@ import {fromEvent as observableFromEvent, of as observableOf, merge as observabl
 import {mapTo} from 'rxjs/operators';
 import {Component, Input, AfterViewInit, ChangeDetectorRef} from '@angular/core';
 import {BaseService} from '../../../s/base.service';
-import {NetwService} from '../../../s/netw.service';
+import {NetwService} from '../../../s/network/netw.service';
 import * as $ from 'jquery';
 import {Router} from '@angular/router';
 import {Observable} from 'rxjs';
