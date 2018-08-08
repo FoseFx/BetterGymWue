@@ -77,14 +77,13 @@ function newF(ret, lehrer) {
             fach: fach,
             oldRaum: oldroom,
             newRaum: newroom,
-            info: infotext,
-            stunde: stunde
+            info: infotext
         };
         if(lehrer){
             pushObj.stufe = klasse;
         }
-
         stunden.forEach((stunde, i, array) => {
+            pushObj.stunde = stunde;
             stufen[stufen.length - 1].cntnd.push(pushObj);
 
             if (i === (array.length - 1)) {
@@ -98,7 +97,6 @@ function newF(ret, lehrer) {
                 stufen[stufen.length - 1].cntnd.push(obj);
             }
         });
-
     });
     let infoBox = [];
     doc.querySelectorAll('tr.info').forEach(function (inforow, i) {
