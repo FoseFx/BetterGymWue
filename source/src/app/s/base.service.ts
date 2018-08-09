@@ -89,7 +89,7 @@ export class BaseService {
   checkFerien(){
     this.httpClient.get(CONFIG.ferienUrl).subscribe(
       (bool:boolean) => {
-        this.ferien = bool;
+        // TODO this.ferien = bool;
         if(this.ferien){
           this.httpClient.get(CONFIG.ferienEndsUrl).subscribe(
             (ends:string) => {

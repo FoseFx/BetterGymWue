@@ -6,6 +6,7 @@ import {AlertService} from '../alert.service';
 import * as Cloud from './cloud.netw'
 import * as Initial from './initial.netw'
 import * as $ from 'jquery';
+import {evaVD} from "./evavd";
 
 @Injectable()
 export class NetwService {
@@ -16,7 +17,7 @@ export class NetwService {
   saveKurseTrys = 0;
   public tempTTs: { stufe: string, tt: {}[] }[] = [];
 
-  constructor(public baseService: BaseService, private alertService: AlertService, private httpClient: HttpClient) {
+  constructor(public baseService: BaseService, private alertService: AlertService) {
     this._stufen = (localStorage.stufen) ? JSON.parse(localStorage.stufen) : undefined;
   }
 
@@ -32,7 +33,7 @@ export class NetwService {
           if($(wert).find(".mon_title").html().match(tag) === null){
             reject(urlmiddle);
           }
-          let eva = this.evaVD(wert);
+          let eva = evaVD(wert);
           file[i] = eva[0];
           sides.push(eva[1]);
           resolve([tag, i, urlmiddle, file, sides]);
@@ -66,7 +67,7 @@ export class NetwService {
         this.baseService.makeConnections(CONFIG.lehrerURL + urlmiddle + '/' + file[i], true).subscribe(
           (wert) => {
             if($(wert).find(".mon_title").html().match(tag) === null) reject(urlmiddle);
-            let eva = this.evaVD(wert, true);
+            let eva = evaVD(wert, true);
             file[i] = eva[0];
             sides.push(eva[1]);
             resolve([tag, i, urlmiddle, file, sides]);
@@ -117,140 +118,6 @@ export class NetwService {
     });
   }
 
-  private evaVD(ret, lehrer?:boolean){
-    lehrer = lehrer || false;
-    let returnArray = [];
-    // returns url to next element
-    returnArray[0] = ret.split("<meta http-equiv=\"refresh\" content=\"10; URL=")[1].split("\">")[0];
-    let arr = [];
-    $(ret).find("table.mon_list").children("tbody").children("tr.list").each(function (index, v) {
-      if (index === 0) return;
-      v = $(v);
-      if (v.children().length == 1) arr.push({stufe: $(v.children()[0]).html().split(" ")[0], cntnd: []});
-      else{
-        let s = [];
-        $(v.children()[1]).html().split("-").forEach((idk) => {s.push(idk.replace(" ", ""))});
-        s.forEach((ss, iii, array) => {
-          if(!lehrer){
-            let infoo = $(v.children()[6]).html();
-            let t = $(v.children()[3]).html().replace(" ", "").replace("<b>", "").replace("</b>", "");
-
-            if (t.toLowerCase() == "entfall") t = "e";
-            else if (t.toUpperCase() === "STATT-VERTRETUNG") t = "statt-v";
-            else if (t.toLowerCase() == "vertretung") {
-              t = "v";
-              if (infoo.toLowerCase().match("selbstständiges arbeiten") ||
-                infoo.toLowerCase().match("selbständiges arbeiten") ||
-                infoo.toLowerCase().match("selbstständies arbeiten") ||
-                infoo.toLowerCase().match("selbstäniges arbeiten")
-              ) t = "e (v)";
-            }else if (t.toLowerCase() == "raum-vtr.") t = "r";
-            else if (t.toLowerCase() == "klausur") t = "k";
-            infoo = infoo.toLowerCase().replace("selbstständiges arbeiten", "Selbst. Arb.");
-            infoo = infoo.toLowerCase().replace("selbständiges arbeiten", "Selbst. Arb.");
-            infoo = infoo.toLowerCase().replace("selbstäniges arbeiten", "Selbst. Arb.");
-            infoo = infoo.toLowerCase().replace("selbstständies arbeiten", "Selbst. Arb.");
-            infoo = infoo.toUpperCase().replace("&NBSP;", " ");
-
-            arr[arr.length - 1].cntnd.push({
-              type: t,
-              date: $(v.children()[0]).html().replace(" ", ""),
-              fach: $(v.children()[2]).html().replace(" ", ""),
-              oldRaum: $(v.children()[4]).html().replace(" ", ""),
-              newRaum: $(v.children()[5]).html().replace(" ", ""),
-              info: infoo,
-              stunde: ss,
-            });
-            if (iii === (array.length -1)){
-              let alls = "";
-              array.forEach((ts) => {alls += ts + " - "});
-              alls = alls.substr(0, alls.length - 3);
-              arr[arr.length - 1].cntnd.push({
-                type: t,
-                date: $(v.children()[0]).html().replace(" ", ""),
-                fach: $(v.children()[2]).html().replace(" ", ""),
-                oldRaum: $(v.children()[4]).html().replace(" ", ""),
-                newRaum: $(v.children()[5]).html().replace(" ", ""),
-                info: infoo,
-                stunde: alls,
-                nd: 1
-              });
-            }
-          }
-          else{
-            let infoo = $(v.children()[7]).html();
-            let t = $(v.children()[6]).html().replace(" ", "").replace("<b>", "").replace("</b>", "");
-            if(t.toLowerCase().indexOf("entfall") != -1) t = "e";
-            else if(t.toLowerCase().indexOf("absenz") != -1) t = "fehlt";
-            else if(t.toLowerCase().indexOf("vertretung") != -1){
-              t = "v";
-              if (infoo.toLowerCase().match("selbstständiges arbeiten") ||
-                infoo.toLowerCase().match("selbständiges arbeiten") ||
-                infoo.toLowerCase().match("selbständiges arbeiten") ||
-                infoo.toLowerCase().match("selbstständies arbeiten")
-              ) t = "e (v)";
-            }
-
-            else if (t.toLowerCase() == "raum-vtr.") t = "r";
-            else if (t.toLowerCase() == "klausur") t = "k";
-
-            infoo = infoo.toLowerCase().replace("selbstständiges arbeiten", "Selbst. Arb.");
-            infoo = infoo.toLowerCase().replace("selbständiges arbeiten", "Selbst. Arb.");
-            infoo = infoo.toLowerCase().replace("selbstäniges arbeiten", "Selbst. Arb.");
-            infoo = infoo.toLowerCase().replace("selbstständies arbeiten", "Selbst. Arb.");
-            infoo = infoo.toUpperCase().replace("&NBSP;", " ");
-            infoo = infoo.toUpperCase().replace("AUFGABEN", "AUFG.");
-
-            let d = "";
-            $(ret).find(".mon_title").html().split(".").forEach((value, index, array) => {
-              if(index == array.length -1) return;
-              d += value.replace(" ", "") + ".";
-            });
-
-            arr[arr.length - 1].cntnd.push({
-              type: t,
-              date: d,
-              fach: $(v.children()[3]).html().replace(" ", ""),
-              oldRaum: '?',
-              newRaum: $(v.children()[4]).html().replace(" ", ""),
-              info: infoo,
-              stunde: ss,
-              stufe: $(v.children()[2]).html().replace(" ", "")
-            });
-            if (iii === (array.length -1)){
-              let alls = "";
-              array.forEach((ts) => {alls += ts + " - "});
-              alls = alls.substr(0, alls.length - 3);
-              arr[arr.length - 1].cntnd.push({
-                type: t,
-                date: d,
-                fach: $(v.children()[3]).html().replace(" ", ""),
-                oldRaum: '?',
-                newRaum: $(v.children()[4]).html().replace(" ", ""),
-                info: infoo,
-                stunde: alls,
-                nd: 1,
-                stufe: $(v.children()[2]).html().replace(" ", "")
-              });
-            }
-          }
-
-        });
-      }
-    });
-    let info = [];
-    $(ret).find("table.info").children("tbody").children("tr").each(function (index, v) {
-      $(v).children().each((i, data) => {
-        if($(data).prop("tagName").toLowerCase() == "th" || ($(data).parent().children().length != 1 && i == 0)){
-          info.push('<b>' + $(data).text() + '</b>');
-        }else {
-          info.push($(data).text());
-        }
-      });
-    });
-    returnArray[1] = [arr, info];
-    return returnArray;
-  }
 
   private compileVD(slides, lehrer?:boolean){
     lehrer = lehrer || false;
