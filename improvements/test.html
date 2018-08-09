@@ -342,21 +342,26 @@ Periode14   13.7.2018 A (46) (28)   Gymnasium der Stadt Würselen
     console.log('old took', (old1-old0).toFixed(4), 'ms');
     console.log('diff', (Math.max(old1-old0, new1-new0) - Math.min(old1-old0, new1-new0)).toFixed(4) + ' ms');
     console.log((Math.max(old1-old0, new1-new0) / Math.min(old1-old0, new1-new0)).toFixed(4) + ' mal so schnell');
-
+    console.log("\n");
     console.log("Testing Lehrer");
     let new2 = performance.now();
-    resnew = newF(s2, true);
+    let resnewl = newF(s2, true);
     let new3 = performance.now();
     console.log("new took", (new3-new2).toFixed(4), 'ms');
 
     let old2 = performance.now();
-    resold = old(s2, true);
+    let resoldl = old(s2, true);
     let old3 = performance.now();
     console.log('old took', (old3-old2).toFixed(4), 'ms');
 
     console.log('diff', (Math.max(old3-old2, new3-new2) - Math.min(old3-old2, new3-new2)).toFixed(4) + ' ms');
     console.log((Math.max(old3-old2, new3-new2) / Math.min(old3-old2, new3-new2)).toFixed(4) + ' mal so schnell');
 
+
+    let oldSchueler = JSON.stringify(resold, null, 2);
+    let oldLehrer = JSON.stringify(resoldl, null, 2);
+    let newSchueler = JSON.stringify(resnew, null, 2);
+    let newLehrer = JSON.stringify(resnewl, null, 2);
 
 </script>
 
