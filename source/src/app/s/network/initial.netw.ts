@@ -1,6 +1,7 @@
 import {CONFIG} from "../../conf";
 import {BaseService} from "../base.service";
 import {AlertService} from "../alert.service";
+import {NetwService} from "./netw.service";
 
 export function getTT(stufe, tempTTs){
   console.log(stufe);
@@ -39,7 +40,7 @@ export function get_stufen(_stufen, baseService:BaseService, alertService:AlertS
   });
 }
 
-export function getkurse(stufe: string, stufeid: number, that): Promise<any> {
+export function getkurse(stufe: string, stufeid: number, that:NetwService): Promise<any> {
   return new Promise((resolve, reject) => {
     console.log(that.wochen);
     if (!that.wochen[0] || !that.wochen[1]) reject('Internal Error: #01');
