@@ -4,8 +4,7 @@ import {BaseService} from '../../s/base.service';
 
 @Component({
   selector: 'app-select',
-  templateUrl: './select.component.html',
-  styleUrls: ['./select.component.css']
+  template: `<app-stufe *ngIf="show"></app-stufe>`
 })
 export class SelectComponent implements OnInit {
 

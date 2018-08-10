@@ -1,5 +1,4 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
 import {CONFIG} from '../../conf';
 import {BaseService} from '../base.service';
 import {AlertService} from '../alert.service';
@@ -12,15 +11,12 @@ import {evaVD} from "./evavd";
 export class NetwService {
 
   public _kurse = [{kurse: []}, {kurse: []}];
-  private _stufen;
-  public wochen = [];
+  private _stufen: string[];
+  public wochen: string[] = [];
   saveKurseTrys = 0;
   public tempTTs: { stufe: string, tt: {}[] }[] = [];
-
-  constructor(public baseService: BaseService, private alertService: AlertService) {
-    this._stufen = (localStorage.stufen) ? JSON.parse(localStorage.stufen) : undefined;
-  }
-
+  public $ = $; // TODO
+  constructor(public baseService: BaseService, private alertService: AlertService) {}
   private start = 'subst_001.htm';
 
   getVertretungsDaten(tag: string, i: number, urlmiddle?: string, file?: string[], sides? : any[]) {
@@ -169,12 +165,31 @@ export class NetwService {
     return [info, compr];
   }
 
-  getkurse(stufe: string, stufeid: number){
-    return Initial.getkurse(stufe, stufeid, this)
+  get stufen(){
+    return new Promise((resolve, reject )=> {
+      this._stufen = (localStorage.stufen) ? JSON.parse(localStorage.stufen) : undefined;
+
+      if (this._stufen) resolve(this._stufen);
+      let observable = this.baseService.makeConnections(CONFIG.credentialsCheckUrl);
+
+      Initial.get_stufen(observable)
+      .then((res:string[][])=>{
+        let stufen = res[0];
+        this.wochen = res[1];
+        this._stufen = stufen;
+        localStorage.stufen = JSON.stringify(stufen);
+        resolve(stufen);
+      })
+      .catch( (msg:string) =>{
+          this.alertService.alert(msg, this.alertService.DANGER);
+          reject(msg);
+      });
+
+    });
   }
 
-  get stufen(){
-    return Initial.get_stufen(this._stufen, this.baseService, this.alertService, this.wochen)
+  getkurse(stufe: string, stufeid: number){
+    return Initial.getkurse(stufe, stufeid, this)
   }
 
   fetchCloud(id: number){
@@ -183,156 +198,6 @@ export class NetwService {
 
   saveKurse(kurse){
     return Cloud.saveKurse(kurse, this);
-  }
-
-  public evaKurse(r, ABWOCHE, stufe){
-    let arr = [];
-    let orig = $(r.replace(/\r?\n|\r/g, '').toUpperCase());
-    ABWOCHE = orig.find("font");
-    ABWOCHE = ABWOCHE[ABWOCHE.length - 1].innerText.split("- ")[1].split(" (")[0].split(" ")[1].toLowerCase();
-    console.log(ABWOCHE);
-    let what = (ABWOCHE === "a")? 0:1;
-    let main = orig.children('table')[0];
-    $(main).children('tbody').children('tr')[0].remove();
-    main = $(main).children('tbody')[0];
-    $(main).find('b').each(function () {
-      if ($(this).html() === 'PAUSE') {
-        $(this).parents().eq(6).attr('id', 'pause').html(' ');
-      }
-    });
-    let subtractor = 0;
-    $(main).children('tr').each((someindex, welcheRow) => {
-      let row = $(welcheRow);
-      if (row.is('#pause')) return;
-      let stunde = [];
-      if (row.html() === '') {
-        subtractor++;
-        row.remove();
-        return;
-      }
-      row.children('td').each((i, idfk) => {
-        let TAG = i;
-        if (i === 0) return;
-        let isBig = false;
-        if ($(idfk).attr('rowspan') === '4') isBig = true;
-
-        let data = $(idfk).children('table').children('tbody');
-        let rowz = data.children('tr');
-
-        if (rowz.length  === 1) {
-          let vars = rowz.find('font');
-          if (vars.length === 1) {
-            if (vars.html() !== '') return;
-          }
-          let fach = $(vars[0]).children('b').html();
-          let lehrer = $(vars[1]).html();
-          let raum = $(vars[2]).html();
-          let objz = {
-            type: 'klasse',
-            isBig: isBig,
-            fach: fach,
-            lehrer: lehrer,
-            raum: raum,
-            pos: [welcheRow - subtractor + 1, TAG - 1]
-          };
-          stunde.push(objz);
-        } else {
-          let fach = rowz.find('font').children('b').html();
-          let raeume = [];
-          rowz.each((i, jndjnsjfs) => {
-            if (i === 0) return;
-            let ffach = $($(jndjnsjfs).children('td')[0]).children('font').html();
-            let lehrer = $($(jndjnsjfs).children('td')[1]).children('font').html();
-            let raum = $($(jndjnsjfs).children('td')[2]).children('font').html();
-
-            raeume.push({kurs: ffach, raum: raum});
-
-            let kurs = {
-              title: fach,
-              fach: ffach,
-              lehrer: lehrer
-            };
-            let orig = null;
-
-
-            for(let i = 0; i < this._kurse[what].kurse.length; i++)
-              if(kurs.fach === this._kurse[what].kurse[i].fach) orig = i;
-            if(orig === null){
-              this._kurse[what].kurse.push({
-                fach: kurs.fach,
-                lehrer: kurs.lehrer,
-                title: kurs.title
-              });
-            }
-          });
-          let objz = {
-            type: 'kurs',
-            fach: fach,
-            isBig: isBig,
-            raeume: raeume
-          };
-          stunde.push(objz);
-        }
-      });
-      arr.push(stunde);
-    });
-
-    let final = [];
-    for (let i = 0; i < arr.length; i++) {
-      if (arr[i].length !== 0) {
-        let tval = true;
-        if (tval) final.push(arr[i]);
-      }
-    }
-
-    let tt = { days: [[], [], [], [], []]};
-    final.forEach(function (stunden, eins) {
-
-      stunden.forEach(function (tage, zwei) {
-        let back = {};
-        let tag = zwei;
-        let stunde = eins;
-        let ob = tt.days[tag][stunde];
-
-        while (typeof ob != 'undefined') {
-          stunde++;
-          ob = tt.days[tag][stunde];
-        }
-        if (tage.fach !== undefined || tage.fach === 'klasse') {
-          if (tage.type === 'klasse') {
-            back = {
-              type: tage.type,
-              fach: tage.fach,
-              lehrer: tage.lehrer,
-              raum: tage.raum
-            };
-          } else if (tage.type === 'kurs') {
-            back = {
-              type: tage.type,
-              fach: tage.fach,
-              raeume: tage.raeume
-            };
-          }
-        }
-        tt.days[tag][stunde] = back;
-        if (tage.isBig) tt.days[tag][stunde + 1] = back;
-      });
-    });
-    for(let i = 0; i < 5; i++){
-      tt.days[i].splice(6, 0, {});
-    }
-    let b = true;
-    this.tempTTs.forEach((val, i) => {
-      if (val.stufe === stufe) {
-        val.tt[what] = (tt);
-        b = false;
-      }
-    });
-    if (b)
-      this.tempTTs.push({
-        stufe: stufe,
-        tt: (what === 0) ? [tt] : [, tt]
-      });
   }
 
   getTT(stufe){

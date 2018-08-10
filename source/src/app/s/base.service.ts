@@ -240,7 +240,7 @@ export class BaseService {
             resolve(html);
           },
           error: (err, r) => {
-            let e = {statusText: r};
+            let e = {statusText: r, err: err};
             reject(e);
           }
         });

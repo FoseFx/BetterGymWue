@@ -11,19 +11,19 @@ export class StufeComponent implements OnInit {
 
   constructor(private netwService: NetwService, private baseService: BaseService) { }
 
-  stufen = [];
+  stufen:string[] = [];
   tempSelectedValue = '';
   selectedValue: string;
 
   ngOnInit() {
     this.netwService.stufen.then(
-      (wert) => {this.stufen = wert; }
+      (wert: string[]) => {this.stufen = wert; }
     );
     console.log(this.stufen);
   }
 
   setValue(){
     this.selectedValue = this.tempSelectedValue;
-    this.baseService.MyStufe = [this.selectedValue, (this.stufen.indexOf(this.selectedValue) + 1) + ''];
+    this.baseService.MyStufe = [this.selectedValue, (this.stufen.indexOf(this.selectedValue) + 1).toString()];
   }
 }
