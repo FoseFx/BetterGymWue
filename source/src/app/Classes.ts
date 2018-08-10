@@ -19,3 +19,10 @@ export type VertretungsEva = [
     string[]
   ]
 ]
+export class Kurse {
+  title: string;
+  fach: string;
+  lehrer: string;
+  selected?: boolean;
+  ph?: boolean
+}

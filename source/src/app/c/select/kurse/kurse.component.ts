@@ -4,6 +4,7 @@ import {AlertService} from '../../../s/alert.service';
 import {BaseService} from '../../../s/base.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import * as $ from 'jquery';
+import {Kurse} from "../../../Classes";
 
 @Component({
   selector: 'app-kurse',
@@ -13,8 +14,8 @@ import * as $ from 'jquery';
 export class KurseComponent implements OnInit {
 
   _stufe: string;
-  kurse: {stufe: string, titles: any[], kurse: {title: string, fach: string, lehrer: string, selected?: boolean, ph?: boolean}[]}[];
-  stufeKurse: {title: string, fach: string, lehrer: string, selected?: boolean, ph?: boolean}[];
+  kurse: {stufe: string, titles: any[], kurse: Kurse[]}[];
+  stufeKurse: Kurse[];
   titles: {t: string, state: number}[] = [];
   valid = false;
   _cloud = true;
@@ -45,13 +46,10 @@ export class KurseComponent implements OnInit {
     // no, it isn't
     this.baseService.milchglas = true;
     this.netwService.stufen.then(
-      (st) => {
-        let i;
-        st.forEach((value, index, array) => {
-          if (value === this._stufe) i = index;
-        });
+      (st:string[]) => {
+        let i = st.findIndex((val) => val === this._stufe);
         this.netwService.getkurse(this._stufe, i + 1)
-          .then((val: {title: string, fach: string, lehrer: string, selected?: boolean, ph?: boolean}[]) => {
+          .then((val: Kurse[]) => {
             // data enhancement
             let v = JSON.parse(JSON.stringify(val));
             v.sort((a, b) => {
@@ -59,8 +57,8 @@ export class KurseComponent implements OnInit {
               if (a.title < b.title) return -1;
               return 0;
             });
-            let titles = [];
-            let istosplice = [];
+            let titles: string[] = [];
+            let istosplice: [number, Kurse][] = [];
             v.forEach((value, i) => {
               if (titles.indexOf(value.title) === -1) {
                 titles.push(value.title);
@@ -72,9 +70,7 @@ export class KurseComponent implements OnInit {
               v.splice(val[0], 0, val[1]);
               istosplice.forEach((valueu) => { valueu[0]++; });
             });
-            this.titles = [];
-            titles.forEach((val) => { this.titles.push({t: val, state: 0}); });
-            //
+            this.titles = titles.map((val) => { return {t: val, state: 0} });
 
             this.kurse.push({stufe:this._stufe, kurse: v, titles: this.titles});
             this.stufeKurse = v;
@@ -88,7 +84,7 @@ export class KurseComponent implements OnInit {
 
   constructor(private netwService: NetwService, private alert: AlertService, private baseService: BaseService, private route: ActivatedRoute, private  router: Router) { }
 
-  kursSelected(k: {title: string, fach: string, lehrer: string, selected?: boolean, ph?: boolean} ){
+  kursSelected(k: Kurse ){
     if(k.ph) return;
     k.selected = !k.selected;
     let valid = 0;

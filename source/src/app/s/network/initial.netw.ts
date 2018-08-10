@@ -2,6 +2,8 @@ import {CONFIG} from "../../conf";
 import {BaseService} from "../base.service";
 import {AlertService} from "../alert.service";
 import {NetwService} from "./netw.service";
+import {evaKurse} from "./evakurse";
+import {Observable} from "rxjs/internal/Observable";
 
 export function getTT(stufe, tempTTs){
   console.log(stufe);
@@ -11,30 +13,26 @@ export function getTT(stufe, tempTTs){
   return r;
 }
 
-export function get_stufen(_stufen, baseService:BaseService, alertService:AlertService, wochen): Promise<string[]> {
+export function get_stufen(resp: Observable<string>): Promise<string[][]> {
   return new Promise((resolve, reject) => {
-
-    if (_stufen) resolve(_stufen);
-    const resp = baseService.makeConnections(CONFIG.credentialsCheckUrl);
     if (resp === null) {
-      alertService.alert('Failure: No Credentials given, how did you even get here?', alertService.DANGER);
-      reject();
+      reject('Failure: No Credentials given, how did you even get here?');
     }
     resp.subscribe(
-      (wert) => {
+      (wert:string) => {
         // save weeks
         const w = wert.split('<option value="');
-        wochen[0] = w[1][0] + w[1][1];
-        wochen[1] = w[2][0] + w[2][1];
+        let wochen: string[] = [
+          w[1][0] + w[1][1],
+          w[2][0] + w[2][1]
+        ];
         console.log(wochen);
-        const a = wert.split('var classes = ')[1].split(';')[0].replace(/(")|(\[)|(])|( )/g, '').split(',');
-        localStorage.stufen = JSON.stringify(a);
-        _stufen = a;
-        resolve(_stufen);
+        const a: string[] = wert.split('var classes = ')[1].split(';')[0].replace(/(")|(\[)|(])|( )/g, '').split(',');
+        resolve([a, wochen]);
       },
       (err) => {
         console.log(err);
-        alertService.alert('Failure: ' + err.statusText, alertService.DANGER);
+        reject('Failure: ' + err.statusText);
       }
     );
   });
@@ -48,12 +46,12 @@ export function getkurse(stufe: string, stufeid: number, that:NetwService): Prom
     if (res === null) reject('Failure: Connection could not be made');
     res.subscribe(
       (r) => {
-        that.evaKurse(r, ((that.wochen[0] % 2) === 0) ? 'a' : 'b', stufe);
+        evaKurse(r, ((+that.wochen[0] % 2) === 0) ? 'a' : 'b', stufe, that);
         //woche 2
         const res2 = that.baseService.makeConnections(CONFIG.baseKursURL + that.wochen[1] + '/c/c' + generate5(stufeid) + '.htm');
         res2.subscribe(
           (r) => {
-            that.evaKurse(r, ((that.wochen[1] % 2) === 0) ? 'a' : 'b', stufe);
+            evaKurse(r, ((+that.wochen[1] % 2) === 0) ? 'a' : 'b', stufe, that);
             let k = [];
             that._kurse[0].kurse.forEach((val) => {
               that._kurse[1].kurse.forEach((val2) => {
