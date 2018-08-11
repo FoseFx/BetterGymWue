@@ -9,6 +9,7 @@ import * as $ from 'jquery';
 import {Router} from '@angular/router';
 import {Observable} from 'rxjs';
 import {log} from "util";
+import {DisplayArray, TimeTable, VertretungsReihe} from "../../../Classes";
 
 @Component({
   selector: 'show-ttcontainer',
@@ -18,56 +19,18 @@ import {log} from "util";
 export class TtcontainerComponent implements AfterViewInit{
 
   info: string[] = [];
-  _tt: {
-    date: Date,
-    tag: {
-      type: string,
-      fach: string,
-      lehrer?: string,
-      raeume?: {kurs: string, raum: string}[],
-      raum?: string
-    }[];
-  };
-  displayArray: {
-    fach: string,
-    lehrer: string,
-    raum: string,
-    vert?: string,
-    nd?: number,
-    isFreistunde?: boolean
-  }[] = [];
-  VDStufe: {
-    date: string,
-    fach: string,
-    info: string,
-    newRaum: string,
-    oldRaum: string,
-    stufe: string,
-    stunde:string,
-    type: string,
-    nd?:number,
-    lehrer?:string
-  }[] = [];
-  VDMe: {
-    date: string,
-    fach: string,
-    info: string,
-    newRaum: string,
-    oldRaum: string,
-    stufe: string,
-    stunde:string,
-    type: string,
-    nd?:number,
-    lehrer?:string
-  }[] = [];
-  readableDate;
+  _tt: TimeTable;
+  displayArray: DisplayArray = [];
+  VDStufe: VertretungsReihe[] = [];
+  VDMe: VertretungsReihe[] = [];
+  readableDate: string;
   tag = "";
   setted = false;
   online: Observable<boolean>;
   offlineDate:Date;
   offlinepreLehrer = false;
 
-  @Input() set tt(val){
+  @Input() set tt(val: TimeTable){
     if(this.setted) return;
     this.setted = true;
     this._tt = val;
@@ -75,8 +38,8 @@ export class TtcontainerComponent implements AfterViewInit{
     this.tag = ["Mo", "Di", "Mi", "Do", "Fr"][this._tt.date.getDay() - 1 ];
     this.readableDate = this._tt.date.getDate() + "." + (this._tt.date.getMonth() + 1) + ".";
   }
-  _index;
-  @Input() set index(val){
+  _index: number;
+  @Input() set index(val: number){
     this._index = val;
   }
   onlineSub: Subscription;
@@ -207,16 +170,7 @@ export class TtcontainerComponent implements AfterViewInit{
     const fallback = {date: "", fach: "", info: "", newRaum: "", oldRaum: "", stufe: "", stunde:"", type: ""};
     if(this.VDMe.length == 0) return fallback;
     if(this.myPos[index]) return this.myPos[index];
-    let rel: {
-      date: string,
-      fach: string,
-      info: string,
-      newRaum: string,
-      oldRaum: string,
-      stufe: string,
-      stunde:string,
-      type: string
-    }[] = [];
+    let rel: VertretungsReihe[] = [];
     this.VDMe.forEach((me) => { if (me.stunde == (index + 1) && !me.nd) {
       if(me.type.toLowerCase() == 'k'){
         if(this.isMyKlausur(me.info)) rel.push(me);
