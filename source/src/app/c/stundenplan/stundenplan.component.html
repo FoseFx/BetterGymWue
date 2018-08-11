@@ -1,6 +1,6 @@
 
 
-<mat-tab-group style="width: 100%!important;" selectedIndex="{{ (((1 - 1 + (d | date: 'w')) % 2 == 0)? 0:1) }}" (selectChange)="resetDay()">
+<mat-tab-group style="width: 100%!important;" selectedIndex="{{ ((+(1 - 1 + (d | date: 'w')) % 2 == 0)? 0:1) }}" (selectChange)="resetDay()">
 
   <mat-tab *ngFor="let woche of tts" [label]="woche.woche">
 

@@ -11,7 +11,6 @@ import {getVertretungsDaten} from "./getVertretungsdaten";
 @Injectable()
 export class NetwService {
 
-  public _kurse = [{kurse: []}, {kurse: []}];
   public _stufen: string[];
   public wochen: string[] = [];
   saveKurseTrys = 0;
@@ -109,7 +108,7 @@ export class NetwService {
   }
 
   getkurse(stufe: string, stufeid: number){
-    return Initial.getkurse(stufe, stufeid, this)
+    return Initial.getkurse(stufe, stufeid, this.wochen, this.baseService.makeConnections)
   }
 
   fetchCloud(id: number){
@@ -128,8 +127,6 @@ export class NetwService {
     return getVertretungsDaten(this, tag, i, urlmiddle, file, sides);
   }
 }
-
-
 function decodeHtml(html) {
   let txt = document.createElement("textarea");
   txt.innerHTML = html;

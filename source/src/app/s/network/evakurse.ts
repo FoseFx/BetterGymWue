@@ -1,8 +1,7 @@
-import {NetwService} from "./netw.service";
 import {TimeTableSlot} from "../../Classes";
+import * as $ from 'jquery';
 
-export function evaKurse(r:string, ABWOCHE, stufe, that: NetwService, tempTTs){
-  let $ = that.$;
+export function evaKurse(r:string, ABWOCHE, stufe, tempTTs, _kurse){
   let arr = [];
   let orig = $(r.replace(/\r?\n|\r/g, '').toUpperCase());
   ABWOCHE = orig.find("font");
@@ -72,10 +71,10 @@ export function evaKurse(r:string, ABWOCHE, stufe, that: NetwService, tempTTs){
           let orig = null;
 
 
-          for(let i = 0; i < that._kurse[what].kurse.length; i++)
-            if(kurs.fach === that._kurse[what].kurse[i].fach) orig = i;
+          for(let i = 0; i < _kurse[what].kurse.length; i++)
+            if(kurs.fach === _kurse[what].kurse[i].fach) orig = i;
           if(orig === null){
-            that._kurse[what].kurse.push({
+            _kurse[what].kurse.push({
               fach: kurs.fach,
               lehrer: kurs.lehrer,
               title: kurs.title

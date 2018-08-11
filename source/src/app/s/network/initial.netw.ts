@@ -1,10 +1,11 @@
 import {CONFIG} from "../../conf";
-import {NetwService} from "./netw.service";
 import {evaKurse} from "./evakurse";
 import {Observable} from "rxjs/internal/Observable";
 
 let tempTTs: { stufe: string, tt: { days: any[][]}[] }[] = [];
-export function getTT(stufe){
+let _kurse = [{kurse: []}, {kurse: []}];
+
+export function getTT(stufe:string){
   console.log(stufe);
   console.log(tempTTs);
   let r = null;
@@ -37,31 +38,31 @@ export function get_stufen(resp: Observable<string>): Promise<string[][]> {
   });
 }
 
-export function getkurse(stufe: string, stufeid: number, that:NetwService): Promise<any> {
+export function getkurse(stufe: string, stufeid: number, wochen: string[], makeConnections): Promise<any> {
   return new Promise((resolve, reject) => {
-    console.log(that.wochen);
-    if (!that.wochen[0] || !that.wochen[1]) reject('Internal Error: #01');
-    const res = that.baseService.makeConnections(CONFIG.baseKursURL + that.wochen[0] + '/c/c' + generate5(stufeid) + '.htm');
+    console.log(wochen);
+    if (!wochen[0] || !wochen[1]) reject('Internal Error: #01');
+    const res = makeConnections(CONFIG.baseKursURL + wochen[0] + '/c/c' + generate5(stufeid) + '.htm');
     if (res === null) reject('Failure: Connection could not be made');
     res.subscribe(
       (r) => {
-        evaKurse(r, ((+that.wochen[0] % 2) === 0) ? 'a' : 'b', stufe, that, tempTTs);
+        evaKurse(r, ((+wochen[0] % 2) === 0) ? 'a' : 'b', stufe, tempTTs, _kurse);
         //woche 2
-        const res2 = that.baseService.makeConnections(CONFIG.baseKursURL + that.wochen[1] + '/c/c' + generate5(stufeid) + '.htm');
+        const res2 = makeConnections(CONFIG.baseKursURL + wochen[1] + '/c/c' + generate5(stufeid) + '.htm');
         res2.subscribe(
           (r) => {
-            evaKurse(r, ((+that.wochen[1] % 2) === 0) ? 'a' : 'b', stufe, that, tempTTs);
+            evaKurse(r, ((+wochen[1] % 2) === 0) ? 'a' : 'b', stufe, tempTTs, _kurse);
             let k = [];
-            that._kurse[0].kurse.forEach((val) => {
-              that._kurse[1].kurse.forEach((val2) => {
+            _kurse[0].kurse.forEach((val) => {
+              _kurse[1].kurse.forEach((val2) => {
                 if (val2 === val) k.push(val);
               });
             });
             let fin = [];
-            that._kurse[0].kurse.forEach((val) => {
+            _kurse[0].kurse.forEach((val) => {
               if (k.indexOf(val) === -1) fin.push(val);
             });
-            that._kurse = [{kurse: []},{kurse: []}];
+            _kurse = [{kurse: []},{kurse: []}];
             resolve(fin);
           }
         );
