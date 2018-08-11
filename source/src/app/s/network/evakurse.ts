@@ -1,4 +1,7 @@
-export function evaKurse(r:string, ABWOCHE, stufe, that){
+import {NetwService} from "./netw.service";
+import {TimeTableSlot} from "../../Classes";
+
+export function evaKurse(r:string, ABWOCHE, stufe, that: NetwService, tempTTs){
   let $ = that.$;
   let arr = [];
   let orig = $(r.replace(/\r?\n|\r/g, '').toUpperCase());
@@ -99,11 +102,12 @@ export function evaKurse(r:string, ABWOCHE, stufe, that){
     }
   }
 
-  let tt = { days: [[], [], [], [], []]};
+  let tt: {days: TimeTableSlot[][]} = { days: [[], [], [], [], []]};
   final.forEach(function (stunden, eins) {
 
     stunden.forEach(function (tage, zwei) {
-      let back = {};
+      // @ts-ignore
+      let back: TimeTableSlot = {};
       let tag = zwei;
       let stunde = eins;
       let ob = tt.days[tag][stunde];
@@ -133,17 +137,18 @@ export function evaKurse(r:string, ABWOCHE, stufe, that){
     });
   });
   for(let i = 0; i < 5; i++){
+    // @ts-ignore
     tt.days[i].splice(6, 0, {});
   }
   let b = true;
-  that.tempTTs.forEach((val, i) => {
+  tempTTs.forEach((val, i) => {
     if (val.stufe === stufe) {
       val.tt[what] = (tt);
       b = false;
     }
   });
   if (b)
-    that.tempTTs.push({
+    tempTTs.push({
       stufe: stufe,
       tt: (what === 0) ? [tt] : [, tt]
     });

@@ -6,97 +6,18 @@ import * as Cloud from './cloud.netw'
 import * as Initial from './initial.netw'
 import * as $ from 'jquery';
 import {evaVD} from "./evavd";
+import {getVertretungsDaten} from "./getVertretungsdaten";
 
 @Injectable()
 export class NetwService {
 
   public _kurse = [{kurse: []}, {kurse: []}];
-  private _stufen: string[];
+  public _stufen: string[];
   public wochen: string[] = [];
   saveKurseTrys = 0;
-  public tempTTs: { stufe: string, tt: {}[] }[] = [];
-  public $ = $; // TODO
-  constructor(public baseService: BaseService, private alertService: AlertService) {}
-  private start = 'subst_001.htm';
 
-  getVertretungsDaten(tag: string, i: number, urlmiddle?: string, file?: string[], sides? : any[]) {
-    urlmiddle = urlmiddle || 'f1';
-    file = file || ['subst_001.htm', 'subst_001.htm'];
-    sides = sides || [];
-    if(!this.baseService.credentials.l || !this.baseService.preLehrer) return new Promise((resolve, reject) => {
-      this.baseService.makeConnections(CONFIG.vertURL + urlmiddle + '/' + file[i]).subscribe(
-        (wert) => {
-          if($(wert).find(".mon_title").html().match(tag) === null){
-            reject(urlmiddle);
-          }
-          let eva = evaVD(wert);
-          file[i] = eva[0];
-          sides.push(eva[1]);
-          resolve([tag, i, urlmiddle, file, sides]);
-        },
-        (err) => {
-          this.alertService.alert('Failure: ' + err.statusText, this.alertService.DANGER);
-          reject('fail');
-        },
-      );
-    })
-      .then((t) => {
-        let tag = t[0];
-        let i = t[1];
-        let urlmiddle = t[2];
-        let file = t[3];
-        let sides = t[4];
-        if (file[i] == this.start) {
-          return this.compileVD(sides);
-        } else return this.getVertretungsDaten(tag, i, urlmiddle, file, sides);
-      })
-      .catch((err) => {
-        if(err != 'fail'){
-          if(err != 'f2') return this.getVertretungsDaten(tag, i, 'f2');
-          else return new Promise((resolve, reject) => {reject('loop')});
-        }else{
-          return new Promise((resolve, reject) => {reject()});
-        }
-      });
-    else
-      return new Promise((resolve, reject) => {
-        this.baseService.makeConnections(CONFIG.lehrerURL + urlmiddle + '/' + file[i], true).subscribe(
-          (wert) => {
-            if($(wert).find(".mon_title").html().match(tag) === null) reject(urlmiddle);
-            let eva = evaVD(wert, true);
-            file[i] = eva[0];
-            sides.push(eva[1]);
-            resolve([tag, i, urlmiddle, file, sides]);
-          },
-          (err) => {
-            this.alertService.alert('Failure: ' + err.statusText, this.alertService.DANGER);
-            reject('fail');
-          }
-        );
-      })
-        .then((t) => {
-          let tag = t[0];
-          let i = t[1];
-          let urlmiddle = t[2];
-          let file = t[3];
-          let sides = t[4];
-          if(file[i] == this.start){
-            return this.compileVD(sides, true);
-          }else{
-            return this.getVertretungsDaten(tag, i, urlmiddle, file, sides);
-          }
-        })
-        .catch((err) => {
-          if(err != 'fail'){
-            console.log("rej " + err);
-            if(err != 'f2') return this.getVertretungsDaten(tag, i, 'f2');
-            else return new Promise((resolve, reject) => {reject('loop')});
-          }else{
-            this.baseService.milchglas = false;
-            return new Promise((resolve, reject) => {reject()});
-          }
-        });
-  }
+  public $ = $; // TODO
+  constructor(public baseService: BaseService, public alertService: AlertService) {}
 
   getSchulplanerInfo(date: string){
     date = date.replace(/\./g, "-");
@@ -114,8 +35,7 @@ export class NetwService {
     });
   }
 
-
-  private compileVD(slides, lehrer?:boolean){
+  public compileVD(slides, lehrer?:boolean){
     lehrer = lehrer || false;
     let compr = {};
     let info = [];
@@ -201,7 +121,11 @@ export class NetwService {
   }
 
   getTT(stufe){
-    return Initial.getTT(stufe, this.tempTTs);
+    return Initial.getTT(stufe);
+  }
+
+  getVertretungsDaten(tag: string, i: number, urlmiddle?: string, file?: string[], sides?: any[]){
+    return getVertretungsDaten(this, tag, i, urlmiddle, file, sides);
   }
 }
 

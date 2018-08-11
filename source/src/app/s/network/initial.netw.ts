@@ -1,11 +1,10 @@
 import {CONFIG} from "../../conf";
-import {BaseService} from "../base.service";
-import {AlertService} from "../alert.service";
 import {NetwService} from "./netw.service";
 import {evaKurse} from "./evakurse";
 import {Observable} from "rxjs/internal/Observable";
 
-export function getTT(stufe, tempTTs){
+let tempTTs: { stufe: string, tt: { days: any[][]}[] }[] = [];
+export function getTT(stufe){
   console.log(stufe);
   console.log(tempTTs);
   let r = null;
@@ -46,12 +45,12 @@ export function getkurse(stufe: string, stufeid: number, that:NetwService): Prom
     if (res === null) reject('Failure: Connection could not be made');
     res.subscribe(
       (r) => {
-        evaKurse(r, ((+that.wochen[0] % 2) === 0) ? 'a' : 'b', stufe, that);
+        evaKurse(r, ((+that.wochen[0] % 2) === 0) ? 'a' : 'b', stufe, that, tempTTs);
         //woche 2
         const res2 = that.baseService.makeConnections(CONFIG.baseKursURL + that.wochen[1] + '/c/c' + generate5(stufeid) + '.htm');
         res2.subscribe(
           (r) => {
-            evaKurse(r, ((+that.wochen[1] % 2) === 0) ? 'a' : 'b', stufe, that);
+            evaKurse(r, ((+that.wochen[1] % 2) === 0) ? 'a' : 'b', stufe, that, tempTTs);
             let k = [];
             that._kurse[0].kurse.forEach((val) => {
               that._kurse[1].kurse.forEach((val2) => {
