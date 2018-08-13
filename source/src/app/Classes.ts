@@ -21,6 +21,14 @@ export type VertretungsEvaPayload = [
   }[],
   string[]
 ]
+
+export type VertretungsDaten = [
+  any[],
+  {
+    [key: string]: VertretungsReihe[]
+  }
+];
+
 export class Kurse {
   title: string;
   fach: string;

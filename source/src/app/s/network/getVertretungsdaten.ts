@@ -2,10 +2,16 @@ import {CONFIG} from "../../conf";
 import {evaVD} from "./evavd";
 import * as $ from "jquery";
 import {NetwService} from "./netw.service";
-import {VertretungsEva, VertretungsEvaPayload} from "../../Classes";
+import {VertretungsDaten, VertretungsEva, VertretungsEvaPayload} from "../../Classes";
 
 let start = 'subst_001.htm';
-export function getVertretungsDaten(that: NetwService, tag: string, i: number, urlmiddle?: string, file?: string[], sides? : VertretungsEvaPayload[]) {
+export function getVertretungsDaten(  that: NetwService,
+                                      tag: string,
+                                      i: number,
+                                      urlmiddle?: string,
+                                      file?: string[],
+                                      sides? : VertretungsEvaPayload[]
+                                   ): Promise<VertretungsDaten> {
   urlmiddle = urlmiddle || 'f1';
   file = file || ['subst_001.htm', 'subst_001.htm'];
   sides = sides || [];

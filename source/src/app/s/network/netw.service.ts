@@ -7,6 +7,7 @@ import * as Initial from './initial.netw'
 import * as $ from 'jquery';
 import {evaVD} from "./evavd";
 import {getVertretungsDaten} from "./getVertretungsdaten";
+import {VertretungsDaten, VertretungsEvaPayload, VertretungsReihe} from "../../Classes";
 
 @Injectable()
 export class NetwService {
@@ -14,8 +15,6 @@ export class NetwService {
   public _stufen: string[];
   public wochen: string[] = [];
   saveKurseTrys = 0;
-
-  public $ = $; // TODO
   constructor(public baseService: BaseService, public alertService: AlertService) {}
 
   getSchulplanerInfo(date: string){
@@ -34,16 +33,16 @@ export class NetwService {
     });
   }
 
-  public compileVD(slides, lehrer?:boolean){
+  public compileVD(slides: VertretungsEvaPayload[], lehrer?:boolean) : VertretungsDaten{
     lehrer = lehrer || false;
     let compr = {};
     let info = [];
     slides.forEach((a) => {
       a[0].forEach((t) => {
-        let arr = [];
+        let arr: VertretungsReihe[] = [];
         t.cntnd.forEach((r) => {
-          if(!lehrer) arr.push({
-            stufe: decodeHtml(t.stufe),
+          let arrObj: VertretungsReihe = {
+            stufe: decodeHtml( lehrer? r.stufe: t.stufe ),
             date: decodeHtml(r.date),
             fach: decodeHtml(r.fach),
             oldRaum: decodeHtml(r.oldRaum),
@@ -51,23 +50,17 @@ export class NetwService {
             info: decodeHtml(r.info),
             stunde: decodeHtml(r.stunde),
             type: decodeHtml(r.type),
-            nd: r.nd,
-            });
-          else arr.push({
-            lehrer: decodeHtml(t.stufe),
-            stufe: decodeHtml(r.stufe),
-            date: decodeHtml(r.date),
-            fach: decodeHtml(r.fach),
-            oldRaum: decodeHtml(r.oldRaum),
-            newRaum: decodeHtml(r.newRaum),
-            info: decodeHtml(r.info),
-            stunde: decodeHtml(r.stunde),
-            type: decodeHtml(r.type),
-            nd: r.nd,
-          });
+            nd: r.nd
+          };
+          if(lehrer) arrObj.lehrer = decodeHtml(t.stufe);
+          arr.push(arrObj);
         });
         arr.forEach((arrE) => {
-          if (compr[arrE.stufe]) compr[arrE.stufe].push(arrE); else compr[arrE.stufe] = [arrE];
+          if (compr[arrE.stufe])
+            compr[arrE.stufe].push(arrE);
+          else
+            compr[arrE.stufe] = [arrE];
+
         });
       });
       if (a[1][0]) info.push(a[1]);
