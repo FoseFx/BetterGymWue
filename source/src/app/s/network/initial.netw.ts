@@ -1,9 +1,11 @@
 import {CONFIG} from "../../conf";
 import {evaKurse} from "./evakurse";
 import {Observable} from "rxjs/internal/Observable";
+import {KurseType, TempTTs} from "../../Classes";
+import {BaseService} from "../base.service";
 
-let tempTTs: { stufe: string, tt: { days: any[][]}[] }[] = [];
-let _kurse = [{kurse: []}, {kurse: []}];
+let tempTTs: TempTTs = [];
+let _kurse: KurseType = [{kurse: []}, {kurse: []}];
 
 export function getTT(stufe:string){
   console.log(stufe);
@@ -38,17 +40,18 @@ export function get_stufen(resp: Observable<string>): Promise<string[][]> {
   });
 }
 
-export function getkurse(stufe: string, stufeid: number, wochen: string[], makeConnections): Promise<any> {
+export function getkurse(stufe: string, stufeid: number, wochen: string[], baseService: BaseService): Promise<any> {
   return new Promise((resolve, reject) => {
     console.log(wochen);
     if (!wochen[0] || !wochen[1]) reject('Internal Error: #01');
-    const res = makeConnections(CONFIG.baseKursURL + wochen[0] + '/c/c' + generate5(stufeid) + '.htm');
+    const res = baseService.makeConnections(CONFIG.baseKursURL + wochen[0] + '/c/c' + generate5(stufeid) + '.htm');
     if (res === null) reject('Failure: Connection could not be made');
     res.subscribe(
-      (r) => {
+      (r:string) => {
+        console.log(r);
         evaKurse(r, ((+wochen[0] % 2) === 0) ? 'a' : 'b', stufe, tempTTs, _kurse);
         //woche 2
-        const res2 = makeConnections(CONFIG.baseKursURL + wochen[1] + '/c/c' + generate5(stufeid) + '.htm');
+        const res2 = baseService.makeConnections(CONFIG.baseKursURL + wochen[1] + '/c/c' + generate5(stufeid) + '.htm');
         res2.subscribe(
           (r) => {
             evaKurse(r, ((+wochen[1] % 2) === 0) ? 'a' : 'b', stufe, tempTTs, _kurse);
