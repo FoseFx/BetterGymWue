@@ -59,3 +59,7 @@ export type DisplayArray = {
   nd?: number,
   isFreistunde?: boolean
 }[];
+
+export type TempTTs = { stufe: string, tt: { days: any[][]}[] }[];
+
+export type KurseType = {kurse: any[]}[];

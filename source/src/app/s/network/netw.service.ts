@@ -101,7 +101,7 @@ export class NetwService {
   }
 
   getkurse(stufe: string, stufeid: number){
-    return Initial.getkurse(stufe, stufeid, this.wochen, this.baseService.makeConnections)
+    return Initial.getkurse(stufe, stufeid, this.wochen, this.baseService)
   }
 
   fetchCloud(id: number){
