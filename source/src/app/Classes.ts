@@ -48,6 +48,8 @@ export class TimeTableSlot {
   lehrer?: string;
   raeume?: {kurs: string, raum: string}[];
   raum?: string;
+  pos? : any[];
+  isBig?: boolean
 }
 
 
@@ -63,3 +65,4 @@ export type DisplayArray = {
 export type TempTTs = { stufe: string, tt: { days: any[][]}[] }[];
 
 export type KurseType = {kurse: any[]}[];
+

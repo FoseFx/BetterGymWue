@@ -1,6 +1,6 @@
 import {TimeTableSlot} from "../../Classes";
 import * as $ from 'jquery';
-export function evaKurse(r:string, ABWOCHE, stufe, tempTTs, _kurse){
+export function evaKurse(r:string, ABWOCHE, stufe, tempTTs, _kurse):void{
   let arr = [];
   let orig = $(r.replace(/\r?\n|\r/g, '').toUpperCase());
   ABWOCHE = orig.find("font");
