@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script src="examples.js">
+</script>
+
+
+<script src="new.js"></script>
+<script
+        src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+<script src="old.js"></script>
+<script>
+    var tempttNew = [];
+    var kurseNew = [{kurse: []}, {kurse: []}];
+
+    var kurseOld = [{kurse: []}, {kurse: []}];
+    var tempttOld = [];
+
+
+    var newstart = performance.now();
+    evaKurse(s1, 'EF', tempttNew, kurseNew);
+    evaKurse(s2, 'EF', tempttNew, kurseNew);
+    var newstop = performance.now();
+    console.log('new Algo took (ms)', (newstop-newstart).toFixed(4));
+
+    var oldstart = performance.now();
+    evaKurseOld(s1, 'a','EF', tempttNew, kurseNew);
+    evaKurseOld(s2, 'b','EF', tempttOld, kurseOld);
+    var oldstop = performance.now();
+
+    console.log('old Algo took (ms)', (oldstop-oldstart).toFixed(4));
+
+
+    console.log('temptt new', tempttNew);
+    console.log('temptt old', tempttOld);
+    console.log('kurse new', kurseNew);
+    console.log('kurse old', kurseOld);
+</script>
+</body>
+</html>
