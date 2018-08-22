@@ -4,7 +4,7 @@ import {AlertService} from '../../../s/alert.service';
 import {BaseService} from '../../../s/base.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import * as $ from 'jquery';
-import {Kurse} from "../../../Classes";
+import {Kurs} from "../../../Classes";
 
 @Component({
   selector: 'app-kurse',
@@ -14,8 +14,8 @@ import {Kurse} from "../../../Classes";
 export class KurseComponent implements OnInit {
 
   _stufe: string;
-  kurse: {stufe: string, titles: any[], kurse: Kurse[]}[];
-  stufeKurse: Kurse[];
+  kurse: {stufe: string, titles: any[], kurse: Kurs[]}[];
+  stufeKurse: Kurs[];
   titles: {t: string, state: number}[] = [];
   valid = false;
   _cloud = true;
@@ -49,7 +49,7 @@ export class KurseComponent implements OnInit {
       (st:string[]) => {
         let i = st.findIndex((val) => val === this._stufe);
         this.netwService.getkurse(this._stufe, i + 1)
-          .then((val: Kurse[]) => {
+          .then((val: Kurs[]) => {
             // data enhancement
             let v = JSON.parse(JSON.stringify(val));
             v.sort((a, b) => {
@@ -58,7 +58,7 @@ export class KurseComponent implements OnInit {
               return 0;
             });
             let titles: string[] = [];
-            let istosplice: [number, Kurse][] = [];
+            let istosplice: [number, Kurs][] = [];
             v.forEach((value, i) => {
               if (titles.indexOf(value.title) === -1) {
                 titles.push(value.title);
@@ -84,7 +84,7 @@ export class KurseComponent implements OnInit {
 
   constructor(private netwService: NetwService, private alert: AlertService, private baseService: BaseService, private route: ActivatedRoute, private  router: Router) { }
 
-  kursSelected(k: Kurse ){
+  kursSelected(k: Kurs ){
     if(k.ph) return;
     k.selected = !k.selected;
     let valid = 0;

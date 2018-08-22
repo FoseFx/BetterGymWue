@@ -29,7 +29,7 @@ export type VertretungsDaten = [
   }
 ];
 
-export class Kurse {
+export class Kurs {
   title: string;
   fach: string;
   lehrer: string;
@@ -64,5 +64,5 @@ export type DisplayArray = {
 
 export type TempTTs = { stufe: string, tt: { days: any[][]}[] }[];
 
-export type KurseType = {kurse: any[]}[];
+export type KurseType = {kurse: Kurs[]}[]; // length = 2, A: 0, B: 1
 
