@@ -1,4 +1,5 @@
-function evaKurse(html, stufe, tempTTs, kurse) {
+
+    function evaKurse(html, stufe, tempTTs, kurse) {
         var parser = new DOMParser();
         var doc = parser.parseFromString(html, "text/html");
         var woche = (doc.querySelectorAll('font[size="3"][face="Arial"]')[1]).textContent.split(/(?:\d+\.){2}\d{4} /)[1][0].toLowerCase() === "a" ? 0 : 1;
@@ -35,46 +36,45 @@ function evaKurse(html, stufe, tempTTs, kurse) {
                         fach: spalten[0],
                         lehrer: spalten[1],
                         raum: spalten[2],
-                        pos: [tri + 1, tag - 1] // [index + 1, 0:Mo; 1:Di ...]
                     });
                 }
                 else {
                     //
                     // Kursstunde
                     //
-                    var fach_1 = td.getElementsByTagName('b')[0].textContent;
+                    // GK01, ...
+                    var title_1 = td.getElementsByTagName('b')[0].textContent;
                     var raeume_1 = [];
                     info.forEach(function (infos, infoi) {
                         if (infoi === 0)
                             return;
                         var spaltenRaw = Array.from(infos.getElementsByTagName('font'));
                         var spalten = spaltenRaw.map(function (x) { return x.textContent.replace(/\n/g, ""); });
-                        var title = spalten[0];
+                        var fach = spalten[0]; // GE3, E1, ...
                         var lehrer = spalten[1];
                         var raum = spalten[2];
                         raeume_1.push({
-                            kurs: title.toUpperCase(),
-                            raum: raum.toUpperCase()
+                            kurs: fach,
+                            raum: raum
                         });
                         //
                         // test for existence in other week
                         //
                         var exists = false;
                         kurse[woche].kurse.forEach(function (kurs) {
-                            if (fach_1 === kurs.fach)
+                            if (fach === kurs.fach)
                                 exists = true;
                         });
-                        var kurs = {
-                            title: title,
-                            fach: fach_1,
-                            lehrer: lehrer
-                        };
                         if (!exists)
-                            kurse[woche].kurse.push(kurs);
+                            kurse[woche].kurse.push({
+                                title: title_1,
+                                fach: fach,
+                                lehrer: lehrer
+                            });
                     }); // info
                     stunde.push({
                         type: 'kurs',
-                        fach: fach_1,
+                        fach: title_1,
                         isBig: doppelStunde,
                         raeume: raeume_1
                     });
@@ -83,24 +83,23 @@ function evaKurse(html, stufe, tempTTs, kurse) {
             data.push(stunde);
         }); // tr
         data = data.filter(function (stunde) { return stunde.length !== 0; });
-
-        console.log('new DATA', JSON.parse(JSON.stringify(data)));
-
         var tt = { days: [[], [], [], [], []] };
         data.forEach(function (stundeE, stunde) {
             stundeE.forEach(function (timetableslot, tag) {
                 var tts;
                 // get a free timetable slot
-                while (typeof tt.days[tag][stunde] !== "undefined")
+                while (typeof tt.days[tag][stunde] !== "undefined") {
                     stunde++;
-
-                if(timetableslot.fach !== undefined){
-                    // tts = JSON.parse(JSON.stringify(timetableslot));
+                }
+                if (timetableslot.fach !== undefined) {
                     tts = Object.assign({}, timetableslot);
                     delete tts.isBig;
+                    // if(timetableslot.type === 'klasse') delete tts.pos;
                 }
                 // add to TT
-                if(tts === undefined) tts = {};
+                // @ts-ignore
+                if (tts === undefined)
+                    tts = {};
                 tt.days[tag][stunde] = tts;
                 // two times in case of isBig
                 if (timetableslot.isBig)
@@ -111,7 +110,7 @@ function evaKurse(html, stufe, tempTTs, kurse) {
         tt.days.forEach(function (day, i) {
             // @ts-ignore
             day.splice(6, 0, {});
-            tt.days[i] = day.filter(e=>e !== undefined);
+            tt.days[i] = day.filter(function (e) { return e !== undefined; });
         });
         // Add tt to TempTTs
         var setYet = false;
