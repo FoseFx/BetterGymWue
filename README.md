@@ -4,7 +4,7 @@
 
 BGW ist eine Progressive Web App und optimiert um auf Mobil und Desktop Geräten zu funktionieren.
 Offensichtlich funktioniert BGW dementsprechend auf allen Internetfähigen Geräten, also
-Windows Desktops und Phones, OsX, Android, iOS, andere Linux Distributionen sprich absolut ALLEM.
+Windows Desktops und Phones, OsX, Android, iOS, andere Linux Distributionen sprich absolut ALLEM (was einen relativ neuen Browser hat).
 Die Pro und Cons sind [hier](https://bgw.fosefx.com/about) zu finden.
 
 ## Dependencies
@@ -24,7 +24,15 @@ Die Pro und Cons sind [hier](https://bgw.fosefx.com/about) zu finden.
 
 ## Was macht BGW?
 
-Da es keine API gibt die man ansprechen könnte zieht sich BGW
-alle Dateien und bricht diese in das JSON Format auf. Dafür nutze ich jQuery.
-Diese Daten werden dann mit den angegebenen Daten abgeglichen und visualisiert.
-All das wird auf dem Endgerät ausgeführt.
+Nach einem Setup, indem Informationen, wie Stufe und Kurse angegeben werden baut BGW eine Verbindung zu dem Server der Schule auf.
+Die Daten werden dann in ein für Javascript verständliches Format (JSON) umgewandelt um dir dann einen perfekt zugeschnittenen Stundenplan anzuzeigen.
+Dort werden dann auch Informationen über Vertretungen, Entfällen, etc. angezeigt.
+Für Nutzer, die keine Mobilen Daten haben speichert BGW das ganze auch noch zwischen, um offline abgerufen werden zu können.
+Interessierte haben die Möglichkeit täglich per Benachrichtigung informiert zu werden.
+
+## Zukunft
+1. Optimierung der fundamentalen Algorithmen
+2. Backendport für den Google Assistent (ggf. Paywall?)
+3. Maintenance
+
+~ FoseFx
