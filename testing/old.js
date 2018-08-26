@@ -98,7 +98,6 @@
             }
         }
 
-        console.log('old DATA', JSON.parse(JSON.stringify(final)));
         var tt = { days: [[], [], [], [], []] };
         final.forEach(function (stunden, eins) {
             stunden.forEach(function (tage, zwei) {

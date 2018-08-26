@@ -1,6 +1,5 @@
 import {Kurs, KurseType, TempTTs} from "../../Classes";
 import {TimeTableSlot} from "../../Classes";
-import {ignore} from "../../../../node_modules/@types/selenium-webdriver/testing";
 
 
 export function evaKurse(html: string, stufe:string, tempTTs: TempTTs, kurse: KurseType):void {
@@ -53,13 +52,15 @@ export function evaKurse(html: string, stufe:string, tempTTs: TempTTs, kurse: Ku
           fach: spalten[0],
           lehrer: spalten[1],
           raum: spalten[2],
-          pos: [tri + 1, tag - 1] // [index + 1, 0:Mo; 1:Di ...]
+          // pos: [tri + 1, tag - 1] // [index + 1, 0:Mo; 1:Di ...]
         });
       }else{
         //
         // Kursstunde
         //
-        const fach = td.getElementsByTagName('b')[0].textContent;
+
+        // GK01, ...
+        const title = td.getElementsByTagName('b')[0].textContent;
 
         let raeume: {kurs: string, raum: string}[] = [];
 
@@ -69,12 +70,12 @@ export function evaKurse(html: string, stufe:string, tempTTs: TempTTs, kurse: Ku
           let spaltenRaw = Array.from(infos.getElementsByTagName('font'));
           let spalten = spaltenRaw.map(x => x.textContent.replace(/\n/g, ""));
 
-          const title = spalten[0];
+          const fach = spalten[0]; // GE3, E1, ...
           const lehrer = spalten[1];
           const raum = spalten[2];
 
           raeume.push({
-            kurs: title,
+            kurs: fach,
             raum: raum
           });
 
@@ -87,20 +88,18 @@ export function evaKurse(html: string, stufe:string, tempTTs: TempTTs, kurse: Ku
             if(fach === kurs.fach) exists = true;
           });
 
-          let kurs: Kurs = {
-            title: title,
-            fach: fach,
-            lehrer: lehrer
-          };
-
           if (!exists)
-            kurse[woche].kurse.push(kurs);
+            kurse[woche].kurse.push({
+              title: title,
+              fach: fach,
+              lehrer: lehrer
+            });
 
         }); // info
 
         stunde.push({
           type: 'kurs',
-          fach: fach,
+          fach: title,
           isBig: doppelStunde,
           raeume: raeume
         });
@@ -128,6 +127,7 @@ export function evaKurse(html: string, stufe:string, tempTTs: TempTTs, kurse: Ku
       if (timetableslot.fach !== undefined ){
           tts = Object.assign({}, timetableslot);
           delete tts.isBig;
+          // if(timetableslot.type === 'klasse') delete tts.pos;
       }
 
       // add to TT

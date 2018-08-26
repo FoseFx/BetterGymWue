@@ -37,6 +37,10 @@
 
     console.log('old Algo took (ms)', (oldstop-oldstart).toFixed(4));
 
+    kurseNew = JSON.parse(JSON.stringify(kurseNew).toLowerCase());
+    kurseOld = JSON.parse(JSON.stringify(kurseOld).toLowerCase());
+    tempttOld = JSON.parse(JSON.stringify(tempttOld).toLowerCase());
+    tempttNew = JSON.parse(JSON.stringify(tempttNew).toLowerCase());
 
     console.log('temptt new', tempttNew);
     console.log('temptt old', tempttOld);
