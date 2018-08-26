@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, OnInit, ViewChild, ViewChildren} from '@angular/core';
-import {BaseService} from '../../s/base.service';
+import {BaseService} from '../../s/base/base.service';
 import {AlertService} from '../../s/alert.service';
 import * as $ from 'jquery';
 import {MatTab, MatTabGroup} from '@angular/material';

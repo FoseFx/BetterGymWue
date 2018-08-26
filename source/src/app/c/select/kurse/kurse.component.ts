@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {NetwService} from '../../../s/network/netw.service';
 import {AlertService} from '../../../s/alert.service';
-import {BaseService} from '../../../s/base.service';
+import {BaseService} from '../../../s/base/base.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import * as $ from 'jquery';
 import {Kurs} from "../../../Classes";

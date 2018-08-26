@@ -3,18 +3,19 @@ import {from as observableFrom, Observable} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {CONFIG} from '../conf';
+import {CONFIG} from '../../conf';
 import * as $ from 'jquery';
-import {WorkerService} from "./worker.service";
-import {IndexedDBService} from "../indexed-db.service";
+import {WorkerService} from "../worker.service";
+import {IndexedDBService} from "../../indexed-db.service";
 import {fromEvent} from "rxjs/internal/observable/fromEvent";
-import {AlertService} from "./alert.service";
+import {AlertService} from "../alert.service";
+import * as AppMeta from "./appMeta.base";
 
 
 declare function unescape(s:string): string;
 @Injectable()
 export class BaseService {
-  public VERSION = "1.2.9 Beta";
+  public VERSION = "1.3.0 Beta";
   public acceptedAGB: boolean;
   allowedBrowser: boolean;
   public credentials: {u: string, p: string, l?: {u: string, p: string}};
@@ -33,9 +34,14 @@ export class BaseService {
   public ferien = false;
   public ferienEndsOn = "";
   public justResetted = false;
-  private deadTested = false;
+  public deadTested = false;
 
-  constructor(private router: Router, private httpClient: HttpClient, private workerService: WorkerService, private alertService: AlertService) {
+  constructor(public router: Router,
+              public httpClient: HttpClient,
+              private workerService: WorkerService,
+              private alertService: AlertService
+  ) {
+
     if (typeof(Storage) === 'undefined') {
       this.allowedBrowser = false;
       this.router.navigate(['error'], {queryParams: {'oldBrowser': 'true'}});
@@ -57,82 +63,11 @@ export class BaseService {
     this.justResetted = (!!localStorage.justResetted) ? (localStorage.justResetted == "true"): false;
     localStorage.justResetted = false;
     navigator.serviceWorker.ready.then(() => {workerService.checkUpdates();});
-    this.checkFerien();
-    this.needsReset();
+    AppMeta.checkFerien(this);
+    AppMeta.needsReset(this.httpClient);
   }
 
-  needsReset(){
-    this.httpClient.get(CONFIG.resets).subscribe(
-      (resets:number)=>{
-        if(!localStorage.resets) localStorage.resets = resets;
-        else {
-          if(+localStorage.resets < resets){
-            localStorage.resets = resets;
-            localStorage.justResetted = true;
-            delete localStorage.stufen;
-            delete localStorage.myStufeID;
-            delete localStorage.myStufe;
-            delete localStorage.myKurse;
-            delete localStorage.kursID;
-            delete localStorage.TT;
-            delete localStorage.KlassenKurse;
-            location.reload();
-          }
-        }
-      },
-      (err)=>{
-        console.error('needsReset',err);
-      }
-    )
-  }
-
-  checkFerien(){
-    this.httpClient.get(CONFIG.ferienUrl).subscribe(
-      (bool:boolean) => {
-        // TODO this.ferien = bool;
-        if(this.ferien){
-          this.httpClient.get(CONFIG.ferienEndsUrl).subscribe(
-            (ends:string) => {
-              this.ferienEndsOn = ends;
-            },
-            (e) =>{
-              console.error('getFerienEndError', e);
-            }
-          );
-        }
-      },
-      (e) =>{
-        console.error('checkFerienError', e);
-      }
-    );
-  }
-
-  needsUpdate(){
-    if (!this.deadTested){
-      this.httpClient.get(CONFIG.databaseURL + 'killswitch.json').subscribe((isdead:boolean) => {
-        this.dead = isdead;
-        console.log('dead? ', isdead);
-        localStorage.dead = isdead;
-        if(isdead) this.router.navigate(['/error'], {queryParams: {'dead': true}})})
-    }
-    return new Promise((resolve, reject) => {
-      let upDATE;
-      let msg;
-      let up;
-      this.httpClient.get("https://api.github.com/repos/FoseFx/BetterGymWue/branches/master").subscribe(
-        (branch: {commit}) =>{
-          let c = branch.commit;
-          upDATE = c.commit.author.date;
-          msg = c.commit.message;
-          if(!msg.match(this.VERSION)) up = true;
-          if(up)
-            resolve([upDATE, msg]);
-          else
-            reject();
-        }
-      );
-    })
-  }
+  public needsUpdate = () => AppMeta.needsUpdate(this);
 
   set notificationsEnabled(val){
     this._notificationsEnabled = val;
@@ -250,7 +185,6 @@ export class BaseService {
     else return null;
   }
 
-  private _ws = [];
 
   install(){
     if (!!window.installpromptevent){
@@ -266,6 +200,8 @@ export class BaseService {
       });
     }
   }
+
+  private _ws = [];
 
   setLastVD(index:number, w, lehrer:boolean){
     console.log("setLastVD: " + index + ", " + lehrer);

@@ -8,7 +8,7 @@ import {routes} from './routes';
 import { AgbComponent } from './c/agb/agb.component';
 
 import * as bootstrap from 'bootstrap';
-import {BaseService} from './s/base.service';
+import {BaseService} from './s/base/base.service';
 import { LoginComponent } from './c/login/login.component';
 import {GuardService} from './s/guard.service';
 import {HttpClientModule} from '@angular/common/http';
