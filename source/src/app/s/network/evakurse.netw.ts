@@ -1,4 +1,4 @@
-import {Kurs, KurseType, TempTTs} from "../../Classes";
+import {KurseType, TempTTs} from "../../Classes";
 import {TimeTableSlot} from "../../Classes";
 
 
@@ -23,7 +23,6 @@ export function evaKurse(html: string, stufe:string, tempTTs: TempTTs, kurse: Ku
 
     if(tr.innerText === ""){
       // tr is Empty
-      tr.remove(); // TODO, necessary?
       return;
     }
     if(tr.textContent.toLowerCase().includes('pause'))
@@ -52,7 +51,6 @@ export function evaKurse(html: string, stufe:string, tempTTs: TempTTs, kurse: Ku
           fach: spalten[0],
           lehrer: spalten[1],
           raum: spalten[2],
-          // pos: [tri + 1, tag - 1] // [index + 1, 0:Mo; 1:Di ...]
         });
       }else{
         //
@@ -127,7 +125,6 @@ export function evaKurse(html: string, stufe:string, tempTTs: TempTTs, kurse: Ku
       if (timetableslot.fach !== undefined ){
           tts = Object.assign({}, timetableslot);
           delete tts.isBig;
-          // if(timetableslot.type === 'klasse') delete tts.pos;
       }
 
       // add to TT
