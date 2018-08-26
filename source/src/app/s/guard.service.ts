@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from '@angular/router';
 import {Observable} from 'rxjs';
-import {BaseService} from './base.service';
+import {BaseService} from './base/base.service';
 import {LoginComponent} from '../c/login/login.component';
 import {ShowComponent} from '../c/show/show.component';
 import {CloudComponent} from '../c/cloud/cloud.component';

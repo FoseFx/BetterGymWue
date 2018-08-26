@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {CONFIG} from '../../conf';
-import {BaseService} from '../base.service';
+import {BaseService} from '../base/base.service';
 import {AlertService} from '../alert.service';
 import * as Cloud from './cloud.netw'
 import * as Initial from './initial.netw'
@@ -100,21 +100,11 @@ export class NetwService {
     });
   }
 
-  getkurse(stufe: string, stufeid: number){
-    return Initial.getkurse(stufe, stufeid, this.wochen, this.baseService)
-  }
+  public getkurse = (stufe: string, stufeid: number) => Initial.getkurse(stufe, stufeid, this.wochen, this.baseService)
+  public getTT = (stufe) => Initial.getTT(stufe);
+  public fetchCloud = (id: number)=> Cloud.fetchCloud(id, this);
+  public saveKurse = (kurse) => Cloud.saveKurse(kurse, this);
 
-  fetchCloud(id: number){
-    return Cloud.fetchCloud(id, this);
-  }
-
-  saveKurse(kurse){
-    return Cloud.saveKurse(kurse, this);
-  }
-
-  getTT(stufe){
-    return Initial.getTT(stufe);
-  }
 
   getVertretungsDaten(tag: string, i: number, urlmiddle?: string, file?: string[], sides?: any[]){
     return getVertretungsDaten(this, tag, i, urlmiddle, file, sides);

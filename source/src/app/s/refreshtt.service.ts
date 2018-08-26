@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {NetwService} from './network/netw.service';
-import {BaseService} from './base.service';
+import {BaseService} from './base/base.service';
 
 @Injectable()
 export class RefreshttService {

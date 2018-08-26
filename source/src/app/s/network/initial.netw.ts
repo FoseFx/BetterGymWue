@@ -2,7 +2,7 @@ import {CONFIG} from "../../conf";
 import {evaKurse} from "./evakurse.netw";
 import {Observable} from "rxjs/internal/Observable";
 import {KurseType, TempTTs} from "../../Classes";
-import {BaseService} from "../base.service";
+import {BaseService} from "../base/base.service";
 
 let tempTTs: TempTTs = [];
 let _kurse: KurseType = [{kurse: []}, {kurse: []}];
@@ -47,13 +47,11 @@ export function get_stufen(resp: Observable<string>): Promise<string[][]> {
 
 export function getkurse(stufe: string, stufeid: number, wochen: string[], baseService: BaseService): Promise<any> {
   return new Promise((resolve, reject) => {
-    console.log(wochen);
     if (!wochen[0] || !wochen[1]) reject('Internal Error: #01');
     const res = baseService.makeConnections(CONFIG.baseKursURL + wochen[0] + '/c/c' + generate5(stufeid) + '.htm');
     if (res === null) reject('Failure: Connection could not be made');
     res.subscribe(
       (r:string) => {
-        console.log(r);
         evaKurse(r, stufe, tempTTs, _kurse);
         //woche 2
         const res2 = baseService.makeConnections(CONFIG.baseKursURL + wochen[1] + '/c/c' + generate5(stufeid) + '.htm');

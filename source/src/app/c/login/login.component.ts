@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild, AfterViewInit} from '@angular/core';
 import {NgForm} from '@angular/forms';
-import {BaseService} from '../../s/base.service';
+import {BaseService} from '../../s/base/base.service';
 import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
