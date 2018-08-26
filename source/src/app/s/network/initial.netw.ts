@@ -1,5 +1,5 @@
 import {CONFIG} from "../../conf";
-import {evaKurse} from "./evakurse";
+import {evaKurse} from "./evakurse.netw";
 import {Observable} from "rxjs/internal/Observable";
 import {KurseType, TempTTs} from "../../Classes";
 import {BaseService} from "../base.service";
@@ -29,7 +29,12 @@ export function get_stufen(resp: Observable<string>): Promise<string[][]> {
           w[2][0] + w[2][1]
         ];
         console.log(wochen);
-        const a: string[] = wert.split('var classes = ')[1].split(';')[0].replace(/(")|(\[)|(])|( )/g, '').split(',');
+        const a: string[] =
+          wert
+            .split('var classes = ')[1]
+            .split(';')[0]
+            .replace(/(")|(\[)|(])|( )/g, '')
+            .split(',');
         resolve([a, wochen]);
       },
       (err) => {
@@ -49,12 +54,12 @@ export function getkurse(stufe: string, stufeid: number, wochen: string[], baseS
     res.subscribe(
       (r:string) => {
         console.log(r);
-        evaKurse(r, ((+wochen[0] % 2) === 0) ? 'a' : 'b', stufe, tempTTs, _kurse);
+        evaKurse(r, stufe, tempTTs, _kurse);
         //woche 2
         const res2 = baseService.makeConnections(CONFIG.baseKursURL + wochen[1] + '/c/c' + generate5(stufeid) + '.htm');
         res2.subscribe(
           (r) => {
-            evaKurse(r, ((+wochen[1] % 2) === 0) ? 'a' : 'b', stufe, tempTTs, _kurse);
+            evaKurse(r, stufe, tempTTs, _kurse);
             let k = [];
             _kurse[0].kurse.forEach((val) => {
               _kurse[1].kurse.forEach((val2) => {
