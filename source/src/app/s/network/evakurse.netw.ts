@@ -125,12 +125,14 @@ export function evaKurse(html: string, stufe:string, tempTTs: TempTTs, kurse: Ku
         stunde++;
       }
 
-      if ((timetableslot.fach !== undefined && timetableslot.type === 'kurs') || timetableslot.type === 'klasse'){
+      if (timetableslot.fach !== undefined ){
           tts = Object.assign({}, timetableslot);
           delete tts.isBig;
       }
 
       // add to TT
+      // @ts-ignore
+      if(tts === undefined) tts = {};
       tt.days[tag][stunde] = tts;
       // two times in case of isBig
       if (timetableslot.isBig) tt.days[tag][stunde + 1] = tts;
@@ -139,9 +141,10 @@ export function evaKurse(html: string, stufe:string, tempTTs: TempTTs, kurse: Ku
 
 
   // Add Pausen
-  tt.days.forEach(function (day) {
+  tt.days.forEach(function (day, i) {
    // @ts-ignore
    day.splice(6, 0, {});
+   tt.days[i] = day.filter(e=>e !== undefined);
   });
 
   // Add tt to TempTTs

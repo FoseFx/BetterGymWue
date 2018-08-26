@@ -53,8 +53,8 @@ function evaKurse(html, stufe, tempTTs, kurse) {
                         var lehrer = spalten[1];
                         var raum = spalten[2];
                         raeume_1.push({
-                            kurs: title,
-                            raum: raum
+                            kurs: title.toUpperCase(),
+                            raum: raum.toUpperCase()
                         });
                         //
                         // test for existence in other week
@@ -83,19 +83,24 @@ function evaKurse(html, stufe, tempTTs, kurse) {
             data.push(stunde);
         }); // tr
         data = data.filter(function (stunde) { return stunde.length !== 0; });
+
+        console.log('new DATA', JSON.parse(JSON.stringify(data)));
+
         var tt = { days: [[], [], [], [], []] };
         data.forEach(function (stundeE, stunde) {
             stundeE.forEach(function (timetableslot, tag) {
                 var tts;
                 // get a free timetable slot
-                while (typeof tt.days[tag][stunde] !== "undefined") {
+                while (typeof tt.days[tag][stunde] !== "undefined")
                     stunde++;
-                }
-                if ((timetableslot.fach !== undefined && timetableslot.type === 'kurs') || timetableslot.type === 'klasse') {
+
+                if(timetableslot.fach !== undefined){
+                    // tts = JSON.parse(JSON.stringify(timetableslot));
                     tts = Object.assign({}, timetableslot);
                     delete tts.isBig;
                 }
                 // add to TT
+                if(tts === undefined) tts = {};
                 tt.days[tag][stunde] = tts;
                 // two times in case of isBig
                 if (timetableslot.isBig)
@@ -103,9 +108,10 @@ function evaKurse(html, stufe, tempTTs, kurse) {
             });
         });
         // Add Pausen
-        tt.days.forEach(function (day) {
+        tt.days.forEach(function (day, i) {
             // @ts-ignore
             day.splice(6, 0, {});
+            tt.days[i] = day.filter(e=>e !== undefined);
         });
         // Add tt to TempTTs
         var setYet = false;
