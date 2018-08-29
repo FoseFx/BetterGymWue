@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CloudComponent } from './cloud.component';
+import {AppModule} from "../../app.module";
 
 describe('CloudComponent', () => {
   let component: CloudComponent;
@@ -8,7 +9,7 @@ describe('CloudComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CloudComponent ]
+      imports: [AppModule]
     })
     .compileComponents();
   }));
@@ -19,7 +20,4 @@ describe('CloudComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
 });

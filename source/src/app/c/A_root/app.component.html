@@ -15,7 +15,7 @@
       <a mat-list-item routerLink="cloud" (click)="hamNav.close()"><i class="material-icons">cloud</i>&nbsp; Kurs-Cloud</a>
       <hr>
 
-      <a [ngClass]="{'disabled': !credentialsLiegen}" mat-list-item routerLink="/" [queryParams]="{'force': true}" (click)="hamNav.close()"><i class="material-icons">school</i>&nbsp; Lehrer Zugang hinzufügen</a>
+      <a [ngClass]="{'disabled': !credentialsLiegen}" mat-list-item routerLink='/' [queryParams]="{'force': true}" (click)="hamNav.close()"><i class="material-icons">school</i>&nbsp; Lehrer Zugang hinzufügen</a>
       <a mat-list-item [ngClass]="{'disabled': !baseService.myKurse}" routerLink="stundenplan" (click)="hamNav.close()"><i class="material-icons">assignment</i>&nbsp;Stundenplan</a>
       <hr>
       <a mat-list-item [ngClass]="{'disabled': !baseService.myKurse}" (click)="removeKurse()"><i class="material-icons">delete</i>&nbsp; Kurse löschen</a>

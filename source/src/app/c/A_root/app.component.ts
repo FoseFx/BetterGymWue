@@ -3,11 +3,9 @@ import {BaseService} from '../../s/base/base.service';
 import * as $ from 'jquery';
 import {NetwService} from '../../s/network/netw.service';
 import {RefreshttService} from '../../s/refreshtt.service';
-import {AlertService} from "../../s/alert.service";
 import {WorkerService} from "../../s/worker.service";
-import {animate, state, style, transition, trigger} from "@angular/animations";
 import {isNullOrUndefined} from "util";
-import {IndexedDBService} from "../../indexed-db.service";
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',

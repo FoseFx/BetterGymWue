@@ -49,7 +49,8 @@ export class TimeTableSlot {
   raeume?: {kurs: string, raum: string}[];
   raum?: string;
   pos? : any[];
-  isBig?: boolean
+  isBig?: boolean;
+  tag? : number;
 }
 
 
