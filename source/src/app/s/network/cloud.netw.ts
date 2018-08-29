@@ -1,12 +1,13 @@
 import {CONFIG} from "../../conf";
+import {NetwService} from "./netw.service";
 
-export function saveKurse(kurse, that): Promise<number>{
+export function saveKurse(kurse, that: NetwService): Promise<number>{
   return new Promise<number>((resolve, reject) => {
     let id = Math.floor(Math.random() * 9999);
     while (id.toString().length !== 4) id = Math.floor(Math.random() * 9999);
     let kurseAO: {stufe?: string} = toObject(kurse);
     kurseAO.stufe = that.baseService.myStufe;
-    that.httpClient.put(CONFIG.dbUrl + id + '.json', kurseAO).subscribe(
+    that.baseService.httpClient.put(CONFIG.dbUrl + id + '.json', kurseAO).subscribe(
       (wert) => {
         localStorage.kursID = id;
         that.baseService.kursID = id;

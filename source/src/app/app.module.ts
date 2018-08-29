@@ -36,6 +36,7 @@ import {RefreshttService} from './s/refreshtt.service';
 import {WorkerService} from "./s/worker.service";
 import {IBrowser} from "selenium-webdriver";
 import {IndexedDBService} from "./indexed-db.service";
+import {APP_BASE_HREF} from "@angular/common";
 declare var Hammer: any;
 
 export class MyHammerConfig extends HammerGestureConfig  {
@@ -97,7 +98,8 @@ export class MyHammerConfig extends HammerGestureConfig  {
     {
       provide: HAMMER_GESTURE_CONFIG,
       useClass: MyHammerConfig
-    }
+    },
+    {provide: APP_BASE_HREF, useValue: '/'}
   ],
 
   bootstrap: [AppComponent]

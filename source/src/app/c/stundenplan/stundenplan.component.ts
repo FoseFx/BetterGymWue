@@ -44,9 +44,12 @@ export class StundenplanComponent implements OnInit {
             /** **/
             let isDouble = false;
             if(stundeindex > 0){
-              let davor = d[stundeindex - 1];
-              if(davor === undefined) davor = d[stundeindex -2];
-              if(davor === undefined) davor = d[stundeindex -3];
+              let davor;
+              let down = 1;
+              while (davor === undefined && down !== 11){
+                davor = d[stundeindex - down];
+                down++;
+              }
 
               s.forEach((value, index) => {
                 davor.forEach((opposite) => {

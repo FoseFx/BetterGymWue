@@ -6,8 +6,6 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {CONFIG} from '../../conf';
 import * as $ from 'jquery';
 import {WorkerService} from "../worker.service";
-import {IndexedDBService} from "../../indexed-db.service";
-import {fromEvent} from "rxjs/internal/observable/fromEvent";
 import {AlertService} from "../alert.service";
 import * as AppMeta from "./appMeta.base";
 
@@ -15,7 +13,7 @@ import * as AppMeta from "./appMeta.base";
 declare function unescape(s:string): string;
 @Injectable()
 export class BaseService {
-  public VERSION = "1.3.0 Beta";
+  public VERSION = "1.3.1 Beta";
   public acceptedAGB: boolean;
   allowedBrowser: boolean;
   public credentials: {u: string, p: string, l?: {u: string, p: string}};
@@ -48,7 +46,7 @@ export class BaseService {
       return;
     }
     localStorage.VERSION = this.VERSION;
-    eval("gtag('event', 'startup', {'bgw_version_in_use': localStorage.VERSION})");
+    // TODO eval("gtag('event', 'startup', {'bgw_version_in_use': localStorage.VERSION})");
     this.dead = (!!localStorage.dead) ? (localStorage.dead === 'true') : false;
     this.acceptedAGB = (!!localStorage.acceptedAGB2) ? (localStorage.acceptedAGB2 === 'true') : false;
     this.credentials = (!!localStorage.credentials) ? JSON.parse(localStorage.credentials) : undefined;
@@ -187,11 +185,15 @@ export class BaseService {
 
 
   install(){
+    // @ts-ignore
     if (!!window.installpromptevent){
+      // @ts-ignore
       window.installpromptevent.prompt();
+      // @ts-ignore
       window.installpromptevent.userChoice.then((choice)=>{
         console.log('choice',choice);
         if(choice.outcome === "accepted" ){
+          // @ts-ignore
           delete window.installpromptevent;
           this.alertService.alert("Installiert! Du kannst die App jetzt öffnen");
         }else if (choice.outcome === "dismissed"){

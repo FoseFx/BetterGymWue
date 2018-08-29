@@ -1,7 +1,6 @@
 import {KurseType, TempTTs} from "../../Classes";
 import {TimeTableSlot} from "../../Classes";
 
-
 export function evaKurse(html: string, stufe:string, tempTTs: TempTTs, kurse: KurseType):void {
   const parser = new DOMParser();
   let doc = parser.parseFromString(html, "text/html");
@@ -38,6 +37,14 @@ export function evaKurse(html: string, stufe:string, tempTTs: TempTTs, kurse: Ku
 
       let info: HTMLElement[] = Array.from(td.getElementsByTagName('tr'));
 
+
+      if(!doppelStunde){
+        let indexOfFirstSmallSlotBefore = data[data.length-1].findIndex((e: TimeTableSlot)=> !e.isBig);
+        tag = indexOfFirstSmallSlotBefore === -1? tag : indexOfFirstSmallSlotBefore + 1;
+        // +1 to counter following -1, which is needed because of the exclusion
+      }
+
+
       //
       // Klassenstunde
       //
@@ -51,6 +58,7 @@ export function evaKurse(html: string, stufe:string, tempTTs: TempTTs, kurse: Ku
           fach: spalten[0],
           lehrer: spalten[1],
           raum: spalten[2],
+          tag: tag - 1
         });
       }else{
         //
@@ -99,23 +107,23 @@ export function evaKurse(html: string, stufe:string, tempTTs: TempTTs, kurse: Ku
           type: 'kurs',
           fach: title,
           isBig: doppelStunde,
-          raeume: raeume
+          raeume: raeume,
+          tag: tag - 1
         });
 
 
       }
     }); // td
-    data.push(stunde);
+    if(stunde.length !== 0)
+      data.push(stunde);
 
   }); // tr
-
-
-  data = data.filter(stunde => stunde.length !== 0);
-
   let tt: {days: TimeTableSlot[][]} = {days: [[], [], [], [], []]};
   data.forEach(function (stundeE, stunde) {
-    stundeE.forEach(function (timetableslot, tag) {
+    stundeE.forEach(function (timetableslot, untrustedtag) {
       let tts: TimeTableSlot;
+      let tag: number = timetableslot.tag;
+      tag = (tag === undefined || tag === -1)? untrustedtag: tag;
 
       // get a free timetable slot
       while (typeof tt.days[tag][stunde] !== "undefined"){
@@ -157,6 +165,5 @@ export function evaKurse(html: string, stufe:string, tempTTs: TempTTs, kurse: Ku
       stufe: stufe,
       tt: (woche === 0)? [tt]: [undefined, tt]
     });
-
 
 }
