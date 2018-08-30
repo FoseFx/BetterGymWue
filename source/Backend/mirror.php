@@ -9,6 +9,7 @@ header('Access-Control-Allow-Origin: *');
 header( 'Access-Control-Allow-Headers: authorization, Content-type, Accept-Charset, Accept' );
 header('Access-Control-Allow-Methods: GET, OPTIONS');
 header('Content-Type: text/html');
+header('Content-Encoding: gzip');
 
 if (!function_exists('getallheaders'))
 {
