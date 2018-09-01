@@ -13,5 +13,7 @@ export const CONFIG = {
   unsubscribeUrl: 'https://us-central1-bettergymwue.cloudfunctions.net/app/unsubscribe',
   ferienUrl: dd + "ferien/ferien.json",
   ferienEndsUrl: dd + "ferien/ends.json",
-  resets: dd + "resets.json"
+  resets: dd + "resets.json",
+  resetHeader: dd + "resetMsg/header.json",
+  resetMsg: dd + "resetMsg/message.json"
 };

@@ -13,7 +13,7 @@ import * as AppMeta from "./appMeta.base";
 declare function unescape(s:string): string;
 @Injectable()
 export class BaseService {
-  public VERSION = "1.3.4 Beta";
+  public VERSION = "1.3.5 Beta";
   public acceptedAGB: boolean;
   allowedBrowser: boolean;
   public credentials: {u: string, p: string, l?: {u: string, p: string}};
@@ -70,6 +70,8 @@ export class BaseService {
   }
 
   public needsUpdate = () => AppMeta.needsUpdate(this);
+  public getResetHeader = () => AppMeta.getResetHeader(this);
+  public getResetMessage = () => AppMeta.getResetMessage(this);
 
   set notificationsEnabled(val){
     this._notificationsEnabled = val;

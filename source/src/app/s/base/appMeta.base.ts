@@ -1,6 +1,7 @@
 import {HttpClient} from "@angular/common/http";
 import {CONFIG} from "../../conf";
 import {BaseService} from "./base.service";
+import {Observable} from "rxjs";
 
 export function needsReset(httpClient: HttpClient) {
   httpClient.get(CONFIG.resets).subscribe(
@@ -73,4 +74,14 @@ export function needsUpdate(baseService: BaseService): Promise<string[]> {
       }
     );
   })
+}
+
+
+
+export function getResetHeader(baseService: BaseService): Observable<string> {
+  return <Observable<string>>baseService.httpClient.get(CONFIG.resetHeader);
+}
+
+export function getResetMessage(baseService: BaseService): Observable<string> {
+  return <Observable<string>>baseService.httpClient.get(CONFIG.resetMsg);
 }
