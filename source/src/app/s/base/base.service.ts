@@ -13,7 +13,7 @@ import * as AppMeta from "./appMeta.base";
 declare function unescape(s:string): string;
 @Injectable()
 export class BaseService {
-  public VERSION = "1.3.2 Beta";
+  public VERSION = "1.3.3 Beta";
   public acceptedAGB: boolean;
   allowedBrowser: boolean;
   public credentials: {u: string, p: string, l?: {u: string, p: string}};
@@ -46,7 +46,11 @@ export class BaseService {
       return;
     }
     localStorage.VERSION = this.VERSION;
-    // TODO eval("gtag('event', 'startup', {'bgw_version_in_use': localStorage.VERSION})");
+    try{
+      eval("gtag('event', 'startup', {'bgw_version_in_use': localStorage.VERSION})");
+    } catch (e) {
+      console.error("Tracking Failed");
+    }
     this.dead = (!!localStorage.dead) ? (localStorage.dead === 'true') : false;
     this.acceptedAGB = (!!localStorage.acceptedAGB2) ? (localStorage.acceptedAGB2 === 'true') : false;
     this.credentials = (!!localStorage.credentials) ? JSON.parse(localStorage.credentials) : undefined;

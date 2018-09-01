@@ -24,8 +24,6 @@ export function evaKurse(html: string, stufe:string, tempTTs: TempTTs, kurse: Ku
       // tr is Empty
       return;
     }
-    if(tr.textContent.toLowerCase().includes('pause'))
-      return;
     tri++;
 
     let stunde: TimeTableSlot[] = [];
@@ -33,6 +31,13 @@ export function evaKurse(html: string, stufe:string, tempTTs: TempTTs, kurse: Ku
     Array.from(tr.children).forEach(function (td, tag) {
       if(tag === 0) return; // Exclude number
       // Tag: 1: Mo, 2: Di, ...
+
+      if(/^\npause\n/i.test(td.textContent) || td.textContent === "") {
+        // @ts-ignore
+        stunde.push({});
+        return;
+      }
+
       const doppelStunde = (td.getAttribute('rowspan') === "4");
 
       let info: HTMLElement[] = Array.from(td.getElementsByTagName('tr'));
@@ -145,10 +150,7 @@ export function evaKurse(html: string, stufe:string, tempTTs: TempTTs, kurse: Ku
   });
 
 
-  // Add Pausen
   tt.days.forEach(function (day, i) {
-   // @ts-ignore
-   day.splice(6, 0, {});
    tt.days[i] = day.filter(e=>e !== undefined);
   });
 

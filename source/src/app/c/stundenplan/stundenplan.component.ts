@@ -28,7 +28,6 @@ export class StundenplanComponent implements OnInit {
       };
       t.days.forEach((tag) => {
         let d = [];
-        let l = 0;
         tag.forEach((stunde, stundeindex) => {
           if(stunde.type == 'klasse') d.push([{fach: stunde.fach, raum: stunde.raum, sel: true}]);
           else{

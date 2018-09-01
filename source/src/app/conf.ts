@@ -1,4 +1,4 @@
-const baseUrl = 'https://limitless-falls-98065.herokuapp.com/?url=http://gymnasium-wuerselen.de/untis/';
+const baseUrl = 'https://proxy.fosefx.com/http://gymnasium-wuerselen.de/untis/';
 const dd = "https://bettergymwue.firebaseio.com/";
 export const CONFIG = {
   baseURL: baseUrl,
