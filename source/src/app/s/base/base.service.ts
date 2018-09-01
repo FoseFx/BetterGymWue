@@ -13,7 +13,7 @@ import * as AppMeta from "./appMeta.base";
 declare function unescape(s:string): string;
 @Injectable()
 export class BaseService {
-  public VERSION = "1.3.3 Beta";
+  public VERSION = "1.3.4 Beta";
   public acceptedAGB: boolean;
   allowedBrowser: boolean;
   public credentials: {u: string, p: string, l?: {u: string, p: string}};
