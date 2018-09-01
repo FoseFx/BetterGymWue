@@ -53,17 +53,27 @@ const prod = true;if("serviceWorker" in navigator && prod){window.addEventListen
   <script>
     //function gtag(){dataLayer.push(arguments);}
     var gtag = function () {};
+    //var xhr = new XMLHttpRequest();
     var startTracking = function(){
-      $.getScript('https://www.googletagmanager.com/gtag/js?id=UA-113866862-2', function () {
+      //xhr.open("GET", "https://www.googletagmanager.com/gtag/js?id=UA-113866862-2", true);
+      //xhr.onreadystatechange = function () {
+        //if(!(xhr.status >= 200 && xhr.status < 300 || xhr.status === 304)) return;
+
+        var script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = "https://www.googletagmanager.com/gtag/js?id=UA-113866862-2";
+        document.body.appendChild(script);
+
         gtag = function(){dataLayer.push(arguments)};
         window.dataLayer = window.dataLayer || [];
         gtag('js', new Date());
         gtag('config', 'UA-113866862-2', {
           'anonymize_ip': true,
-          'version': localStorage.VERSION
+          'metric1': 'bgw_version_in_use'
         });
         console.log("started tracking");
-      });
+      //};
+      //xhr.send();
     };
 
     if (document.cookie.indexOf("ga-disable-UA-113866862-2=true") > -1) {
@@ -90,5 +100,5 @@ const prod = true;if("serviceWorker" in navigator && prod){window.addEventListen
     });
   </script>
 
-<script type="text/javascript" src="runtime.a66f828dca56eeb90e02.js"></script><script type="text/javascript" src="polyfills.af787ecd062ee36ad18c.js"></script><script type="text/javascript" src="scripts.2e18d790d88b28a93dae.js"></script><script type="text/javascript" src="main.85371246cc9871bc999c.js"></script></body>
+<script type="text/javascript" src="runtime.a66f828dca56eeb90e02.js"></script><script type="text/javascript" src="polyfills.af787ecd062ee36ad18c.js"></script><script type="text/javascript" src="scripts.2e18d790d88b28a93dae.js"></script><script type="text/javascript" src="main.fa12ecea19e3e1f60aef.js"></script></body>
 </html>
