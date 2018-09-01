@@ -56,8 +56,8 @@
     <mat-card *ngIf="baseService.justResetted">
       <mat-card-header>
         <mat-icon mat-card-avatar>announcement</mat-icon>
-        <mat-card-title>Neues Halbjahr!</mat-card-title><span style="clear: both"></span>
-        <mat-card-subtitle>Die Kurs Cloud wurde zurückgesetzt, dein Stundenplan, deine Stufe und deine Kurse entfernt. Hinweis: Das Einrichten zieht meist das doppelte an Datenvolumen.</mat-card-subtitle>
+        <mat-card-title>{{reset.header | async }}</mat-card-title><span style="clear: both"></span>
+        <mat-card-subtitle>{{ reset.message  | async }}</mat-card-subtitle>
       </mat-card-header>
     </mat-card>
 

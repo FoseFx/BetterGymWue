@@ -22,6 +22,8 @@ export class AppComponent implements OnInit{
 
   done = false;
   updateAv = false;
+  reset = {header: undefined, message: undefined};
+
   get win(){
     return window;
   }
@@ -51,7 +53,10 @@ export class AppComponent implements OnInit{
 
     this.baseService.needsUpdate().then(() => {this.updateAv = true;}).catch();
     this.workerService.checkUpdates();
-
+    if (this.baseService.justResetted) {
+      this.reset.header = this.baseService.getResetHeader();
+      this.reset.message = this.baseService.getResetMessage();
+    }
   }
 
   swipe(type, e){
