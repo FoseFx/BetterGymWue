@@ -13,7 +13,7 @@ import * as AppMeta from "./appMeta.base";
 declare function unescape(s:string): string;
 @Injectable()
 export class BaseService {
-  public VERSION = "1.3.5 Beta";
+  public VERSION = "1.3.6 Beta";
   public acceptedAGB: boolean;
   allowedBrowser: boolean;
   public credentials: {u: string, p: string, l?: {u: string, p: string}};
@@ -170,6 +170,7 @@ export class BaseService {
         $.ajax({
           contentType: 'Content-type: text/html; charset=iso-8859-1',
           url: url,
+          cache: false,
           beforeSend: function(xhr){
             xhr.setRequestHeader("Authorization", "Basic " + ((!lehrer) ? btoa(credentials.u + ':' + credentials.p) : btoa(credentials.l.u+ ':' +credentials.l.p)));
             xhr.overrideMimeType('text/html;charset=iso-8859-1');
@@ -212,6 +213,7 @@ export class BaseService {
   private _ws = [];
 
   setLastVD(index:number, w, lehrer:boolean){
+    delete localStorage.lastVD;
     console.log("setLastVD: " + index + ", " + lehrer);
     this._ws[index] = w;
     localStorage.lastVD = JSON.stringify({d: new Date(), w: this._ws, lehrer: lehrer});
