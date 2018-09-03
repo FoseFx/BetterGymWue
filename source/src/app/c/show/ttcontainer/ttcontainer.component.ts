@@ -29,6 +29,7 @@ export class TtcontainerComponent implements AfterViewInit{
   online: Observable<boolean>;
   offlineDate:Date;
   offlinepreLehrer = false;
+  backUpVdSet = false;
 
   @Input() set tt(val: TimeTable){
     if(this.setted) return;
@@ -95,7 +96,6 @@ export class TtcontainerComponent implements AfterViewInit{
     });
     let relevant = [];
     VDT.forEach((row) => {
-      //console.log(row);
       if (row.date != this.readableDate) return;
       this.baseService.myKurse.forEach((val) => {
         if (val.fach == row.fach) relevant.push(row);
@@ -142,9 +142,9 @@ export class TtcontainerComponent implements AfterViewInit{
           this.getVDfromCache();
           return;
         }
-        delete localStorage.lastVD;
+
         this.netwService.getSchulplanerInfo(this.readableDate).then((value: string[]) => {
-          this.offlineDate = undefined;
+          //this.offlineDate = undefined;
           value.forEach((v, i, a) => {value[i] += 'SCHULPLANER_INFO'});
           this.info = this.info.concat(value);
         });
@@ -160,6 +160,7 @@ export class TtcontainerComponent implements AfterViewInit{
     let lastVD = JSON.parse(localStorage.lastVD);
     this.offlineDate = new Date(lastVD.d);
     if(!lastVD.w[this._index]) return;
+    this.backUpVdSet = true;
     this.offlinepreLehrer = lastVD.lehrer;
     this.evaVertretung(lastVD.w[this._index]);
   }
@@ -167,6 +168,7 @@ export class TtcontainerComponent implements AfterViewInit{
   myPos = [];
 
   getOnMyPos(index){
+    index = (index < 6)? index: index - 1;
     const fallback = {date: "", fach: "", info: "", newRaum: "", oldRaum: "", stufe: "", stunde:"", type: ""};
     if(this.VDMe.length == 0) return fallback;
     if(this.myPos[index]) return this.myPos[index];

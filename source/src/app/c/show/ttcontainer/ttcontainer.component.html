@@ -23,7 +23,7 @@
     </tbody>
   </table>
   <br>
-  <h2><small class="text-muted" *ngIf="!(online | async)">{{'Alte Version von ' + (offlineDate | date: 'HH:mm') + ' Uhr am ' + (offlineDate | date: 'dd.MM.')}}</small></h2>
+  <h2><small class="text-muted" *ngIf="!(online | async) && backUpVdSet">{{'Alte Version von ' + (offlineDate | date: 'HH:mm') + ' Uhr am ' + (offlineDate | date: 'dd.MM.')}}</small></h2>
   <h3 *ngIf="info.length > 0">Info:</h3>
   <table *ngIf="info.length > 0" class="table table-sm">
     <tbody>
