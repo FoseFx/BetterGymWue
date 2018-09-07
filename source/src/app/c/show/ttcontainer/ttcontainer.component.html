@@ -1,5 +1,5 @@
 <div class="container">
-  <h1 class="text-right">{{tag + " " + (_tt.date | date: 'dd.M.yy')}}</h1>
+  <h1 class="text-right">{{(_tt.date | date: 'E dd.M.yy')}}</h1>
   <p class="lead text-right">{{woche(_tt.date | date: 'w')}}-Woche</p>
   <button mat-button (click)="reload()"><i class="material-icons">refresh</i></button>
   <table class="table table-hover">

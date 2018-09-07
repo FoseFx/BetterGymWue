@@ -1,6 +1,6 @@
 
 
-<mat-tab-group style="width: 100%!important;" selectedIndex="{{ ((+(1 - 1 + (d | date: 'w')) % 2 == 0)? 0:1) }}" (selectChange)="resetDay()">
+<mat-tab-group style="width: 100%!important;" [selectedIndex]="selectedIndex" (selectChange)="resetDay()">
 
   <mat-tab *ngFor="let woche of tts" [label]="woche.woche">
 
@@ -13,7 +13,7 @@
           <tbody>
           <ng-container *ngFor="let stunde of tag; let stundei = index">
             <tr *ngIf="!stunde[0].isDouble">
-              <td>{{ (stundei >= 6)? (stundei + 2) : (stundei + 1) }}<span *ngIf="stunde[0].hasDouble">{{'/' + ( (stundei >= 6)? (stundei + 3): (stundei + 2) )}}</span></td>
+              <td>{{ (stundei + 1) }}<span *ngIf="stunde[0].hasDouble">{{'/' + (stundei + 2) }}</span></td>
               <td *ngFor="let fach of stunde">
                 <span [ngClass]="{'font-weight-bold': fach.sel}">{{fach.fach}}</span><br>
                 <span [ngClass]="{'font-weight-bold': fach.sel}">{{fach.raum}}</span>

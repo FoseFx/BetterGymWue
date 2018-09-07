@@ -65,5 +65,7 @@ export type DisplayArray = {
 
 export type TempTTs = { stufe: string, tt: { days: any[][]}[] }[];
 
+export type TT = {days: TimeTableSlot[][]}[];
+
 export type KurseType = {kurse: Kurs[]}[]; // length = 2, A: 0, B: 1
 
