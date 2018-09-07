@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {BaseService} from '../../s/base/base.service';
 import {AlertService} from '../../s/alert.service';
+import {TimeTableSlot, TT} from "../../Classes";
+import {formatDate} from "@angular/common";
+
 
 @Component({
   selector: 'app-stundenplan',
@@ -12,11 +15,12 @@ export class StundenplanComponent implements OnInit {
   tts = [];
   selectedDay = 0;
   d = new Date();
+  selectedIndex: number = (+formatDate(this.d, "w", "de")) % 2 == 0? 0:1;
 
   constructor(private baseService:BaseService, private alert: AlertService) { }
 
   ngOnInit() {
-    let tt = this.baseService.TT;
+    let tt: TT = this.baseService.TT;
     if(!tt) {
       this.alert.alert("Kein Stundenplan gesetzt", this.alert.DANGER);
       return;
@@ -26,13 +30,18 @@ export class StundenplanComponent implements OnInit {
         woche: (i % 2 == 0) ? 'A' : 'B',
         tt: []
       };
-      t.days.forEach((tag) => {
-        let d = [];
-        tag.forEach((stunde, stundeindex) => {
+      t.days.forEach((tag: TimeTableSlot[]) => {
+
+        let d: {fach: string, raum: string, sel: boolean, isDouble?: boolean, hasDouble?: boolean}[][] = [];
+
+        tag.forEach((stunde: TimeTableSlot, stundeindex) => {
           if(stunde.type == 'klasse') d.push([{fach: stunde.fach, raum: stunde.raum, sel: true}]);
           else{
-            let s = [];
-            if(!stunde.raeume) return;
+            let s: {fach: string, raum: string, sel: boolean, isDouble?: boolean, hasDouble?: boolean}[] = [];
+            if(!stunde.raeume) {
+              d.push([{fach: "Pause", raum:"", sel: true}]);
+              return;
+            }
             stunde.raeume.forEach((k) => {
               s.push({
                 fach: k.kurs,

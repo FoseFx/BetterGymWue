@@ -8,6 +8,7 @@ import * as $ from 'jquery';
 import {WorkerService} from "../worker.service";
 import {AlertService} from "../alert.service";
 import * as AppMeta from "./appMeta.base";
+import {Kurs, TT} from "../../Classes";
 
 
 declare function unescape(s:string): string;
@@ -17,18 +18,18 @@ export class BaseService {
   public acceptedAGB: boolean;
   allowedBrowser: boolean;
   public credentials: {u: string, p: string, l?: {u: string, p: string}};
-  public myKurse;
-  public myStufe;
+  public myKurse: Kurs[];
+  public myStufe: string;
   public myStufeID;
-  public TT;
-  public KlassenKurse; // guter Name
+  public TT: TT;
+  public KlassenKurse: string[]; // guter Name
   public kursID;
   public noswipe = false;
   private _preLehrer:boolean;
   public milchglas = false;
   public selectedTab = 0;
   public dead = false;
-  public _notificationsEnabled;
+  public _notificationsEnabled: boolean;
   public ferien = false;
   public ferienEndsOn = "";
   public justResetted = false;

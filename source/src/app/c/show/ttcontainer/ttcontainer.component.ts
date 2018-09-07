@@ -24,7 +24,6 @@ export class TtcontainerComponent implements AfterViewInit{
   VDStufe: VertretungsReihe[] = [];
   VDMe: VertretungsReihe[] = [];
   readableDate: string;
-  tag = "";
   setted = false;
   online: Observable<boolean>;
   offlineDate:Date;
@@ -36,7 +35,6 @@ export class TtcontainerComponent implements AfterViewInit{
     this.setted = true;
     this._tt = val;
     this.filterVisible();
-    this.tag = ["Mo", "Di", "Mi", "Do", "Fr"][this._tt.date.getDay() - 1 ];
     this.readableDate = this._tt.date.getDate() + "." + (this._tt.date.getMonth() + 1) + ".";
   }
   _index: number;
@@ -167,6 +165,18 @@ export class TtcontainerComponent implements AfterViewInit{
 
   myPos = [];
 
+
+  addVDtoDisplayArray(){
+    if(this.VDMe.length == 0) return;
+    let list: VertretungsReihe[] = this.VDMe.filter((me: VertretungsReihe) =>
+      (me.type.toLowerCase() !== "k" || (me.type.toLowerCase() === "k" && this.isMyKlausur(me)) )
+    );
+    
+
+
+  }
+
+
   getOnMyPos(index){
     index = (index < 6)? index: index - 1;
     const fallback = {date: "", fach: "", info: "", newRaum: "", oldRaum: "", stufe: "", stunde:"", type: ""};
@@ -175,7 +185,7 @@ export class TtcontainerComponent implements AfterViewInit{
     let rel: VertretungsReihe[] = [];
     this.VDMe.forEach((me) => { if (me.stunde == (index + 1) && !me.nd) {
       if(me.type.toLowerCase() == 'k'){
-        if(this.isMyKlausur(me.info)) rel.push(me);
+        if(this.isMyKlausur(me)) rel.push(me);
       }else{
         rel.push(me)
       }
@@ -211,7 +221,9 @@ export class TtcontainerComponent implements AfterViewInit{
     return rel[0];
   }
 
-  isMyKlausur(info):boolean{
+  isMyKlausur(me: VertretungsReihe):boolean{
+    if(me.type.toLowerCase() !== "k") return false;
+    let info = me.info;
     let val = false;
     this.baseService.myKurse.forEach((kurs) => {
       if(info.indexOf(kurs.fach.toUpperCase()) != -1) val = true;

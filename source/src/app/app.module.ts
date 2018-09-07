@@ -1,5 +1,5 @@
 import {BrowserModule, HAMMER_GESTURE_CONFIG, HammerGestureConfig} from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {LOCALE_ID, NgModule} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
@@ -89,6 +89,7 @@ export class MyHammerConfig extends HammerGestureConfig  {
   ],
   providers: [
     BaseService,
+    { provide: LOCALE_ID, useValue: "de" },
     GuardService,
     NetwService,
     AlertService,

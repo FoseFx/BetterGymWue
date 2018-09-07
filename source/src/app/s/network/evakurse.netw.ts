@@ -151,7 +151,17 @@ export function evaKurse(html: string, stufe:string, tempTTs: TempTTs, kurse: Ku
 
 
   tt.days.forEach(function (day, i) {
-   tt.days[i] = day.filter(e=>e !== undefined);
+    let length = tt.days[i].length;
+    for (let sub = 0; sub < length; sub++){
+      if(!tt.days[i][length-sub]) delete tt.days[i][length-sub];
+      else if (!tt.days[i][length-sub].raeume) delete tt.days[i][length-sub];
+      else break;
+    }
+    // Pause vor 10/11 löschen
+    if (tt.days[i][9])
+      if (!tt.days[i][9].raeume)
+        delete tt.days[i][9];
+    tt.days[i] = day.filter(e=>e !== undefined);
   });
 
   // Add tt to TempTTs

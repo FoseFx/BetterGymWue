@@ -5,6 +5,9 @@ import {NetwService} from '../../s/network/netw.service';
 import {RefreshttService} from '../../s/refreshtt.service';
 import {WorkerService} from "../../s/worker.service";
 import {isNullOrUndefined} from "util";
+import localeDe from "@angular/common/locales/de"
+import {registerLocaleData} from "@angular/common";
+registerLocaleData(localeDe);
 
 @Component({
   selector: 'app-root',
