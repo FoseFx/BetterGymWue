@@ -60,7 +60,8 @@ export type DisplayArray = {
   raum: string,
   vert?: string,
   nd?: number,
-  isFreistunde?: boolean
+  isFreistunde?: boolean,
+  VD?: VertretungsReihe
 }[];
 
 export type TempTTs = { stufe: string, tt: { days: any[][]}[] }[];

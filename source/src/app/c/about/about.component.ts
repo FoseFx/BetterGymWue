@@ -4,7 +4,7 @@ import {BaseService} from '../../s/base/base.service';
 @Component({
   selector: 'app-about',
   templateUrl: './about.component.html',
-  styleUrls: ['./about.component.css']
+  styleUrls: ['./about.component.css', '../show/ttcontainer/ttcontainer.component.css']
 })
 export class AboutComponent implements OnInit {
   msg;
