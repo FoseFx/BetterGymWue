@@ -14,7 +14,7 @@ import {Kurs, TT} from "../../Classes";
 declare function unescape(s:string): string;
 @Injectable()
 export class BaseService {
-  public VERSION = "1.3.6 Beta";
+  public VERSION = "1.4.0 Beta";
   public acceptedAGB: boolean;
   allowedBrowser: boolean;
   public credentials: {u: string, p: string, l?: {u: string, p: string}};
