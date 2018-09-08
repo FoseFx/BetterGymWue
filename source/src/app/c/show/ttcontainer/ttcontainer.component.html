@@ -4,22 +4,31 @@
   <button mat-button (click)="reload()"><i class="material-icons">refresh</i></button>
   <table class="table table-hover">
     <tbody>
-    <tr *ngFor="let e of displayArray; let i = index;" [ngClass]="{
-                                                                  'entfall': getOnMyPos(i).type.match('e'),
-                                                                  'vertretung': getOnMyPos(i).type == 'v',
-                                                                  'raumV': getOnMyPos(i).type == 'r',
-                                                                  'klausur': getOnMyPos(i).type == 'k'
-                                                                }">
-      <td *ngIf="e!=undefined && !e.nd">{{i + 1}}</td>
-      <td *ngIf="e!=undefined && !e.nd && !e.isFreistunde">{{e.fach}}</td>
-      <td *ngIf="e!=undefined && !e.nd && !e.isFreistunde" [ngClass]="{'bold': !!getOnMyPos(i).newRaum}">{{(getOnMyPos(i).newRaum)? getOnMyPos(i).newRaum : e.raum}}</td>
-      <td *ngIf="e!=undefined && !e.nd && !e.isFreistunde">{{e.lehrer}}</td>
-      <td *ngIf="e!=undefined && e.vert && !e.isFreistunde">
-        <span class="badge badge-pill"
-              [ngClass]="{'badge-primary': e.vert == 'V', 'badge-danger': e.vert == 'E'}">!</span>
-      </td>
-      <td colspan="3" *ngIf="e!=undefined && !e.nd && e.isFreistunde">Frei</td>
-    </tr>
+
+    <ng-container *ngFor="let stunde of displayArray; let i = index">
+      <tr *ngIf="stunde != undefined && !stunde.nd" [ngClass]="{
+        'entfall': (!!stunde.VD.type) ? stunde.VD.type[0] === 'e': false,
+        'vertretung': stunde.VD.type === 'v',
+        'raumV': stunde.VD.type === 'r',
+        'klausur': stunde.VD.type === 'k',
+        'uncertain': stunde.VD.type === 'fehlt'
+      }">
+
+        <td>{{i + 1}}</td>
+
+        <td *ngIf="stunde.isFreistunde" colspan="3">Frei</td>
+
+        <ng-container *ngIf="!stunde.isFreistunde">
+          <td>{{stunde.fach}}</td>
+          <td [ngClass]="{'bold': !!stunde.VD.newRaum}">{{ !!stunde.VD.newRaum? stunde.VD.newRaum: stunde.raum}}</td>
+          <td [ngClass]="{'bold': !!stunde.VD.lehrer}">{{stunde.VD.lehrer? stunde.VD.lehrer: stunde.lehrer}}</td>
+        </ng-container>
+
+
+      </tr>
+    </ng-container>
+
+
     </tbody>
   </table>
   <br>

@@ -8,8 +8,9 @@ import {NetwService} from '../../../s/network/netw.service';
 import * as $ from 'jquery';
 import {Router} from '@angular/router';
 import {Observable} from 'rxjs';
-import {log} from "util";
 import {DisplayArray, TimeTable, VertretungsReihe} from "../../../Classes";
+import {evaVertretung} from "./util/evaVertretung";
+import {addVDtoDisplayArray} from "./util/addVDtoDisplayArray";
 
 @Component({
   selector: 'show-ttcontainer',
@@ -43,7 +44,7 @@ export class TtcontainerComponent implements AfterViewInit{
   }
   onlineSub: Subscription;
 
-  constructor(public baseService: BaseService, private netwService: NetwService, private router:Router, private ref: ChangeDetectorRef) {
+  constructor(public baseService: BaseService, private netwService: NetwService, private router:Router) {
     this.online = observableMerge(
       observableOf(navigator.onLine),
       observableFromEvent(window, 'online').pipe(mapTo(true)),
@@ -65,6 +66,9 @@ export class TtcontainerComponent implements AfterViewInit{
         that.displayArray[i] = {fach: sel.fach, raum: raum, lehrer: sel.lehrer, isFreistunde: (raum == '---')};
       }
     });
+    // @ts-ignore
+    this.displayArray.forEach(function (e) { e.VD = {}; });
+
     console.log('displayArray', this.displayArray);
   }
 
@@ -79,45 +83,8 @@ export class TtcontainerComponent implements AfterViewInit{
     });
   }
 
-  evaVertretung(w){
-    let VD  = undefined;
-    for (let Vobj in w[1]){
-      if (Vobj == this.baseService.myStufe) VD = w[1][Vobj];
-    }
-    if (!VD) return;
-    let VDT = [];
-    VD.forEach((v) => {
-      if (v.date === this.readableDate) {
-        if(v.fach == "---" && v.lehrer == "-----" && v.info.replace(" ", "") == "") return;
-        else VDT.push(v);
-      }
-    });
-    let relevant = [];
-    VDT.forEach((row) => {
-      if (row.date != this.readableDate) return;
-      this.baseService.myKurse.forEach((val) => {
-        if (val.fach == row.fach) relevant.push(row);
-      });
-      this.baseService.KlassenKurse.forEach((val) => {
-        if (val == row.fach) relevant.push(row);
-      });
-      try{if(/^\s+$/.test(row.fach)) relevant.push(row);} catch (e){}
-      if(row.fach == undefined) relevant.push(row);
-    });
-
-    VDT.sort(function (a, b) {
-      return cmp(a.stunde[0], b.stunde[0]) || cmp(a.kurs, b.kurs) ||cmp(a.type, b.type);
-    });
-
-
-    try{
-      this.info = this.info.concat(Array.from(w[0][0]));
-    } catch (e){console.log(e.message);}
-
-    this.VDStufe = VDT;
-    this.VDMe = relevant;
-    console.log(this.VDMe);
-  }
+  evaVertretung = (w) => evaVertretung(w, this);
+  addVDtoDisplayArray = () => addVDtoDisplayArray(this.VDMe, this.displayArray);
 
   unHTML(string:string):string{
     if(string.indexOf("<") != -1){
@@ -143,7 +110,7 @@ export class TtcontainerComponent implements AfterViewInit{
 
         this.netwService.getSchulplanerInfo(this.readableDate).then((value: string[]) => {
           //this.offlineDate = undefined;
-          value.forEach((v, i, a) => {value[i] += 'SCHULPLANER_INFO'});
+          value.forEach((v, i) => {value[i] += 'SCHULPLANER_INFO'});
           this.info = this.info.concat(value);
         });
         this.checkVertretung();
@@ -163,74 +130,6 @@ export class TtcontainerComponent implements AfterViewInit{
     this.evaVertretung(lastVD.w[this._index]);
   }
 
-  myPos = [];
-
-
-  addVDtoDisplayArray(){
-    if(this.VDMe.length == 0) return;
-    let list: VertretungsReihe[] = this.VDMe.filter((me: VertretungsReihe) =>
-      (me.type.toLowerCase() !== "k" || (me.type.toLowerCase() === "k" && this.isMyKlausur(me)) )
-    );
-    
-
-
-  }
-
-
-  getOnMyPos(index){
-    index = (index < 6)? index: index - 1;
-    const fallback = {date: "", fach: "", info: "", newRaum: "", oldRaum: "", stufe: "", stunde:"", type: ""};
-    if(this.VDMe.length == 0) return fallback;
-    if(this.myPos[index]) return this.myPos[index];
-    let rel: VertretungsReihe[] = [];
-    this.VDMe.forEach((me) => { if (me.stunde == (index + 1) && !me.nd) {
-      if(me.type.toLowerCase() == 'k'){
-        if(this.isMyKlausur(me)) rel.push(me);
-      }else{
-        rel.push(me)
-      }
-
-    }});
-    if(rel.length == 1) {
-      if (rel[0].type !== 'k' && rel[0].type !== 'e'&& rel[0].type !== 'e (v)' && rel[0].type !== 'v' && rel[0].type !== 'r') {
-        return fallback;
-      }
-      this.myPos[index] = rel[0];
-      return rel[0];
-    }
-    if(rel.length == 0) return fallback;
-    rel.sort(function (a, b) {
-      let atype = a.type.replace('e (v)', 'e');
-      let btype = b.type.replace('e (v)', 'e');
-      // K > E > V > R
-      if((atype !== "k" && atype !== "e" && atype !== "v" && atype !== "r") &&
-        (btype === "k" || btype === "e" || btype == "v" || btype === "r")) return 1;
-      if((btype !== "k" && btype !== "e" && btype !== "v" && btype !== "r") &&
-        (atype === "k" || atype === "e" || atype == "v" || atype === "r")) return -1;
-
-      if( (atype == "k" && (btype == "e" || btype == "v" || btype == "r")) ||
-        (atype == "e" && (btype == "v" || btype == "r")) ||
-        (atype == "v" && btype == "r")) return -1;
-      else if (atype === btype) return 0;
-      else return 1;
-    });
-    if (rel[0].type !== 'k' && rel[0].type !== 'e' && rel[0].type !== 'v' && rel[0].type !== 'r' && rel[0].type !== 'e (v)') {
-      rel[0] = fallback;
-    }
-    this.myPos[index] = rel[0];
-    return rel[0];
-  }
-
-  isMyKlausur(me: VertretungsReihe):boolean{
-    if(me.type.toLowerCase() !== "k") return false;
-    let info = me.info;
-    let val = false;
-    this.baseService.myKurse.forEach((kurs) => {
-      if(info.indexOf(kurs.fach.toUpperCase()) != -1) val = true;
-    });
-    return val;
-  }
-
   set preLehrer(val:boolean){
     this.baseService.preLehrer = val;
     setTimeout(() => {this.router.navigate(['/']);}, 20);
@@ -240,8 +139,4 @@ export class TtcontainerComponent implements AfterViewInit{
 
   woche(idk){return (+idk%2 == 0)? 'A':'B';}
 
-}
-
-function cmp(x, y) {
-  return x > y ? 1 : (x < y ? -1 : 0);
 }

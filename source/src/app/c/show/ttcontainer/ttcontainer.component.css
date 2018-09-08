@@ -1,7 +1,3 @@
-.badge-pill{
-  padding: 0.5em 0.8em;
-  border-radius: 10rem;
-}
 .table{
   text-align: center!important;
 }
@@ -23,10 +19,11 @@
   color: blue!important;
   font-style: oblique!important;
 }
-.mine{
-  font-weight: bold;
-  color: chocolate!important;
+.uncertain{
+  color: grey;
+  font-style: italic;
 }
+
 .bold{
   font-weight: bold;
 }
