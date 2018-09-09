@@ -1,4 +1,7 @@
-export function evaVertretung(w, that){
+import {TtcontainerComponent} from "../ttcontainer.component";
+
+export function evaVertretung(w, that: TtcontainerComponent){
+  console.log("w", w);
   let VD  = undefined;
   for (let Vobj in w[1]){
     if (Vobj == that.baseService.myStufe) VD = w[1][Vobj];
@@ -35,7 +38,7 @@ export function evaVertretung(w, that){
 
   that.VDStufe = VDT;
   that.VDMe = relevant;
-  console.log(that.VDMe);
+  console.log("VDMe", that.VDMe);
   that.addVDtoDisplayArray();
 }
 
