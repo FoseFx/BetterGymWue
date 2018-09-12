@@ -40,7 +40,6 @@ export class BaseService {
               private workerService: WorkerService,
               private alertService: AlertService
   ) {
-
     if (typeof(Storage) === 'undefined') {
       this.allowedBrowser = false;
       this.router.navigate(['error'], {queryParams: {'oldBrowser': 'true'}});
