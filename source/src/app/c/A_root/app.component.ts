@@ -1,6 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {BaseService} from '../../s/base/base.service';
-import * as $ from 'jquery';
 import {NetwService} from '../../s/network/netw.service';
 import {RefreshttService} from '../../s/refreshtt.service';
 import {WorkerService} from "../../s/worker.service";
@@ -63,7 +62,7 @@ export class AppComponent implements OnInit{
   }
 
   swipe(type, e){
-    if ($(".fuckYou").has(e.target).length != 0) return;
+    if(document.getElementsByClassName("fuckYou")[0].contains(e.target)) return;
     if(type === 'r' && this.hamnav.opened === false){
       this.hamnav.open();
     }if(type === 'l'){

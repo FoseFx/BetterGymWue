@@ -5,6 +5,8 @@ import {BaseService} from '../../../s/base/base.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import * as $ from 'jquery';
 import {Kurs} from "../../../Classes";
+import {MatDialog} from "@angular/material";
+import {GetFromKurseModalComponent} from "./get-from-kurse-modal/get-from-kurse-modal.component";
 
 @Component({
   selector: 'app-kurse',
@@ -82,7 +84,12 @@ export class KurseComponent implements OnInit {
       });
   }
 
-  constructor(private netwService: NetwService, private alert: AlertService, private baseService: BaseService, private route: ActivatedRoute, private  router: Router) { }
+  constructor(private netwService: NetwService,
+              private alert: AlertService,
+              private baseService: BaseService,
+              private route: ActivatedRoute,
+              private  router: Router,
+              private dialog: MatDialog) { }
 
   kursSelected(k: Kurs ){
     if(k.ph) return;
@@ -144,6 +151,17 @@ export class KurseComponent implements OnInit {
         $("#kcb").addClass('btn-danger').removeClass('btn-primary').removeClass('disabled');
         $("#kcidi").removeClass('disabled');
       });
+  }
+
+  openGetFromKurseModal(){
+    const dialogRef = this.dialog.open(GetFromKurseModalComponent, {
+      width: "33vh",
+      data: {}
+    });
+
+    dialogRef.afterClosed().subscribe(res=>{
+      console.log(res);
+    });
   }
 
   ngOnInit() {

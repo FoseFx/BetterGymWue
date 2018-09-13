@@ -4,8 +4,6 @@ import {BaseService} from '../base/base.service';
 import {AlertService} from '../alert.service';
 import * as Cloud from './cloud.netw'
 import * as Initial from './initial.netw'
-import * as $ from 'jquery';
-import {evaVD} from "./evavd";
 import {getVertretungsDaten} from "./getVertretungsdaten";
 import {VertretungsDaten, VertretungsEvaPayload, VertretungsReihe} from "../../Classes";
 

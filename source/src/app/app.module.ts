@@ -19,7 +19,7 @@ import { ShowComponent } from './c/show/show.component';
 import { TtcontainerComponent } from './c/show/ttcontainer/ttcontainer.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
-  MatButtonModule, MatCardModule,
+  MatButtonModule, MatCardModule, MatDialogModule,
   MatFormFieldModule, MatIconModule, MatInputModule,
   MatListModule,
   MatSelectModule,
@@ -35,6 +35,7 @@ import {IndexedDBService} from "./indexed-db.service";
 import {APP_BASE_HREF} from "@angular/common";
 import {BaseService} from "./s/base/base.service";
 import {HelpComponent} from "./c/help/help.component";
+import { GetFromKurseModalComponent } from './c/select/kurse/get-from-kurse-modal/get-from-kurse-modal.component';
 declare var Hammer: any;
 
 export class MyHammerConfig extends HammerGestureConfig  {
@@ -65,7 +66,8 @@ export class MyHammerConfig extends HammerGestureConfig  {
     AboutComponent,
     StundenplanComponent,
     ErrorComponent,
-    HelpComponent
+    HelpComponent,
+    GetFromKurseModalComponent
   ],
   imports: [
     BrowserModule,
@@ -84,7 +86,8 @@ export class MyHammerConfig extends HammerGestureConfig  {
     MatTabsModule,
     MatSlideToggleModule,
     MatCardModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatDialogModule
   ],
   providers: [
     BaseService,
@@ -102,7 +105,8 @@ export class MyHammerConfig extends HammerGestureConfig  {
     {provide: APP_BASE_HREF, useValue: '/'}
   ],
 
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [GetFromKurseModalComponent]
 })
 export class AppModule { }
 
