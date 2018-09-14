@@ -1,17 +1,14 @@
-
 import {from as observableFrom, Observable} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {CONFIG} from '../../conf';
-import * as $ from 'jquery';
 import {WorkerService} from "../worker.service";
 import {AlertService} from "../alert.service";
 import * as AppMeta from "./appMeta.base";
 import {Kurs, TT} from "../../Classes";
 
 
-declare function unescape(s:string): string;
 @Injectable()
 export class BaseService {
   public VERSION = "1.4.1 Beta";
@@ -160,7 +157,7 @@ export class BaseService {
       );
     });
   }
-
+/*
   makeConnections(url: string, lehrer?:boolean):Observable<any>{
     lehrer = lehrer || false;
     if (this.credentials){
@@ -177,6 +174,7 @@ export class BaseService {
           },
           type: "GET",
           success: (html) => {
+            console.log(html);
             resolve(html);
           },
           error: (err, r) => {
@@ -189,7 +187,39 @@ export class BaseService {
     }
     else return null;
   }
-
+*/
+  makeConnections(url: string, lehrer:boolean = false):Observable<any>{
+    let cred = this.credentials;
+    if(!cred) return null;
+    let ext = `?${(Math.random()*10000).toFixed(0)}`;
+    let p = new Promise((resolve, reject) => {
+      fetch(url + ext, {
+        headers: {
+          "Authorization": "Basic " + ((!lehrer) ? btoa(cred.u + ':' + cred.p) : btoa(cred.l.u+ ':' +cred.l.p))
+        },
+        method: "get",
+        redirect: "follow",
+        cache: "no-cache"
+      })
+        .then(function (response) {
+          if(response.ok){
+            response.arrayBuffer().then((buffer) => {
+              //@ts-ignore
+              let txt = new TextDecoder("iso-8859-1").decode(buffer);
+              resolve(txt);
+            });
+          }else {
+            reject({
+              statusText: `${response.status} ${response.statusText}`
+            });
+          }
+        })
+        .catch((err) => {
+          reject({statusText: "Netzwerkfehler"});
+        });
+    });
+    return observableFrom(p);
+  }
 
   install(){
     // @ts-ignore

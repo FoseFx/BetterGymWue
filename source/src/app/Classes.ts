@@ -70,3 +70,4 @@ export type TT = {days: TimeTableSlot[][]}[];
 
 export type KurseType = {kurse: Kurs[]}[]; // length = 2, A: 0, B: 1
 
+export class NetworkError {statusText: string; err: any; }
