@@ -2,8 +2,6 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {BaseService} from '../../s/base/base.service';
 import {NetwService} from '../../s/network/netw.service';
 import {RefreshttService} from '../../s/refreshtt.service';
-import {WorkerService} from "../../s/worker.service";
-import {isNullOrUndefined} from "util";
 import localeDe from "@angular/common/locales/de"
 import {registerLocaleData} from "@angular/common";
 registerLocaleData(localeDe);
@@ -16,7 +14,7 @@ registerLocaleData(localeDe);
 export class AppComponent implements OnInit{
 
   constructor(public baseService: BaseService, private netwService: NetwService,
-              private refresh: RefreshttService, private workerService: WorkerService){};
+              private refresh: RefreshttService){};
 
 
   @ViewChild('hamNav') hamnav;
@@ -35,7 +33,6 @@ export class AppComponent implements OnInit{
     this.hamnav.close();
   }
 
-  fakenotificationUndefined = false;
 
   ngOnInit(){
     let last = localStorage.lastTTcheck;
@@ -54,7 +51,6 @@ export class AppComponent implements OnInit{
     if(!this.done) return;
 
     this.baseService.needsUpdate().then(() => {this.updateAv = true;}).catch();
-    this.workerService.checkUpdates();
     if (this.baseService.justResetted) {
       this.reset.header = this.baseService.getResetHeader();
       this.reset.message = this.baseService.getResetMessage();
@@ -86,34 +82,6 @@ export class AppComponent implements OnInit{
     return !this.baseService.credentials.l;
 
   }
-
-  subs(){
-    if(this.baseService.notificationsEnabled) return;
-    this.setNotificationsEnabled(true);
-    this.fakenotificationUndefined = false;
-    this.workerService.subscribe();
-  }
-  get notificationsUndefined(){
-    if(this.fakenotificationUndefined) return true;
-    return isNullOrUndefined(this.baseService.notificationsEnabled) && this.baseService.TT;
-  }
-  setNotificationsEnabled(val: boolean){
-    if(!val) {
-      if(this.baseService.notificationsEnabled) this.workerService.unsubscribe();
-      this.fakenotificationUndefined = false;
-    }
-    this.baseService.notificationsEnabled = val;
-  }
-
-  notificationSidenav(){
-    this.fakenotificationUndefined = true;
-    this.hamnav.close();
-  }
-
-  get no_notification_message(){
-    return this.baseService.notificationsEnabled? "Nicht mehr": "Nein";
-  }
-
 
 }
 function rl(){

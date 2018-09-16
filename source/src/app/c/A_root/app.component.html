@@ -24,7 +24,6 @@
       <a mat-list-item routerLink="agb" (click)="hamNav.close()"><i class="material-icons">gavel</i>&nbsp; Wichtige Hinweise</a>
       <a mat-list-item routerLink="about" (click)="hamNav.close()"><i class="material-icons">account_circle</i>&nbsp; Über</a>
       <hr>
-      <a mat-list-item (click)="notificationSidenav()"><i class="material-icons">notifications</i>&nbsp; Notification</a>
       <a mat-list-item routerLink="help" (click)="hamNav.close()"><i class="material-icons">live_help</i>&nbsp; Hilfe & Feedback</a>
     </mat-nav-list>
 
@@ -40,18 +39,6 @@
     </mat-toolbar>
     <div class="pulseing" *ngIf="updateAv && !win.location.href.includes('about')" style="width: 100%!important; height: 26px; text-align: center; padding-top: 4px"><p class="text-muted" style="color: black!important;">Zum Updaten neuladen (Infos s. "Über")</p></div>
 
-
-    <mat-card *ngIf="notificationsUndefined">
-      <mat-card-header>
-        <mat-icon style="font-size: 3em" mat-card-avatar>notifications</mat-icon>
-        <mat-card-title>Möchtest du jeden Tag um 7:00 Uhr eine Benachrichtigung mit dem Stundenplan bekommen?</mat-card-title>
-      </mat-card-header>
-      <mat-card-actions>
-        <button mat-button (click)="subs()" [disabled]="baseService.notificationsEnabled">Ja</button>
-        <button mat-button (click)="setNotificationsEnabled(false)">{{no_notification_message}}</button>
-        <button mat-button *ngIf="baseService.notificationsEnabled" (click)="fakenotificationUndefined = false">Schließen</button>
-      </mat-card-actions>
-    </mat-card>
 
     <mat-card *ngIf="baseService.justResetted">
       <mat-card-header>

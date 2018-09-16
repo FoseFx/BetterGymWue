@@ -3,7 +3,6 @@ import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {CONFIG} from '../../conf';
-import {WorkerService} from "../worker.service";
 import {AlertService} from "../alert.service";
 import * as AppMeta from "./appMeta.base";
 import {Kurs, TT} from "../../Classes";
@@ -34,7 +33,6 @@ export class BaseService {
 
   constructor(public router: Router,
               public httpClient: HttpClient,
-              private workerService: WorkerService,
               private alertService: AlertService
   ) {
     if (typeof(Storage) === 'undefined') {
@@ -61,7 +59,6 @@ export class BaseService {
     this._notificationsEnabled = (!!localStorage.notificationsEnabled) ? localStorage.notificationsEnabled == "true" :undefined;
     this.justResetted = (!!localStorage.justResetted) ? (localStorage.justResetted == "true"): false;
     localStorage.justResetted = false;
-    navigator.serviceWorker.ready.then(() => {workerService.checkUpdates();});
     AppMeta.checkFerien(this);
     AppMeta.needsReset(this.httpClient);
   }
@@ -69,15 +66,6 @@ export class BaseService {
   public needsUpdate = () => AppMeta.needsUpdate(this);
   public getResetHeader = () => AppMeta.getResetHeader(this);
   public getResetMessage = () => AppMeta.getResetMessage(this);
-
-  set notificationsEnabled(val){
-    this._notificationsEnabled = val;
-    localStorage.notificationsEnabled = val;
-  }
-
-  get notificationsEnabled(){
-    return this._notificationsEnabled;
-  }
 
   set preLehrer(val){
     this._preLehrer = val;
@@ -157,37 +145,6 @@ export class BaseService {
       );
     });
   }
-/*
-  makeConnections(url: string, lehrer?:boolean):Observable<any>{
-    lehrer = lehrer || false;
-    if (this.credentials){
-      let credentials = this.credentials;
-
-      let p = new Promise((resolve, reject) => {
-        $.ajax({
-          contentType: 'Content-type: text/html; charset=iso-8859-1',
-          url: url,
-          cache: false,
-          beforeSend: function(xhr){
-            xhr.setRequestHeader("Authorization", "Basic " + ((!lehrer) ? btoa(credentials.u + ':' + credentials.p) : btoa(credentials.l.u+ ':' +credentials.l.p)));
-            xhr.overrideMimeType('text/html;charset=iso-8859-1');
-          },
-          type: "GET",
-          success: (html) => {
-            console.log(html);
-            resolve(html);
-          },
-          error: (err, r) => {
-            let e = {statusText: r, err: err};
-            reject(e);
-          }
-        });
-      });
-      return observableFrom(p);
-    }
-    else return null;
-  }
-*/
   makeConnections(url: string, lehrer:boolean = false):Observable<any>{
     let cred = this.credentials;
     if(!cred) return null;

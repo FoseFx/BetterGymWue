@@ -17,6 +17,5 @@ module.exports = {
       stripPrefix:'dist/assets',
       mergeStatisticsConfig: true
     })
-  ],
-  importScripts: ["assets/worker.js"]
+  ]
 };

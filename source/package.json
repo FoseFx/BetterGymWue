@@ -13,7 +13,7 @@
     "sw_precache": "sw-precache --root=dist --config=precache-config.js",
     "minify": "uglifyjs-folder dist -e -y -x .js -o dist",
     "prod_replacer_script": "replacer dist/index.html \"prod = false\" \"prod = true\"",
-    "after_build": "npm run prod_replacer_script && rm dist/3rdpartylicenses.txt && copymycsstomyhtml && npm run sw_precache && npm run minify",
+    "after_build": "npm run prod_replacer_script && copymycsstomyhtml && npm run sw_precache && npm run minify",
     "server": "http-server-spa ./dist index.html"
   },
   "private": true,
@@ -33,7 +33,6 @@
     "bootstrap": "^4.1.1",
     "core-js": "^2.5.7",
     "hammerjs": "^2.0.8",
-    "jquery": "^3.3.1",
     "npm": "^5.10.0",
     "rxjs": "^6.2.1",
     "zone.js": "^0.8.26"

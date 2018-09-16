@@ -30,7 +30,6 @@ import { AboutComponent } from './c/about/about.component';
 import { StundenplanComponent } from './c/stundenplan/stundenplan.component';
 import { ErrorComponent } from './c/error/error.component';
 import {RefreshttService} from './s/refreshtt.service';
-import {WorkerService} from "./s/worker.service";
 import {IndexedDBService} from "./indexed-db.service";
 import {APP_BASE_HREF} from "@angular/common";
 import {BaseService} from "./s/base/base.service";
@@ -96,7 +95,6 @@ export class MyHammerConfig extends HammerGestureConfig  {
     NetwService,
     AlertService,
     RefreshttService,
-    WorkerService,
     IndexedDBService,
     {
       provide: HAMMER_GESTURE_CONFIG,
