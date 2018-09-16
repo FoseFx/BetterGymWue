@@ -1,9 +1,10 @@
-<div class="card mb-3 center"
+<mat-card class="center"
      [ngClass]="{'border-primary': !valid, 'border-success': valid}"
      style="max-width: 55em; margin-top: 10px; padding-bottom: 150px">
-  <div class="card-header">Kurse für <b>{{_stufe }}</b></div>
-  <div class="card-body">
-    <h4 class="card-title">Wähle deine Kurse:</h4>
+  <h1 mat-card-title>Kurse für <b>{{_stufe }}</b></h1>
+  <h4 mat-card-subtitle>Wähle deine Kurse:</h4>
+
+  <div mat-card-content>
     <h5 style="text-align: center">
       <span *ngFor="let t of titles; let i = index;"
               [ngClass]="{'notSelected': t.state < 1,'ok': t.state === 1,'tooMuch': t.state > 1}"
@@ -13,7 +14,7 @@
     <mat-slide-toggle style="text-align: center!important; display: block!important; margin: 0 auto!important; width: 230px" [(ngModel)]="cloud">Auf Kurs Cloud speichern</mat-slide-toggle>
 
     <br>
-    <button class="btn btn-primary center"
+    <button mat-raised-button
             [ngClass]="{'disabled': !valid}"
             (click)="kursSubmit()">Fertig!</button><br>
     <button class="btn btn-info btn-sm center" (click)="openGetFromKurseModal()">
@@ -33,5 +34,5 @@
 
     </div>
   </div>
-</div>
+</mat-card>
 

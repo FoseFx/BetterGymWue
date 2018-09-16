@@ -4,7 +4,7 @@ import {BaseService} from '../../s/base/base.service';
 @Component({
   selector: 'app-agb',
   templateUrl: './agb.component.html',
-  styleUrls: ['./agb.component.css']
+  styleUrls: ['./agb.component.scss']
 })
 export class AgbComponent implements OnInit {
 

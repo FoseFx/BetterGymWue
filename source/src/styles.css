@@ -159,3 +159,15 @@ mat-drawer-content{
   90%{color: #ffab91}
   100%{color: #ef9a9a}
 }
+
+center{
+  display: block!important;
+  text-align: center!important;
+  margin: 0 auto!important;
+}
+
+mat-card{
+  margin-top: 10px!important;
+  margin-bottom: 10px!important;
+  max-width: 800px;
+}
