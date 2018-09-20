@@ -104,7 +104,7 @@
   </div>
 <hr>
 
-  <p class="lead" *ngIf="!redirected">
-    <button mat-stroked-button (click)="baseService.acceptAGB()" color="primary" onclick="startTracking()">Ich akzeptiere</button>
+  <p *ngIf="!redirected">
+    <button mat-raised-button (click)="baseService.acceptAGB()" class="big-btn green-btn " onclick="startTracking()">Ich akzeptiere</button>
   </p>
 </mat-card>

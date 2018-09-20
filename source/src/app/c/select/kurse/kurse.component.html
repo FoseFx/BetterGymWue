@@ -5,24 +5,14 @@
   <h4 mat-card-subtitle>Wähle deine Kurse:</h4>
 
   <div mat-card-content>
-    <h5 style="text-align: center">
-      <span *ngFor="let t of titles; let i = index;"
-              [ngClass]="{'notSelected': t.state < 1,'ok': t.state === 1,'tooMuch': t.state > 1}"
-              style="margin-right: 5px">{{t.t}}</span>
-    </h5>
-
-    <mat-slide-toggle style="text-align: center!important; display: block!important; margin: 0 auto!important; width: 230px" [(ngModel)]="cloud">Auf Kurs Cloud speichern</mat-slide-toggle>
-
-    <br>
-    <button mat-raised-button
-            [ngClass]="{'disabled': !valid}"
-            (click)="kursSubmit()">Fertig!</button><br>
-    <button class="btn btn-info btn-sm center" (click)="openGetFromKurseModal()">
+    <hr>
+    <button mat-raised-button (click)="openGetFromKurseModal()">
       Von Cloud laden
     </button>
+    <hr>
 
     <div class="kurs-container">
-        <button class="btn kurs"
+        <button mat-raised-button class="btn kurs"
                 *ngFor="let k of stufeKurse; let i = index;"
                 [ngClass]="{'btn-light': !k.selected, 'btn-success': k.selected, 'newLineBefore': k.ph === true}"
                 (click)="kursSelected(k)"
@@ -33,6 +23,22 @@
         </button>
 
     </div>
+    <hr>
+
+    <h5 style="text-align: center">
+      <span *ngFor="let t of titles; let i = index;"
+            [ngClass]="{'notSelected': t.state < 1,'ok': t.state === 1,'tooMuch': t.state > 1}"
+            style="margin-right: 5px">{{t.t}}</span>
+    </h5>
+
+    <mat-slide-toggle style="text-align: center!important; display: block!important; margin: 0 auto!important; width: 230px" [(ngModel)]="cloud">Auf Kurs Cloud speichern</mat-slide-toggle>
+
+    <br>
+    <button mat-raised-button color="primary"
+            [ngClass]="{'disabled': !valid, 'center': true}"
+            (click)="kursSubmit()">Fertig!</button><br>
+
+
   </div>
 </mat-card>
 
