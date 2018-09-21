@@ -211,7 +211,7 @@ hr{
 
 
 table {
-  border-collapse: collapse
+  border-collapse: collapse;
 }
 
 .table {
@@ -253,4 +253,8 @@ table {
 .table-hover .table-active:hover>td,
 .table-hover .table-active:hover>th {
   background-color: rgba(0, 0, 0, .075)
+}
+
+ul{
+  text-align: left !important;
 }
