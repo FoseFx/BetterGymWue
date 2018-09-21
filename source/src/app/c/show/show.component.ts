@@ -1,7 +1,6 @@
 import {AfterViewInit, Component, OnInit, ViewChild, ViewChildren} from '@angular/core';
 import {BaseService} from '../../s/base/base.service';
 import {AlertService} from '../../s/alert.service';
-import * as $ from 'jquery';
 import {MatTab, MatTabGroup} from '@angular/material';
 
 @Component({
@@ -62,7 +61,6 @@ export class ShowComponent implements OnInit, AfterViewInit {
       let weeksTT = tt[(getWeekNumber(date) % 2 == 0) ? 0: 1];
       this.tts.push({tag: weeksTT.days[date.getDay() - 1], date: date});
     });
-    $(".modal-backdrop").remove();
   }
 
   change(val){

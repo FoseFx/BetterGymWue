@@ -24,7 +24,6 @@
       <a mat-list-item routerLink="agb" (click)="hamNav.close()"><i class="material-icons">gavel</i>&nbsp; Wichtige Hinweise</a>
       <a mat-list-item routerLink="about" (click)="hamNav.close()"><i class="material-icons">account_circle</i>&nbsp; Über</a>
       <hr>
-      <a mat-list-item (click)="notificationSidenav()"><i class="material-icons">notifications</i>&nbsp; Notification</a>
       <a mat-list-item routerLink="help" (click)="hamNav.close()"><i class="material-icons">live_help</i>&nbsp; Hilfe & Feedback</a>
     </mat-nav-list>
 
@@ -38,20 +37,8 @@
       </button>
       <span class="title">&nbsp; Better Gym Wue</span>
     </mat-toolbar>
-    <div class="pulseing" *ngIf="updateAv && !win.location.href.includes('about')" style="width: 100%!important; height: 26px; text-align: center; padding-top: 4px"><p class="text-muted" style="color: black!important;">Zum Updaten neuladen (Infos s. "Über")</p></div>
+    <div class="pulseing" *ngIf="updateAv && !win.location.href.includes('about')" style="width: 100%!important; height: 26px; text-align: center; padding-top: 4px"><p style="color: black; margin: 3px 0 0 0!important;">Zum Updaten neuladen (Infos s. "Über")</p></div>
 
-
-    <mat-card *ngIf="notificationsUndefined">
-      <mat-card-header>
-        <mat-icon style="font-size: 3em" mat-card-avatar>notifications</mat-icon>
-        <mat-card-title>Möchtest du jeden Tag um 7:00 Uhr eine Benachrichtigung mit dem Stundenplan bekommen?</mat-card-title>
-      </mat-card-header>
-      <mat-card-actions>
-        <button mat-button (click)="subs()" [disabled]="baseService.notificationsEnabled">Ja</button>
-        <button mat-button (click)="setNotificationsEnabled(false)">{{no_notification_message}}</button>
-        <button mat-button *ngIf="baseService.notificationsEnabled" (click)="fakenotificationUndefined = false">Schließen</button>
-      </mat-card-actions>
-    </mat-card>
 
     <mat-card *ngIf="baseService.justResetted">
       <mat-card-header>
@@ -60,7 +47,6 @@
         <mat-card-subtitle>{{ reset.message  | async }}</mat-card-subtitle>
       </mat-card-header>
     </mat-card>
-
 
     <div *ngIf="baseService.milchglas" style="width: 100%; height: 100vh; position:fixed; z-index: 2; top: 0; left: 0; opacity: 0.7; background: white; display: flex; justify-content: center; align-items: center">
       <div class="spinner center">
@@ -75,36 +61,3 @@
     </div>
   </div>
 </mat-drawer-container>
-
-<div class="modal" id="kursModal">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Von Kurs-Cloud laden</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <table class="table table-hover">
-          <tbody>
-          <tr>
-            <td>
-              ID
-            </td>
-            <td>
-              <mat-form-field style="width: 100%">
-                <input matInput type="number" style="width: 100%" maxlength="4" minlength="4" placeholder="ID" id="kcidi" required>
-              </mat-form-field>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" id="kcb">Ok</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>

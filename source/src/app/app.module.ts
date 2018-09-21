@@ -7,8 +7,6 @@ import { AppComponent } from './c/A_root/app.component';
 import {routes} from './routes';
 import { AgbComponent } from './c/agb/agb.component';
 
-import * as bootstrap from 'bootstrap';
-import {BaseService} from './s/base/base.service';
 import { LoginComponent } from './c/login/login.component';
 import {GuardService} from './s/guard.service';
 import {HttpClientModule} from '@angular/common/http';
@@ -21,22 +19,22 @@ import { ShowComponent } from './c/show/show.component';
 import { TtcontainerComponent } from './c/show/ttcontainer/ttcontainer.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
-  MatButtonModule, MatCardModule,
+  MatButtonModule, MatCardModule, MatDialogModule,
   MatFormFieldModule, MatIconModule, MatInputModule,
   MatListModule,
   MatSelectModule,
-  MatSidenavModule, MatSlideToggleModule, MatTabsModule, MatToolbarModule
+  MatSidenavModule, MatSlideToggleModule, MatSnackBarModule, MatTabsModule, MatToolbarModule
 } from '@angular/material';
 import { CloudComponent } from './c/cloud/cloud.component';
 import { AboutComponent } from './c/about/about.component';
 import { StundenplanComponent } from './c/stundenplan/stundenplan.component';
 import { ErrorComponent } from './c/error/error.component';
-import { HelpComponent } from './c/help/help.component';
 import {RefreshttService} from './s/refreshtt.service';
-import {WorkerService} from "./s/worker.service";
-import {IBrowser} from "selenium-webdriver";
 import {IndexedDBService} from "./indexed-db.service";
 import {APP_BASE_HREF} from "@angular/common";
+import {BaseService} from "./s/base/base.service";
+import {HelpComponent} from "./c/help/help.component";
+import { GetFromKurseModalComponent } from './c/select/kurse/get-from-kurse-modal.component';
 declare var Hammer: any;
 
 export class MyHammerConfig extends HammerGestureConfig  {
@@ -67,7 +65,8 @@ export class MyHammerConfig extends HammerGestureConfig  {
     AboutComponent,
     StundenplanComponent,
     ErrorComponent,
-    HelpComponent
+    HelpComponent,
+    GetFromKurseModalComponent
   ],
   imports: [
     BrowserModule,
@@ -85,7 +84,9 @@ export class MyHammerConfig extends HammerGestureConfig  {
     MatIconModule,
     MatTabsModule,
     MatSlideToggleModule,
-    MatCardModule
+    MatCardModule,
+    MatSnackBarModule,
+    MatDialogModule
   ],
   providers: [
     BaseService,
@@ -94,7 +95,6 @@ export class MyHammerConfig extends HammerGestureConfig  {
     NetwService,
     AlertService,
     RefreshttService,
-    WorkerService,
     IndexedDBService,
     {
       provide: HAMMER_GESTURE_CONFIG,
@@ -103,7 +103,8 @@ export class MyHammerConfig extends HammerGestureConfig  {
     {provide: APP_BASE_HREF, useValue: '/'}
   ],
 
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [GetFromKurseModalComponent]
 })
 export class AppModule { }
 

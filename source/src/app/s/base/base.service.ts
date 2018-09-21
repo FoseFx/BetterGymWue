@@ -1,20 +1,16 @@
-
 import {from as observableFrom, Observable} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {CONFIG} from '../../conf';
-import * as $ from 'jquery';
-import {WorkerService} from "../worker.service";
 import {AlertService} from "../alert.service";
 import * as AppMeta from "./appMeta.base";
 import {Kurs, TT} from "../../Classes";
 
 
-declare function unescape(s:string): string;
 @Injectable()
 export class BaseService {
-  public VERSION = "1.4.1 Beta";
+  public VERSION = "1.4.5 Beta";
   public acceptedAGB: boolean;
   allowedBrowser: boolean;
   public credentials: {u: string, p: string, l?: {u: string, p: string}};
@@ -37,10 +33,8 @@ export class BaseService {
 
   constructor(public router: Router,
               public httpClient: HttpClient,
-              private workerService: WorkerService,
               private alertService: AlertService
   ) {
-
     if (typeof(Storage) === 'undefined') {
       this.allowedBrowser = false;
       this.router.navigate(['error'], {queryParams: {'oldBrowser': 'true'}});
@@ -65,7 +59,6 @@ export class BaseService {
     this._notificationsEnabled = (!!localStorage.notificationsEnabled) ? localStorage.notificationsEnabled == "true" :undefined;
     this.justResetted = (!!localStorage.justResetted) ? (localStorage.justResetted == "true"): false;
     localStorage.justResetted = false;
-    navigator.serviceWorker.ready.then(() => {workerService.checkUpdates();});
     AppMeta.checkFerien(this);
     AppMeta.needsReset(this.httpClient);
   }
@@ -73,15 +66,6 @@ export class BaseService {
   public needsUpdate = () => AppMeta.needsUpdate(this);
   public getResetHeader = () => AppMeta.getResetHeader(this);
   public getResetMessage = () => AppMeta.getResetMessage(this);
-
-  set notificationsEnabled(val){
-    this._notificationsEnabled = val;
-    localStorage.notificationsEnabled = val;
-  }
-
-  get notificationsEnabled(){
-    return this._notificationsEnabled;
-  }
 
   set preLehrer(val){
     this._preLehrer = val;
@@ -161,36 +145,38 @@ export class BaseService {
       );
     });
   }
-
-  makeConnections(url: string, lehrer?:boolean):Observable<any>{
-    lehrer = lehrer || false;
-    if (this.credentials){
-      let credentials = this.credentials;
-
-      let p = new Promise((resolve, reject) => {
-        $.ajax({
-          contentType: 'Content-type: text/html; charset=iso-8859-1',
-          url: url,
-          cache: false,
-          beforeSend: function(xhr){
-            xhr.setRequestHeader("Authorization", "Basic " + ((!lehrer) ? btoa(credentials.u + ':' + credentials.p) : btoa(credentials.l.u+ ':' +credentials.l.p)));
-            xhr.overrideMimeType('text/html;charset=iso-8859-1');
-          },
-          type: "GET",
-          success: (html) => {
-            resolve(html);
-          },
-          error: (err, r) => {
-            let e = {statusText: r, err: err};
-            reject(e);
+  makeConnections(url: string, lehrer:boolean = false):Observable<any>{
+    let cred = this.credentials;
+    if(!cred) return null;
+    let ext = `?${(Math.random()*10000).toFixed(0)}`;
+    let p = new Promise((resolve, reject) => {
+      fetch(url + ext, {
+        headers: {
+          "Authorization": "Basic " + ((!lehrer) ? btoa(cred.u + ':' + cred.p) : btoa(cred.l.u+ ':' +cred.l.p))
+        },
+        method: "get",
+        redirect: "follow",
+        cache: "no-cache"
+      })
+        .then(function (response) {
+          if(response.ok){
+            response.arrayBuffer().then((buffer) => {
+              //@ts-ignore
+              let txt = new TextDecoder("iso-8859-1").decode(buffer);
+              resolve(txt);
+            });
+          }else {
+            reject({
+              statusText: `${response.status} ${response.statusText}`
+            });
           }
+        })
+        .catch((err) => {
+          reject({statusText: "Netzwerkfehler"});
         });
-      });
-      return observableFrom(p);
-    }
-    else return null;
+    });
+    return observableFrom(p);
   }
-
 
   install(){
     // @ts-ignore

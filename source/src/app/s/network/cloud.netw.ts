@@ -1,5 +1,6 @@
 import {CONFIG} from "../../conf";
 import {NetwService} from "./netw.service";
+import {Kurs} from "../../Classes";
 
 export function saveKurse(kurse, that: NetwService): Promise<number>{
   return new Promise<number>((resolve, reject) => {
@@ -27,7 +28,7 @@ export function saveKurse(kurse, that: NetwService): Promise<number>{
 }
 
 
-export function fetchCloud(id: number, that): Promise<any>{
+export function fetchCloud(id: number, that): Promise<Kurs[]>{
   return new Promise((resolve, reject) => {
     that.baseService.makeConnections(CONFIG.dbUrl + id + '.json').subscribe(
       (json) => {

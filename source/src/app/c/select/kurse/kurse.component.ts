@@ -1,17 +1,18 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {NetwService} from '../../../s/network/netw.service';
 import {AlertService} from '../../../s/alert.service';
 import {BaseService} from '../../../s/base/base.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import * as $ from 'jquery';
-import {Kurs} from "../../../Classes";
+import {Kurs, NetworkError} from "../../../Classes";
+import {MatDialog} from "@angular/material";
+import {GetFromKurseData, GetFromKurseModalComponent} from "./get-from-kurse-modal.component";
 
 @Component({
   selector: 'app-kurse',
   templateUrl: './kurse.component.html',
   styleUrls: ['./kurse.component.css']
 })
-export class KurseComponent implements OnInit {
+export class KurseComponent {
 
   _stufe: string;
   kurse: {stufe: string, titles: any[], kurse: Kurs[]}[];
@@ -82,7 +83,12 @@ export class KurseComponent implements OnInit {
       });
   }
 
-  constructor(private netwService: NetwService, private alert: AlertService, private baseService: BaseService, private route: ActivatedRoute, private  router: Router) { }
+  constructor(private netwService: NetwService,
+              private alert: AlertService,
+              private baseService: BaseService,
+              private route: ActivatedRoute,
+              private  router: Router,
+              private dialog: MatDialog) { }
 
   kursSelected(k: Kurs ){
     if(k.ph) return;
@@ -124,34 +130,35 @@ export class KurseComponent implements OnInit {
 
   }
 
-  loadFormCloud(){
-    let $kcidi = $("#kcidi");
-    let id = $kcidi.val();
-    if (!id) return;
-    $kcidi.addClass('disabled');
-    $("#kcb").addClass('disabled');
-    this.netwService.fetchCloud(+id)
-      .then((kurse) => {
-        console.log(kurse);
-        $("#kursModal").remove();
+  loadFromCloud(id: number): void{
+    if(!id) return this.openGetFromKurseModal({failMsg: "Keine ID eingegeben"});
+    this.baseService.milchglas = true;
+    this.netwService.fetchCloud(id)
+      .then( (kurse: Kurs[]) => {
         this.baseService.MyKurse = kurse;
-        this.baseService.setTT(this.netwService.getTT(this._stufe));
+        this.baseService.setTT(
+          this.netwService.getTT(this._stufe)
+        );
         this.baseService.kursID = id;
+        this.baseService.milchglas = false;
         this.router.navigate(['show']);
       })
-      .catch((err) => {
-        this.alert.alert('DB Connection Failed: ' + err.statusText, this.alert.DANGER);
-        $("#kcb").addClass('btn-danger').removeClass('btn-primary').removeClass('disabled');
-        $("#kcidi").removeClass('disabled');
+      .catch((err: NetworkError) => {
+        this.baseService.milchglas = false;
+        this.openGetFromKurseModal({failMsg: err.statusText});
       });
   }
 
-  ngOnInit() {
-    $("#kcb").click( () => {
-      this.loadFormCloud();
+  openGetFromKurseModal(data: GetFromKurseData = {}): void{
+    const dialogRef = this.dialog.open(GetFromKurseModalComponent, {
+      width: "90%",
+      maxWidth: "400px",
+      data: data
     });
-    $("#kcidi").keypress((ke)=> {
-      if (ke.which == 13) this.loadFormCloud();
+
+    dialogRef.afterClosed().subscribe((res?:GetFromKurseData)=>{
+      if(!res) return;
+      this.loadFromCloud(data.id);
     });
   }
 }

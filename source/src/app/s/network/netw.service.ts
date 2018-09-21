@@ -4,8 +4,6 @@ import {BaseService} from '../base/base.service';
 import {AlertService} from '../alert.service';
 import * as Cloud from './cloud.netw'
 import * as Initial from './initial.netw'
-import * as $ from 'jquery';
-import {evaVD} from "./evavd";
 import {getVertretungsDaten} from "./getVertretungsdaten";
 import {VertretungsDaten, VertretungsEvaPayload, VertretungsReihe} from "../../Classes";
 
@@ -100,14 +98,14 @@ export class NetwService {
     });
   }
 
-  public getkurse = (stufe: string, stufeid: number) => Initial.getkurse(stufe, stufeid, this.wochen, this.baseService)
+  public getkurse = (stufe: string, stufeid: number) => Initial.getkurse(stufe, stufeid, this.wochen, this.baseService);
   public getTT = (stufe) => Initial.getTT(stufe);
   public fetchCloud = (id: number)=> Cloud.fetchCloud(id, this);
   public saveKurse = (kurse) => Cloud.saveKurse(kurse, this);
 
 
   getVertretungsDaten(tag: string, i: number, urlmiddle?: string, file?: string[], sides?: any[]){
-    return getVertretungsDaten(this, tag, i, urlmiddle, file, sides);
+    return getVertretungsDaten(this, new DOMParser(), tag, i, urlmiddle, file, sides);
   }
 }
 function decodeHtml(html) {

@@ -7,12 +7,12 @@
 .top{
   position: absolute;
   top: 2px;
-  left: 0;
+  left: 10px;
 }
 .btm{
   position: absolute;
   bottom: 2px;
-  right: -2px;
+  right: 10px;
 }
 .mdl {
   font-weight: bold;
@@ -20,6 +20,9 @@
 .btn > span {
   display: block;
   width: 4rem;
+}
+.btn{
+  transition: background 0.5s ease!important;
 }
 .kurs-container{
   display: flex;
@@ -35,6 +38,7 @@
 }
 .btn-success{
   color: white!important;
+  background-color: green;
 }
 .ok{
   color: green;

@@ -1,16 +1,16 @@
-<div class="jumbotron col-md-8 center" style="margin: 50px auto">
-  <h1 class="display-3">Wichtige Hinweise</h1>
+<mat-card id="agb" class="center">
+  <h1 >Wichtige Hinweise</h1>
   <h4 >Diese Version ist im Beta-Stadium, Fehler sind nicht ausgeschlossen</h4>
-  <hr class="my-4">
+  <hr>
   <h3>Bedingungen</h3>
   <p>Der Nutzer bestätigt Schüler oder Angehöriger eines Schülers des Gymnasiums der Stadt Würselen zu sein.</p>
-  <hr class="my-4">
+  <hr>
   <h3>Kurs-Cloud</h3>
   <p>Bei Verwendung der Kurs-Cloud erlaubt der Nutzer, dass Daten über die vom Nutzer angegeben Kurse (Kurs, Räume, Lehrer etc.) unverschlüsselt auf Datenbanken des Anbieters gespeichert werden. Diese Daten werden mit Beginn des neuen Halbjahres gelöscht und nicht automatisch verarbeitet.</p>
-  <hr class="my-4">
+  <hr>
 
   <h3>Datenschutzerklärung</h3>
-  <button mat-raised-button *ngIf="!sdse" (click)="sdse = true">Zeige Datenschutzerklärung</button>
+  <button  mat-raised-button *ngIf="!sdse" (click)="sdse = true">Zeige Datenschutzerklärung</button>
   <div *ngIf="sdse">
     <strong>Allgemeiner Hinweis und Pflichtinformationen</strong>
 
@@ -34,8 +34,7 @@
 
     <p>Als Betroffener steht Ihnen im Falle eines datenschutzrechtlichen Verstoßes ein Beschwerderecht bei der zuständigen Aufsichtsbehörde zu.
       Zuständige Aufsichtsbehörde bezüglich datenschutzrechtlicher Fragen ist der Landesdatenschutzbeauftragte des Bundeslandes, in dem sich der Sitz unseres
-      Unternehmens befindet. Der folgende Link stellt eine Liste der Datenschutzbeauftragten sowie deren Kontaktdaten bereit:
-      <a href="https://www.bfdi.bund.de/DE/Infothek/Anschriften_Links/anschriften_links-node.html">https://www.bfdi.bund.de/DE/Infothek/Anschriften_Links/anschriften_links-node.html</a>.</p>
+      Unternehmens befindet. <a href="https://www.bfdi.bund.de/DE/Infothek/Anschriften_Links/anschriften_links-node.html">Dieser Link stellt eine Liste der Datenschutzbeauftragten sowie deren Kontaktdaten bereit:</a>.</p>
 
     <strong>Recht auf Datenübertragbarkeit</strong>
 
@@ -105,12 +104,7 @@
   </div>
 <hr>
 
-
-
-
-
-
-  <p class="lead" *ngIf="!redirected">
-    <button class="btn btn-success" (click)="baseService.acceptAGB()" onclick="startTracking()">Ich akzeptiere</button>
+  <p *ngIf="!redirected">
+    <button mat-raised-button (click)="baseService.acceptAGB()" class="big-btn green-btn " onclick="startTracking()">Ich akzeptiere</button>
   </p>
-</div>
+</mat-card>
