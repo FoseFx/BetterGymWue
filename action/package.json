@@ -1,0 +1,21 @@
+{
+  "name": "action",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "run": "npm run build && node out/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "actions-on-google": "^2.3.0",
+    "cheerio": "^1.0.0-rc.2",
+    "node-fetch": "^2.2.0"
+  },
+  "devDependencies": {
+    "typescript": "^3.0.3"
+  }
+}
