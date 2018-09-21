@@ -8,12 +8,12 @@
 }
 .container{
   width: 90%!important;
-  margin-top: 1%;
+  max-width: 750px!important;
+  margin: 1% auto 0;
 }
-@media (max-width: 450px){
+@media (max-width: 350px){
   .container{
     width: 100%!important;
-    margin-top: 0;
   }
 }
 

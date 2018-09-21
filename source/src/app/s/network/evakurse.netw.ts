@@ -14,9 +14,7 @@ export function evaKurse(html: string, stufe:string, tempTTs: TempTTs, kurse: Ku
   wholeTable.firstElementChild.remove();
 
   let data: TimeTableSlot[][] = [];
-
   let tri = 0;
-
 
   (<HTMLElement[]>Array.from( wholeTable.children )).forEach(function (tr) {
 

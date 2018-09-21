@@ -12,8 +12,7 @@ Die Pro und Cons sind [hier](https://bgw.fosefx.com/about) zu finden.
   * [Angular](https://angular.io/)
   * [Angular Material](https://material.angular.io/)
   * [HammerJs](http://hammerjs.github.io/)
-  * [Bootstrap](http://getbootstrap.com)
-  * [jQuery](http://jquery.com)
+  * [Bootstrap (Tables)](http://getbootstrap.com)
   * [Firebase](https://firebase.google.com/)
 
 ## Fremdcode

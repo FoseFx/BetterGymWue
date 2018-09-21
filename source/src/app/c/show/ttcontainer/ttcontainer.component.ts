@@ -2,10 +2,9 @@
 import {fromEvent as observableFromEvent, of as observableOf, merge as observableMerge, Subscription} from 'rxjs';
 
 import {mapTo} from 'rxjs/operators';
-import {Component, Input, AfterViewInit, ChangeDetectorRef} from '@angular/core';
+import {Component, Input, AfterViewInit} from '@angular/core';
 import {BaseService} from '../../../s/base/base.service';
 import {NetwService} from '../../../s/network/netw.service';
-import * as $ from 'jquery';
 import {Router} from '@angular/router';
 import {Observable} from 'rxjs';
 import {DisplayArray, TimeTable, VertretungsReihe} from "../../../Classes";
@@ -30,6 +29,7 @@ export class TtcontainerComponent implements AfterViewInit{
   offlineDate:Date;
   offlinepreLehrer = false;
   backUpVdSet = false;
+  domParser = new DOMParser();
 
   @Input() set tt(val: TimeTable){
     if(this.setted) return;
@@ -88,7 +88,7 @@ export class TtcontainerComponent implements AfterViewInit{
 
   unHTML(string:string):string{
     if(string.indexOf("<") != -1){
-      return $(string).text();
+      return this.domParser.parseFromString(string,"text/html").getElementsByTagName('html')[0].textContent.trim();
     }else{
       return string;
     }

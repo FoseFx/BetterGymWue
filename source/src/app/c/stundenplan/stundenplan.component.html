@@ -1,37 +1,38 @@
 
+<mat-card class="center" style="margin-bottom: 50px!important;margin-top: 10px!important;">
+  <mat-tab-group style="width: 100%!important;" [selectedIndex]="selectedIndex" (selectChange)="resetDay()">
 
-<mat-tab-group style="width: 100%!important;" [selectedIndex]="selectedIndex" (selectChange)="resetDay()">
-
-  <mat-tab *ngFor="let woche of tts" [label]="woche.woche">
-
-
-    <mat-tab-group class="small-tabs" style="width: 100%!important;" [selectedIndex]="selectedDay" >
-
-      <mat-tab *ngFor="let tag of woche.tt; let i = index" [label]="TAGE[i]">
-        <br><br>
-        <table class="table table-hover text-center">
-          <tbody>
-          <ng-container *ngFor="let stunde of tag; let stundei = index">
-            <tr *ngIf="!stunde[0].isDouble">
-              <td>{{ (stundei + 1) }}<span *ngIf="stunde[0].hasDouble">{{'/' + (stundei + 2) }}</span></td>
-              <td *ngFor="let fach of stunde">
-                <span [ngClass]="{'font-weight-bold': fach.sel}">{{fach.fach}}</span><br>
-                <span [ngClass]="{'font-weight-bold': fach.sel}">{{fach.raum}}</span>
-              </td>
-            </tr>
-          </ng-container>
-
-          </tbody>
-        </table>
-
-      </mat-tab>
+    <mat-tab *ngFor="let woche of tts" [label]="woche.woche">
 
 
-    </mat-tab-group>
+      <mat-tab-group class="small-tabs" style="width: 100%!important;" [selectedIndex]="selectedDay" >
+
+        <mat-tab *ngFor="let tag of woche.tt; let i = index" [label]="TAGE[i]">
+          <br><br>
+          <table class="table table-hover text-center">
+            <tbody>
+            <ng-container *ngFor="let stunde of tag; let stundei = index">
+              <tr *ngIf="!stunde[0].isDouble">
+                <td>{{ (stundei + 1) }}<span *ngIf="stunde[0].hasDouble">{{'/' + (stundei + 2) }}</span></td>
+                <td *ngFor="let fach of stunde">
+                  <span [ngClass]="{'font-weight-bold': fach.sel}">{{fach.fach}}</span><br>
+                  <span [ngClass]="{'font-weight-bold': fach.sel}">{{fach.raum}}</span>
+                </td>
+              </tr>
+            </ng-container>
+
+            </tbody>
+          </table>
+
+        </mat-tab>
+
+
+      </mat-tab-group>
 
 
 
-  </mat-tab>
+    </mat-tab>
 
 
-</mat-tab-group>
+  </mat-tab-group>
+</mat-card>
