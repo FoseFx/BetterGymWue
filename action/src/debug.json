@@ -1,0 +1,202 @@
+{
+  "_readableState": {
+    "objectMode": false,
+    "highWaterMark": 16384,
+    "buffer": {
+      "head": null,
+      "tail": null,
+      "length": 0
+    },
+    "length": 0,
+    "pipes": null,
+    "pipesCount": 0,
+    "flowing": null,
+    "ended": false,
+    "endEmitted": false,
+    "reading": false,
+    "sync": true,
+    "needReadable": false,
+    "emittedReadable": false,
+    "readableListening": false,
+    "resumeScheduled": false,
+    "emitClose": true,
+    "destroyed": false,
+    "defaultEncoding": "utf8",
+    "awaitDrain": 0,
+    "readingMore": true,
+    "decoder": null,
+    "encoding": null
+  },
+  "readable": true,
+  "_events": {},
+  "_eventsCount": 0,
+  "socket": "[Circular]",
+  "connection": "[Circular]",
+  "httpVersionMajor": 1,
+  "httpVersionMinor": 1,
+  "httpVersion": "1.1",
+  "complete": false,
+  "headers": {
+    "connection": "upgrade",
+    "host": "proxy.fosefx.com",
+    "content-length": "680",
+    "accept-encoding": "gzip",
+    "x-forwarded-for": "35.226.215.141",
+    "cf-ray": "45de16da2f9a254f-ORD",
+    "x-forwarded-proto": "https",
+    "cf-visitor": "{\"scheme\":\"https\"}",
+    "accept": "text/plain, */*",
+    "content-type": "application/json; charset=UTF-8",
+    "accept-charset": "big5, big5-hkscs, cesu-8, euc-jp, euc-kr, gb18030, gb2312, gbk, ibm-thai, ibm00858, ibm01140, ibm01141, ibm01142, ibm01143, ibm01144, ibm01145, ibm01146, ibm01147, ibm01148, ibm01149, ibm037, ibm1026, ibm1047, ibm273, ibm277, ibm278, ibm280, ibm284, ibm285, ibm290, ibm297, ibm420, ibm424, ibm437, ibm500, ibm775, ibm850, ibm852, ibm855, ibm857, ibm860, ibm861, ibm862, ibm863, ibm864, ibm865, ibm866, ibm868, ibm869, ibm870, ibm871, ibm918, iso-2022-cn, iso-2022-jp, iso-2022-jp-2, iso-2022-kr, iso-8859-1, iso-8859-13, iso-8859-15, iso-8859-2, iso-8859-3, iso-8859-4, iso-8859-5, iso-8859-6, iso-8859-7, iso-8859-8, iso-8859-9, jis_x0201, jis_x0212-1990, koi8-r, koi8-u, shift_jis, tis-620, us-ascii, utf-16, utf-16be, utf-16le, utf-32, utf-32be, utf-32le, utf-8, windows-1250, windows-1251, windows-1252, windows-1253, windows-1254, windows-1255, windows-1256, windows-1257, windows-1258, windows-31j, x-big5-hkscs-2001, x-big5-solaris, x-compound_text, x-euc-jp-linux, x-euc-tw, x-eucjp-open, x-ibm1006, x-ibm1025, x-ibm1046, x-ibm1097, x-ibm1098, x-ibm1112, x-ibm1122, x-ibm1123, x-ibm1124, x-ibm1166, x-ibm1364, x-ibm1381, x-ibm1383, x-ibm300, x-ibm33722, x-ibm737, x-ibm833, x-ibm834, x-ibm856, x-ibm874, x-ibm875, x-ibm921, x-ibm922, x-ibm930, x-ibm933, x-ibm935, x-ibm937, x-ibm939, x-ibm942, x-ibm942c, x-ibm943, x-ibm943c, x-ibm948, x-ibm949, x-ibm949c, x-ibm950, x-ibm964, x-ibm970, x-iscii91, x-iso-2022-cn-cns, x-iso-2022-cn-gb, x-iso-8859-11, x-jis0208, x-jisautodetect, x-johab, x-macarabic, x-maccentraleurope, x-maccroatian, x-maccyrillic, x-macdingbat, x-macgreek, x-machebrew, x-maciceland, x-macroman, x-macromania, x-macsymbol, x-macthai, x-macturkish, x-macukraine, x-ms932_0213, x-ms950-hkscs, x-ms950-hkscs-xp, x-mswin-936, x-pck, x-sjis_0213, x-utf-16le-bom, x-utf-32be-bom, x-utf-32le-bom, x-windows-50220, x-windows-50221, x-windows-874, x-windows-949, x-windows-950, x-windows-iso2022jp",
+    "user-agent": "Apache-HttpClient/4.5.4 (Java/1.8.0_181)",
+    "cookie": "__cfduid=d2c8af2e2aa31bfb952f1554e3a9548331537548806",
+    "cf-connecting-ip": "35.226.215.141"
+  },
+  "rawHeaders": [
+    "Connection",
+    "upgrade",
+    "Host",
+    "proxy.fosefx.com",
+    "Content-Length",
+    "680",
+    "Accept-Encoding",
+    "gzip",
+    "X-Forwarded-For",
+    "35.226.215.141",
+    "CF-RAY",
+    "45de16da2f9a254f-ORD",
+    "X-Forwarded-Proto",
+    "https",
+    "CF-Visitor",
+    "{\"scheme\":\"https\"}",
+    "Accept",
+    "text/plain, */*",
+    "Content-Type",
+    "application/json; charset=UTF-8",
+    "Accept-Charset",
+    "big5, big5-hkscs, cesu-8, euc-jp, euc-kr, gb18030, gb2312, gbk, ibm-thai, ibm00858, ibm01140, ibm01141, ibm01142, ibm01143, ibm01144, ibm01145, ibm01146, ibm01147, ibm01148, ibm01149, ibm037, ibm1026, ibm1047, ibm273, ibm277, ibm278, ibm280, ibm284, ibm285, ibm290, ibm297, ibm420, ibm424, ibm437, ibm500, ibm775, ibm850, ibm852, ibm855, ibm857, ibm860, ibm861, ibm862, ibm863, ibm864, ibm865, ibm866, ibm868, ibm869, ibm870, ibm871, ibm918, iso-2022-cn, iso-2022-jp, iso-2022-jp-2, iso-2022-kr, iso-8859-1, iso-8859-13, iso-8859-15, iso-8859-2, iso-8859-3, iso-8859-4, iso-8859-5, iso-8859-6, iso-8859-7, iso-8859-8, iso-8859-9, jis_x0201, jis_x0212-1990, koi8-r, koi8-u, shift_jis, tis-620, us-ascii, utf-16, utf-16be, utf-16le, utf-32, utf-32be, utf-32le, utf-8, windows-1250, windows-1251, windows-1252, windows-1253, windows-1254, windows-1255, windows-1256, windows-1257, windows-1258, windows-31j, x-big5-hkscs-2001, x-big5-solaris, x-compound_text, x-euc-jp-linux, x-euc-tw, x-eucjp-open, x-ibm1006, x-ibm1025, x-ibm1046, x-ibm1097, x-ibm1098, x-ibm1112, x-ibm1122, x-ibm1123, x-ibm1124, x-ibm1166, x-ibm1364, x-ibm1381, x-ibm1383, x-ibm300, x-ibm33722, x-ibm737, x-ibm833, x-ibm834, x-ibm856, x-ibm874, x-ibm875, x-ibm921, x-ibm922, x-ibm930, x-ibm933, x-ibm935, x-ibm937, x-ibm939, x-ibm942, x-ibm942c, x-ibm943, x-ibm943c, x-ibm948, x-ibm949, x-ibm949c, x-ibm950, x-ibm964, x-ibm970, x-iscii91, x-iso-2022-cn-cns, x-iso-2022-cn-gb, x-iso-8859-11, x-jis0208, x-jisautodetect, x-johab, x-macarabic, x-maccentraleurope, x-maccroatian, x-maccyrillic, x-macdingbat, x-macgreek, x-machebrew, x-maciceland, x-macroman, x-macromania, x-macsymbol, x-macthai, x-macturkish, x-macukraine, x-ms932_0213, x-ms950-hkscs, x-ms950-hkscs-xp, x-mswin-936, x-pck, x-sjis_0213, x-utf-16le-bom, x-utf-32be-bom, x-utf-32le-bom, x-windows-50220, x-windows-50221, x-windows-874, x-windows-949, x-windows-950, x-windows-iso2022jp",
+    "User-Agent",
+    "Apache-HttpClient/4.5.4 (Java/1.8.0_181)",
+    "Cookie",
+    "__cfduid=d2c8af2e2aa31bfb952f1554e3a9548331537548806",
+    "CF-Connecting-IP",
+    "35.226.215.141"
+  ],
+  "trailers": {},
+  "rawTrailers": [],
+  "aborted": false,
+  "upgrade": false,
+  "url": "/actions",
+  "method": "POST",
+  "statusCode": null,
+  "statusMessage": null,
+  "client": "[Circular]",
+  "_consuming": false,
+  "_dumped": false
+}
+ {
+  "_events": {},
+  "_eventsCount": 1,
+  "output": [],
+  "outputEncodings": [],
+  "outputCallbacks": [],
+  "outputSize": 0,
+  "writable": true,
+  "_last": false,
+  "chunkedEncoding": false,
+  "shouldKeepAlive": true,
+  "useChunkedEncodingByDefault": true,
+  "sendDate": true,
+  "_removedConnection": false,
+  "_removedContLen": false,
+  "_removedTE": false,
+  "_contentLength": null,
+  "_hasBody": true,
+  "_trailer": "",
+  "finished": false,
+  "_headerSent": false,
+  "socket": "[Circular]",
+  "connection": "[Circular]",
+  "_header": null,
+  "_sent100": false,
+  "_expect_continue": false
+}
+
+
+ {
+  "responses": [],
+  "expectUserResponse": true,
+  "digested": false,
+  "noInputs": [],
+  "_responded": false,
+  "request": "[Excluded]",
+  "headers": "[Excluded]",
+  "sandbox": false,
+  "input": {},
+  "surface": {
+    "capabilities": {
+      "list": []
+    }
+  },
+  "available": {
+    "surfaces": {
+      "list": [],
+      "capabilities": {
+        "surfaces": []
+      }
+    }
+  },
+  "user": {
+    "raw": {},
+    "storage": {},
+    "permissions": [],
+    "last": {},
+    "name": {},
+    "entitlements": [],
+    "access": {},
+    "profile": {}
+  },
+  "arguments": {
+    "parsed": {
+      "input": {},
+      "list": []
+    },
+    "status": {
+      "input": {},
+      "list": []
+    },
+    "raw": {
+      "list": [],
+      "input": {}
+    }
+  },
+  "device": {},
+  "screen": false,
+  "body": "[Excluded]",
+  "version": 2,
+  "action": "",
+  "intent": "",
+  "parameters": {},
+  "contexts": {
+    "input": {},
+    "output": {}
+  },
+  "incoming": {
+    "parsed": []
+  },
+  "query": "",
+  "data": {}
+}
+(node:6890) UnhandledPromiseRejectionWarning: Error: Dialogflow IntentHandler not found for intent:
+    at Function.<anonymous> (/home/bgw/BetterGymWue/action/node_modules/actions-on-google/dist/service/dialogflow/dialogflow.js:134:31)
+    at Generator.next (<anonymous>)
+    at /home/bgw/BetterGymWue/action/node_modules/actions-on-google/dist/service/dialogflow/dialogflow.js:22:71
+    at new Promise (<anonymous>)
+    at __awaiter (/home/bgw/BetterGymWue/action/node_modules/actions-on-google/dist/service/dialogflow/dialogflow.js:18:12)
+    at Function.handler (/home/bgw/BetterGymWue/action/node_modules/actions-on-google/dist/service/dialogflow/dialogflow.js:84:16)
+    at Object.<anonymous> (/home/bgw/BetterGymWue/action/node_modules/actions-on-google/dist/assistant.js:55:32)
+    at Generator.next (<anonymous>)
+    at /home/bgw/BetterGymWue/action/node_modules/actions-on-google/dist/assistant.js:22:71
+    at new Promise (<anonymous>)
+(node:6890) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). (rejection id: 2)
+(node:6890) [DEP0018] DeprecationWarning: Unhandled promise rejections are deprecated. In the future, promise rejections that are not handled will terminate the Node.js process with a non-zero exit code.
