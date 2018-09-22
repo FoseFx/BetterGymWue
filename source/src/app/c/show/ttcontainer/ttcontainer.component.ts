@@ -84,7 +84,7 @@ export class TtcontainerComponent implements AfterViewInit{
   }
 
   evaVertretung = (w) => evaVertretung(w, this);
-  addVDtoDisplayArray = () => addVDtoDisplayArray(this.VDMe, this.displayArray);
+  addVDtoDisplayArray = () => addVDtoDisplayArray(this.VDMe, this.displayArray, this);
 
   unHTML(string:string):string{
     if(string.indexOf("<") != -1){
