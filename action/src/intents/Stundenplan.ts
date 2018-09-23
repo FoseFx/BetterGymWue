@@ -11,7 +11,7 @@ export function StundenPlanIntent(conv: Conversation<any>) {
     let date = <ExpectedParameters>(conv.parameters).date;
     console.log(date);
 
-    conv.close(new SimpleResponse({
+    conv.ask(new SimpleResponse({
         text: "Fresher test Text",
         speech: "Fresher test yo"
     }));

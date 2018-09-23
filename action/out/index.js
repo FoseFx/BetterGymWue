@@ -4,15 +4,12 @@ var express = require("express");
 var actions_on_google_1 = require("actions-on-google");
 var Stundenplan_1 = require("./intents/Stundenplan");
 var Welcome_1 = require("./intents/Welcome");
-var app = actions_on_google_1.dialogflow({ debug: true });
+var Intents_1 = require("./intents/Intents");
+var CLIENT_ID = process.env.ACTION_CLIENT_ID;
+var app = actions_on_google_1.dialogflow({ debug: true, clientId: CLIENT_ID });
 var eapp = express();
 eapp.use(express.json());
 eapp.use(app);
-[
-    ["Default Welcome Intent", Welcome_1.WelcomeIntent],
-    ["Stundenplan", Stundenplan_1.StundenPlanIntent]
-].forEach(function (e) {
-    app.intent(e[0], e[1]);
-});
-app.intent("Stundenplan", Stundenplan_1.StundenPlanIntent);
+app.intent(Intents_1.INTENTS.STUNDENPLAN, Stundenplan_1.StundenPlanIntent);
+app.intent(Intents_1.INTENTS.WELCOME, Welcome_1.WelcomeIntent);
 eapp.listen(45634, function () { console.log("Started Actions Server"); });

@@ -2,19 +2,17 @@ import * as express from "express";
 import {dialogflow} from "actions-on-google";
 import {StundenPlanIntent} from "./intents/Stundenplan";
 import {WelcomeIntent} from "./intents/Welcome";
+import {INTENTS} from "./intents/Intents";
 
-const app = dialogflow({debug: true});
+const CLIENT_ID = process.env.ACTION_CLIENT_ID;
+
+const app = dialogflow({debug: true, clientId: CLIENT_ID});
 const eapp = express();
 eapp.use(express.json());
 eapp.use(app);
 
-[
-    ["Default Welcome Intent", WelcomeIntent],
-    ["Stundenplan", StundenPlanIntent]
-].forEach(function (e: [string, any]) {
-    app.intent(e[0], e[1]);
-});
+app.intent(INTENTS.STUNDENPLAN, StundenPlanIntent);
+app.intent(INTENTS.WELCOME, WelcomeIntent);
 
-app.intent("Stundenplan", StundenPlanIntent);
 
 eapp.listen(45634, () => {console.log("Started Actions Server")});

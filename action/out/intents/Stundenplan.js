@@ -5,7 +5,7 @@ function StundenPlanIntent(conv) {
     // @ts-ignore
     var date = (conv.parameters).date;
     console.log(date);
-    conv.close(new actions_on_google_1.SimpleResponse({
+    conv.ask(new actions_on_google_1.SimpleResponse({
         text: "Fresher test Text",
         speech: "Fresher test yo"
     }));
