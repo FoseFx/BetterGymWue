@@ -7,7 +7,7 @@ import {SignInIntent} from "./intents/SignInIntent";
 
 const CLIENT_ID = process.env.ACTION_CLIENT_ID;
 
-const app = dialogflow({debug: true, clientId: CLIENT_ID});
+const app = dialogflow({debug: false, clientId: CLIENT_ID});
 const eapp = express();
 eapp.use(express.json());
 eapp.use(app);
