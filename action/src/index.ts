@@ -16,7 +16,5 @@ eapp.use(app);
 app.intent(INTENTS.STUNDENPLAN, StundenPlanIntent);
 app.intent(INTENTS.WELCOME, WelcomeIntent);
 app.intent(INTENTS.SIGN_IN_CONF, SignInIntent);
-app.intent(INTENTS.CONFIRMATION, ConfirmationIntent);
-
 
 eapp.listen(45634, () => {console.log("Started Actions Server")});
