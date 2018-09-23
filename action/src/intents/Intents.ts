@@ -1,4 +1,5 @@
 export const INTENTS = {
     WELCOME: "Default Welcome Intent",
-    STUNDENPLAN: "Stundenplan"
+    STUNDENPLAN: "Stundenplan",
+    SIGN_IN_CONF: "Sign In Confirm"
 };
