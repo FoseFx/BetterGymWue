@@ -4,7 +4,6 @@ import {StundenPlanIntent} from "./intents/Stundenplan";
 import {WelcomeIntent} from "./intents/Welcome";
 import {INTENTS} from "./intents/Intents";
 import {SignInIntent} from "./intents/SignInIntent";
-import {ConfirmationIntent} from "./intents/Confirmation";
 
 const CLIENT_ID = process.env.ACTION_CLIENT_ID;
 
