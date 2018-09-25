@@ -1,1 +1,1 @@
-export const REGISTER_URL = "https://bgw.fosefx.com/google";
+export const REGISTER_URL = "https://bgw.fosefx.com/";

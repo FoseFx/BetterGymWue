@@ -35,6 +35,7 @@ import {APP_BASE_HREF} from "@angular/common";
 import {BaseService} from "./s/base/base.service";
 import {HelpComponent} from "./c/help/help.component";
 import { GetFromKurseModalComponent } from './c/select/kurse/get-from-kurse-modal.component';
+import { AssistantComponent } from './c/assistant/assistant.component';
 declare var Hammer: any;
 
 export class MyHammerConfig extends HammerGestureConfig  {
@@ -66,7 +67,8 @@ export class MyHammerConfig extends HammerGestureConfig  {
     StundenplanComponent,
     ErrorComponent,
     HelpComponent,
-    GetFromKurseModalComponent
+    GetFromKurseModalComponent,
+    AssistantComponent
   ],
   imports: [
     BrowserModule,

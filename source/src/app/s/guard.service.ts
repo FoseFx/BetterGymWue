@@ -6,6 +6,7 @@ import {LoginComponent} from '../c/login/login.component';
 import {ShowComponent} from '../c/show/show.component';
 import {CloudComponent} from '../c/cloud/cloud.component';
 import {StundenplanComponent} from '../c/stundenplan/stundenplan.component';
+import {AssistantComponent} from "../c/assistant/assistant.component";
 @Injectable()
 export class GuardService implements CanActivate {
 
@@ -22,7 +23,11 @@ export class GuardService implements CanActivate {
         return false;
       }
     }
-    if(route.component === ShowComponent || route.component === StundenplanComponent || route.component === CloudComponent){
+    if(route.component === ShowComponent ||
+       route.component === StundenplanComponent ||
+       route.component === CloudComponent ||
+       route.component === AssistantComponent
+    ){
       if(!this.baseService.myKurse){
         this.router.navigate(['/']);
         return false;

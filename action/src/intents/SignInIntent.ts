@@ -1,7 +1,8 @@
 import {Conversation, SimpleResponse} from "actions-on-google";
 import {REGISTER_URL} from "../CONFIG";
+import {hasScreen} from "../util";
 
-export function SignInIntent(conv: Conversation<any>, params, signin) {
+export async function SignInIntent(conv: Conversation<any>, params, signin) {
     console.log(signin.status);
     if (signin.status !== "OK")
         return conv.close("Ohne deine Erlaubnis kann ich nicht auf deine Kurse zugreifen.");
@@ -13,15 +14,24 @@ export function SignInIntent(conv: Conversation<any>, params, signin) {
     let isRegistered = false;
 
     if(!storage){
+        // await isRegisteredThenGet()
         // TODO fetch Database
+        const dbResolve = await Promise.resolve(false);
+        isRegistered = !!dbResolve;
     }
 
     if(isRegistered){
         // TODO redirect to "Home Intent"
     }
-    else // TODO test for Smartphone
-        return conv.close(new SimpleResponse({
-            text: `Sorry, ${givenName}, aber du musst erst die Einrichtung auf ${REGISTER_URL} durchführen.`,
-            speech: `Sorry, ${givenName}, aber du musst erst die Einrichtung auf der angezeigten Website durchführen. Bis später!`
-        }));
+    // else
+    let sorryText = `Sorry ${givenName}, aber du musst erst die Einrichtung auf ${REGISTER_URL} durchführen.`;
+    let sorrySpeach =
+        `<speak>Sorry ${givenName}, aber du musst ` +
+        (hasScreen(conv)?'<emphasis level="strong">hier</emphasis>': `auf <prosody rate="slow"><say-as interpret-as="characters">${REGISTER_URL}</say-as></prosody>`) +
+        `erst die Einrichtung durchführen. Bis später!</speak>`;
+
+    return conv.close(new SimpleResponse({
+        text: sorryText,
+        speech: sorrySpeach
+    }));
 }

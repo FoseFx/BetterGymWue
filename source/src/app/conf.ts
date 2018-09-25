@@ -9,11 +9,10 @@ export const CONFIG = {
   vertURL: baseUrl + 'Schueler/',
   lehrerURL: baseUrl + 'Lehrer/', // .. f1/subst_001.htm
   databaseURL: dd,
-  subsciptionUrl: 'https://us-central1-bettergymwue.cloudfunctions.net/app/subscribe',
-  unsubscribeUrl: 'https://us-central1-bettergymwue.cloudfunctions.net/app/unsubscribe',
   ferienUrl: dd + "ferien/ferien.json",
   ferienEndsUrl: dd + "ferien/ends.json",
   resets: dd + "resets.json",
   resetHeader: dd + "resetMsg/header.json",
-  resetMsg: dd + "resetMsg/message.json"
+  resetMsg: dd + "resetMsg/message.json",
+  actionsDB: dd + "actions/"
 };

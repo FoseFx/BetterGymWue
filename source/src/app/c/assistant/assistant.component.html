@@ -1,0 +1,10 @@
+<mat-card class="center" style="margin-bottom: 10px!important; margin-top: 10px!important;">
+  <h1 mat-card-title class="text-left">Google Assistant</h1>
+  <p style="text-align: justify">Der Google Assistant ist auf einer Vielzahl an Geräten verfügbar. Smartphones, Google Home, etc. In nur wenigen Klicks kannst du den Assistant nach allem Fragen, was BGW auch kann!</p>
+  <hr>
+  <button *ngIf="!loginned" mat-raised-button class="big-btn" [disabled]="!provider || block" (click)="signIn()">
+    <img style="zoom:1.2;transform: translateX(-5px)" width="50" height="50" src="/assets/google.svg">
+    <span style="display: inline-block; transform: translateX(-10px)">Sign In with Google</span>
+  </button>
+  <h3>{{schritt}}</h3>
+</mat-card>
