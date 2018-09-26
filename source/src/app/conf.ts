@@ -14,5 +14,6 @@ export const CONFIG = {
   resets: dd + "resets.json",
   resetHeader: dd + "resetMsg/header.json",
   resetMsg: dd + "resetMsg/message.json",
-  actionsDB: dd + "actions/"
+  actionsDB: dd + "actions/",
+  actionsApp: "https://us-central1-bettergymwue.cloudfunctions.net/expressActions/registerForActions"
 };

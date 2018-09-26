@@ -34,6 +34,8 @@ export class AssistantComponent implements OnInit {
       let result = await firebase.auth().signInWithPopup(this.provider);
       console.log(result);
       // @ts-ignore
+        const token = result.credential.idToken;
+      // @ts-ignore
       let sub = JSON.parse(atob(result.user.qa.split(".")[1])).sub;
       console.log("sub", sub);
       this.schritt = "2. Datenbank nach dir abfragen";
@@ -44,11 +46,15 @@ export class AssistantComponent implements OnInit {
 
       if(!dbresult){
         this.schritt = "3. Dich in Datenbank eintragen";
-        this.schritt = "4. Fertig";
-      }else {
-        // TODO
-      }
+        let actionsRegisterResult = await this.base.httpClient.post(CONFIG.actionsApp, {
+          stufe: this.base.myStufeID,
+          kurse: this.base.myKurse,
+          token: token
+        }).toPromise();
 
+        console.log("result2", actionsRegisterResult);
+        this.schritt = "4. Fertig";
+      }
 
       this.loginned = true;
     }catch (e) {
