@@ -53,9 +53,10 @@ function SignInIntent(conv, params, signin) {
                     storage = conv.user.storage.payload;
                     isRegistered = false;
                     if (!!storage) return [3 /*break*/, 2];
-                    return [4 /*yield*/, Promise.resolve(false)];
+                    return [4 /*yield*/, util_1.getFromDB(id)];
                 case 1:
                     dbResolve = _a.sent();
+                    console.log(dbResolve);
                     isRegistered = !!dbResolve;
                     _a.label = 2;
                 case 2:
@@ -64,8 +65,8 @@ function SignInIntent(conv, params, signin) {
                     }
                     sorryText = "Sorry " + givenName + ", aber du musst erst die Einrichtung auf " + CONFIG_1.REGISTER_URL + " durchf\u00FChren.";
                     sorrySpeach = "<speak>Sorry " + givenName + ", aber du musst " +
-                        (util_1.hasScreen(conv) ? '<emphasis level="strong">hier</emphasis>' : "auf <say-as interpret-as=\"characters\">" + CONFIG_1.REGISTER_URL + "</say-as>")
-                        + "erst die Einrichtung durchf\u00FChren. Bis sp\u00E4ter!</speak>";
+                        (util_1.hasScreen(conv) ? '<emphasis level="strong">hier</emphasis>' : "auf <prosody rate=\"slow\"><say-as interpret-as=\"characters\">" + CONFIG_1.REGISTER_URL + "</say-as></prosody>") +
+                        "erst die Einrichtung durchf\u00FChren. Bis sp\u00E4ter!</speak>";
                     return [2 /*return*/, conv.close(new actions_on_google_1.SimpleResponse({
                             text: sorryText,
                             speech: sorrySpeach

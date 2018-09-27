@@ -4,6 +4,15 @@ import {StundenPlanIntent} from "./intents/Stundenplan";
 import {WelcomeIntent} from "./intents/Welcome";
 import {INTENTS} from "./intents/Intents";
 import {SignInIntent} from "./intents/SignInIntent";
+import * as admin from "firebase-admin";
+import {getFromDB} from "./util";
+
+const serviceAccount = require("../../../serviceAccount.json");
+
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: "https://bettergymwue.firebaseio.com"
+});
 
 const CLIENT_ID = process.env.ACTION_CLIENT_ID;
 

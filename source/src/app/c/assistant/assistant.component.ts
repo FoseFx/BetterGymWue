@@ -49,7 +49,8 @@ export class AssistantComponent implements OnInit {
         let actionsRegisterResult = await this.base.httpClient.post(CONFIG.actionsApp, {
           stufe: this.base.myStufeID,
           kurse: this.base.myKurse,
-          token: token
+          token: token,
+          creds: this.base.credentials
         }).toPromise();
 
         console.log("result2", actionsRegisterResult);

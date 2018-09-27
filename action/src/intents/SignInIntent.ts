@@ -1,37 +1,25 @@
 import {Conversation, SimpleResponse} from "actions-on-google";
 import {REGISTER_URL} from "../CONFIG";
-import {hasScreen} from "../util";
+import {dbResult, getFromDB, hasScreen} from "../util";
+import {Kurs} from "../../../source/src/app/Classes";
+import {handlePart0} from "./SetUpPart0";
+import {handlePart1} from "./SetUpPart1";
 
 export async function SignInIntent(conv: Conversation<any>, params, signin) {
-    console.log(signin.status);
     if (signin.status !== "OK")
         return conv.close("Ohne deine Erlaubnis kann ich nicht auf deine Kurse zugreifen.");
     const payload = conv.user.profile.payload;
     const givenName = payload.given_name;
     const id = payload.sub;
-    const storage = conv.user.storage.payload;
 
-    let isRegistered = false;
+    console.log(conv.user.storage);
 
-    if(!storage){
-        // await isRegisteredThenGet()
-        // TODO fetch Database
-        const dbResolve = await Promise.resolve(false);
-        isRegistered = !!dbResolve;
-    }
-
-    if(isRegistered){
+    if(conv.user.storage.done === true){
         // TODO redirect to "Home Intent"
+        return conv.close("redirect");
     }
-    // else
-    let sorryText = `Sorry ${givenName}, aber du musst erst die Einrichtung auf ${REGISTER_URL} durchführen.`;
-    let sorrySpeach =
-        `<speak>Sorry ${givenName}, aber du musst ` +
-        (hasScreen(conv)?'<emphasis level="strong">hier</emphasis>': `auf <prosody rate="slow"><say-as interpret-as="characters">${REGISTER_URL}</say-as></prosody>`) +
-        `erst die Einrichtung durchführen. Bis später!</speak>`;
-
-    return conv.close(new SimpleResponse({
-        text: sorryText,
-        speech: sorrySpeach
-    }));
+    if(!!conv.user.storage.step)
+        return await handlePart0(conv, givenName, id);
+    else if (conv.user.storage.step === 1)
+        return await handlePart1(conv);
 }

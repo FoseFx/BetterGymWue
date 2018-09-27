@@ -6,6 +6,12 @@ var Stundenplan_1 = require("./intents/Stundenplan");
 var Welcome_1 = require("./intents/Welcome");
 var Intents_1 = require("./intents/Intents");
 var SignInIntent_1 = require("./intents/SignInIntent");
+var admin = require("firebase-admin");
+var serviceAccount = require("../../../serviceAccount.json");
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: "https://bettergymwue.firebaseio.com"
+});
 var CLIENT_ID = process.env.ACTION_CLIENT_ID;
 var app = actions_on_google_1.dialogflow({ debug: false, clientId: CLIENT_ID });
 var eapp = express();
