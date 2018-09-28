@@ -5,7 +5,6 @@ import {WelcomeIntent} from "./intents/Welcome";
 import {INTENTS} from "./intents/Intents";
 import {SignInIntent} from "./intents/SignInIntent";
 import * as admin from "firebase-admin";
-import {getFromDB} from "./util";
 import {KurseConfIntent} from "./intents/KurseConfIntent";
 
 const serviceAccount = require("../../../serviceAccount.json");

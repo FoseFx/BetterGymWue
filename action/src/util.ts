@@ -7,9 +7,11 @@ let ref;
 export function hasScreen(conv: Conversation<any>) {
     return conv.surface.capabilities.has('actions.capability.SCREEN_OUTPUT');
 }
+
+export interface Creds {u: string, p: string, l?: {u: string, p: string}}
 export interface dbResult {
     exists: boolean;
-    creds: {u: string, p: string, l?: {u: string, p: string}};
+    creds: Creds;
     stufe: string;
     kurse: Kurs[];
 }

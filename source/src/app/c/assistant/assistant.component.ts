@@ -47,7 +47,8 @@ export class AssistantComponent implements OnInit {
       if(!dbresult){
         this.schritt = "3. Dich in Datenbank eintragen";
         let actionsRegisterResult = await this.base.httpClient.post(CONFIG.actionsApp, {
-          stufe: this.base.myStufeID,
+          stufe: this.base.myStufe,
+          stufeid: this.base.myStufeID,
           kurse: this.base.myKurse,
           token: token,
           creds: this.base.credentials
