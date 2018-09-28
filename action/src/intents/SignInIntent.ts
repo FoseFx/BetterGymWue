@@ -2,8 +2,8 @@ import {Conversation, SimpleResponse} from "actions-on-google";
 import {REGISTER_URL} from "../CONFIG";
 import {dbResult, getFromDB, hasScreen} from "../util";
 import {Kurs} from "../../../source/src/app/Classes";
-import {handlePart0} from "./SetUpPart0";
-import {handlePart1} from "./SetUpPart1";
+import {handlePart0} from "./SetUps/SetUpPart0";
+import {handlePart1} from "./SetUps/SetUpPart1";
 
 export async function SignInIntent(conv: Conversation<any>, params, signin) {
     if (signin.status !== "OK")

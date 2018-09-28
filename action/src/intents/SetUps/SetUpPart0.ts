@@ -1,7 +1,7 @@
-import {getFromDB, hasScreen} from "../util";
-import {Kurs} from "../../../source/src/app/Classes";
+import {getFromDB, hasScreen} from "../../util";
+import {Kurs} from "../../../../source/src/app/Classes";
 import {SimpleResponse} from "actions-on-google";
-import {REGISTER_URL} from "../CONFIG";
+import {REGISTER_URL} from "../../CONFIG";
 
 export async function handlePart0(conv, givenName, id) {
     const dbResolve = await getFromDB(id);
