@@ -13,6 +13,7 @@ export interface dbResult {
     exists: boolean;
     creds: Creds;
     stufe: string;
+    stufeid: number;
     kurse: Kurs[];
 }
 

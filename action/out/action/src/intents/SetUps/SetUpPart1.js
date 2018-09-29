@@ -35,34 +35,21 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var SetUpPart0_1 = require("./SetUps/SetUpPart0");
-var SetUpPart1_1 = require("./SetUps/SetUpPart1");
-function SignInIntent(conv, params, signin) {
+var getStundenplan_1 = require("../../backend-port/getStundenplan");
+// download and create timetable
+function handlePart1(conv) {
     return __awaiter(this, void 0, void 0, function () {
-        var payload, givenName, id;
+        var payload;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    if (signin.status !== "OK")
-                        return [2 /*return*/, conv.close("Ohne deine Erlaubnis kann ich nicht auf deine Kurse zugreifen.")];
-                    payload = conv.user.profile.payload;
-                    givenName = payload.given_name;
-                    id = payload.sub;
-                    console.log(conv.user.storage);
-                    if (conv.user.storage.done === true) {
-                        // TODO redirect to "Home Intent"
-                        return [2 /*return*/, conv.close("redirect")];
-                    }
-                    if (!!!conv.user.storage.step) return [3 /*break*/, 2];
-                    return [4 /*yield*/, SetUpPart0_1.handlePart0(conv, givenName, id)];
-                case 1: return [2 /*return*/, _a.sent()];
-                case 2:
-                    if (!(conv.user.storage.step === 1)) return [3 /*break*/, 4];
-                    return [4 /*yield*/, SetUpPart1_1.handlePart1(conv)];
-                case 3: return [2 /*return*/, _a.sent()];
-                case 4: return [2 /*return*/];
+                    payload = conv.user.storage.payload;
+                    return [4 /*yield*/, getStundenplan_1.getStundenplan(payload.creds, payload.stufe, payload.stufeid)];
+                case 1:
+                    _a.sent();
+                    return [2 /*return*/, conv.close("handlepart1")];
             }
         });
     });
 }
-exports.SignInIntent = SignInIntent;
+exports.handlePart1 = handlePart1;

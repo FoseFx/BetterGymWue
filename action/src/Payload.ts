@@ -1,4 +1,5 @@
-export interface Payload {
-    id: string;
-    givenName: string;
+import {dbResult} from "./util";
+
+export interface Payload extends dbResult{
+
 }

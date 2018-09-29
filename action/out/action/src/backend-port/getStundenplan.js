@@ -35,34 +35,45 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var SetUpPart0_1 = require("./SetUps/SetUpPart0");
-var SetUpPart1_1 = require("./SetUps/SetUpPart1");
-function SignInIntent(conv, params, signin) {
+var node_fetch_1 = require("node-fetch");
+var conf_1 = require("../../../source/src/app/conf");
+var intital_port_1 = require("./intital-port");
+function getStundenplan(creds, stufe, stufeid) {
     return __awaiter(this, void 0, void 0, function () {
-        var payload, givenName, id;
+        var credResult, access, lcredResulr, getStufenResult, wochen;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0:
-                    if (signin.status !== "OK")
-                        return [2 /*return*/, conv.close("Ohne deine Erlaubnis kann ich nicht auf deine Kurse zugreifen.")];
-                    payload = conv.user.profile.payload;
-                    givenName = payload.given_name;
-                    id = payload.sub;
-                    console.log(conv.user.storage);
-                    if (conv.user.storage.done === true) {
-                        // TODO redirect to "Home Intent"
-                        return [2 /*return*/, conv.close("redirect")];
-                    }
-                    if (!!!conv.user.storage.step) return [3 /*break*/, 2];
-                    return [4 /*yield*/, SetUpPart0_1.handlePart0(conv, givenName, id)];
-                case 1: return [2 /*return*/, _a.sent()];
+                case 0: return [4 /*yield*/, node_fetch_1.default(conf_1.CONFIG.credentialsCheckUrl)];
+                case 1:
+                    credResult = _a.sent();
+                    access = credResult.ok;
+                    console.log(credResult.ok);
+                    if (!access)
+                        throw new Error("Anmeldedaten falsch");
+                    if (!!!creds.l) return [3 /*break*/, 3];
+                    return [4 /*yield*/, node_fetch_1.default(conf_1.CONFIG.credentialsCheckLehrerUrl)];
                 case 2:
-                    if (!(conv.user.storage.step === 1)) return [3 /*break*/, 4];
-                    return [4 /*yield*/, SetUpPart1_1.handlePart1(conv)];
-                case 3: return [2 /*return*/, _a.sent()];
-                case 4: return [2 /*return*/];
+                    lcredResulr = _a.sent();
+                    if (!lcredResulr.ok)
+                        throw new Error("Anmeldedaten für Lehrer falsch");
+                    _a.label = 3;
+                case 3: return [4 /*yield*/, intital_port_1.get_stufen(credResult.then(function (res) { return res.text(); }))];
+                case 4:
+                    getStufenResult = _a.sent();
+                    wochen = getStufenResult[1];
+                    // step 2: getkurse()
+                    // @ts-ignore
+                    return [4 /*yield*/, intital_port_1.getkurse(stufe, stufeid, wochen)];
+                case 5:
+                    // step 2: getkurse()
+                    // @ts-ignore
+                    _a.sent();
+                    console.log("FINAL getTempTTs", intital_port_1.getTempTTs());
+                    console.log("FINAL getKurseDebug", intital_port_1.getKurseDebug());
+                    // step 3: getTT()
+                    return [2 /*return*/, intital_port_1.getTT(stufe)];
             }
         });
     });
 }
-exports.SignInIntent = SignInIntent;
+exports.getStundenplan = getStundenplan;

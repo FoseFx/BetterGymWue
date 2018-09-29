@@ -7,6 +7,7 @@ var Welcome_1 = require("./intents/Welcome");
 var Intents_1 = require("./intents/Intents");
 var SignInIntent_1 = require("./intents/SignInIntent");
 var admin = require("firebase-admin");
+var KurseConfIntent_1 = require("./intents/KurseConfIntent");
 var serviceAccount = require("../../../serviceAccount.json");
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
@@ -20,4 +21,5 @@ eapp.use(app);
 app.intent(Intents_1.INTENTS.STUNDENPLAN, Stundenplan_1.StundenPlanIntent);
 app.intent(Intents_1.INTENTS.WELCOME, Welcome_1.WelcomeIntent);
 app.intent(Intents_1.INTENTS.SIGN_IN_CONF, SignInIntent_1.SignInIntent);
+app.intent(Intents_1.INTENTS.KURSE_CONFIRMED, KurseConfIntent_1.KurseConfIntent);
 eapp.listen(45634, function () { console.log("Started Actions Server"); });
