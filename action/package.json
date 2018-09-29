@@ -13,6 +13,7 @@
   "dependencies": {
     "actions-on-google": "^2.3.0",
     "body-parser": "^1.18.3",
+    "btoa": "^1.2.1",
     "dom-parser": "^0.1.5",
     "express": "^4.16.3",
     "firebase-admin": "^6.0.0",

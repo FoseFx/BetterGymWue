@@ -1,7 +1,7 @@
 import {KurseType, TempTT, TempTTs} from "../../../source/src/app/Classes";
 import {CONFIG} from "../../../source/src/app/conf";
-import fetch from 'node-fetch';
 import {evaKurse} from "./evaKurse-port";
+import {fetchWithCreds} from "../util";
 
 let tempTTs: TempTTs = [];
 let _kurse: KurseType = [{kurse: []}, {kurse: []}];
@@ -55,13 +55,13 @@ export function get_stufen(resp: Promise<string>): Promise<string[][]> {
 export function getkurse(stufe: string, stufeid: number, wochen: string[]): Promise<any> {
     return new Promise((resolve, reject) => {
         if (!wochen[0] || !wochen[1]) reject('Internal Error: #01');
-        const res = fetch(CONFIG.baseKursURL + wochen[0] + '/c/c' + generate5(stufeid) + '.htm');
+        const res = fetchWithCreds(CONFIG.baseKursURL + wochen[0] + '/c/c' + generate5(stufeid) + '.htm');
         if (!res.ok) reject('Failure: Connection could not be made');
         res.then(res=>res.text()).then(
             (r:string) => {
                 evaKurse(r, stufe, tempTTs, _kurse);
                 //woche 2
-                const res2 = fetch(CONFIG.baseKursURL + wochen[1] + '/c/c' + generate5(stufeid) + '.htm');
+                const res2 = fetchWithCreds(CONFIG.baseKursURL + wochen[1] + '/c/c' + generate5(stufeid) + '.htm');
                 res2.then(res=>res.text()).then(
                     (r) => {
                         evaKurse(r, stufe, tempTTs, _kurse);

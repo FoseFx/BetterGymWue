@@ -5,6 +5,10 @@ import {Payload} from "../../Payload";
 // download and create timetable
 export async function handlePart1(conv: Conversation<any>) {
     const payload: Payload = conv.user.storage.payload;
-    await getStundenplan(payload.creds, payload.stufe, payload.stufeid);
+    try{
+        await getStundenplan(payload.creds, payload.stufe, payload.stufeid);
+    }catch (e) {
+        console.error(e);
+    }
     return conv.close("handlepart1");
 }
