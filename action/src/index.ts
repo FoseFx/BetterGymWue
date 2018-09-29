@@ -16,6 +16,7 @@ admin.initializeApp({
 
 const CLIENT_ID = process.env.ACTION_CLIENT_ID;
 
+if(!CLIENT_ID) throw new Error("No Client ID Provided");
 const app = dialogflow({debug: false, clientId: CLIENT_ID});
 const eapp = express();
 eapp.use(express.json());

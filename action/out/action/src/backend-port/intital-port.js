@@ -59,10 +59,7 @@ function getTT(stufe) {
 exports.getTT = getTT;
 function get_stufen(resp) {
     return new Promise(function (resolve, reject) {
-        if (resp === null) {
-            reject('Failure: No Credentials given, how did you even get here?');
-        }
-        resp.then(function (res) { return res.text(); }).then(function (wert) {
+        resp.text().then(function (wert) {
             // save weeks
             var w = wert.split('<option value="');
             var wochen = [

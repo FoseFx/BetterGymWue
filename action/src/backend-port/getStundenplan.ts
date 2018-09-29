@@ -1,5 +1,5 @@
 import {CONFIG} from "../../../source/src/app/conf";
-import {Creds, fetchWithCreds} from "../util";
+import {cleanCreds, Creds, fetchWithCreds} from "../util";
 import {get_stufen, getkurse, getKurseDebug, getTempTTs, getTT} from "./intital-port";
 import {TempTT} from "../../../source/src/app/Classes";
 
@@ -25,6 +25,7 @@ export async function getStundenplan(creds: Creds, stufe: string, stufeid: numbe
     console.log("FINAL getTempTTs", getTempTTs());
     console.log("FINAL getKurseDebug", getKurseDebug());
 
+    cleanCreds();
     // step 3: getTT()
     return getTT(stufe);
 }

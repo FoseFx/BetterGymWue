@@ -1,13 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var DOMParser = require("dom-parser");
+var jsdom = require("jsdom");
+var JSDOM = jsdom.JSDOM;
 function evaKurse(html, stufe, tempTTs, kurse) {
-    var parser = new DOMParser();
-    var doc = parser.parseFromString(html, "text/html");
-    var woche = (doc.querySelectorAll('font[size="3"][face="Arial"]')[1]).textContent.split(/(?:\d+\.){2}\d{4} /)[1][0].toLowerCase() === "a" ? 0 : 1;
+    var dom = new JSDOM(html);
+    var doc = dom.window.document;
+    var woche = doc.querySelectorAll('font[size="3"][face="Arial"]')[1].textContent.split(/(?:\d+\.){2}\d{4} /)[1][0].toLowerCase() === "a" ? 0 : 1;
     var wholeTable = doc.getElementsByTagName('tbody')[0];
     // remove header
-    wholeTable.firstElementChild.remove();
+    wholeTable.firstChild.remove();
     var data = [];
     var tri = 0;
     Array.from(wholeTable.children).forEach(function (tr) {

@@ -47,7 +47,6 @@ function getStundenplan(creds, stufe, stufeid) {
                 case 1:
                     credResult = _a.sent();
                     access = credResult.ok;
-                    console.log("result", credResult);
                     if (!access)
                         throw new Error("Anmeldedaten falsch");
                     if (!!!creds.l) return [3 /*break*/, 3];
@@ -70,6 +69,7 @@ function getStundenplan(creds, stufe, stufeid) {
                     _a.sent();
                     console.log("FINAL getTempTTs", intital_port_1.getTempTTs());
                     console.log("FINAL getKurseDebug", intital_port_1.getKurseDebug());
+                    util_1.cleanCreds();
                     // step 3: getTT()
                     return [2 /*return*/, intital_port_1.getTT(stufe)];
             }

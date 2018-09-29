@@ -14,6 +14,8 @@ admin.initializeApp({
     databaseURL: "https://bettergymwue.firebaseio.com"
 });
 var CLIENT_ID = process.env.ACTION_CLIENT_ID;
+if (!CLIENT_ID)
+    throw new Error("No Client ID Provided");
 var app = actions_on_google_1.dialogflow({ debug: false, clientId: CLIENT_ID });
 var eapp = express();
 eapp.use(express.json());

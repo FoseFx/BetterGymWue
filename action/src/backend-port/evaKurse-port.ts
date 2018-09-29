@@ -1,31 +1,26 @@
 import {KurseType, TempTTs, TimeTableSlot} from "../../../source/src/app/Classes";
-import * as DOMParser from "dom-parser";
-
-export interface Parser {
-    parseFromString: Function;
-}
+const jsdom = require("jsdom");
+const {JSDOM} = jsdom;
 
 export interface HTMLElement {
-    querySelectorAll(selector: string): HTMLElement[];
     textContent: string;
-    firstElementChild: HTMLElement;
-    remove(): void;
+    firstChild: HTMLElement;
     children: HTMLElement[];
+    remove(): void;
     getAttribute(selector: string): string|number;
     getElementsByTagName(selector: string): HTMLElement[];
 }
 
 export function evaKurse(html: string, stufe:string, tempTTs: TempTTs, kurse: KurseType):void {
-    const parser = new DOMParser();
-    let doc = parser.parseFromString(html, "text/html");
-    let woche = (<HTMLElement>(
-            doc.querySelectorAll('font[size="3"][face="Arial"]')[1]
-        )
-    ).textContent.split(/(?:\d+\.){2}\d{4} /)[1][0].toLowerCase() === "a"? 0: 1;
+    let dom = new JSDOM(html);
+    const doc = dom.window.document;
+
+    let woche = doc.querySelectorAll('font[size="3"][face="Arial"]')[1].textContent.split(/(?:\d+\.){2}\d{4} /)[1][0].toLowerCase() === "a"? 0: 1;
+
 
     let wholeTable: HTMLElement = doc.getElementsByTagName('tbody')[0];
     // remove header
-    wholeTable.firstElementChild.remove();
+    wholeTable.firstChild.remove();
 
     let data: TimeTableSlot[][] = [];
     let tri = 0;

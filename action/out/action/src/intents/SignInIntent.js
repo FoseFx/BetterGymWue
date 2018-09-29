@@ -53,7 +53,7 @@ function SignInIntent(conv, params, signin) {
                         // TODO redirect to "Home Intent"
                         return [2 /*return*/, conv.close("redirect")];
                     }
-                    if (!!!conv.user.storage.step) return [3 /*break*/, 2];
+                    if (!!conv.user.storage.step) return [3 /*break*/, 2];
                     return [4 /*yield*/, SetUpPart0_1.handlePart0(conv, givenName, id)];
                 case 1: return [2 /*return*/, _a.sent()];
                 case 2:

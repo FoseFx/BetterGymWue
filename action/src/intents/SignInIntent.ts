@@ -18,7 +18,7 @@ export async function SignInIntent(conv: Conversation<any>, params, signin) {
         // TODO redirect to "Home Intent"
         return conv.close("redirect");
     }
-    if(!!conv.user.storage.step)
+    if(!conv.user.storage.step)
         return await handlePart0(conv, givenName, id);
     else if (conv.user.storage.step === 1)
         return await handlePart1(conv);
