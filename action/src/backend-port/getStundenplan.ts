@@ -22,9 +22,6 @@ export async function getStundenplan(creds: Creds, stufe: string, stufeid: numbe
     // step 2: getkurse()
     // @ts-ignore
     await getkurse(stufe, stufeid, wochen);
-    console.log("FINAL getTempTTs", getTempTTs());
-    console.log("FINAL getKurseDebug", getKurseDebug());
-
     cleanCreds();
     // step 3: getTT()
     return getTT(stufe);

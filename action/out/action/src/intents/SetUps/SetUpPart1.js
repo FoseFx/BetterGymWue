@@ -35,27 +35,35 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var actions_on_google_1 = require("actions-on-google");
 var getStundenplan_1 = require("../../backend-port/getStundenplan");
+var util_1 = require("../../util");
 // download and create timetable
 function handlePart1(conv) {
     return __awaiter(this, void 0, void 0, function () {
-        var payload, e_1;
+        var payload, sp, e_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     payload = conv.user.storage.payload;
                     _a.label = 1;
                 case 1:
-                    _a.trys.push([1, 3, , 4]);
+                    _a.trys.push([1, 4, , 5]);
                     return [4 /*yield*/, getStundenplan_1.getStundenplan(payload.creds, payload.stufe, payload.stufeid)];
                 case 2:
-                    _a.sent();
-                    return [3 /*break*/, 4];
+                    sp = _a.sent();
+                    return [4 /*yield*/, util_1.pushSPtoDB(sp)];
                 case 3:
+                    _a.sent();
+                    return [2 /*return*/, conv.ask(new actions_on_google_1.SimpleResponse({
+                            text: "Das scheint zu funktionieren!",
+                            speech: "Super!"
+                        }))];
+                case 4:
                     e_1 = _a.sent();
                     console.error(e_1);
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/, conv.close("handlepart1")];
+                    return [2 /*return*/, conv.close("Da hat etwas nicht funktioniert: " + e_1.message)];
+                case 5: return [2 /*return*/];
             }
         });
     });

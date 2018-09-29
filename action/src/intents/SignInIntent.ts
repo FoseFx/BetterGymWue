@@ -12,8 +12,6 @@ export async function SignInIntent(conv: Conversation<any>, params, signin) {
     const givenName = payload.given_name;
     const id = payload.sub;
 
-    console.log(conv.user.storage);
-
     if(conv.user.storage.done === true){
         // TODO redirect to "Home Intent"
         return conv.close("redirect");

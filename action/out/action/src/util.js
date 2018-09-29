@@ -60,6 +60,32 @@ function getFromDB(sub) {
     });
 }
 exports.getFromDB = getFromDB;
+function pushSPtoDB(sp) {
+    return __awaiter(this, void 0, void 0, function () {
+        var spRef, val, e_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!ref)
+                        ref = admin.database().ref("actions");
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, 3, , 4]);
+                    spRef = ref.child("sp").child(sp.stufe);
+                    return [4 /*yield*/, spRef.once("value")];
+                case 2:
+                    val = _a.sent();
+                    console.log("val", val);
+                    return [3 /*break*/, 4];
+                case 3:
+                    e_1 = _a.sent();
+                    return [2 /*return*/, false];
+                case 4: return [2 /*return*/, true];
+            }
+        });
+    });
+}
+exports.pushSPtoDB = pushSPtoDB;
 var _creds;
 function fetchWithCreds(url, creds, dontsave) {
     if (dontsave === void 0) { dontsave = false; }
