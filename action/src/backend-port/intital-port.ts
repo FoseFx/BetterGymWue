@@ -22,12 +22,12 @@ export function getTT(stufe:string): TempTT{
     return r;
 }
 
-export function get_stufen(resp: Promise<string>): Promise<string[][]> {
+export function get_stufen(resp: Promise<any>): Promise<string[][]> {
     return new Promise((resolve, reject) => {
         if (resp === null) {
             reject('Failure: No Credentials given, how did you even get here?');
         }
-        resp.then(
+        resp.then(res=>res.text()).then(
             (wert:string) => {
                 // save weeks
                 const w = wert.split('<option value="');
@@ -52,42 +52,38 @@ export function get_stufen(resp: Promise<string>): Promise<string[][]> {
     });
 }
 
-export function getkurse(stufe: string, stufeid: number, wochen: string[]): Promise<any> {
-    return new Promise((resolve, reject) => {
-        if (!wochen[0] || !wochen[1]) reject('Internal Error: #01');
-        const res = fetchWithCreds(CONFIG.baseKursURL + wochen[0] + '/c/c' + generate5(stufeid) + '.htm');
-        if (!res.ok) reject('Failure: Connection could not be made');
-        res.then(res=>res.text()).then(
-            (r:string) => {
-                evaKurse(r, stufe, tempTTs, _kurse);
-                //woche 2
-                const res2 = fetchWithCreds(CONFIG.baseKursURL + wochen[1] + '/c/c' + generate5(stufeid) + '.htm');
-                res2.then(res=>res.text()).then(
-                    (r) => {
-                        evaKurse(r, stufe, tempTTs, _kurse);
-                        let k = [];
-                        _kurse[0].kurse.forEach((val) => {
-                            _kurse[1].kurse.forEach((val2) => {
-                                if (val2 === val) k.push(val);
-                            });
-                        });
-                        let fin = [];
-                        _kurse[0].kurse.forEach((val) => {
-                            if (k.indexOf(val) === -1) fin.push(val);
-                        });
-                        _kurse = [{kurse: []},{kurse: []}];
-                        resolve(fin);
-                    }
-                );
+export async function getkurse(stufe: string, stufeid: number, wochen: string[]): Promise<any> {
+    if (!wochen[0] || !wochen[1]) throw new Error('Internal Error: #01');
+    const res = await fetchWithCreds(CONFIG.baseKursURL + wochen[0] + '/c/c' + generate5(stufeid) + '.htm');
+    if (!res.ok) throw new Error('Failure: Connection could not be made');
 
-            },
-            (err) => {
-                console.log(err);
-                reject('Failure: ' + err.statusText);
-            }
-        );
+    try{
+        let r = await res.text();
 
-    });
+        evaKurse(r, stufe, tempTTs, _kurse);
+        //woche 2
+        const res2 = await fetchWithCreds(CONFIG.baseKursURL + wochen[1] + '/c/c' + generate5(stufeid) + '.htm');
+        r = await res2.text();
+
+        evaKurse(r, stufe, tempTTs, _kurse);
+        let k = [];
+        _kurse[0].kurse.forEach((val) => {
+            _kurse[1].kurse.forEach((val2) => {
+                if (val2 === val) k.push(val);
+            });
+        });
+        let fin = [];
+        _kurse[0].kurse.forEach((val) => {
+            if (k.indexOf(val) === -1) fin.push(val);
+        });
+        _kurse = [{kurse: []},{kurse: []}];
+        return(fin);
+
+    }catch(err){
+        console.log(err);
+        throw new Error('Failure: ' + err.statusText);
+    }
+
 
 }
 

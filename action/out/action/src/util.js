@@ -36,6 +36,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var admin = require("firebase-admin");
+var node_fetch_1 = require("node-fetch");
+var btoa = require("btoa");
 var ref;
 function hasScreen(conv) {
     return conv.surface.capabilities.has('actions.capability.SCREEN_OUTPUT');
@@ -58,3 +60,16 @@ function getFromDB(sub) {
     });
 }
 exports.getFromDB = getFromDB;
+var _creds;
+function fetchWithCreds(url, creds, dontsave) {
+    if (dontsave === void 0) { dontsave = false; }
+    if (creds && !dontsave)
+        _creds = creds;
+    return node_fetch_1.default(url, {
+        headers: {
+            "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 12_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0 Mobile/15E148 Safari/604.1",
+            "Authorization": "Basic " + btoa(creds.u + ":" + creds.p)
+        }
+    });
+}
+exports.fetchWithCreds = fetchWithCreds;

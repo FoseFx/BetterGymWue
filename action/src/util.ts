@@ -26,7 +26,7 @@ export async function getFromDB(sub: string): Promise<dbResult>{
 }
 
 let _creds: Creds;
-export function fetchWithCreds(url: string, creds?: Creds, dontsave = false) {
+export function fetchWithCreds(url: string, creds?: Creds, dontsave = false): Promise<any> {
     if(creds && !dontsave) _creds = creds;
     return fetch(url, {
         headers: {

@@ -35,29 +35,29 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var node_fetch_1 = require("node-fetch");
 var conf_1 = require("../../../source/src/app/conf");
+var util_1 = require("../util");
 var intital_port_1 = require("./intital-port");
 function getStundenplan(creds, stufe, stufeid) {
     return __awaiter(this, void 0, void 0, function () {
         var credResult, access, lcredResulr, getStufenResult, wochen;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, node_fetch_1.default(conf_1.CONFIG.credentialsCheckUrl)];
+                case 0: return [4 /*yield*/, util_1.fetchWithCreds(conf_1.CONFIG.credentialsCheckUrl, creds)];
                 case 1:
                     credResult = _a.sent();
                     access = credResult.ok;
-                    console.log(credResult.ok);
+                    console.log("result", credResult);
                     if (!access)
                         throw new Error("Anmeldedaten falsch");
                     if (!!!creds.l) return [3 /*break*/, 3];
-                    return [4 /*yield*/, node_fetch_1.default(conf_1.CONFIG.credentialsCheckLehrerUrl)];
+                    return [4 /*yield*/, util_1.fetchWithCreds(conf_1.CONFIG.credentialsCheckLehrerUrl, creds.l, true)];
                 case 2:
                     lcredResulr = _a.sent();
                     if (!lcredResulr.ok)
                         throw new Error("Anmeldedaten für Lehrer falsch");
                     _a.label = 3;
-                case 3: return [4 /*yield*/, intital_port_1.get_stufen(credResult.then(function (res) { return res.text(); }))];
+                case 3: return [4 /*yield*/, intital_port_1.get_stufen(credResult)];
                 case 4:
                     getStufenResult = _a.sent();
                     wochen = getStufenResult[1];

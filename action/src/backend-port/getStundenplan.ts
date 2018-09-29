@@ -7,7 +7,6 @@ export async function getStundenplan(creds: Creds, stufe: string, stufeid: numbe
     // step 1: get_stufen()
     let credResult = await fetchWithCreds(CONFIG.credentialsCheckUrl, creds);
     let access = credResult.ok;
-    console.log("result", credResult);
     if(!access) throw new Error("Anmeldedaten falsch");
 
     if(!!creds.l){
@@ -15,9 +14,7 @@ export async function getStundenplan(creds: Creds, stufe: string, stufeid: numbe
         if(!lcredResulr.ok) throw new Error("Anmeldedaten für Lehrer falsch");
     }
 
-
-    // @ts-ignore
-    let getStufenResult = await get_stufen(credResult.then(res=>res.text()));
+    let getStufenResult = await get_stufen(credResult);
     let wochen = getStufenResult[1];
 
 
