@@ -22,12 +22,9 @@ export function getTT(stufe:string): TempTT{
     return r;
 }
 
-export function get_stufen(resp: Promise<any>): Promise<string[][]> {
+export function get_stufen(resp: any): Promise<string[][]> {
     return new Promise((resolve, reject) => {
-        if (resp === null) {
-            reject('Failure: No Credentials given, how did you even get here?');
-        }
-        resp.then(res=>res.text()).then(
+        resp.text().then(
             (wert:string) => {
                 // save weeks
                 const w = wert.split('<option value="');
