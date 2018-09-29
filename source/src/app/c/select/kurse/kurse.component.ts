@@ -119,7 +119,7 @@ export class KurseComponent {
     if(this._cloud === true) {
       this.netwService.saveKurse(mykurse)
         .then(
-        (id) =>{this.alert.alert('Dein Kurs-Cloud Code: <b>' + id + '</b> unbedingt merken!', this.alert.OK, 10000);}
+        (id) =>{this.alert.alert('Dein Kurs-Cloud Code: ' + id + '. Merken!', this.alert.OK, 10000);}
         ).catch((err) => {
           console.log(err.statusText);
       });
