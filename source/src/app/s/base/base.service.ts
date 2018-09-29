@@ -31,6 +31,7 @@ export class BaseService {
   public justResetted = false;
   public deadTested = false;
 
+
   constructor(public router: Router,
               public httpClient: HttpClient,
               private alertService: AlertService
