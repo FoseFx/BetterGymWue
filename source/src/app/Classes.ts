@@ -64,7 +64,8 @@ export type DisplayArray = {
   VD?: VertretungsReihe
 }[];
 
-export type TempTTs = { stufe: string, tt: { days: any[][]}[] }[];
+export type TempTT = { stufe: string, tt: { days: any[][]}[] };
+export type TempTTs = TempTT[];
 
 export type TT = {days: TimeTableSlot[][]}[];
 
