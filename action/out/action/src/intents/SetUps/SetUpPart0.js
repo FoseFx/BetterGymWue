@@ -43,7 +43,7 @@ function handlePart0(conv, givenName, id) {
         var dbResolve, isRegistered, speach_1, text_1, sorryText, sorrySpeach;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, util_1.getFromDB(id)];
+                case 0: return [4 /*yield*/, util_1.getUserFromDB(id)];
                 case 1:
                     dbResolve = _a.sent();
                     isRegistered = !!dbResolve;

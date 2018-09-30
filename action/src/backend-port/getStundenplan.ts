@@ -1,9 +1,14 @@
 import {CONFIG} from "../../../source/src/app/conf";
-import {cleanCreds, Creds, fetchWithCreds} from "../util";
+import {
+    cleanCreds,
+    Creds,
+    fetchWithCreds,
+    pushSPtoDB,
+    Stundenplan,
+} from "../util";
 import {get_stufen, getkurse, getKurseDebug, getTempTTs, getTT} from "./intital-port";
-import {TempTT} from "../../../source/src/app/Classes";
 
-export async function getStundenplan(creds: Creds, stufe: string, stufeid: number): Promise<TempTT>{
+export async function getStundenplan(creds: Creds, stufe: string, stufeid: number): Promise<Stundenplan>{
     // step 1: get_stufen()
     let credResult = await fetchWithCreds(CONFIG.credentialsCheckUrl, creds);
     let access = credResult.ok;
@@ -18,12 +23,15 @@ export async function getStundenplan(creds: Creds, stufe: string, stufeid: numbe
     let wochen = getStufenResult[1];
 
 
-
     // step 2: getkurse()
     // @ts-ignore
-    await getkurse(stufe, stufeid, wochen);
+    const availKurse = await getkurse(stufe, stufeid, wochen);
     cleanCreds();
-    // step 3: getTT()
-    return getTT(stufe);
+    console.log("availKurse", availKurse);
+
+    const plan = getTT(stufe);
+    await pushSPtoDB(plan, availKurse, creds, stufeid);
+
+    return {plan: plan, availKurse: availKurse};
 }
 

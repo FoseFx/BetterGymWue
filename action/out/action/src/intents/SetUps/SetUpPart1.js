@@ -48,22 +48,26 @@ function handlePart1(conv) {
                     payload = conv.user.storage.payload;
                     _a.label = 1;
                 case 1:
-                    _a.trys.push([1, 4, , 5]);
-                    return [4 /*yield*/, getStundenplan_1.getStundenplan(payload.creds, payload.stufe, payload.stufeid)];
+                    _a.trys.push([1, 5, , 6]);
+                    return [4 /*yield*/, util_1.getStundenplanFromDB(payload.stufeid, payload.creds)];
                 case 2:
                     sp = _a.sent();
-                    return [4 /*yield*/, util_1.pushSPtoDB(sp)];
+                    if (!(sp === null)) return [3 /*break*/, 4];
+                    return [4 /*yield*/, getStundenplan_1.getStundenplan(payload.creds, payload.stufe, payload.stufeid)];
                 case 3:
-                    _a.sent();
-                    return [2 /*return*/, conv.ask(new actions_on_google_1.SimpleResponse({
-                            text: "Das scheint zu funktionieren!",
-                            speech: "Super!"
-                        }))];
-                case 4:
+                    sp = _a.sent();
+                    _a.label = 4;
+                case 4: 
+                // todo personalisieren()
+                return [2 /*return*/, conv.ask(new actions_on_google_1.SimpleResponse({
+                        text: "Das scheint zu funktionieren!",
+                        speech: "Super!"
+                    }))];
+                case 5:
                     e_1 = _a.sent();
                     console.error(e_1);
                     return [2 /*return*/, conv.close("Da hat etwas nicht funktioniert: " + e_1.message)];
-                case 5: return [2 /*return*/];
+                case 6: return [2 /*return*/];
             }
         });
     });

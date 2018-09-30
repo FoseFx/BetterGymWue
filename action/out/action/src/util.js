@@ -38,54 +38,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var admin = require("firebase-admin");
 var node_fetch_1 = require("node-fetch");
 var btoa = require("btoa");
+var crypto = require('crypto');
+var sha256 = crypto.createHash("sha256");
 var ref;
+//
+// Util
+//
 function hasScreen(conv) {
     return conv.surface.capabilities.has('actions.capability.SCREEN_OUTPUT');
 }
 exports.hasScreen = hasScreen;
-function getFromDB(sub) {
-    return __awaiter(this, void 0, void 0, function () {
-        var snap;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    if (!ref)
-                        ref = admin.database().ref("actions");
-                    return [4 /*yield*/, ref.child(sub).once("value")];
-                case 1:
-                    snap = _a.sent();
-                    return [2 /*return*/, snap.val()];
-            }
-        });
-    });
-}
-exports.getFromDB = getFromDB;
-function pushSPtoDB(sp) {
-    return __awaiter(this, void 0, void 0, function () {
-        var spRef, val, e_1;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    if (!ref)
-                        ref = admin.database().ref("actions");
-                    _a.label = 1;
-                case 1:
-                    _a.trys.push([1, 3, , 4]);
-                    spRef = ref.child("sp").child(sp.stufe);
-                    return [4 /*yield*/, spRef.once("value")];
-                case 2:
-                    val = _a.sent();
-                    console.log("val", val);
-                    return [3 /*break*/, 4];
-                case 3:
-                    e_1 = _a.sent();
-                    return [2 /*return*/, false];
-                case 4: return [2 /*return*/, true];
-            }
-        });
-    });
-}
-exports.pushSPtoDB = pushSPtoDB;
 var _creds;
 function fetchWithCreds(url, creds, dontsave) {
     if (dontsave === void 0) { dontsave = false; }
@@ -103,3 +65,86 @@ function cleanCreds() {
     _creds = undefined;
 }
 exports.cleanCreds = cleanCreds;
+function generateHashedCreds(creds) {
+    return sha256.update(JSON.stringify({
+        u: creds.u,
+        p: creds.p
+    })).digest("base64");
+}
+exports.generateHashedCreds = generateHashedCreds;
+var Stundenplan = /** @class */ (function () {
+    function Stundenplan() {
+    }
+    return Stundenplan;
+}());
+exports.Stundenplan = Stundenplan;
+var StundenplanDBResult = /** @class */ (function () {
+    function StundenplanDBResult() {
+    }
+    return StundenplanDBResult;
+}());
+exports.StundenplanDBResult = StundenplanDBResult;
+//
+// DB Functions
+//
+function getUserFromDB(sub) {
+    return __awaiter(this, void 0, void 0, function () {
+        var snap;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!ref)
+                        ref = admin.database().ref("actions");
+                    return [4 /*yield*/, ref.child(sub).once("value")];
+                case 1:
+                    snap = _a.sent();
+                    return [2 /*return*/, snap.val()];
+            }
+        });
+    });
+}
+exports.getUserFromDB = getUserFromDB;
+function getStundenplanFromDB(stufeid, usrCreds) {
+    return __awaiter(this, void 0, void 0, function () {
+        var spRef, snap, val, now;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!ref)
+                        ref = admin.database().ref("actions");
+                    spRef = ref.child("sp").child(stufeid.toString());
+                    return [4 /*yield*/, spRef.once("value")];
+                case 1:
+                    snap = _a.sent();
+                    val = snap.val();
+                    if (val === null)
+                        return [2 /*return*/, null];
+                    now = +(new Date());
+                    if (now > val.ttl)
+                        return [2 /*return*/, null];
+                    if (generateHashedCreds(usrCreds) !== val.credsHash)
+                        return [2 /*return*/, null];
+                    return [2 /*return*/, { plan: val.plan, availKurse: val.availKurse }];
+            }
+        });
+    });
+}
+exports.getStundenplanFromDB = getStundenplanFromDB;
+function pushSPtoDB(plan, availKurse, creds, stufeid) {
+    return __awaiter(this, void 0, void 0, function () {
+        var sendPayload, spRef;
+        return __generator(this, function (_a) {
+            sendPayload = {
+                availKurse: availKurse,
+                plan: plan,
+                credsHash: generateHashedCreds(creds),
+                ttl: new Date().setDate(new Date().getDate() + 7)
+            };
+            if (!ref)
+                ref = admin.database().ref("actions");
+            spRef = ref.child("sp").child(stufeid.toString());
+            return [2 /*return*/, spRef.set(sendPayload)];
+        });
+    });
+}
+exports.pushSPtoDB = pushSPtoDB;

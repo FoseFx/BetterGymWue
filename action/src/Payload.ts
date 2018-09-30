@@ -1,5 +1,5 @@
-import {dbResult} from "./util";
+import {userDBResult} from "./util";
 
-export interface Payload extends dbResult{
+export interface Payload extends userDBResult{
 
 }

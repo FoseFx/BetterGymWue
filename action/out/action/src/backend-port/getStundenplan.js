@@ -40,7 +40,7 @@ var util_1 = require("../util");
 var intital_port_1 = require("./intital-port");
 function getStundenplan(creds, stufe, stufeid) {
     return __awaiter(this, void 0, void 0, function () {
-        var credResult, access, lcredResulr, getStufenResult, wochen;
+        var credResult, access, lcredResulr, getStufenResult, wochen, availKurse, plan;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, util_1.fetchWithCreds(conf_1.CONFIG.credentialsCheckUrl, creds)];
@@ -60,16 +60,16 @@ function getStundenplan(creds, stufe, stufeid) {
                 case 4:
                     getStufenResult = _a.sent();
                     wochen = getStufenResult[1];
-                    // step 2: getkurse()
-                    // @ts-ignore
                     return [4 /*yield*/, intital_port_1.getkurse(stufe, stufeid, wochen)];
                 case 5:
-                    // step 2: getkurse()
-                    // @ts-ignore
-                    _a.sent();
+                    availKurse = _a.sent();
                     util_1.cleanCreds();
-                    // step 3: getTT()
-                    return [2 /*return*/, intital_port_1.getTT(stufe)];
+                    console.log("availKurse", availKurse);
+                    plan = intital_port_1.getTT(stufe);
+                    return [4 /*yield*/, util_1.pushSPtoDB(plan, availKurse, creds, stufeid)];
+                case 6:
+                    _a.sent();
+                    return [2 /*return*/, { plan: plan, availKurse: availKurse }];
             }
         });
     });

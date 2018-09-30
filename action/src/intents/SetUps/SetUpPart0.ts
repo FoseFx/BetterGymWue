@@ -1,10 +1,10 @@
-import {getFromDB, hasScreen} from "../../util";
+import {getUserFromDB, hasScreen} from "../../util";
 import {Kurs} from "../../../../source/src/app/Classes";
 import {SimpleResponse} from "actions-on-google";
 import {REGISTER_URL} from "../../CONFIG";
 
 export async function handlePart0(conv, givenName, id) {
-    const dbResolve = await getFromDB(id);
+    const dbResolve = await getUserFromDB(id);
     let isRegistered = !!dbResolve;
     if(isRegistered){
         let speach = "<speach> Follgendes weiß ich über deine Kurse: ";

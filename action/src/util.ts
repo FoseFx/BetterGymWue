@@ -3,45 +3,19 @@ import {Kurs, TempTT} from "../../source/src/app/Classes";
 import * as admin from "firebase-admin";
 import fetch from 'node-fetch';
 import * as btoa from "btoa";
-import {accessSync} from "fs";
+const crypto = require('crypto');
+const sha256 = crypto.createHash("sha256");
 
 let ref: admin.database.Reference;
+
+//
+// Util
+//
 
 export function hasScreen(conv: Conversation<any>) {
     return conv.surface.capabilities.has('actions.capability.SCREEN_OUTPUT');
 }
 
-export interface Creds {u: string, p: string, l?: {u: string, p: string}}
-export interface dbResult {
-    exists: boolean;
-    creds: Creds;
-    stufe: string;
-    stufeid: number;
-    kurse: Kurs[];
-}
-
-export async function getFromDB(sub: string): Promise<dbResult>{
-    if(!ref) ref = admin.database().ref("actions");
-    const snap = await ref.child(sub).once("value");
-    return snap.val();
-}
-
-export async function pushSPtoDB(stufe: string, sp): Promise<boolean>{
-    if(!ref) ref = admin.database().ref("actions");
-    try {
-        const spRef = ref.child("sp").child(stufe);
-        const val = await spRef.once("value");
-        if(val.val() === null) {
-            await spRef.set(sp.tt);
-            return true;
-        }
-        return false;
-
-    } catch (e) {
-        console.error(e);
-        return false;
-    }
-}
 
 let _creds: Creds;
 export function fetchWithCreds(url: string, creds?: Creds, dontsave = false): Promise<any> {
@@ -56,4 +30,72 @@ export function fetchWithCreds(url: string, creds?: Creds, dontsave = false): Pr
 
 export function cleanCreds(){
     _creds = undefined;
+}
+
+export function generateHashedCreds(creds: Creds): string{
+    return sha256.update(JSON.stringify({
+        u: creds.u,
+        p: creds.p
+    })).digest("base64");
+}
+
+//
+// Classes
+//
+export interface Creds {u: string, p: string, l?: {u: string, p: string}}
+
+export interface userDBResult {
+    exists: boolean;
+    creds: Creds;
+    stufe: string;
+    stufeid: number;
+    kurse: Kurs[];
+}
+
+
+export class Stundenplan{
+    plan: TempTT;
+    availKurse: Kurs[];
+}
+
+export class StundenplanDBResult{
+    ttl: number; // UTC value
+    plan: TempTT;
+    availKurse: Kurs[];
+    credsHash: string // generateHashedCreds()
+}
+
+//
+// DB Functions
+//
+
+export async function getUserFromDB(sub: string): Promise<userDBResult>{
+    if(!ref) ref = admin.database().ref("actions");
+    const snap = await ref.child(sub).once("value");
+    return snap.val();
+}
+
+export async function getStundenplanFromDB(stufeid: number, usrCreds: Creds):Promise<Stundenplan|null> {
+    if(!ref) ref = admin.database().ref("actions");
+    const spRef: admin.database.Reference = ref.child("sp").child(stufeid.toString());
+    const snap = await spRef.once("value");
+    const val: StundenplanDBResult|null = snap.val();
+    if(val === null) return null;
+    const now = +(new Date());
+    if(now > val.ttl) return null;
+    if(generateHashedCreds(usrCreds) !== val.credsHash) return null;
+    return {plan: val.plan, availKurse: val.availKurse};
+}
+
+export async function pushSPtoDB(plan: TempTT, availKurse: Kurs[], creds: Creds, stufeid: number) {
+    const sendPayload: StundenplanDBResult = {
+        availKurse: availKurse,
+        plan: plan,
+        credsHash: generateHashedCreds(creds),
+        ttl: new Date().setDate(new Date().getDate() + 7)
+    };
+    if(!ref) ref = admin.database().ref("actions");
+    const spRef: admin.database.Reference = ref.child("sp").child(stufeid.toString());
+    return spRef.set(sendPayload);
+
 }

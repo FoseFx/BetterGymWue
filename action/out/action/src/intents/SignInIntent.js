@@ -48,7 +48,6 @@ function SignInIntent(conv, params, signin) {
                     payload = conv.user.profile.payload;
                     givenName = payload.given_name;
                     id = payload.sub;
-                    console.log(conv.user.storage);
                     if (conv.user.storage.done === true) {
                         // TODO redirect to "Home Intent"
                         return [2 /*return*/, conv.close("redirect")];

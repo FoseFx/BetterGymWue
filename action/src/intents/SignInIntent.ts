@@ -1,6 +1,6 @@
 import {Conversation, SimpleResponse} from "actions-on-google";
 import {REGISTER_URL} from "../CONFIG";
-import {dbResult, getFromDB, hasScreen} from "../util";
+import {userDBResult, getUserFromDB, hasScreen} from "../util";
 import {Kurs} from "../../../source/src/app/Classes";
 import {handlePart0} from "./SetUps/SetUpPart0";
 import {handlePart1} from "./SetUps/SetUpPart1";
