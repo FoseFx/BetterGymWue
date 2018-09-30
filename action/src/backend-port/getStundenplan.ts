@@ -27,8 +27,6 @@ export async function getStundenplan(creds: Creds, stufe: string, stufeid: numbe
     // @ts-ignore
     const availKurse = await getkurse(stufe, stufeid, wochen);
     cleanCreds();
-    console.log("availKurse", availKurse);
-
     const plan = getTT(stufe);
     await pushSPtoDB(plan, availKurse, creds, stufeid);
 

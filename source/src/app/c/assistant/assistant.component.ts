@@ -41,7 +41,7 @@ export class AssistantComponent implements OnInit {
       this.schritt = "2. Datenbank nach dir abfragen";
       let dbresult = await this.base.httpClient.get(CONFIG.actionsDB + sub + "/exists.json").toPromise();
       dbresult = !!dbresult;
-      // dbResult = ist in Datenbank
+      // userDBResult = ist in Datenbank
       console.log("dbresult", dbresult);
 
       if(!dbresult){

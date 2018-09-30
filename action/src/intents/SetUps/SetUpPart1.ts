@@ -8,8 +8,11 @@ export async function handlePart1(conv: Conversation<any>) {
     const payload: Payload = conv.user.storage.payload;
     try{
         let sp = await getStundenplanFromDB(payload.stufeid, payload.creds);
-        if(sp === null)
+        if(sp === null){
+            console.log("SetUpPart1: ", "getStundenplanFromDB returned null, starting setup without cache");
             sp = await getStundenplan(payload.creds, payload.stufe, payload.stufeid);
+        }
+        console.log("sp", sp);
         // todo personalisieren()
 
 

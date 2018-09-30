@@ -4,7 +4,6 @@ import * as admin from "firebase-admin";
 import fetch from 'node-fetch';
 import * as btoa from "btoa";
 const crypto = require('crypto');
-const sha256 = crypto.createHash("sha256");
 
 let ref: admin.database.Reference;
 
@@ -33,6 +32,7 @@ export function cleanCreds(){
 }
 
 export function generateHashedCreds(creds: Creds): string{
+    const sha256 = crypto.createHash("sha256");
     return sha256.update(JSON.stringify({
         u: creds.u,
         p: creds.p
@@ -80,10 +80,17 @@ export async function getStundenplanFromDB(stufeid: number, usrCreds: Creds):Pro
     const spRef: admin.database.Reference = ref.child("sp").child(stufeid.toString());
     const snap = await spRef.once("value");
     const val: StundenplanDBResult|null = snap.val();
-    if(val === null) return null;
+    if(val === null) {
+        console.log("getStundenplanFromDB: ", "no cache found");
+        return null;
+    }
     const now = +(new Date());
-    if(now > val.ttl) return null;
-    if(generateHashedCreds(usrCreds) !== val.credsHash) return null;
+    if(now > val.ttl) {
+        console.log("getStundenplanFromDB: ", "cache is too old");
+        return null;
+    }
+    if(generateHashedCreds(usrCreds) !== val.credsHash) throw new Error("Die angegebenen Zugangsdaten stimmen nicht mit dem Zwischenspeicher zusammen. Sollten sich die Daten geändert haben, sollte BGW innerhalb von einer Woche wieder funktionieren. Kontaktiere mich, um den Prozess zu beschleunigen.");
+    console.log("getStundenplanFromDB: ", "Using cache");
     return {plan: val.plan, availKurse: val.availKurse};
 }
 
