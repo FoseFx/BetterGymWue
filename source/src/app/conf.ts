@@ -15,5 +15,6 @@ export const CONFIG = {
   ferienEndsUrl: dd + "ferien/ends.json",
   resets: dd + "resets.json",
   resetHeader: dd + "resetMsg/header.json",
-  resetMsg: dd + "resetMsg/message.json"
+  resetMsg: dd + "resetMsg/message.json",
+  message: dd + "header.json",
 };
