@@ -4,6 +4,7 @@ import {NetwService} from '../../s/network/netw.service';
 import {RefreshttService} from '../../s/refreshtt.service';
 import localeDe from "@angular/common/locales/de"
 import {registerLocaleData} from "@angular/common";
+import {MessageService} from "../../s/message.service";
 registerLocaleData(localeDe);
 
 @Component({
@@ -14,7 +15,7 @@ registerLocaleData(localeDe);
 export class AppComponent implements OnInit{
 
   constructor(public baseService: BaseService, private netwService: NetwService,
-              private refresh: RefreshttService){};
+              private refresh: RefreshttService, public message: MessageService){};
 
 
   @ViewChild('hamNav') hamnav;
