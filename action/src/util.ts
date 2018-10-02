@@ -3,7 +3,8 @@ import {Kurs, TempTT} from "../../source/src/app/Classes";
 import * as admin from "firebase-admin";
 import fetch from 'node-fetch';
 import * as btoa from "btoa";
-import {WritableOptions} from "stream";
+import {Creds, Stundenplan, StundenplanDBResult, userDBResult} from "./Classes";
+
 const crypto = require('crypto');
 
 let ref: admin.database.Reference;
@@ -34,46 +35,9 @@ export function cleanCreds(){
 
 export function generateHashedCreds(creds: Creds): string{
     const sha256 = crypto.createHash("sha256");
-    return sha256.update(JSON.stringify({
-        u: creds.u,
-        p: creds.p
-    })).digest("base64");
+    return sha256.update(`${creds.u}:${creds.p}`).digest("base64");
 }
 
-//
-// Classes
-//
-export interface Creds {u: string, p: string, l?: {u: string, p: string}}
-
-export interface userDBResult {
-    exists: boolean;
-    creds: Creds;
-    stufe: string;
-    stufeid: number;
-    kurse: Kurs[];
-}
-
-
-export class Stundenplan{
-    plan: TempTT;
-    availKurse: Kurs[];
-}
-
-export type PersoPlan = Woche[];
-
-export type Woche = Stunden[];
-
-export type Stunden = Array<Stunde | 0>
-
-export class Stunde {fach: string; readAlias?: string}
-
-
-export class StundenplanDBResult{
-    ttl: number; // UTC value
-    plan: TempTT;
-    availKurse: Kurs[];
-    credsHash: string // generateHashedCreds()
-}
 
 //
 // DB Functions

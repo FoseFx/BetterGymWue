@@ -53,7 +53,7 @@ function getTT(stufe) {
     console.log(tempTTs);
     var r = null;
     tempTTs.forEach(function (val) { if (val.stufe === stufe)
-        r = val.tt; });
+        r = val; });
     return r;
 }
 exports.getTT = getTT;

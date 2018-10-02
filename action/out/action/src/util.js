@@ -66,30 +66,9 @@ function cleanCreds() {
 exports.cleanCreds = cleanCreds;
 function generateHashedCreds(creds) {
     var sha256 = crypto.createHash("sha256");
-    return sha256.update(JSON.stringify({
-        u: creds.u,
-        p: creds.p
-    })).digest("base64");
+    return sha256.update(creds.u + ":" + creds.p).digest("base64");
 }
 exports.generateHashedCreds = generateHashedCreds;
-var Stundenplan = /** @class */ (function () {
-    function Stundenplan() {
-    }
-    return Stundenplan;
-}());
-exports.Stundenplan = Stundenplan;
-var Stunde = /** @class */ (function () {
-    function Stunde() {
-    }
-    return Stunde;
-}());
-exports.Stunde = Stunde;
-var StundenplanDBResult = /** @class */ (function () {
-    function StundenplanDBResult() {
-    }
-    return StundenplanDBResult;
-}());
-exports.StundenplanDBResult = StundenplanDBResult;
 //
 // DB Functions
 //

@@ -1,0 +1,45 @@
+//
+// Classes, Types and Interfaces
+//
+import {Kurs, TempTT} from "../../source/src/app/Classes";
+
+export interface Creds {
+    u: string,
+    p: string,
+    l?: { u: string, p: string }
+}
+
+export interface userDBResult {
+    exists: boolean;
+    creds: Creds;
+    stufe: string;
+    stufeid: number;
+    kurse: Kurs[];
+    aliases: string[];
+    klasse: string[];
+}
+
+export class Stundenplan {
+    plan: TempTT;
+    availKurse: Kurs[];
+}
+
+export type PersoPlan = Woche[];
+export type Woche = Stunden[];
+export type Stunden = Array<Stunde | 0>
+
+export class Stunde {
+    fach: string;
+    readAlias?: string
+}
+
+export class StundenplanDBResult {
+    ttl: number; // UTC value
+    plan: TempTT;
+    availKurse: Kurs[];
+    credsHash: string // generateHashedCreds()
+}
+
+export interface Payload extends userDBResult{
+    plan?: PersoPlan;
+}

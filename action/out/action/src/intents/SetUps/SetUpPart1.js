@@ -60,7 +60,8 @@ function handlePart1(conv) {
                     sp = _a.sent();
                     _a.label = 4;
                 case 4:
-                    conv.user.storage.payload.plan = personalisieren_1.personalisieren(sp, payload.kurse);
+                    conv.user.storage.payload.plan = personalisieren_1.personalisieren(sp, payload.kurse, payload.aliases, payload.klasse);
+                    delete conv.user.storage.payload.kurse;
                     return [2 /*return*/, conv.ask(new actions_on_google_1.SimpleResponse({
                             text: "Das scheint zu funktionieren!",
                             speech: "Super!"

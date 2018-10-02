@@ -16,7 +16,12 @@ export class AssistantComponent implements OnInit {
   block = false;
   loginned = false;
   schritt = "";
-  constructor(private alert: AlertService, private base: BaseService) { }
+  sub:string;
+  token;
+  dbresult;
+  aliases = [];
+  done = false;
+  constructor(private alert: AlertService, public base: BaseService) { }
 
   ngOnInit() {
     firebase.initializeApp({
@@ -34,29 +39,18 @@ export class AssistantComponent implements OnInit {
       let result = await firebase.auth().signInWithPopup(this.provider);
       console.log(result);
       // @ts-ignore
-        const token = result.credential.idToken;
+      this.token = result.credential.idToken;
       // @ts-ignore
-      let sub = JSON.parse(atob(result.user.qa.split(".")[1])).sub;
-      console.log("sub", sub);
+      this.sub = JSON.parse(atob(result.user.qa.split(".")[1])).sub;
+      console.log("sub", this.sub);
+
       this.schritt = "2. Datenbank nach dir abfragen";
-      let dbresult = await this.base.httpClient.get(CONFIG.actionsDB + sub + "/exists.json").toPromise();
+      let dbresult = await this.base.httpClient.get(CONFIG.actionsDB + this.sub + "/exists.json").toPromise();
       dbresult = !!dbresult;
+      this.dbresult = dbresult;
       // userDBResult = ist in Datenbank
       console.log("dbresult", dbresult);
 
-      if(!dbresult){
-        this.schritt = "3. Dich in Datenbank eintragen";
-        let actionsRegisterResult = await this.base.httpClient.post(CONFIG.actionsApp, {
-          stufe: this.base.myStufe,
-          stufeid: +this.base.myStufeID,
-          kurse: this.base.myKurse,
-          token: token,
-          creds: this.base.credentials
-        }).toPromise();
-
-        console.log("result2", actionsRegisterResult);
-        this.schritt = "4. Fertig";
-      }
 
       this.loginned = true;
     }catch (e) {
@@ -67,5 +61,33 @@ export class AssistantComponent implements OnInit {
       this.schritt = "";
     }
   }
+
+  async dbQuery(){
+    if(!this.fulfilled) return;
+
+    this.done = true;
+
+    this.schritt = "3. Dich in Datenbank eintragen";
+    let actionsRegisterResult = await this.base.httpClient.post(CONFIG.actionsApp, {
+      stufe: this.base.myStufe,
+      stufeid: +this.base.myStufeID,
+      kurse: this.base.myKurse,
+      token: this.token,
+      creds: this.base.credentials,
+      aliases: this.aliases,
+      klasse: this.base.KlassenKurse
+    }).toPromise();
+
+    console.log("result2", actionsRegisterResult);
+    this.schritt = "4. Fertig";
+
+  }
+
+  get fulfilled(){
+    return (
+      this.aliases.length === (this.base.myKurse.length + this.base.KlassenKurse.length))
+      && this.aliases.every(value => !!value.replace(/\s/g, ""));
+  }
+
 
 }

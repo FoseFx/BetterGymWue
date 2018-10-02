@@ -1,12 +1,11 @@
 import {CONFIG} from "../../../source/src/app/conf";
 import {
     cleanCreds,
-    Creds,
     fetchWithCreds,
     pushSPtoDB,
-    Stundenplan,
-} from "../util";
+    } from "../util";
 import {get_stufen, getkurse, getKurseDebug, getTempTTs, getTT} from "./intital-port";
+import {Creds, Stundenplan} from "../Classes";
 
 export async function getStundenplan(creds: Creds, stufe: string, stufeid: number): Promise<Stundenplan>{
     // step 1: get_stufen()

@@ -19,8 +19,10 @@ export async function handlePart0(conv, givenName, id) {
         conv.user.storage.payload = {};
         conv.user.storage.payload.kurse = dbResolve.kurse;
         conv.user.storage.payload.creds = dbResolve.creds;
+        conv.user.storage.payload.aliases = dbResolve.aliases;
         conv.user.storage.payload.stufe = dbResolve.stufe;
         conv.user.storage.payload.stufeid = dbResolve.stufeid;
+        conv.user.storage.payload.klasse = dbResolve.klasse;
         return conv.ask(new SimpleResponse({
             text: text,
             speech: speach

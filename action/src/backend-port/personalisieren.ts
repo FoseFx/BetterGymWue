@@ -1,7 +1,12 @@
-import {PersoPlan, Stunden, Stundenplan, Woche} from "../util";
+import {Stundenplan} from "../Classes";
 import {Kurs} from "../../../source/src/app/Classes";
+import {PersoPlan, Stunden, Woche} from "../Classes";
 
-export function personalisieren(SP: Stundenplan, kurse: Kurs[]): PersoPlan {
+export function personalisieren(SP: Stundenplan, kurse: Kurs[], aliases: string[], klasse: string[]): PersoPlan {
+
+    let klasseObj = {};
+    klasse.forEach(function (k, i) { klasseObj[k] = i; });
+
     let ret: PersoPlan = [];
     SP.plan.tt.forEach(function (SPwoche) {
         // woche hat tage
@@ -12,17 +17,18 @@ export function personalisieren(SP: Stundenplan, kurse: Kurs[]): PersoPlan {
             day.forEach(function (stunde) {
                 // stunde aus kurse
                 if (stunde.type === "klasse") {
+                    const index = klasseObj[stunde.fach];
                     stunden.push({
-                        fach: stunde.fach
-                        // todo sayas here
+                        fach: stunde.fach,
+                        readAlias: aliases[kurse.length + index]
                     });
                 }else if(stunde.type === "kurs"){
-                    let kurs: Kurs = kurse.find(value => value.title === stunde.fach);
-                    if(!kurs) stunden.push(0);
+                    let kursIndex = kurse.findIndex(value => value.title === stunde.fach);
+                    if(kursIndex === -1) stunden.push(0);
                     else
                         stunden.push({
-                            fach: kurs.fach
-                            // todo asyas
+                            fach: kurse[kursIndex].fach,
+                            readAlias: aliases[kursIndex]
                         });
                 }
             }); // day
