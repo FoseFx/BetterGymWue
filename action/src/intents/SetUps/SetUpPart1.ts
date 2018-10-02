@@ -2,6 +2,7 @@ import {Conversation, SimpleResponse} from "actions-on-google";
 import {getStundenplan} from "../../backend-port/getStundenplan";
 import {Payload} from "../../Payload";
 import {getStundenplanFromDB} from "../../util";
+import {personalisieren} from "../../backend-port/personalisieren";
 
 // download and create timetable
 export async function handlePart1(conv: Conversation<any>) {
@@ -12,9 +13,7 @@ export async function handlePart1(conv: Conversation<any>) {
             console.log("SetUpPart1: ", "getStundenplanFromDB returned null, starting setup without cache");
             sp = await getStundenplan(payload.creds, payload.stufe, payload.stufeid);
         }
-        console.log("sp", sp);
-        // todo personalisieren()
-
+        conv.user.storage.payload.plan = personalisieren(sp, payload.kurse);
 
         return conv.ask(new SimpleResponse({
             text: "Das scheint zu funktionieren!",

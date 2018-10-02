@@ -38,6 +38,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var actions_on_google_1 = require("actions-on-google");
 var getStundenplan_1 = require("../../backend-port/getStundenplan");
 var util_1 = require("../../util");
+var personalisieren_1 = require("../../backend-port/personalisieren");
 // download and create timetable
 function handlePart1(conv) {
     return __awaiter(this, void 0, void 0, function () {
@@ -53,16 +54,17 @@ function handlePart1(conv) {
                 case 2:
                     sp = _a.sent();
                     if (!(sp === null)) return [3 /*break*/, 4];
+                    console.log("SetUpPart1: ", "getStundenplanFromDB returned null, starting setup without cache");
                     return [4 /*yield*/, getStundenplan_1.getStundenplan(payload.creds, payload.stufe, payload.stufeid)];
                 case 3:
                     sp = _a.sent();
                     _a.label = 4;
-                case 4: 
-                // todo personalisieren()
-                return [2 /*return*/, conv.ask(new actions_on_google_1.SimpleResponse({
-                        text: "Das scheint zu funktionieren!",
-                        speech: "Super!"
-                    }))];
+                case 4:
+                    conv.user.storage.payload.plan = personalisieren_1.personalisieren(sp, payload.kurse);
+                    return [2 /*return*/, conv.ask(new actions_on_google_1.SimpleResponse({
+                            text: "Das scheint zu funktionieren!",
+                            speech: "Super!"
+                        }))];
                 case 5:
                     e_1 = _a.sent();
                     console.error(e_1);

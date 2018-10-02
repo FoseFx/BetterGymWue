@@ -39,7 +39,6 @@ var admin = require("firebase-admin");
 var node_fetch_1 = require("node-fetch");
 var btoa = require("btoa");
 var crypto = require('crypto');
-var sha256 = crypto.createHash("sha256");
 var ref;
 //
 // Util
@@ -66,6 +65,7 @@ function cleanCreds() {
 }
 exports.cleanCreds = cleanCreds;
 function generateHashedCreds(creds) {
+    var sha256 = crypto.createHash("sha256");
     return sha256.update(JSON.stringify({
         u: creds.u,
         p: creds.p
@@ -78,6 +78,12 @@ var Stundenplan = /** @class */ (function () {
     return Stundenplan;
 }());
 exports.Stundenplan = Stundenplan;
+var Stunde = /** @class */ (function () {
+    function Stunde() {
+    }
+    return Stunde;
+}());
+exports.Stunde = Stunde;
 var StundenplanDBResult = /** @class */ (function () {
     function StundenplanDBResult() {
     }
@@ -117,13 +123,18 @@ function getStundenplanFromDB(stufeid, usrCreds) {
                 case 1:
                     snap = _a.sent();
                     val = snap.val();
-                    if (val === null)
+                    if (val === null) {
+                        console.log("getStundenplanFromDB: ", "no cache found");
                         return [2 /*return*/, null];
+                    }
                     now = +(new Date());
-                    if (now > val.ttl)
+                    if (now > val.ttl) {
+                        console.log("getStundenplanFromDB: ", "cache is too old");
                         return [2 /*return*/, null];
+                    }
                     if (generateHashedCreds(usrCreds) !== val.credsHash)
-                        return [2 /*return*/, null];
+                        throw new Error("Die angegebenen Zugangsdaten stimmen nicht mit dem Zwischenspeicher zusammen. Sollten sich die Daten geändert haben, sollte BGW innerhalb von einer Woche wieder funktionieren. Kontaktiere mich, um den Prozess zu beschleunigen.");
+                    console.log("getStundenplanFromDB: ", "Using cache");
                     return [2 /*return*/, { plan: val.plan, availKurse: val.availKurse }];
             }
         });

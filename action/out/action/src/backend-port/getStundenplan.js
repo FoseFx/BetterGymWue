@@ -64,7 +64,6 @@ function getStundenplan(creds, stufe, stufeid) {
                 case 5:
                     availKurse = _a.sent();
                     util_1.cleanCreds();
-                    console.log("availKurse", availKurse);
                     plan = intital_port_1.getTT(stufe);
                     return [4 /*yield*/, util_1.pushSPtoDB(plan, availKurse, creds, stufeid)];
                 case 6:

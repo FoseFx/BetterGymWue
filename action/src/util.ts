@@ -3,6 +3,7 @@ import {Kurs, TempTT} from "../../source/src/app/Classes";
 import * as admin from "firebase-admin";
 import fetch from 'node-fetch';
 import * as btoa from "btoa";
+import {WritableOptions} from "stream";
 const crypto = require('crypto');
 
 let ref: admin.database.Reference;
@@ -57,6 +58,15 @@ export class Stundenplan{
     plan: TempTT;
     availKurse: Kurs[];
 }
+
+export type PersoPlan = Woche[];
+
+export type Woche = Stunden[];
+
+export type Stunden = Array<Stunde | 0>
+
+export class Stunde {fach: string; readAlias?: string}
+
 
 export class StundenplanDBResult{
     ttl: number; // UTC value
