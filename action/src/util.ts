@@ -1,5 +1,5 @@
 import {Conversation} from "actions-on-google";
-import {Kurs, TempTT} from "../../source/src/app/Classes";
+import {Kurs, TempTT, TTinTempTT} from "../../source/src/app/Classes";
 import * as admin from "firebase-admin";
 import fetch from 'node-fetch';
 import * as btoa from "btoa";
@@ -55,7 +55,7 @@ export interface userDBResult {
 
 
 export class Stundenplan{
-    plan: TempTT;
+    plan: TTinTempTT;
     availKurse: Kurs[];
 }
 

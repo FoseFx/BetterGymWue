@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 function personalisieren(SP, kurse) {
     var ret = [];
-    SP.plan.tt.forEach(function (SPwoche) {
+    SP.plan.forEach(function (SPwoche) {
         // woche hat tage
         var woche = [];
         SPwoche.days.forEach(function (day) {

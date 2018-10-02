@@ -30,6 +30,6 @@ export async function getStundenplan(creds: Creds, stufe: string, stufeid: numbe
     const plan = getTT(stufe);
     await pushSPtoDB(plan, availKurse, creds, stufeid);
 
-    return {plan: plan, availKurse: availKurse};
+    return {plan: plan.tt, availKurse: availKurse};
 }
 
