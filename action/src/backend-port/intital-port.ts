@@ -17,8 +17,8 @@ export function getKurseDebug() {
 export function getTT(stufe:string): TempTT{
     console.log(stufe);
     console.log(tempTTs);
-    let r = null;
-    tempTTs.forEach((val) => { if (val.stufe === stufe) r = val.tt; });
+    let r: TempTT = null;
+    tempTTs.forEach((val) => { if (val.stufe === stufe) r = val; });
     return r;
 }
 
