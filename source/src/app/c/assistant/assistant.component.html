@@ -28,7 +28,7 @@
         <td><mat-form-field><input [placeholder]="k.fach" [(ngModel)]="aliases[i]" [name]="i" matInput></mat-form-field></td>
       </tr>
       <th colspan="2">Klasse</th>
-      <tr *ngFor="let k of base.KlassenKurse; let i = index;">
+      <tr *ngFor="let k of base.KlassenKurse; let i = index + base.myKurse.length;">
         <td><h4>{{k}}</h4></td>
         <td><mat-form-field><input [placeholder]="k" [(ngModel)]="aliases[i]" [name]="i" matInput></mat-form-field></td>
       </tr>
