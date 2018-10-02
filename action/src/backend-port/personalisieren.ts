@@ -3,7 +3,7 @@ import {Kurs} from "../../../source/src/app/Classes";
 
 export function personalisieren(SP: Stundenplan, kurse: Kurs[]): PersoPlan {
     let ret: PersoPlan = [];
-    SP.plan.forEach(function (SPwoche) {
+    SP.plan.tt.forEach(function (SPwoche) {
         // woche hat tage
         let woche: Woche = [];
         SPwoche.days.forEach(function (day) {
