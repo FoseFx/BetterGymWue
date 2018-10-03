@@ -10,7 +10,7 @@ export async function SignInIntent(conv: Conversation<any>, params, signin) {
     if (signin.status !== "OK")
         return conv.close("Ohne deine Erlaubnis kann ich nicht auf deine Kurse zugreifen.");
     const payload = conv.user.profile.payload;
-    const givenName = payload.given_name;
+    const givenName = signin.given_name;
     const id = payload.sub;
 
     if(conv.user.storage.done === true){

@@ -15,14 +15,16 @@ export async function handlePart0(conv, givenName, id) {
             text += `${kurs.fach} mit ${kurs.lehrer},\n`;
         });
         speach += ". <break time='0.5s'/>Sollte das falsch sein, kannst du es jederzeit ändern, wo du es eingerichtet hast. Sage 'weiter' um die Einrichtung fortzufahren.</speach>";
+        conv.user.storage = {};
+        conv.user.storage.payload = {
+            kurse: dbResolve.kurse,
+            creds: dbResolve.creds,
+            aliases: dbResolve.aliases,
+            stufe: dbResolve.stufe,
+            stufeid: dbResolve.stufeid,
+            klasse: dbResolve.klasse
+        };
         conv.user.storage.step = 1;
-        conv.user.storage.payload = {};
-        conv.user.storage.payload.kurse = dbResolve.kurse;
-        conv.user.storage.payload.creds = dbResolve.creds;
-        conv.user.storage.payload.aliases = dbResolve.aliases;
-        conv.user.storage.payload.stufe = dbResolve.stufe;
-        conv.user.storage.payload.stufeid = dbResolve.stufeid;
-        conv.user.storage.payload.klasse = dbResolve.klasse;
         return conv.ask(new SimpleResponse({
             text: text,
             speech: speach

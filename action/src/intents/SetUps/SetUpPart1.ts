@@ -14,7 +14,8 @@ export async function handlePart1(conv: Conversation<any>) {
             sp = await getStundenplan(payload.creds, payload.stufe, payload.stufeid);
         }
         conv.user.storage.payload.plan = personalisieren(sp, payload.kurse, payload.aliases, payload.klasse);
-        delete conv.user.storage.payload.kurse;
+        conv.user.storage.payload.kurse = undefined;
+        conv.user.storage.done = true;
 
         return conv.ask(new SimpleResponse({
             text: "Das scheint zu funktionieren!",
