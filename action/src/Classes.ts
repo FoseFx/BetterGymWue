@@ -40,6 +40,13 @@ export class StundenplanDBResult {
     credsHash: string // generateHashedCreds()
 }
 
-export interface Payload extends userDBResult{
+//                        Kurs|Klasse, alias,  KursTitle
+export type mergedAlias = [string, string, string?];
+
+export interface Payload {
     plan?: PersoPlan;
+    mergedAliases: mergedAlias[];
+    creds: Creds;
+    stufe: string;
+    stufeid: number;
 }

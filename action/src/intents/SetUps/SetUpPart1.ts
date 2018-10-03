@@ -13,8 +13,7 @@ export async function handlePart1(conv: Conversation<any>) {
             console.log("SetUpPart1: ", "getStundenplanFromDB returned null, starting setup without cache");
             sp = await getStundenplan(payload.creds, payload.stufe, payload.stufeid);
         }
-        conv.user.storage.payload.plan = personalisieren(sp, payload.kurse, payload.aliases, payload.klasse);
-        conv.user.storage.payload.kurse = undefined;
+        conv.user.storage.payload.plan = personalisieren(sp, payload.mergedAliases);
         conv.user.storage.done = true;
 
         return conv.ask(new SimpleResponse({

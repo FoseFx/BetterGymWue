@@ -3,7 +3,7 @@ import {Kurs, TempTT} from "../../source/src/app/Classes";
 import * as admin from "firebase-admin";
 import fetch from 'node-fetch';
 import * as btoa from "btoa";
-import {Creds, Stundenplan, StundenplanDBResult, userDBResult} from "./Classes";
+import {Creds, mergedAlias, Stundenplan, StundenplanDBResult, userDBResult} from "./Classes";
 
 const crypto = require('crypto');
 
@@ -38,6 +38,17 @@ export function generateHashedCreds(creds: Creds): string{
     return sha256.update(`${creds.u}:${creds.p}`).digest("base64");
 }
 
+
+export function generateMergedAliases(kurse: Kurs[], klasse: string[], aliases:string[]): mergedAlias[] {
+    let mergedAliases: mergedAlias[] = [];
+    kurse.forEach(function (k, i) {
+        mergedAliases.push([k.fach, aliases[i], k.title]);
+    });
+    klasse.forEach(function (k, i) {
+        mergedAliases.push([k, aliases[kurse.length + i]]);
+    });
+    return mergedAliases;
+}
 
 //
 // DB Functions

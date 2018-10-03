@@ -1,4 +1,4 @@
-import {getUserFromDB, hasScreen} from "../../util";
+import {getUserFromDB, hasScreen, generateMergedAliases} from "../../util";
 import {Kurs} from "../../../../source/src/app/Classes";
 import {SimpleResponse} from "actions-on-google";
 import {REGISTER_URL} from "../../CONFIG";
@@ -7,22 +7,23 @@ export async function handlePart0(conv, givenName, id) {
     const dbResolve = await getUserFromDB(id);
     let isRegistered = !!dbResolve;
     if(isRegistered){
-        let speach = "<speach> Follgendes weiß ich über deine Kurse: ";
+
+        const mergedAliases = generateMergedAliases(dbResolve.kurse, dbResolve.klasse, dbResolve.aliases);
+
+        let speach = "<speach> Follgendes weiß ich über deine Kurse: <break time='0.5s'/>";
         let text = "";
-        dbResolve.kurse.forEach(function (kurs: Kurs) {
+        dbResolve.kurse.forEach(function (kurs: Kurs, i) {
             if(kurs.fach === "FREI") return;
-            speach += `<say-as interpret-as="characters">${kurs.fach}</say-as> mit <say-as interpret-as="characters">${kurs.lehrer}</say-as><break time="0.5s"/>`;
+            speach += `${dbResolve.aliases[i]} mit <say-as interpret-as="characters">${kurs.lehrer}</say-as><break time="0.5s"/>`;
             text += `${kurs.fach} mit ${kurs.lehrer},\n`;
         });
         speach += ". <break time='0.5s'/>Sollte das falsch sein, kannst du es jederzeit ändern, wo du es eingerichtet hast. Sage 'weiter' um die Einrichtung fortzufahren.</speach>";
         conv.user.storage = {};
         conv.user.storage.payload = {
-            kurse: dbResolve.kurse,
             creds: dbResolve.creds,
-            aliases: dbResolve.aliases,
+            mergedAliases: mergedAliases,
             stufe: dbResolve.stufe,
             stufeid: dbResolve.stufeid,
-            klasse: dbResolve.klasse
         };
         conv.user.storage.step = 1;
         return conv.ask(new SimpleResponse({

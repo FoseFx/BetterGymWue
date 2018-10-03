@@ -1,11 +1,9 @@
-import {Stundenplan} from "../Classes";
+import {mergedAlias, Stundenplan} from "../Classes";
 import {Kurs} from "../../../source/src/app/Classes";
 import {PersoPlan, Stunden, Woche} from "../Classes";
 
-export function personalisieren(SP: Stundenplan, kurse: Kurs[], aliases: string[], klasse: string[]): PersoPlan {
+export function personalisieren(SP: Stundenplan, mergedAliases: mergedAlias[]): PersoPlan {
 
-    let klasseObj = {};
-    klasse.forEach(function (k, i) { klasseObj[k] = i; });
 
     let ret: PersoPlan = [];
     SP.plan.tt.forEach(function (SPwoche) {
@@ -17,18 +15,18 @@ export function personalisieren(SP: Stundenplan, kurse: Kurs[], aliases: string[
             day.forEach(function (stunde) {
                 // stunde aus kurse
                 if (stunde.type === "klasse") {
-                    const index = klasseObj[stunde.fach];
+                    const alias = mergedAliases.find(mA => mA[0] === stunde.fach)[1];
                     stunden.push({
                         fach: stunde.fach,
-                        readAlias: aliases[kurse.length + index]
+                        readAlias: alias
                     });
                 }else if(stunde.type === "kurs"){
-                    let kursIndex = kurse.findIndex(value => value.title === stunde.fach);
-                    if(kursIndex === -1) stunden.push(0);
+                    const mA = mergedAliases.find(value => value[2] === stunde.fach);
+                    if(!mA) stunden.push(0);
                     else
                         stunden.push({
-                            fach: kurse[kursIndex].fach,
-                            readAlias: aliases[kursIndex]
+                            fach: mA[0],
+                            readAlias: mA[1]
                         });
                 }
             }); // day
