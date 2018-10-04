@@ -17,8 +17,8 @@ export async function handlePart1(conv: Conversation<any>) {
         conv.user.storage.done = true;
 
         return conv.ask(new SimpleResponse({
-            text: "Das scheint zu funktionieren!",
-            speech: "Super!"
+            text: "BGW ist jetzt eingerichtet! Frag mich was!",
+            speech: "BGW ist jetzt eingerichtet! Frag mich was!"
         }));
     }catch (e) {
         console.error(e);

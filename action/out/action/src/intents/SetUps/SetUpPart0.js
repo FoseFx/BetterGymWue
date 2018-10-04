@@ -40,7 +40,7 @@ var actions_on_google_1 = require("actions-on-google");
 var CONFIG_1 = require("../../CONFIG");
 function handlePart0(conv, givenName, id) {
     return __awaiter(this, void 0, void 0, function () {
-        var dbResolve, isRegistered, speach_1, text_1, sorryText, sorrySpeach;
+        var dbResolve, isRegistered, mergedAliases, speach_1, text_1, sorryText, sorrySpeach;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, util_1.getUserFromDB(id)];
@@ -48,23 +48,24 @@ function handlePart0(conv, givenName, id) {
                     dbResolve = _a.sent();
                     isRegistered = !!dbResolve;
                     if (isRegistered) {
-                        speach_1 = "<speach> Follgendes weiß ich über deine Kurse: ";
+                        mergedAliases = util_1.generateMergedAliases(dbResolve.kurse, dbResolve.klasse, dbResolve.aliases);
+                        speach_1 = "<speach> Follgendes weiß ich über deine Kurse: <break time='0.5s'/>";
                         text_1 = "";
-                        dbResolve.kurse.forEach(function (kurs) {
+                        dbResolve.kurse.forEach(function (kurs, i) {
                             if (kurs.fach === "FREI")
                                 return;
-                            speach_1 += "<say-as interpret-as=\"characters\">" + kurs.fach + "</say-as> mit <say-as interpret-as=\"characters\">" + kurs.lehrer + "</say-as><break time=\"0.5s\"/>";
+                            speach_1 += dbResolve.aliases[i] + " mit <say-as interpret-as=\"characters\">" + kurs.lehrer + "</say-as><break time=\"0.5s\"/>";
                             text_1 += kurs.fach + " mit " + kurs.lehrer + ",\n";
                         });
                         speach_1 += ". <break time='0.5s'/>Sollte das falsch sein, kannst du es jederzeit ändern, wo du es eingerichtet hast. Sage 'weiter' um die Einrichtung fortzufahren.</speach>";
+                        conv.user.storage = {};
+                        conv.user.storage.payload = {
+                            creds: dbResolve.creds,
+                            mergedAliases: mergedAliases,
+                            stufe: dbResolve.stufe,
+                            stufeid: dbResolve.stufeid,
+                        };
                         conv.user.storage.step = 1;
-                        conv.user.storage.payload = {};
-                        conv.user.storage.payload.kurse = dbResolve.kurse;
-                        conv.user.storage.payload.creds = dbResolve.creds;
-                        conv.user.storage.payload.aliases = dbResolve.aliases;
-                        conv.user.storage.payload.stufe = dbResolve.stufe;
-                        conv.user.storage.payload.stufeid = dbResolve.stufeid;
-                        conv.user.storage.payload.klasse = dbResolve.klasse;
                         return [2 /*return*/, conv.ask(new actions_on_google_1.SimpleResponse({
                                 text: text_1,
                                 speech: speach_1

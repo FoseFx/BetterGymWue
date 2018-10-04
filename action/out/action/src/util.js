@@ -69,6 +69,17 @@ function generateHashedCreds(creds) {
     return sha256.update(creds.u + ":" + creds.p).digest("base64");
 }
 exports.generateHashedCreds = generateHashedCreds;
+function generateMergedAliases(kurse, klasse, aliases) {
+    var mergedAliases = [];
+    kurse.forEach(function (k, i) {
+        mergedAliases.push([k.fach, aliases[i], k.title]);
+    });
+    klasse.forEach(function (k, i) {
+        mergedAliases.push([k, aliases[kurse.length + i]]);
+    });
+    return mergedAliases;
+}
+exports.generateMergedAliases = generateMergedAliases;
 //
 // DB Functions
 //

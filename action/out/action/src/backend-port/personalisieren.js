@@ -1,8 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-function personalisieren(SP, kurse, aliases, klasse) {
-    var klasseObj = {};
-    klasse.forEach(function (k, i) { klasseObj[k] = i; });
+function personalisieren(SP, mergedAliases) {
     var ret = [];
     SP.plan.tt.forEach(function (SPwoche) {
         // woche hat tage
@@ -13,20 +11,20 @@ function personalisieren(SP, kurse, aliases, klasse) {
             day.forEach(function (stunde) {
                 // stunde aus kurse
                 if (stunde.type === "klasse") {
-                    var index = klasseObj[stunde.fach];
+                    var alias = mergedAliases.find(function (mA) { return mA[0] === stunde.fach; })[1];
                     stunden.push({
                         fach: stunde.fach,
-                        readAlias: aliases[kurse.length + index]
+                        readAlias: alias
                     });
                 }
                 else if (stunde.type === "kurs") {
-                    var kursIndex = kurse.findIndex(function (value) { return value.title === stunde.fach; });
-                    if (kursIndex === -1)
+                    var mA = mergedAliases.find(function (value) { return value[2] === stunde.fach; });
+                    if (!mA)
                         stunden.push(0);
                     else
                         stunden.push({
-                            fach: kurse[kursIndex].fach,
-                            readAlias: aliases[kursIndex]
+                            fach: mA[0],
+                            readAlias: mA[1]
                         });
                 }
             }); // day

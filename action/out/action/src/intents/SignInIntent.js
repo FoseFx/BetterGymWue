@@ -46,7 +46,7 @@ function SignInIntent(conv, params, signin) {
                     if (signin.status !== "OK")
                         return [2 /*return*/, conv.close("Ohne deine Erlaubnis kann ich nicht auf deine Kurse zugreifen.")];
                     payload = conv.user.profile.payload;
-                    givenName = payload.given_name;
+                    givenName = signin.given_name;
                     id = payload.sub;
                     if (conv.user.storage.done === true) {
                         // TODO redirect to "Home Intent"
