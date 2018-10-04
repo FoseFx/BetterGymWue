@@ -10,7 +10,7 @@ import {Kurs, TT} from "../../Classes";
 
 @Injectable()
 export class BaseService {
-  public VERSION = "1.4.5 Beta";
+  public VERSION = "1.4.9.5 Beta";
   public acceptedAGB: boolean;
   allowedBrowser: boolean;
   public credentials: {u: string, p: string, l?: {u: string, p: string}};
@@ -30,6 +30,7 @@ export class BaseService {
   public ferienEndsOn = "";
   public justResetted = false;
   public deadTested = false;
+
 
   constructor(public router: Router,
               public httpClient: HttpClient,

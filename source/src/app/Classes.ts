@@ -51,6 +51,7 @@ export class TimeTableSlot {
   pos? : any[];
   isBig?: boolean;
   tag? : number;
+  isUsed?: boolean;
 }
 
 

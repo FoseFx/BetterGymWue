@@ -4,8 +4,8 @@ import {TimeTableSlot} from "../../Classes";
 export function evaKurse(html: string, stufe:string, tempTTs: TempTTs, kurse: KurseType):void {
   const parser = new DOMParser();
   let doc = parser.parseFromString(html, "text/html");
-  let woche = (<HTMLElement>(
-    doc.querySelectorAll('font[size="3"][face="Arial"]')[1]
+  let woche: 0|1 = (<HTMLElement>(
+      doc.querySelectorAll('font[size="3"][face="Arial"]')[1]
     )
   ).textContent.split(/(?:\d+\.){2}\d{4} /)[1][0].toLowerCase() === "a"? 0: 1;
 
@@ -32,7 +32,7 @@ export function evaKurse(html: string, stufe:string, tempTTs: TempTTs, kurse: Ku
 
       if(/^\npause\n/i.test(td.textContent) || td.textContent === "") {
         // @ts-ignore
-        stunde.push({});
+        stunde.push({isUsed: true});
         return;
       }
 
@@ -40,10 +40,14 @@ export function evaKurse(html: string, stufe:string, tempTTs: TempTTs, kurse: Ku
 
       let info: HTMLElement[] = Array.from(td.getElementsByTagName('tr'));
 
-
+      let isUsed = false;
       if(!doppelStunde){
-        let indexOfFirstSmallSlotBefore = data[data.length-1].findIndex((e: TimeTableSlot)=> !e.isBig);
+        let indexOfFirstSmallSlotBefore = data[data.length-1].findIndex((e: TimeTableSlot)=> !e.isBig && !e.isUsed);
         tag = indexOfFirstSmallSlotBefore === -1? tag : indexOfFirstSmallSlotBefore + 1;
+        if(indexOfFirstSmallSlotBefore !== -1){
+          data[data.length-1][indexOfFirstSmallSlotBefore].isUsed = true;
+          isUsed = true;
+        }
         // +1 to counter following -1, which is needed because of the exclusion
       }
 
@@ -61,7 +65,8 @@ export function evaKurse(html: string, stufe:string, tempTTs: TempTTs, kurse: Ku
           fach: spalten[0],
           lehrer: spalten[1],
           raum: spalten[2],
-          tag: tag - 1
+          tag: tag - 1,
+          isUsed: isUsed
         });
       }else{
         //
@@ -111,7 +116,8 @@ export function evaKurse(html: string, stufe:string, tempTTs: TempTTs, kurse: Ku
           fach: title,
           isBig: doppelStunde,
           raeume: raeume,
-          tag: tag - 1
+          tag: tag - 1,
+          isUsed: isUsed
         });
 
 
@@ -121,6 +127,14 @@ export function evaKurse(html: string, stufe:string, tempTTs: TempTTs, kurse: Ku
       data.push(stunde);
 
   }); // tr
+
+  umdrehen(data, tempTTs, woche, stufe);
+
+}
+
+
+
+function umdrehen(data: TimeTableSlot[][], tempTTs: TempTTs, woche: 0|1, stufe:string) {
   let tt: {days: TimeTableSlot[][]} = {days: [[], [], [], [], []]};
   data.forEach(function (stundeE, stunde) {
     stundeE.forEach(function (timetableslot, untrustedtag) {
@@ -134,8 +148,8 @@ export function evaKurse(html: string, stufe:string, tempTTs: TempTTs, kurse: Ku
       }
 
       if (timetableslot.fach !== undefined ){
-          tts = Object.assign({}, timetableslot);
-          delete tts.isBig;
+        tts = Object.assign({}, timetableslot);
+        delete tts.isBig;
       }
 
       // add to TT
