@@ -35,7 +35,14 @@ export class StundenplanComponent implements OnInit {
         let d: {fach: string, raum: string, sel: boolean, isDouble?: boolean, hasDouble?: boolean}[][] = [];
 
         tag.forEach((stunde: TimeTableSlot, stundeindex) => {
-          if(stunde.type == 'klasse') d.push([{fach: stunde.fach, raum: stunde.raum, sel: true}]);
+          if(stunde.type == 'klasse') {
+            let davor = d[d.length-1];
+            let isDouble = false;
+            if(davor)
+              isDouble = davor[0].fach === stunde.fach && davor[0].raum === stunde.raum;
+            if(isDouble) d[d.length-1][0].hasDouble = true;
+            d.push([{fach: stunde.fach, raum: stunde.raum, sel: true, isDouble: isDouble}]);
+          }
           else{
             let s: {fach: string, raum: string, sel: boolean, isDouble?: boolean, hasDouble?: boolean}[] = [];
             if(!stunde.raeume) {
@@ -59,11 +66,10 @@ export class StundenplanComponent implements OnInit {
                 down++;
               }
 
-              s.forEach((value, index) => {
-                davor.forEach((opposite) => {
-                  if(opposite.fach === value.fach && opposite.raum === value.raum && opposite.sel === value.sel) isDouble = true;
-                });
-              });
+              isDouble = s.some(value =>
+                !!davor.find(v=>v.fach === value.fach && v.raum === value.raum && v.sel === value.sel)
+              );
+
               if (isDouble) davor[0].hasDouble = true;
             }
             /** **/
