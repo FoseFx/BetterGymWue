@@ -41,7 +41,7 @@ export function evaKurse(html: string, stufe:string, tempTTs: TempTTs, kurse: Ku
 
             if(/^\npause\n/i.test(td.textContent) || td.textContent === "") {
                 // @ts-ignore
-                stunde.push({});
+                stunde.push({isUsed: true});
                 return;
             }
 
@@ -49,11 +49,15 @@ export function evaKurse(html: string, stufe:string, tempTTs: TempTTs, kurse: Ku
 
             let info: HTMLElement[] = Array.from(td.getElementsByTagName('tr'));
 
-
+            let isUsed = false;
             if(!doppelStunde){
                 let indexOfFirstSmallSlotBefore = data[data.length-1].findIndex((e: TimeTableSlot)=> !e.isBig);
                 tag = indexOfFirstSmallSlotBefore === -1? tag : indexOfFirstSmallSlotBefore + 1;
                 // +1 to counter following -1, which is needed because of the exclusion
+                if(indexOfFirstSmallSlotBefore !== -1){
+                    data[data.length-1][indexOfFirstSmallSlotBefore].isUsed = true;
+                    isUsed = true;
+                }
             }
 
 
@@ -70,7 +74,8 @@ export function evaKurse(html: string, stufe:string, tempTTs: TempTTs, kurse: Ku
                     fach: spalten[0],
                     lehrer: spalten[1],
                     raum: spalten[2],
-                    tag: tag - 1
+                    tag: tag - 1,
+                    isUsed: isUsed
                 });
             }else{
                 //
@@ -120,7 +125,8 @@ export function evaKurse(html: string, stufe:string, tempTTs: TempTTs, kurse: Ku
                     fach: title,
                     isBig: doppelStunde,
                     raeume: raeume,
-                    tag: tag - 1
+                    tag: tag - 1,
+                    isUsed: isUsed
                 });
 
 
