@@ -34,6 +34,7 @@ export function StundenPlanIntent(conv: Conversation<any>) {
     (<Payload>conv.user.storage.payload).plan[A_B_woche][date.getDay() -1].forEach(function (stunde: Stunde, i, arr) {
         const s = !!stunde.readAlias? stunde.readAlias: ` <say-as interpret-as="characters">${stunde.fach}</say-as>`;
         let dasZweiteMal = false;
+        // @ts-ignore
         if (arr[i-1]) if(arr[i-1].fach === stunde.fach) dasZweiteMal = true;
         if(stunde.fach.toUpperCase() !== "FREI" || !dasZweiteMal) speech += s + "<break time='0.5s'/>";
         text += ` - ${stunde.fach} \n`;
