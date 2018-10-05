@@ -38,11 +38,9 @@ export function StundenPlanIntent(conv: Conversation<any>) {
         let ds = false;
         if(arr[i-1]){
             // @ts-ignore
-            ds = arr[i-1].fach === stunde.fach;
-            // @ts-ignore
-            console.log(arr[i-1].fach, stunde.fach, ds);
+            ds = arr[i-1].fach !== stunde.fach;
         }
-        if(stunde.fach.toUpperCase() !== "FREI") speech += s + "<break time='0.5s'/>";
+        if(stunde.fach.toUpperCase() !== "FREI" || !ds) speech += s + "<break time='0.5s'/>";
         text += ` - ${stunde.fach} \n`;
     });
 
