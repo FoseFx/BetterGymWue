@@ -13,11 +13,9 @@ export function StundenPlanIntent(conv: Conversation<any>) {
     // @ts-ignore
     let date = (<ExpectedParameters>(conv.parameters)).date;
     if(!date) date = new Date();
+    else date = new Date(date);
     let today = new Date();
-    today = new Date(today.getFullYear(), today.getMonth(),today.getDate()); // start of day
-    date = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-    let timeDiff = Math.abs(date.getTime() - today.getTime());
-    const diff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+    let diff = dateDiffInDays(today, date);
     if(diff < 0) return conv.ask("Leider kann ich nicht in die Vergangenheit reisen, um die Zukunft vorherzusehen");
     let changed = false;
     if(date.getDay() === 0 || date.getDay() === 6){
@@ -25,7 +23,8 @@ export function StundenPlanIntent(conv: Conversation<any>) {
         while (date.getDay() === 0 || date.getDay() === 6)
             date.setDate(date.getDate() + 1);
     }
-
+    diff = dateDiffInDays(today, date);
+    console.log(diff);
     const tag = (diff < days.length)? days[diff] : `in ${diff} Tagen`;
     const A_B_woche = getWeekNumber(date) % 2 === 0? 0:1;
 
@@ -38,16 +37,21 @@ export function StundenPlanIntent(conv: Conversation<any>) {
         let ds = false;
         if(arr[i-1]){
             // @ts-ignore
-            ds = arr[i-1].fach !== stunde.fach;
+            ds = arr[i-1].fach === stunde.fach;
         }
-        if(stunde.fach.toUpperCase() !== "FREI" || !ds) speech += s + "<break time='0.5s'/>";
+        let andOrComma = ", ";
+        // @ts-ignore
+        if(arr.length-2 === i) andOrComma = stunde.fach === arr[arr.length-1].fach? " und ": ", ";
+        if(!ds && arr.length-1 === i) andOrComma = " und ";
+        if(i === 0) andOrComma = "";
+        if(stunde.fach.toUpperCase() !== "FREI" && !ds) speech += andOrComma + s +"<break time='0.5s'/>";
         text += ` - ${stunde.fach} \n`;
     });
 
     const changedMsg = !changed? "" : `Da ist Wochenende, aber`;
     conv.ask(new SimpleResponse({
-        text: `Stundenplan - ${date.getDay()}. ${date.getMonth()}. ${date.getFullYear()}: \n${text}`,
-        speech: `<speak>${changedMsg} ${tag} hast du ${speech}</speak>`
+        text: `Stundenplan - ${generateDateText(date)}: \n${text}`,
+        speech: `<speak>${changedMsg} ${tag} hast du ${speech}.</speak>`
     }));
 }
 
@@ -56,4 +60,20 @@ function getWeekNumber(d) {
     d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
     let yearStart:any = new Date(Date.UTC(d.getUTCFullYear(),0,1));
     return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+}
+
+const _MS_PER_DAY = 1000 * 60 * 60 * 24;
+
+// a and b are javascript Date objects
+function dateDiffInDays(a, b) {
+    // Discard the time and time-zone information.
+    const utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
+    const utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
+
+    return Math.floor((utc2 - utc1) / _MS_PER_DAY);
+}
+function generateDateText(date: Date) {
+    let day = (date.getDay() < 10)? "0" + date.getDay().toString() : date.getDay().toString();
+    let month = (date.getMonth() < 10)? "0" + date.getMonth().toString() : date.getMonth().toString();
+    return `${day}. ${month}. ${date.getFullYear()}`;
 }

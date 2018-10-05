@@ -14,9 +14,10 @@ export interface HTMLElement {
 export function evaKurse(html: string, stufe:string, tempTTs: TempTTs, kurse: KurseType):void {
     let dom = new JSDOM(html);
     const doc = dom.window.document;
-
-    let woche = doc.querySelectorAll('font[size="3"][face="Arial"]')[1].textContent.split(/(?:\d+\.){2}\d{4} /)[1][0].toLowerCase() === "a"? 0: 1;
-
+    let woche: 0|1 = (<HTMLElement>(
+            doc.querySelectorAll('font[size="3"][face="Arial"]')[1]
+        )
+    ).textContent.split(/(?:\d+\.){2}\d{4} /)[1][0].toLowerCase() === "a"? 0: 1;
 
     let wholeTable: HTMLElement = doc.getElementsByTagName('tbody')[0];
     // remove header
@@ -51,13 +52,13 @@ export function evaKurse(html: string, stufe:string, tempTTs: TempTTs, kurse: Ku
 
             let isUsed = false;
             if(!doppelStunde){
-                let indexOfFirstSmallSlotBefore = data[data.length-1].findIndex((e: TimeTableSlot)=> !e.isBig);
+                let indexOfFirstSmallSlotBefore = data[data.length-1].findIndex((e: TimeTableSlot)=> !e.isBig && !e.isUsed);
                 tag = indexOfFirstSmallSlotBefore === -1? tag : indexOfFirstSmallSlotBefore + 1;
-                // +1 to counter following -1, which is needed because of the exclusion
                 if(indexOfFirstSmallSlotBefore !== -1){
                     data[data.length-1][indexOfFirstSmallSlotBefore].isUsed = true;
                     isUsed = true;
                 }
+                // +1 to counter following -1, which is needed because of the exclusion
             }
 
 
@@ -136,6 +137,14 @@ export function evaKurse(html: string, stufe:string, tempTTs: TempTTs, kurse: Ku
             data.push(stunde);
 
     }); // tr
+
+    umdrehen(data, tempTTs, woche, stufe);
+
+}
+
+
+
+function umdrehen(data: TimeTableSlot[][], tempTTs: TempTTs, woche: 0|1, stufe:string) {
     let tt: {days: TimeTableSlot[][]} = {days: [[], [], [], [], []]};
     data.forEach(function (stundeE, stunde) {
         stundeE.forEach(function (timetableslot, untrustedtag) {
