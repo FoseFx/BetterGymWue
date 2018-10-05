@@ -31,14 +31,21 @@ export function StundenPlanIntent(conv: Conversation<any>) {
 
     let text = "",
         speech = "";
-    (<Payload>conv.user.storage.payload).plan[A_B_woche][date.getDay() -1].forEach(function (stunde: Stunde, i, arr) {
+
+    const arr = (<Payload>conv.user.storage.payload).plan[A_B_woche][date.getDay() -1];
+    arr.forEach(function (stunde: Stunde, i) {
         const s = !!stunde.readAlias? stunde.readAlias: ` <say-as interpret-as="characters">${stunde.fach}</say-as>`;
-        let dasZweiteMal = false;
-        // @ts-ignore
-        if (arr[i-1]) if(arr[i-1].fach === stunde.fach) dasZweiteMal = true;
-        if(stunde.fach.toUpperCase() !== "FREI" || !dasZweiteMal) speech += s + "<break time='0.5s'/>";
+        let ds = false;
+        if(arr[i-1]){
+            // @ts-ignore
+            ds = arr[i-1].fach === stunde.fach;
+            // @ts-ignore
+            console.log(arr[i-1].fach, stunde.fach, ds);
+        }
+        if(stunde.fach.toUpperCase() !== "FREI") speech += s + "<break time='0.5s'/>";
         text += ` - ${stunde.fach} \n`;
     });
+
     const changedMsg = !changed? "" : `Da ist Wochenende, aber`;
     conv.ask(new SimpleResponse({
         text: `Stundenplan - ${date.getDay()}. ${date.getMonth()}. ${date.getFullYear()}: \n${text}`,
