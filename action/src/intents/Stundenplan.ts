@@ -32,8 +32,8 @@ export function StundenPlanIntent(conv: Conversation<any>) {
     let text = "",
         speech = "";
     (<Payload>conv.user.storage.payload).plan[A_B_woche][date.getDay() -1].forEach(function (stunde: Stunde) {
-        const s = !!stunde.readAlias? stunde.readAlias: ` <say-as interpret-as="characters">${stunde.fach}</say-as><break time="0.75s"/>`;
-        if(stunde.fach.toUpperCase() !== "FREI") speech += s;
+        const s = !!stunde.readAlias? stunde.readAlias: ` <say-as interpret-as="characters">${stunde.fach}</say-as>`;
+        if(stunde.fach.toUpperCase() !== "FREI") speech += s + "<break time='0.75s'/>";
         text += ` - ${stunde.fach} \n`;
     });
     const changedMsg = !changed? "" : `Da ist Wochenende, aber`;
