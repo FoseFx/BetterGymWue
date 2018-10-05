@@ -31,9 +31,11 @@ export function StundenPlanIntent(conv: Conversation<any>) {
 
     let text = "",
         speech = "";
-    (<Payload>conv.user.storage.payload).plan[A_B_woche][date.getDay() -1].forEach(function (stunde: Stunde) {
+    (<Payload>conv.user.storage.payload).plan[A_B_woche][date.getDay() -1].forEach(function (stunde: Stunde, i, arr) {
         const s = !!stunde.readAlias? stunde.readAlias: ` <say-as interpret-as="characters">${stunde.fach}</say-as>`;
-        if(stunde.fach.toUpperCase() !== "FREI") speech += s + "<break time='0.75s'/>";
+        let dasZweiteMal = false;
+        if (arr[i-1]) if(arr[i-1].fach === stunde.fach) dasZweiteMal = true;
+        if(stunde.fach.toUpperCase() !== "FREI" || !dasZweiteMal) speech += s + "<break time='0.5s'/>";
         text += ` - ${stunde.fach} \n`;
     });
     const changedMsg = !changed? "" : `Da ist Wochenende, aber`;
