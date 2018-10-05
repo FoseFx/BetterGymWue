@@ -24,9 +24,9 @@ export class Stundenplan {
     availKurse: Kurs[];
 }
 
-export type PersoPlan = Woche[];
-export type Woche = Stunden[];
-export type Stunden = Array<Stunde | 0>
+export type PersoPlan = Woche[];        // A/B
+export type Woche = Stunden[];          // Tage
+export type Stunden = Array<Stunde | 0> // Stunde
 
 export class Stunde {
     fach: string;

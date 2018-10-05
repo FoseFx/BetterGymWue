@@ -63,8 +63,8 @@ function handlePart1(conv) {
                     conv.user.storage.payload.plan = personalisieren_1.personalisieren(sp, payload.mergedAliases);
                     conv.user.storage.done = true;
                     return [2 /*return*/, conv.ask(new actions_on_google_1.SimpleResponse({
-                            text: "Das scheint zu funktionieren!",
-                            speech: "Super!"
+                            text: "BGW ist jetzt eingerichtet! Frag mich was!",
+                            speech: "BGW ist jetzt eingerichtet! Frag mich was!"
                         }))];
                 case 5:
                     e_1 = _a.sent();

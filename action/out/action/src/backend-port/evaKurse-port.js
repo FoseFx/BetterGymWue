@@ -24,15 +24,20 @@ function evaKurse(html, stufe, tempTTs, kurse) {
             // Tag: 1: Mo, 2: Di, ...
             if (/^\npause\n/i.test(td.textContent) || td.textContent === "") {
                 // @ts-ignore
-                stunde.push({});
+                stunde.push({ isUsed: true });
                 return;
             }
             var doppelStunde = (td.getAttribute('rowspan') === "4");
             var info = Array.from(td.getElementsByTagName('tr'));
+            var isUsed = false;
             if (!doppelStunde) {
                 var indexOfFirstSmallSlotBefore = data[data.length - 1].findIndex(function (e) { return !e.isBig; });
                 tag = indexOfFirstSmallSlotBefore === -1 ? tag : indexOfFirstSmallSlotBefore + 1;
                 // +1 to counter following -1, which is needed because of the exclusion
+                if (indexOfFirstSmallSlotBefore !== -1) {
+                    data[data.length - 1][indexOfFirstSmallSlotBefore].isUsed = true;
+                    isUsed = true;
+                }
             }
             //
             // Klassenstunde
@@ -46,7 +51,8 @@ function evaKurse(html, stufe, tempTTs, kurse) {
                     fach: spalten[0],
                     lehrer: spalten[1],
                     raum: spalten[2],
-                    tag: tag - 1
+                    tag: tag - 1,
+                    isUsed: isUsed
                 });
             }
             else {
@@ -88,7 +94,8 @@ function evaKurse(html, stufe, tempTTs, kurse) {
                     fach: title_1,
                     isBig: doppelStunde,
                     raeume: raeume_1,
-                    tag: tag - 1
+                    tag: tag - 1,
+                    isUsed: isUsed
                 });
             }
         }); // td

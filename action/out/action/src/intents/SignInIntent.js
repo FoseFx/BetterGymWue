@@ -37,6 +37,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var SetUpPart0_1 = require("./SetUps/SetUpPart0");
 var SetUpPart1_1 = require("./SetUps/SetUpPart1");
+var Stundenplan_1 = require("./Stundenplan");
 function SignInIntent(conv, params, signin) {
     return __awaiter(this, void 0, void 0, function () {
         var payload, givenName, id;
@@ -49,8 +50,7 @@ function SignInIntent(conv, params, signin) {
                     givenName = signin.given_name;
                     id = payload.sub;
                     if (conv.user.storage.done === true) {
-                        // TODO redirect to "Home Intent"
-                        return [2 /*return*/, conv.close("redirect")];
+                        return [2 /*return*/, Stundenplan_1.StundenPlanIntent(conv)];
                     }
                     if (!!conv.user.storage.step) return [3 /*break*/, 2];
                     return [4 /*yield*/, SetUpPart0_1.handlePart0(conv, givenName, id)];

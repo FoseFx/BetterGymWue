@@ -19,7 +19,7 @@ var AlertService = /** @class */ (function () {
         if (type === this.DANGER)
             text = '\u26D4 ' + text;
         if (type === this.OK)
-            text = '\u1F355 ' + text;
+            text = '\ud83c\udf55 ' + text;
         this.snackBar.open(text, undefined, { duration: time });
     };
     AlertService = __decorate([
