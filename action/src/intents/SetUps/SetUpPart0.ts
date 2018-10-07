@@ -27,7 +27,7 @@ export async function handlePart0(conv, givenName, id) {
         };
         conv.user.storage.step = 1;
         return conv.ask(new SimpleResponse({
-            text: text,
+            text: `${text} sage 'weiter' oder ändere deine Kurse in der App.`,
             speech: speach
         }));
     }

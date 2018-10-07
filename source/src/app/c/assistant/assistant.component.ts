@@ -4,6 +4,7 @@ import "firebase/auth";
 import {AlertService} from "../../s/alert.service";
 import {BaseService} from "../../s/base/base.service";
 import {CONFIG} from "../../conf";
+import {Kurs} from "../../Classes";
 
 @Component({
   selector: 'app-assistant',
@@ -51,6 +52,95 @@ export class AssistantComponent implements OnInit {
       // userDBResult = ist in Datenbank
       console.log("dbresult", dbresult);
 
+      const regexes = [
+        new RegExp(/(^L|^)Ku($|\d$)/i),
+        new RegExp(/^Theat$/i),
+        new RegExp(/^ECDL$/i),
+        new RegExp(/(^L|^)SP($|\d$)/i),
+        new RegExp(/^Garte$/i),
+        new RegExp(/^Robot$/i),
+        new RegExp(/^Spiel$/i),
+        new RegExp(/^LZ\/D$/i),
+        new RegExp(/^LZ\/E$/i),
+        new RegExp(/^LZ\/M$/i),
+        new RegExp(/(^L|^)M($|\d$)/i),
+        new RegExp(/(^L|^)D($|\d$)/i),
+        new RegExp(/(^L|^)E($|\d$)/i),
+        new RegExp(/(^L|^)PH($|\d$)/i),
+        new RegExp(/(^L|^)BI($|\d$)/i),
+        new RegExp(/^PCL$/i),
+        new RegExp(/(^L|^)EK($|\d$)/i),
+        new RegExp(/^PPL($|\d$)/i),
+        new RegExp(/^Mu($|\d$)/i),
+        new RegExp(/^KR($|\d$)/i),
+        new RegExp(/^ER($|\d$)/i),
+        new RegExp(/(^L|^)F($|\d$)/i),
+        new RegExp(/(^L|^)L($|\d$)/i),
+        new RegExp(/^Ku-Mu($|\d$)/i),
+        new RegExp(/^JuWe($|\d$)/i),
+        new RegExp(/^Bi-CH($|\d$)/i),
+        new RegExp(/^IF($|\d$)/i),
+        new RegExp(/(^L|^)SW($|\d$)/i),
+        new RegExp(/(^L|^)Ge($|\d$)/i),
+        new RegExp(/(^L|^)Pa($|\d$)/i),
+        new RegExp(/^Ita($|\d$)/i),
+        new RegExp(/^VTF-M($|\d$)/i),
+        new RegExp(/^VTF-D($|\d$)/i),
+        new RegExp(/^VTF-E($|\d$)/i),
+        new RegExp(/(^L|^)PL($|\d$)/i),
+        new RegExp(/^LZ/i),
+        new RegExp(/^VTF/i),
+        new RegExp(/^CH/i)
+
+      ];
+      const prefilles = [
+        "Kunst",
+        "Theater",
+        "ECDL",
+        "Sport",
+        "Garten AG",
+        "Roboter AG",
+        "Spiele AG",
+        "Lernzeit Deutsch",
+        "Lernzeit Englisch",
+        "Lernzeit Mathe",
+        "Mathe",
+        "Deutsch",
+        "Englisch",
+        "Physik",
+        "Biologie",
+        "PCL",
+        "Erdkunde",
+        "Philosophie",
+        "Musik",
+        "Religion",
+        "Religion",
+        "Französisch",
+        "Latein",
+        "Munst-Musik",
+        "Jugendwelten",
+        "Bio-Chemie",
+        "Informatik",
+        "SoWi",
+        "Geschichte",
+        "Pädagogik",
+        "Italienisch",
+        "Vertiefung Mathe",
+        "Vertiefung Deutsch",
+        "Vertiefung Englisch",
+        "Philosophie",
+        "Lernzeit",
+        "Vertiefung",
+        "Chemie"
+      ];
+      this.base.myKurse.forEach((k: Kurs, i) => {
+        const ind = regexes.findIndex((r: RegExp) => r.test(k.fach));
+        if(ind !== -1) this.aliases[i] = prefilles[ind];
+      });
+      this.base.KlassenKurse.forEach((k, i) => {
+        const ind = regexes.findIndex(r => r.test(k));
+        if(ind !== -1) this.aliases[i+this.base.myKurse.length] = prefilles[ind];
+      });
 
       this.loginned = true;
     }catch (e) {
