@@ -9,6 +9,7 @@ var SignInIntent_1 = require("./intents/SignInIntent");
 var admin = require("firebase-admin");
 var KurseConfIntent_1 = require("./intents/KurseConfIntent");
 var serviceAccount = require("../../../serviceAccount.json");
+exports.VERSION = 1;
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
     databaseURL: "https://bettergymwue.firebaseio.com"

@@ -20,7 +20,7 @@ function personalisieren(SP, mergedAliases) {
                 else if (stunde.type === "kurs") {
                     var mA = mergedAliases.find(function (value) { return value[2] === stunde.fach; });
                     if (!mA)
-                        stunden.push(0);
+                        stunden.push({ fach: "FREI", readAlias: "Frei" });
                     else
                         stunden.push({
                             fach: mA[0],

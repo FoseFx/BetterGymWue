@@ -22,7 +22,7 @@ export function personalisieren(SP: Stundenplan, mergedAliases: mergedAlias[]): 
                     });
                 }else if(stunde.type === "kurs"){
                     const mA = mergedAliases.find(value => value[2] === stunde.fach);
-                    if(!mA) stunden.push(0);
+                    if(!mA) stunden.push({fach: "FREI", readAlias: "Frei"});
                     else
                         stunden.push({
                             fach: mA[0],

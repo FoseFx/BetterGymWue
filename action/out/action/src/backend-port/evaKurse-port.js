@@ -5,7 +5,7 @@ var JSDOM = jsdom.JSDOM;
 function evaKurse(html, stufe, tempTTs, kurse) {
     var dom = new JSDOM(html);
     var doc = dom.window.document;
-    var woche = doc.querySelectorAll('font[size="3"][face="Arial"]')[1].textContent.split(/(?:\d+\.){2}\d{4} /)[1][0].toLowerCase() === "a" ? 0 : 1;
+    var woche = (doc.querySelectorAll('font[size="3"][face="Arial"]')[1]).textContent.split(/(?:\d+\.){2}\d{4} /)[1][0].toLowerCase() === "a" ? 0 : 1;
     var wholeTable = doc.getElementsByTagName('tbody')[0];
     // remove header
     wholeTable.firstChild.remove();
@@ -31,13 +31,13 @@ function evaKurse(html, stufe, tempTTs, kurse) {
             var info = Array.from(td.getElementsByTagName('tr'));
             var isUsed = false;
             if (!doppelStunde) {
-                var indexOfFirstSmallSlotBefore = data[data.length - 1].findIndex(function (e) { return !e.isBig; });
+                var indexOfFirstSmallSlotBefore = data[data.length - 1].findIndex(function (e) { return !e.isBig && !e.isUsed; });
                 tag = indexOfFirstSmallSlotBefore === -1 ? tag : indexOfFirstSmallSlotBefore + 1;
-                // +1 to counter following -1, which is needed because of the exclusion
                 if (indexOfFirstSmallSlotBefore !== -1) {
                     data[data.length - 1][indexOfFirstSmallSlotBefore].isUsed = true;
                     isUsed = true;
                 }
+                // +1 to counter following -1, which is needed because of the exclusion
             }
             //
             // Klassenstunde
@@ -102,6 +102,10 @@ function evaKurse(html, stufe, tempTTs, kurse) {
         if (stunde.length !== 0)
             data.push(stunde);
     }); // tr
+    umdrehen(data, tempTTs, woche, stufe);
+}
+exports.evaKurse = evaKurse;
+function umdrehen(data, tempTTs, woche, stufe) {
     var tt = { days: [[], [], [], [], []] };
     data.forEach(function (stundeE, stunde) {
         stundeE.forEach(function (timetableslot, untrustedtag) {
@@ -156,4 +160,3 @@ function evaKurse(html, stufe, tempTTs, kurse) {
             tt: (woche === 0) ? [tt] : [undefined, tt]
         });
 }
-exports.evaKurse = evaKurse;

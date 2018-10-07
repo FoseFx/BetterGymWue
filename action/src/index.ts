@@ -9,6 +9,8 @@ import {KurseConfIntent} from "./intents/KurseConfIntent";
 
 const serviceAccount = require("../../../serviceAccount.json");
 
+export const VERSION = 1;
+
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
     databaseURL: "https://bettergymwue.firebaseio.com"

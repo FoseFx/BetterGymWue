@@ -36,11 +36,9 @@ export function StundenPlanIntent(conv: Conversation<any>) {
         const s = !!stunde.readAlias? stunde.readAlias: ` <say-as interpret-as="characters">${stunde.fach}</say-as>`;
         let ds = false;
         if(arr[i-1]){
-            // @ts-ignore
             ds = arr[i-1].fach === stunde.fach;
         }
         let andOrComma = ", ";
-        // @ts-ignore
         if(arr.length-2 === i) andOrComma = stunde.fach === arr[arr.length-1].fach? " und ": ", ";
         if(!ds && arr.length-1 === i) andOrComma = " und ";
         if(i === 0) andOrComma = "";

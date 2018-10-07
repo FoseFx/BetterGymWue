@@ -26,7 +26,7 @@ export class Stundenplan {
 
 export type PersoPlan = Woche[];        // A/B
 export type Woche = Stunden[];          // Tage
-export type Stunden = Array<Stunde | 0> // Stunde
+export type Stunden = Stunde[] // Stunde
 
 export class Stunde {
     fach: string;
