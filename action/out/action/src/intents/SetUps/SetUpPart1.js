@@ -63,7 +63,7 @@ function handlePart1(conv, update) {
                     _a.label = 4;
                 case 4:
                     conv.user.storage.payload.plan = personalisieren_1.personalisieren(sp, payload.mergedAliases);
-                    conv.user.storage.payload.planTTL = +new Date(new Date().getDate() + 7);
+                    conv.user.storage.payload.planTTL = +new Date().setDate(new Date().getDate() + 7);
                     conv.user.storage.done = true;
                     if (!update)
                         return [2 /*return*/, conv.ask(new actions_on_google_1.SimpleResponse({

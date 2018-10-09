@@ -18,3 +18,9 @@ var StundenplanDBResult = /** @class */ (function () {
     return StundenplanDBResult;
 }());
 exports.StundenplanDBResult = StundenplanDBResult;
+var UserStorage = /** @class */ (function () {
+    function UserStorage() {
+    }
+    return UserStorage;
+}());
+exports.UserStorage = UserStorage;

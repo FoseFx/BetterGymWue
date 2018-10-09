@@ -6,6 +6,7 @@ import {INTENTS} from "./intents/Intents";
 import {SignInIntent} from "./intents/SignInIntent";
 import * as admin from "firebase-admin";
 import {KurseConfIntent} from "./intents/KurseConfIntent";
+import {TutorialAnsweredIntent} from "./intents/TutorialAnsweredIntent";
 
 process.env.TZ = "Europe/Berlin";
 const serviceAccount = require("../../../serviceAccount.json");
@@ -29,5 +30,6 @@ app.intent(INTENTS.STUNDENPLAN, StundenPlanIntent);
 app.intent(INTENTS.WELCOME, WelcomeIntent);
 app.intent(INTENTS.SIGN_IN_CONF, SignInIntent);
 app.intent(INTENTS.KURSE_CONFIRMED, KurseConfIntent);
+app.intent(INTENTS.TUTORIAL_ANSWERED, TutorialAnsweredIntent);
 
 eapp.listen(45634, () => {console.log("Started Actions Server")});

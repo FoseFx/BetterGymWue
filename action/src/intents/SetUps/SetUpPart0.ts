@@ -1,9 +1,10 @@
 import {getUserFromDB, hasScreen, generateMergedAliases} from "../../util";
 import {Kurs} from "../../../../source/src/app/Classes";
-import {SimpleResponse} from "actions-on-google";
+import {Conversation, SimpleResponse} from "actions-on-google";
 import {REGISTER_URL} from "../../CONFIG";
+import {UserStorage} from "../../Classes";
 
-export async function handlePart0(conv, givenName, id) {
+export async function handlePart0(conv: Conversation<UserStorage>, givenName, id) {
     const dbResolve = await getUserFromDB(id);
     let isRegistered = !!dbResolve;
     if(isRegistered){

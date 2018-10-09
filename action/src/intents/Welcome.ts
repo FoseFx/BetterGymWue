@@ -1,10 +1,11 @@
 import {Conversation, SignIn, SimpleResponse} from "actions-on-google";
 import {VERSION} from "../index";
+import {UserStorage} from "../Classes";
 
 
-export function WelcomeIntent(conv: Conversation<any>) {
+export function WelcomeIntent(conv: Conversation<UserStorage>) {
     let date = new Date();
-
+    if(!conv.user.storage.version) conv.user.storage.version = VERSION;
     if (conv.user.storage.version !== VERSION) {
         conv.user.storage = {version: VERSION};
         return conv.close(new SimpleResponse({

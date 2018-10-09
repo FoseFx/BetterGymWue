@@ -45,9 +45,16 @@ export type mergedAlias = [string, string, string?];
 
 export interface Payload {
     plan?: PersoPlan;
-    mergedAliases: mergedAlias[];
-    creds: Creds;
-    stufe: string;
-    stufeid: number;
-    planTTL: number;
+    mergedAliases?: mergedAlias[];
+    creds?: Creds;
+    stufe?: string;
+    stufeid?: number;
+    planTTL?: number;
+}
+
+export class UserStorage{
+    payload?: Payload;
+    done?: boolean;
+    version?: number;
+    step?: number;
 }

@@ -4,6 +4,8 @@ var actions_on_google_1 = require("actions-on-google");
 var index_1 = require("../index");
 function WelcomeIntent(conv) {
     var date = new Date();
+    if (!conv.user.storage.version)
+        conv.user.storage.version = index_1.VERSION;
     if (conv.user.storage.version !== index_1.VERSION) {
         conv.user.storage = { version: index_1.VERSION };
         return conv.close(new actions_on_google_1.SimpleResponse({

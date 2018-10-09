@@ -4,10 +4,10 @@ import {getUserFromDB, hasScreen} from "../util";
 import {Kurs} from "../../../source/src/app/Classes";
 import {handlePart0} from "./SetUps/SetUpPart0";
 import {handlePart1} from "./SetUps/SetUpPart1";
-import {userDBResult} from "../Classes";
+import {userDBResult, UserStorage} from "../Classes";
 import {StundenPlanIntent} from "./Stundenplan";
 
-export async function SignInIntent(conv: Conversation<any>, params, signin) {
+export async function SignInIntent(conv: Conversation<UserStorage>, params, signin) {
     if (signin.status !== "OK")
         return conv.close("Ohne deine Erlaubnis kann ich nicht auf deine Kurse zugreifen.");
     const payload = conv.user.profile.payload;

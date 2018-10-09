@@ -1,5 +1,5 @@
 import {Conversation, SimpleResponse} from "actions-on-google";
-import {Payload, Stunde} from "../Classes";
+import {Payload, Stunde, UserStorage} from "../Classes";
 import {handlePart1} from "./SetUps/SetUpPart1";
 
 
@@ -10,7 +10,7 @@ interface ExpectedParameters {
 
 const days = ["Heute","Morgen", "Übermorgen"];
 // @ts-ignore
-export function StundenPlanIntent(conv: Conversation<any>) {
+export function StundenPlanIntent(conv: Conversation<UserStorage>) {
 
     if(conv.user.storage.payload.planTTL < +new Date()) return handlePart1(conv, true);
 
