@@ -8,6 +8,7 @@ var Intents_1 = require("./intents/Intents");
 var SignInIntent_1 = require("./intents/SignInIntent");
 var admin = require("firebase-admin");
 var KurseConfIntent_1 = require("./intents/KurseConfIntent");
+process.env.TZ = "Europe/Berlin";
 var serviceAccount = require("../../../serviceAccount.json");
 exports.VERSION = 1;
 admin.initializeApp({

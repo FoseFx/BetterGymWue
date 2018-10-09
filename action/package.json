@@ -5,7 +5,7 @@
   "main": "out/action/src/index.js",
   "scripts": {
     "build": "tsc",
-    "run": "npm run build && node out/action/src/index.js"
+    "run": "npm run build && export TZ='Europe/Berlin' &&node out/action/src/index.js"
   },
   "keywords": [],
   "author": "",

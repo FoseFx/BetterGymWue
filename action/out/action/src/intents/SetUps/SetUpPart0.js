@@ -67,7 +67,7 @@ function handlePart0(conv, givenName, id) {
                         };
                         conv.user.storage.step = 1;
                         return [2 /*return*/, conv.ask(new actions_on_google_1.SimpleResponse({
-                                text: text_1,
+                                text: text_1 + " sage 'weiter' oder \u00E4ndere deine Kurse in der App.",
                                 speech: speach_1
                             }))];
                     }

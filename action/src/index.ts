@@ -7,6 +7,7 @@ import {SignInIntent} from "./intents/SignInIntent";
 import * as admin from "firebase-admin";
 import {KurseConfIntent} from "./intents/KurseConfIntent";
 
+process.env.TZ = "Europe/Berlin";
 const serviceAccount = require("../../../serviceAccount.json");
 
 export const VERSION = 1;

@@ -39,8 +39,10 @@ var actions_on_google_1 = require("actions-on-google");
 var getStundenplan_1 = require("../../backend-port/getStundenplan");
 var util_1 = require("../../util");
 var personalisieren_1 = require("../../backend-port/personalisieren");
+var Stundenplan_1 = require("../Stundenplan");
 // download and create timetable
-function handlePart1(conv) {
+function handlePart1(conv, update) {
+    if (update === void 0) { update = false; }
     return __awaiter(this, void 0, void 0, function () {
         var payload, sp, e_1;
         return __generator(this, function (_a) {
@@ -61,11 +63,16 @@ function handlePart1(conv) {
                     _a.label = 4;
                 case 4:
                     conv.user.storage.payload.plan = personalisieren_1.personalisieren(sp, payload.mergedAliases);
+                    conv.user.storage.payload.planTTL = +new Date(new Date().getDate() + 7);
                     conv.user.storage.done = true;
-                    return [2 /*return*/, conv.ask(new actions_on_google_1.SimpleResponse({
-                            text: "BGW ist jetzt eingerichtet! Frag mich was!",
-                            speech: "BGW ist jetzt eingerichtet! Frag mich was!"
-                        }))];
+                    if (!update)
+                        return [2 /*return*/, conv.ask(new actions_on_google_1.SimpleResponse({
+                                text: "BGW ist jetzt eingerichtet! Frag mich was!",
+                                speech: "BGW ist jetzt eingerichtet! Frag mich was!"
+                            }))];
+                    else
+                        return [2 /*return*/, Stundenplan_1.StundenPlanIntent(conv)];
+                    return [3 /*break*/, 6];
                 case 5:
                     e_1 = _a.sent();
                     console.error(e_1);

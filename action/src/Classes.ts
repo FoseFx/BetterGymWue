@@ -49,4 +49,5 @@ export interface Payload {
     creds: Creds;
     stufe: string;
     stufeid: number;
+    planTTL: number;
 }

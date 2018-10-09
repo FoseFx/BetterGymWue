@@ -1,9 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var actions_on_google_1 = require("actions-on-google");
+var SetUpPart1_1 = require("./SetUps/SetUpPart1");
 var days = ["Heute", "Morgen", "Übermorgen"];
 // @ts-ignore
 function StundenPlanIntent(conv) {
+    if (conv.user.storage.payload.planTTL < +new Date())
+        return SetUpPart1_1.handlePart1(conv, true);
     // @ts-ignore
     var date = (conv.parameters).date;
     if (!date)
