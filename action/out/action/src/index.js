@@ -23,6 +23,7 @@ var app = actions_on_google_1.dialogflow({ debug: false, clientId: CLIENT_ID });
 var eapp = express();
 eapp.use(express.json());
 eapp.use(app);
+// @ts-ignore
 app.intent(Intents_1.INTENTS.STUNDENPLAN, Stundenplan_1.StundenPlanIntent);
 app.intent(Intents_1.INTENTS.WELCOME, Welcome_1.WelcomeIntent);
 app.intent(Intents_1.INTENTS.SIGN_IN_CONF, SignInIntent_1.SignInIntent);

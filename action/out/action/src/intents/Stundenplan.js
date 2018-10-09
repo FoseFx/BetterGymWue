@@ -4,7 +4,8 @@ var actions_on_google_1 = require("actions-on-google");
 var SetUpPart1_1 = require("./SetUps/SetUpPart1");
 var days = ["Heute", "Morgen", "Übermorgen"];
 // @ts-ignore
-function StundenPlanIntent(conv) {
+function StundenPlanIntent(conv, morgen) {
+    if (morgen === void 0) { morgen = false; }
     if (conv.user.storage.payload.planTTL < +new Date())
         return SetUpPart1_1.handlePart1(conv, true);
     // @ts-ignore
@@ -13,6 +14,8 @@ function StundenPlanIntent(conv) {
         date = new Date();
     else
         date = new Date(date);
+    if (morgen)
+        date.setDate(new Date().getDate() + 1);
     var today = new Date();
     var diff = dateDiffInDays(today, date);
     if (diff < 0)

@@ -26,6 +26,7 @@ const eapp = express();
 eapp.use(express.json());
 eapp.use(app);
 
+// @ts-ignore
 app.intent(INTENTS.STUNDENPLAN, StundenPlanIntent);
 app.intent(INTENTS.WELCOME, WelcomeIntent);
 app.intent(INTENTS.SIGN_IN_CONF, SignInIntent);
