@@ -1,8 +1,6 @@
 import {BrowserModule, HAMMER_GESTURE_CONFIG, HammerGestureConfig} from '@angular/platform-browser';
 import {LOCALE_ID, NgModule} from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
-
 import { AppComponent } from './c/A_root/app.component';
 import { AgbComponent } from './c/agb/agb.component';
 
@@ -32,9 +30,8 @@ import {RefreshttService} from './s/refreshtt.service';
 import {IndexedDBService} from "./indexed-db.service";
 import {APP_BASE_HREF} from "@angular/common";
 import {BaseService} from "./s/base/base.service";
-import {HelpComponent} from "./c/help/help.component";
 import { GetFromKurseModalComponent } from './c/select/kurse/get-from-kurse-modal.component';
-import { AppRoutingModule } from './/app-routing.module';
+import { AppRoutingModule } from './app-routing.module';
 declare var Hammer: any;
 
 export class MyHammerConfig extends HammerGestureConfig  {
@@ -65,7 +62,6 @@ export class MyHammerConfig extends HammerGestureConfig  {
     AboutComponent,
     StundenplanComponent,
     ErrorComponent,
-    HelpComponent,
     GetFromKurseModalComponent
   ],
   imports: [
