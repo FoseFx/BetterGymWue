@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './c/A_root/app.component';
-import {routes} from './routes';
 import { AgbComponent } from './c/agb/agb.component';
 
 import { LoginComponent } from './c/login/login.component';
@@ -35,6 +34,7 @@ import {APP_BASE_HREF} from "@angular/common";
 import {BaseService} from "./s/base/base.service";
 import {HelpComponent} from "./c/help/help.component";
 import { GetFromKurseModalComponent } from './c/select/kurse/get-from-kurse-modal.component';
+import { AppRoutingModule } from './/app-routing.module';
 declare var Hammer: any;
 
 export class MyHammerConfig extends HammerGestureConfig  {
@@ -71,7 +71,6 @@ export class MyHammerConfig extends HammerGestureConfig  {
   imports: [
     BrowserModule,
     FormsModule,
-    RouterModule.forRoot(routes),
     HttpClientModule,
     BrowserAnimationsModule,
     MatInputModule,
@@ -86,7 +85,8 @@ export class MyHammerConfig extends HammerGestureConfig  {
     MatSlideToggleModule,
     MatCardModule,
     MatSnackBarModule,
-    MatDialogModule
+    MatDialogModule,
+    AppRoutingModule
   ],
   providers: [
     BaseService,
