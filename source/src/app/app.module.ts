@@ -1,19 +1,19 @@
 import {BrowserModule, HAMMER_GESTURE_CONFIG, HammerGestureConfig} from '@angular/platform-browser';
 import {LOCALE_ID, NgModule} from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { AppComponent } from './c/A_root/app.component';
-import { AgbComponent } from './c/agb/agb.component';
+import { AppComponent } from './main/c/A_root/app.component';
+import { AgbComponent } from './main/c/agb/agb.component';
 
-import { LoginComponent } from './c/login/login.component';
-import {GuardService} from './s/guard.service';
+import { LoginComponent } from './main/c/login/login.component';
+import {GuardService} from './main/s/guard.service';
 import {HttpClientModule} from '@angular/common/http';
-import { SelectComponent } from './c/select/select.component';
-import { StufeComponent } from './c/select/stufe/stufe.component';
-import {NetwService} from './s/network/netw.service';
-import {AlertService} from './s/alert.service';
-import { KurseComponent } from './c/select/kurse/kurse.component';
-import { ShowComponent } from './c/show/show.component';
-import { TtcontainerComponent } from './c/show/ttcontainer/ttcontainer.component';
+import { SelectComponent } from './main/c/select/select.component';
+import { StufeComponent } from './main/c/select/stufe/stufe.component';
+import {NetwService} from './main/s/network/netw.service';
+import {AlertService} from './main/s/alert.service';
+import { KurseComponent } from './main/c/select/kurse/kurse.component';
+import { ShowComponent } from './main/c/show/show.component';
+import { TtcontainerComponent } from './main/c/show/ttcontainer/ttcontainer.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
   MatButtonModule, MatCardModule, MatDialogModule,
@@ -22,17 +22,16 @@ import {
   MatSelectModule,
   MatSidenavModule, MatSlideToggleModule, MatSnackBarModule, MatTabsModule, MatToolbarModule
 } from '@angular/material';
-import { CloudComponent } from './c/cloud/cloud.component';
-import { AboutComponent } from './c/about/about.component';
-import { StundenplanComponent } from './c/stundenplan/stundenplan.component';
-import { ErrorComponent } from './c/error/error.component';
-import {RefreshttService} from './s/refreshtt.service';
+import { CloudComponent } from './main/c/cloud/cloud.component';
+import { AboutComponent } from './main/c/about/about.component';
+import { StundenplanComponent } from './main/c/stundenplan/stundenplan.component';
+import { ErrorComponent } from './main/c/error/error.component';
+import {RefreshttService} from './main/s/refreshtt.service';
 import {IndexedDBService} from "./indexed-db.service";
 import {APP_BASE_HREF} from "@angular/common";
-import {BaseService} from "./s/base/base.service";
-import { GetFromKurseModalComponent } from './c/select/kurse/get-from-kurse-modal.component';
+import {BaseService} from "./main/s/base/base.service";
+import { GetFromKurseModalComponent } from './main/c/select/kurse/get-from-kurse-modal.component';
 import { AppRoutingModule } from './app-routing.module';
-import { AssistantComponent } from './c/assistant/assistant.component';
 declare var Hammer: any;
 
 export class MyHammerConfig extends HammerGestureConfig  {
@@ -63,7 +62,6 @@ export class MyHammerConfig extends HammerGestureConfig  {
     AboutComponent,
     StundenplanComponent,
     ErrorComponent,
-    AssistantComponent,
     GetFromKurseModalComponent
   ],
   imports: [

@@ -2,7 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {NgForm} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
-import {AlertService} from "../../s/alert.service";
+import {AlertService} from "../../main/s/alert.service";
 import {CONFIG} from "../../conf";
 
 @Component({
