@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './c/A_root/app.component';
-import {routes} from './routes';
 import { AgbComponent } from './c/agb/agb.component';
 
 import { LoginComponent } from './c/login/login.component';
@@ -73,7 +72,6 @@ export class MyHammerConfig extends HammerGestureConfig  {
   imports: [
     BrowserModule,
     FormsModule,
-    RouterModule.forRoot(routes),
     HttpClientModule,
     BrowserAnimationsModule,
     MatInputModule,
@@ -88,7 +86,8 @@ export class MyHammerConfig extends HammerGestureConfig  {
     MatSlideToggleModule,
     MatCardModule,
     MatSnackBarModule,
-    MatDialogModule
+    MatDialogModule,
+    AppRoutingModule
   ],
   providers: [
     BaseService,
