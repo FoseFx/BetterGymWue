@@ -10,6 +10,7 @@ import {AboutComponent} from "./c/about/about.component";
 import {StundenplanComponent} from "./c/stundenplan/stundenplan.component";
 import {HelpComponent} from "./c/help/help.component";
 import {ErrorComponent} from "./c/error/error.component";
+import {AssistantComponent} from "./c/assistant/assistant.component";
 
 const routes: Routes =  [
   {path: '', component: LoginComponent, canActivate: [GuardService] },
@@ -20,6 +21,7 @@ const routes: Routes =  [
   {path: 'about', component: AboutComponent},
   {path: 'stundenplan', component: StundenplanComponent, canActivate: [GuardService]},
   {path: 'help', component: HelpComponent},
+  {path: 'assistant', component: AssistantComponent, canActivate: [GuardService]},
   {path: '**', component: ErrorComponent}
 ];
 
