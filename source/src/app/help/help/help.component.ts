@@ -1,8 +1,8 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {NgForm} from '@angular/forms';
-import {HttpClient} from '@angular/common/http';
-import {Router} from '@angular/router';
-import {AlertService} from '../../s/alert.service';
+import {NgForm} from "@angular/forms";
+import {HttpClient} from "@angular/common/http";
+import {Router} from "@angular/router";
+import {AlertService} from "../../s/alert.service";
 import {CONFIG} from "../../conf";
 
 @Component({
@@ -12,12 +12,13 @@ import {CONFIG} from "../../conf";
 })
 export class HelpComponent implements OnInit {
 
+  @ViewChild('supportForm') form: NgForm;
+
   constructor(private http: HttpClient, private router: Router, private alert: AlertService) { }
 
   ngOnInit() {
   }
 
-  @ViewChild('supportForm') form: NgForm;
   used = false;
 
   submitted(){

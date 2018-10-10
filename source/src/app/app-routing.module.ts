@@ -8,7 +8,6 @@ import {ShowComponent} from "./c/show/show.component";
 import {CloudComponent} from "./c/cloud/cloud.component";
 import {AboutComponent} from "./c/about/about.component";
 import {StundenplanComponent} from "./c/stundenplan/stundenplan.component";
-import {HelpComponent} from "./c/help/help.component";
 import {ErrorComponent} from "./c/error/error.component";
 import {AssistantComponent} from "./c/assistant/assistant.component";
 
@@ -20,8 +19,8 @@ const routes: Routes =  [
   {path: 'cloud', component: CloudComponent, canActivate: [GuardService]},
   {path: 'about', component: AboutComponent},
   {path: 'stundenplan', component: StundenplanComponent, canActivate: [GuardService]},
-  {path: 'help', component: HelpComponent},
   {path: 'assistant', component: AssistantComponent, canActivate: [GuardService]},
+  {path: 'help', loadChildren: "app/help/help.module#HelpModule"},
   {path: '**', component: ErrorComponent}
 ];
 
