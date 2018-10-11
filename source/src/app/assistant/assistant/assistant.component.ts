@@ -16,6 +16,7 @@ import {PREFILLS} from "./prefills";
 export class AssistantComponent implements OnInit {
 
   provider: firebase.auth.GoogleAuthProvider;
+  AUTH: firebase.auth.Auth;
   block = false;
   loginned = false;
   schritt = "";
@@ -24,7 +25,7 @@ export class AssistantComponent implements OnInit {
   dbresult;
   aliases = [];
   done = false;
-  constructor(private alert: AlertService, public base: BaseService) { }
+  constructor(public alert: AlertService, public base: BaseService) { }
 
   ngOnInit() {
     try{
@@ -34,6 +35,7 @@ export class AssistantComponent implements OnInit {
         projectId: "bettergymwue"
       });
       this.provider = new firebase.auth.GoogleAuthProvider();
+      this.AUTH = firebase.auth();
     }catch (err) {
       if (!/already exists/.test(err.message)) {
         console.error('Firebase initialization error', err.stack)
@@ -47,7 +49,7 @@ export class AssistantComponent implements OnInit {
     this.block = true;
     this.schritt = "1. Bei Google anmelden";
     try{
-      let result = await firebase.auth().signInWithPopup(this.provider);
+      let result = await this.AUTH.signInWithPopup(this.provider);
       console.log(result);
       // @ts-ignore
       this.token = result.credential.idToken;
@@ -55,12 +57,7 @@ export class AssistantComponent implements OnInit {
       this.sub = JSON.parse(atob(result.user.qa.split(".")[1])).sub;
       console.log("sub", this.sub);
 
-      this.schritt = "2. Datenbank nach dir abfragen";
-      let dbresult = await this.base.httpClient.get(CONFIG.actionsDB + this.sub + "/exists.json").toPromise();
-      dbresult = !!dbresult;
-      this.dbresult = dbresult;
-      // userDBResult = ist in Datenbank
-      console.log("dbresult", dbresult);
+      await this.fetchDB();
 
       this.doPrefills();
 
@@ -84,6 +81,15 @@ export class AssistantComponent implements OnInit {
       if(ind !== -1) this.aliases[i+this.base.myKurse.length] = PREFILLS[ind];
     });
 
+  }
+
+  async fetchDB(){
+    this.schritt = "2. Datenbank nach dir abfragen";
+    let dbresult = await this.base.httpClient.get(CONFIG.actionsDB + this.sub + "/exists.json").toPromise();
+    dbresult = !!dbresult;
+    this.dbresult = dbresult;
+    // userDBResult = ist in Datenbank
+    console.log("dbresult", dbresult);
   }
 
   async dbQuery(){
@@ -112,5 +118,7 @@ export class AssistantComponent implements OnInit {
       this.aliases.length === (this.base.myKurse.length + this.base.KlassenKurse.length))
       && this.aliases.every(value => !!value.replace(/\s/g, ""));
   }
+
+
 
 }

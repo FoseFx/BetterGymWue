@@ -1,10 +1,11 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
 
 import { AssistantComponent } from './assistant.component';
 import {FormsModule} from "@angular/forms";
 import {MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule, MatSnackBarModule} from "@angular/material";
 import {AlertService} from "../../main/s/alert.service";
 import {BaseService} from "../../main/s/base/base.service";
+import {of} from "rxjs";
 
 let mockBaseService;
 
@@ -52,7 +53,11 @@ describe('AssistantComponent', () => {
       ],
       myStufe: "lol",
       myStufeId: 1,
-      credentials: {u: "", p:""}
+      credentials: {u: "", p:""},
+      httpClient: {
+        post: () => {},
+        get: () => of(Promise.resolve(true))
+      }
     };
 
     TestBed.configureTestingModule({
@@ -122,6 +127,49 @@ describe('AssistantComponent', () => {
       ]);
   });
 
+  describe('signIn', function () {
 
+    it('should handle failed sign In', fakeAsync(()=> {
+      fixture.detectChanges();
+      //@ts-ignore
+      component.AUTH = {signInWithPopup: () => {}};
+      const spy1 = spyOn(component.AUTH, "signInWithPopup").and.returnValue(Promise.reject({message:"Network issues"}));
+      const spy2 = spyOn(component.alert, "alert");
+      component.signIn();
+      tick();
+      expect(spy1).toHaveBeenCalled();
+      expect(spy2).toHaveBeenCalledWith("Network issues", 1);
+    }));
+
+    it('should handle successful sign In without db', fakeAsync(() =>{
+      fixture.detectChanges();
+      //@ts-ignore
+      component.AUTH = {signInWithPopup: () => {}};
+      const spy1 = spyOn(component.AUTH, "signInWithPopup").and.returnValue(Promise.resolve({
+        credential:{
+          idToken: "Some Token"
+        },
+        user: {
+          qa: "headerhere.eyJzdWIiOiJsb2wifQ==.validhere"
+        }
+      }));
+      const spy2 = spyOn(component.alert, "alert");
+      spyOn(component, "fetchDB").and.returnValue(Promise.resolve()); // skip db
+      component.signIn();
+      tick();
+      expect(spy1).toHaveBeenCalled();
+      expect(spy2).not.toHaveBeenCalled();
+      expect(component.loginned).toBe(true);
+
+    }));
+
+    it('should handle db responses', fakeAsync(function () {
+      fixture.detectChanges();
+      component.fetchDB();
+      tick();
+      expect(component.dbresult).toBe(true);
+    }));
+
+  });
 
 });
