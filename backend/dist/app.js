@@ -2,8 +2,16 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express = require("express");
 const Vertretung_1 = require("./Vertretung");
+const Stunden_1 = require("./Stunden");
 const app = express();
 app.set("port", process.env.PORT || 59091);
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "authorization");
+    res.header("Access-Control-Allow-Methods", "OPTIONS,GET");
+    next();
+});
+app.options("**/**", (_, res) => { res.end(); });
 app.use(function (req, res, next) {
     const auth = req.headers.authorization;
     if (!auth)
@@ -12,20 +20,11 @@ app.use(function (req, res, next) {
     next();
 });
 // Stundenpläne
-app.get("/v2/http://gymnasium-wuerselen.de/untis/Schueler-Stundenplan/**", removeV2MiddleWare, (req, res) => {
-});
+app.get("/v2/http://gymnasium-wuerselen.de/untis/Schueler-Stundenplan/**", removeV2MiddleWare, Stunden_1.StundenplaeneHandler);
+app.get("/v2/http://gymnasium-wuerselen.de/untis/Lehrer-Stundenplan/**", removeV2MiddleWare, Stunden_1.StundenplaeneHandler);
 // Vertretungspläne
-app.get("/v2/http://gymnasium-wuerselen.de/untis/Schueler/**", removeV2MiddleWare, (req, res) => {
-    Vertretung_1.getVP(req.gymWueUrl, req.credentials)
-        .then((r) => {
-        if (!r.ok)
-            return res.status(401).json({ error: "Zugangsdaten sind falsch" }).end();
-        return res.status(200).end(r.content);
-    })
-        .catch((err) => {
-        return res.status(500).json({ error: err.message }).end();
-    });
-});
+app.get("/v2/http://gymnasium-wuerselen.de/untis/Schueler/**", removeV2MiddleWare, Vertretung_1.VertretungsplaeneHandler);
+app.get("/v2/http://gymnasium-wuerselen.de/untis/Lehrer/**", removeV2MiddleWare, Vertretung_1.VertretungsplaeneHandler);
 // Sonstiges
 app.get("**/**", (req, res) => {
     res.status(400).json({ error: "Fehlerhafter Pfad" }).end();
