@@ -9,3 +9,4 @@ testing/examples.js
 **/.firebase
 **/heroku
 testdata
+**/runTest.sh
