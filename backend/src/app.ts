@@ -16,7 +16,7 @@ app.use((req: Request, res:Response, next:()=>void)=>{
 app.options("**/**", (_, res)=>{res.end();});
 app.use(function (req: mRequest, res: Response, next: ()=>void) {
     const auth = req.headers.authorization;
-    if(!auth) res.status(401).json({error: "Keine Zugangsdaten angegeben"}).end();
+    if(!auth) return res.status(401).json({error: "Keine Zugangsdaten angegeben"}).end();
     req.credentials = auth;
     next();
 });
@@ -30,7 +30,7 @@ app.get("/v2/http://gymnasium-wuerselen.de/untis/Lehrer/**", removeV2MiddleWare,
 
 // Sonstiges
 app.get("**/**",(req, res: Response) => {
-    res.status(400).json({error: "Fehlerhafter Pfad"}).end();
+    return res.status(400).json({error: "Fehlerhafter Pfad"}).end();
 });
 
 export default app;
