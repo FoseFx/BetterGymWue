@@ -10,6 +10,7 @@ describe('util', function () {
     describe('fetchWithCreds', function () {
 
         // notice: I cannot give you the Creds :P
+        // Note: this is a live test!
         it('should fetch with correct creds', async function () {
             const res = await Promise.all([
                 fetchWithCreds("http://gymnasium-wuerselen.de/untis/Lehrer-Stundenplan/38/t/t00013.htm", process.env.TEST_LEHRER_CREDS),
@@ -25,6 +26,7 @@ describe('util', function () {
             })
         });
 
+        // Note: this is a live test!
         it('should fail without correct creds', async function () {
             const res = await Promise.all([
                 fetchWithCreds("http://gymnasium-wuerselen.de/untis/Lehrer-Stundenplan/38/t/t00013.htm", "SomeBS"),
@@ -40,6 +42,7 @@ describe('util', function () {
         });
 
         it('should fail without correct url', async function () {
+
             const res = await Promise.all([
                 fetchWithCreds("http://gymnasium-wuerselen.de/", "SomeBS"),
                 fetchWithCreds("http://gymnasium-wuers", "Basic Some BS "),
@@ -47,13 +50,11 @@ describe('util', function () {
                 fetchWithCreds("http://google.com", "Basic SorryForTheSpam"),
             ]);
 
-            res.forEach(function (r, i) {
+            res.forEach(function (r) {
                 expect(r.ok).to.be.false;
                 expect(r.content).not.to.exist;
-            })
+            });
         });
-
-
 
     });
 });
