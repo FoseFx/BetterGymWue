@@ -137,6 +137,8 @@ export class BaseService {
           }
         },
         (err) => {
+          try{ this.alertService.alert(JSON.parse(err.error).error, 1) } catch (e) {}
+          if(err.statusText === "Unknown Error") this.alertService.alert("Netzwerkfehler", 1);
           if(!lehrer){
             delete localStorage.credentials;
             this.credentials = undefined;

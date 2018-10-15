@@ -1,4 +1,4 @@
-const baseUrl = 'https://proxy.fosefx.com/http://gymnasium-wuerselen.de/untis/';
+const baseUrl = 'https://proxy.fosefx.com/v2/http://gymnasium-wuerselen.de/untis/';
 const dd = "https://bettergymwue.firebaseio.com/";
 export const CONFIG = {
   baseURL: baseUrl,
@@ -9,8 +9,6 @@ export const CONFIG = {
   vertURL: baseUrl + 'Schueler/',
   lehrerURL: baseUrl + 'Lehrer/', // .. f1/subst_001.htm
   databaseURL: dd,
-  subsciptionUrl: 'https://us-central1-bettergymwue.cloudfunctions.net/app/subscribe',
-  unsubscribeUrl: 'https://us-central1-bettergymwue.cloudfunctions.net/app/unsubscribe',
   ferienUrl: dd + "ferien/ferien.json",
   ferienEndsUrl: dd + "ferien/ends.json",
   resets: dd + "resets.json",
