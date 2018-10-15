@@ -1,2 +1,2 @@
 #!/bin/bash
-git subtree push --prefix backend/dist heroku $1
+git push heroku `git subtree split --prefix backend/dist $1`:master
