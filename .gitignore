@@ -10,3 +10,5 @@ testing/examples.js
 **/heroku
 testdata
 **/runTest.sh
+**/run.sh
+**/serviceAccount.json
