@@ -1,4 +1,4 @@
-import fetch from "node-fetch";
+import fetch from "node-fetch"
 import {FetchResult} from "./types/FetchResult";
 
 export async function fetchWithCreds(url: string, credentials: string): Promise<FetchResult> {
@@ -11,8 +11,8 @@ export async function fetchWithCreds(url: string, credentials: string): Promise<
         });
         const ok = res.ok;
         if (!ok) return {ok: ok};
-        const text = await res.text();
-        return {ok: ok, content: text};
+        let txt = await res.textConverted();
+        return {ok: ok, content: txt};
     }catch (e) {
         console.error(e);
         return {ok: false};
