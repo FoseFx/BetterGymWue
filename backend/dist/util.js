@@ -11,16 +11,24 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const node_fetch_1 = require("node-fetch");
 function fetchWithCreds(url, credentials) {
     return __awaiter(this, void 0, void 0, function* () {
-        const res = yield node_fetch_1.default(url, {
-            headers: {
-                "Authorization": credentials
-            }
-        });
-        const ok = res.ok;
-        if (!ok)
-            return { ok: ok };
-        const text = yield res.text();
-        return { ok: ok, content: text };
+        try {
+            if (!/^http:\/\/(www\.)?gymnasium-wuerselen\.de\/untis\/(Schueler|Lehrer).*$/g.test(url))
+                return { ok: false };
+            const res = yield node_fetch_1.default(url, {
+                headers: {
+                    "Authorization": credentials
+                }
+            });
+            const ok = res.ok;
+            if (!ok)
+                return { ok: ok };
+            let txt = yield res.textConverted();
+            return { ok: ok, content: txt };
+        }
+        catch (e) {
+            console.error(e);
+            return { ok: false };
+        }
     });
 }
 exports.fetchWithCreds = fetchWithCreds;

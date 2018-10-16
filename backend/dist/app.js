@@ -15,7 +15,7 @@ app.options("**/**", (_, res) => { res.end(); });
 app.use(function (req, res, next) {
     const auth = req.headers.authorization;
     if (!auth)
-        res.status(401).json({ error: "Keine Zugangsdaten angegeben" }).end();
+        return res.status(401).json({ error: "Keine Zugangsdaten angegeben" }).end();
     req.credentials = auth;
     next();
 });
@@ -27,7 +27,7 @@ app.get("/v2/http://gymnasium-wuerselen.de/untis/Schueler/**", removeV2MiddleWar
 app.get("/v2/http://gymnasium-wuerselen.de/untis/Lehrer/**", removeV2MiddleWare, Vertretung_1.VertretungsplaeneHandler);
 // Sonstiges
 app.get("**/**", (req, res) => {
-    res.status(400).json({ error: "Fehlerhafter Pfad" }).end();
+    return res.status(400).json({ error: "Fehlerhafter Pfad" }).end();
 });
 exports.default = app;
 function removeV2MiddleWare(req, res, next) {
