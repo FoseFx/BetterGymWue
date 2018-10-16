@@ -1,7 +1,7 @@
 {
   "name": "v1-x",
   "version": "0.0.0",
-  "license": "MIT",
+  "license": "None",
   "scripts": {
     "ng": "ng",
     "build": "ng build --prod --aot",
