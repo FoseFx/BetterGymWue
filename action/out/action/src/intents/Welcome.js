@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var actions_on_google_1 = require("actions-on-google");
-var index_1 = require("../index");
+const actions_on_google_1 = require("actions-on-google");
+const index_1 = require("../index");
 function WelcomeIntent(conv) {
-    var date = new Date();
+    let date = new Date();
     if (!conv.user.storage.version)
         conv.user.storage.version = index_1.VERSION;
     if (conv.user.storage.version !== index_1.VERSION) {

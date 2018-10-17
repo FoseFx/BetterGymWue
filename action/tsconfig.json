@@ -5,10 +5,11 @@
     "noImplicitReturns": true,
     "outDir": "out",
     "sourceMap": false,
-    "target": "es5"
+    "target": "es6"
   },
   "compileOnSave": true,
   "include": [
     "src"
-  ]
+  ],
+  "exclude": ["node_modules"]
 }

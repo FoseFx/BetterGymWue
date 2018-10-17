@@ -1,32 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var VertretungsReihe = /** @class */ (function () {
-    function VertretungsReihe() {
-    }
-    return VertretungsReihe;
-}());
+class VertretungsReihe {
+}
 exports.VertretungsReihe = VertretungsReihe;
-var Kurs = /** @class */ (function () {
-    function Kurs() {
-    }
-    return Kurs;
-}());
+class Kurs {
+}
 exports.Kurs = Kurs;
-var TimeTable = /** @class */ (function () {
-    function TimeTable() {
-    }
-    return TimeTable;
-}());
+class TimeTable {
+}
 exports.TimeTable = TimeTable;
-var TimeTableSlot = /** @class */ (function () {
-    function TimeTableSlot() {
-    }
-    return TimeTableSlot;
-}());
+class TimeTableSlot {
+}
 exports.TimeTableSlot = TimeTableSlot;
-var NetworkError = /** @class */ (function () {
-    function NetworkError() {
-    }
-    return NetworkError;
-}());
+class NetworkError {
+}
 exports.NetworkError = NetworkError;

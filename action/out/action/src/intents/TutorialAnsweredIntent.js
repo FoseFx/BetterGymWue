@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var Stundenplan_1 = require("./Stundenplan");
-var VertretungsIntent_1 = require("./VertretungsIntent");
+const Stundenplan_1 = require("./Stundenplan");
+const VertretungsIntent_1 = require("./VertretungsIntent");
 function TutorialAnsweredIntent(conv) {
-    var intent = conv.request.inputs[0].arguments[0].textValue;
+    const intent = conv.request.inputs[0].arguments[0].textValue;
     if (intent === "vertretung")
         return VertretungsIntent_1.VertretungsIntent(conv);
     else if (intent === "morgen")

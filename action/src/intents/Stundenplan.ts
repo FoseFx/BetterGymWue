@@ -59,24 +59,25 @@ export function StundenPlanIntent(conv: Conversation<UserStorage>, morgen=false)
     }));
 }
 
-function getWeekNumber(d) {
+export function getWeekNumber(d: Date): number {
     d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
     d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
     let yearStart:any = new Date(Date.UTC(d.getUTCFullYear(),0,1));
-    return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+    return Math.ceil((((+d - yearStart) / 86400000) + 1) / 7);
 }
 
 const _MS_PER_DAY = 1000 * 60 * 60 * 24;
 
-// a and b are javascript Date objects
-function dateDiffInDays(a, b) {
+/** https://stackoverflow.com/a/15289883/7879896 */
+export function dateDiffInDays(a: Date, b: Date): number {
     // Discard the time and time-zone information.
     const utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
     const utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
 
     return Math.floor((utc2 - utc1) / _MS_PER_DAY);
 }
-function generateDateText(date: Date) {
+
+export function generateDateText(date: Date) {
     let day = (date.getDay() < 10)? "0" + date.getDay().toString() : date.getDay().toString();
     let month = (date.getMonth() < 10)? "0" + date.getMonth().toString() : date.getMonth().toString();
     return `${day}. ${month}. ${date.getFullYear()}`;

@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var baseUrl = 'https://proxy.fosefx.com/http://gymnasium-wuerselen.de/untis/';
-var dd = "https://bettergymwue.firebaseio.com/";
+const baseUrl = 'https://proxy.fosefx.com/http://gymnasium-wuerselen.de/untis/';
+const dd = "https://bettergymwue.firebaseio.com/";
 exports.CONFIG = {
     baseURL: baseUrl,
     credentialsCheckUrl: baseUrl + 'Schueler-Stundenplan/frames/navbar.htm',

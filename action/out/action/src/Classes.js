@@ -1,26 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var Stundenplan = /** @class */ (function () {
-    function Stundenplan() {
-    }
-    return Stundenplan;
-}());
+class Stundenplan {
+}
 exports.Stundenplan = Stundenplan;
-var Stunde = /** @class */ (function () {
-    function Stunde() {
-    }
-    return Stunde;
-}());
+class Stunde {
+}
 exports.Stunde = Stunde;
-var StundenplanDBResult = /** @class */ (function () {
-    function StundenplanDBResult() {
-    }
-    return StundenplanDBResult;
-}());
+class StundenplanDBResult {
+}
 exports.StundenplanDBResult = StundenplanDBResult;
-var UserStorage = /** @class */ (function () {
-    function UserStorage() {
-    }
-    return UserStorage;
-}());
+class UserStorage {
+}
 exports.UserStorage = UserStorage;

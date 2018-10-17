@@ -1,24 +1,24 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 function personalisieren(SP, mergedAliases) {
-    var ret = [];
+    let ret = [];
     SP.plan.tt.forEach(function (SPwoche) {
         // woche hat tage
-        var woche = [];
+        let woche = [];
         SPwoche.days.forEach(function (day) {
             // tag hat stunden
-            var stunden = [];
+            let stunden = [];
             day.forEach(function (stunde) {
                 // stunde aus kurse
                 if (stunde.type === "klasse") {
-                    var alias = mergedAliases.find(function (mA) { return mA[0] === stunde.fach; })[1];
+                    const alias = mergedAliases.find(mA => mA[0] === stunde.fach)[1];
                     stunden.push({
                         fach: stunde.fach,
                         readAlias: alias
                     });
                 }
                 else if (stunde.type === "kurs") {
-                    var mA = mergedAliases.find(function (value) { return value[2] === stunde.fach; });
+                    const mA = mergedAliases.find(value => value[2] === stunde.fach);
                     if (!mA)
                         stunden.push({ fach: "FREI", readAlias: "Frei" });
                     else
