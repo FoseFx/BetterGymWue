@@ -9,6 +9,7 @@ export interface HTMLElement {
     remove(): void;
     getAttribute(selector: string): string|number;
     getElementsByTagName(selector: string): HTMLElement[];
+    getElementsByClassName(selector: string): HTMLElement[];
 }
 
 export function evaKurse(html: string, stufe:string, tempTTs: TempTTs, kurse: KurseType):void {

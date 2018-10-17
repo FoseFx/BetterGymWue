@@ -32,7 +32,7 @@ function getTT(stufe) {
 exports.getTT = getTT;
 function get_stufen(resp) {
     return new Promise((resolve, reject) => {
-        resp.text().then((wert) => {
+        resp.textConverted().then((wert) => {
             // save weeks
             const w = wert.split('<option value="');
             let wochen = [
@@ -61,11 +61,11 @@ function getkurse(stufe, stufeid, wochen) {
         if (!res.ok)
             throw new Error('Failure: Connection could not be made');
         try {
-            let r = yield res.text();
+            let r = yield res.textConverted();
             evaKurse_port_1.evaKurse(r, stufe, tempTTs, _kurse);
             //woche 2
             const res2 = yield util_1.fetchWithCreds(conf_1.CONFIG.baseKursURL + wochen[1] + '/c/c' + generate5(stufeid) + '.htm');
-            r = yield res2.text();
+            r = yield res2.textConverted();
             evaKurse_port_1.evaKurse(r, stufe, tempTTs, _kurse);
             let k = [];
             _kurse[0].kurse.forEach((val) => {

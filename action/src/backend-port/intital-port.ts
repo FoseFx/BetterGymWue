@@ -24,7 +24,7 @@ export function getTT(stufe:string): TempTT{
 
 export function get_stufen(resp: any): Promise<string[][]> {
     return new Promise((resolve, reject) => {
-        resp.text().then(
+        resp.textConverted().then(
             (wert:string) => {
                 // save weeks
                 const w = wert.split('<option value="');
@@ -55,12 +55,12 @@ export async function getkurse(stufe: string, stufeid: number, wochen: string[])
     if (!res.ok) throw new Error('Failure: Connection could not be made');
 
     try{
-        let r = await res.text();
+        let r = await res.textConverted();
 
         evaKurse(r, stufe, tempTTs, _kurse);
         //woche 2
         const res2 = await fetchWithCreds(CONFIG.baseKursURL + wochen[1] + '/c/c' + generate5(stufeid) + '.htm');
-        r = await res2.text();
+        r = await res2.textConverted();
 
         evaKurse(r, stufe, tempTTs, _kurse);
         let k = [];
