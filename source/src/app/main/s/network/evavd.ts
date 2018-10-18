@@ -1,11 +1,12 @@
 import {VertretungsEva, VertretungsReihe} from "../../../Classes";
 
+// .toLowerCase
+export const SACONDITION = ['selbstständiges arbeiten', "selbständiges arbeiten", "selbstständies arbeiten", "selbstäniges arbeiten"];
+export const VARTEN =      ['entfall', 'vertretung', 'statt-vertretung', 'raum-vtr.', 'klausur', "absenz"];
+export const VABKUERZUNG = ['e',       'v',            'statt-v',          'r',        'k',       'fehlt'];
+
 export function evaVD(ret: string, lehrer?:boolean):VertretungsEva {
   lehrer = lehrer || false;
-  // .toLowerCase
-  const SACONDITION = ['selbstständiges arbeiten', "selbständiges arbeiten", "selbstständies arbeiten", "selbstäniges arbeiten"];
-  const VARTEN =      ['entfall', 'vertretung', 'statt-vertretung', 'raum-vtr.', 'klausur', "absenz"];
-  const VABKUERZUNG = ['e',       'v',            'statt-v',          'r',        'k',       'fehlt'];
   let stufen = [];
 
   function typeAbkuerzen(type:string, infotext:string):string {

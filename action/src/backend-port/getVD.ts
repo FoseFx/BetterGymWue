@@ -1,9 +1,10 @@
-import {VertretungsDaten, VertretungsEva} from "../../../source/src/app/Classes";
+import {VertretungsDaten, VertretungsEva, VertretungsEvaPayload} from "../../../source/src/app/Classes";
 import {Creds} from "../Classes";
 import {VERT_URL_S} from "../CONFIG";
-import fetch from "node-fetch";
 import {fetchWithCreds} from "../util";
 import {HTMLElement} from "./evaKurse-port";
+import {portedDOMParser} from "./customDOMParser";
+import {evaVDPort} from "./evaVDPort";
 const jsdom = require("jsdom");
 const {JSDOM} = jsdom;
 
@@ -27,23 +28,28 @@ export async function _getSchuelerVertretungsDaten(creds: Creds, expectedDate): 
 
 }
 
+export async function fetchVD(creds: Creds, url: string, expectedDate: string): Promise<VertretungsDaten | null>{
+    let frames = [
+        fetchVDFrame(creds, url, "f1/", expectedDate),
+        fetchVDFrame(creds, url, "f2/",expectedDate)
+    ];
+    console.log(JSON.stringify(frames));
+    return null;
+    // TODO
+}
+
+const START_FILE = "subst_001.htm";
 /**
  * @returns VertretungsDaten: This frames Date
  * @returns Null            : This frame is old
  * */
-export async function fetchVD(creds: Creds, url: string, expectedDate: string): Promise<VertretungsDaten | null>{
-    const frames = [
-        fetchVDFrame(creds, url, expectedDate),
-        fetchVDFrame(creds, url, expectedDate)
-    ];
-    // TODO
-}
-
 export async function fetchVDFrame(creds: Creds,
                                    url: string,
+                                   frame: string,
                                    expectedDate: string,
-                                   file = 'subst_001.htm'
-) {
+                                   file = START_FILE,
+                                   slides: VertretungsEvaPayload[] = []
+): Promise<VertretungsEvaPayload[] | null> {
 
     const resp = await fetchWithCreds(url, creds, true);
     const text = await resp.textConverted();
@@ -53,6 +59,10 @@ export async function fetchVDFrame(creds: Creds,
     const tagOnDoc = doc.getElementsByClassName("mon_title")[0].textContent.trim();
     if (tagOnDoc.match(expectedDate) === null)
         return null;
-    const eva: VertretungsEva = null; // TODO evaVD
+    const eva: VertretungsEva = evaVDPort(text, false); // TODO evaVD
+    file = eva[0];
+    slides.push(eva[1]);
+    if(file === START_FILE) return slides;
+    return fetchVDFrame(creds, url, frame, expectedDate, file, slides);
 
 }

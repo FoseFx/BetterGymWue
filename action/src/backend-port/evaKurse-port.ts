@@ -10,6 +10,8 @@ export interface HTMLElement {
     getAttribute(selector: string): string|number;
     getElementsByTagName(selector: string): HTMLElement[];
     getElementsByClassName(selector: string): HTMLElement[];
+    querySelctor(selctor: string): HTMLElement;
+    querySelctorAll(selctor: string): HTMLElement[];
 }
 
 export function evaKurse(html: string, stufe:string, tempTTs: TempTTs, kurse: KurseType):void {

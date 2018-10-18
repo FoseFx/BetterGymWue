@@ -11,7 +11,7 @@ chai.use(sinonChai);
 describe('getVD', function () {
 
     describe('getVertretungsDaten', function () {
-
+      
 
     });
 
