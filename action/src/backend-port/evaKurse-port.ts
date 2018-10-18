@@ -3,6 +3,11 @@ const jsdom = require("jsdom");
 const {JSDOM} = jsdom;
 
 export interface HTMLElement {
+    tagName: string;
+    parentElement: HTMLElement;
+    childElementCount: number;
+    content: string;
+    className: string;
     textContent: string;
     firstChild: HTMLElement;
     children: HTMLElement[];
@@ -10,8 +15,8 @@ export interface HTMLElement {
     getAttribute(selector: string): string|number;
     getElementsByTagName(selector: string): HTMLElement[];
     getElementsByClassName(selector: string): HTMLElement[];
-    querySelctor(selctor: string): HTMLElement;
-    querySelctorAll(selctor: string): HTMLElement[];
+    querySelector(selctor: string): HTMLElement;
+    querySelectorAll(selctor: string): HTMLElement[];
 }
 
 export function evaKurse(html: string, stufe:string, tempTTs: TempTTs, kurse: KurseType):void {

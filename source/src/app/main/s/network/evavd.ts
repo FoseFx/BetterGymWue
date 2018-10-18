@@ -1,20 +1,9 @@
 import {VertretungsEva, VertretungsReihe} from "../../../Classes";
 
-// .toLowerCase
-export const SACONDITION = ['selbstständiges arbeiten', "selbständiges arbeiten", "selbstständies arbeiten", "selbstäniges arbeiten"];
-export const VARTEN =      ['entfall', 'vertretung', 'statt-vertretung', 'raum-vtr.', 'klausur', "absenz"];
-export const VABKUERZUNG = ['e',       'v',            'statt-v',          'r',        'k',       'fehlt'];
+import {SACONDITION, typeAbkuerzen} from "./abkuerzen"
 
-export function evaVD(ret: string, lehrer?:boolean):VertretungsEva {
-  lehrer = lehrer || false;
+export function evaVD(ret: string, lehrer = false):VertretungsEva {
   let stufen = [];
-
-  function typeAbkuerzen(type:string, infotext:string):string {
-    let sa = infotext.includes('SELBST. ARB.');
-    let index = VARTEN.findIndex(art=>art===type);
-    if(index === -1 && !sa) return type;
-    return sa? 'e (v)' : VABKUERZUNG[index];
-  }
 
   let returnArray:VertretungsEva = [undefined, undefined];
   const parser = new DOMParser();

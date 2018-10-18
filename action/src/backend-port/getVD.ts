@@ -24,7 +24,8 @@ export async function _getLehrerVertretungsDaten(creds: Creds, expectedDate): Pr
 
 export async function _getSchuelerVertretungsDaten(creds: Creds, expectedDate): Promise<VertretungsDaten> {
     const result = fetchVD(creds, VERT_URL_S, expectedDate);
-    throw new Error("Not implemented function _getVertretungsDaten");
+    return result;
+    //throw new Error("Not implemented function _getVertretungsDaten");
 
 }
 
@@ -50,16 +51,15 @@ export async function fetchVDFrame(creds: Creds,
                                    file = START_FILE,
                                    slides: VertretungsEvaPayload[] = []
 ): Promise<VertretungsEvaPayload[] | null> {
-
-    const resp = await fetchWithCreds(url, creds, true);
+    const resp = await fetchWithCreds(url + frame + file, creds, true);
     const text = await resp.textConverted();
     const dom = new JSDOM(text);
     const doc: HTMLElement = dom.window.document;
     // test whether this frame is old
-    const tagOnDoc = doc.getElementsByClassName("mon_title")[0].textContent.trim();
+    const tagOnDoc = doc.querySelector(".mon_title").textContent.trim();
     if (tagOnDoc.match(expectedDate) === null)
         return null;
-    const eva: VertretungsEva = evaVDPort(text, false); // TODO evaVD
+    const eva: VertretungsEva = evaVDPort(text, false);
     file = eva[0];
     slides.push(eva[1]);
     if(file === START_FILE) return slides;
