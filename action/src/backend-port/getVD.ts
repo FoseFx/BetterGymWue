@@ -23,16 +23,16 @@ export async function _getLehrerVertretungsDaten(creds: Creds, expectedDate): Pr
 }
 
 export async function _getSchuelerVertretungsDaten(creds: Creds, expectedDate): Promise<VertretungsDaten> {
-    const result = fetchVD(creds, VERT_URL_S, expectedDate);
+    const result = fetchVD(creds, expectedDate);
     return result;
     //throw new Error("Not implemented function _getVertretungsDaten");
 
 }
 
-export async function fetchVD(creds: Creds, url: string, expectedDate: string): Promise<VertretungsDaten | null>{
+export async function fetchVD(creds: Creds, expectedDate: string): Promise<VertretungsDaten | null>{
     let frames = [
-        fetchVDFrame(creds, url, "f1/", expectedDate),
-        fetchVDFrame(creds, url, "f2/",expectedDate)
+        fetchVDFrame(creds, "f1/", expectedDate),
+        fetchVDFrame(creds, "f2/",expectedDate)
     ];
     console.log(JSON.stringify(frames));
     return null;
@@ -45,13 +45,12 @@ const START_FILE = "subst_001.htm";
  * @returns Null            : This frame is old
  * */
 export async function fetchVDFrame(creds: Creds,
-                                   url: string,
                                    frame: string,
                                    expectedDate: string,
                                    file = START_FILE,
                                    slides: VertretungsEvaPayload[] = []
 ): Promise<VertretungsEvaPayload[] | null> {
-    const resp = await fetchWithCreds(url + frame + file, creds, true);
+    const resp = await fetchWithCreds(VERT_URL_S + frame + file, creds, true);
     const text = await resp.textConverted();
     const dom = new JSDOM(text);
     const doc: HTMLElement = dom.window.document;
@@ -60,9 +59,10 @@ export async function fetchVDFrame(creds: Creds,
     if (tagOnDoc.match(expectedDate) === null)
         return null;
     const eva: VertretungsEva = evaVDPort(text, false);
+    console.log(eva);
     file = eva[0];
     slides.push(eva[1]);
     if(file === START_FILE) return slides;
-    return fetchVDFrame(creds, url, frame, expectedDate, file, slides);
+    return fetchVDFrame(creds, frame, expectedDate, file, slides);
 
 }

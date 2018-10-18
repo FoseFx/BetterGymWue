@@ -2,11 +2,11 @@ import {VertretungsEva, VertretungsReihe} from "../../../source/src/app/Classes"
 import {typeAbkuerzen, SACONDITION} from "../../../source/src/app/main/s/network/abkuerzen";
 import {HTMLElement} from "./evaKurse-port";
 const jsdom = require("jsdom");
-const {JSODOM} = jsdom;
+const {JSDOM} = jsdom;
 
 
 export function evaVDPort(html: string, lehrer = false): VertretungsEva {
-    const dom = new JSODOM(html);
+    const dom = new JSDOM(html);
     const doc: HTMLElement = dom.window.document;
 
     let stufen = [];
@@ -16,7 +16,7 @@ export function evaVDPort(html: string, lehrer = false): VertretungsEva {
         [1]: Payload
     */
     let returnArray: VertretungsEva = [
-        doc.querySelector('meta[http.equiv="refresh"]').content.split("URL=")[1],
+        doc.querySelector('meta[http-equiv="refresh"]').content.split("URL=")[1],
         undefined
     ];
 

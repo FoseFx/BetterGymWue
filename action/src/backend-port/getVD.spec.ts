@@ -13,6 +13,7 @@ describe('getVD', function () {
     describe('getVertretungsDaten', function () {
 
         it('should test', async function () {
+            this.timeout(5000);
         });
 
     });
