@@ -23,7 +23,7 @@ export type VertretungsEvaPayload = [
 ]
 
 export type VertretungsDaten = [
-  any[],
+  string[],
   {
     [key: string]: VertretungsReihe[]
   }
