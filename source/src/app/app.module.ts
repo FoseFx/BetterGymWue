@@ -27,7 +27,6 @@ import { AboutComponent } from './c/about/about.component';
 import { StundenplanComponent } from './c/stundenplan/stundenplan.component';
 import { ErrorComponent } from './c/error/error.component';
 import {RefreshttService} from './s/refreshtt.service';
-import {IndexedDBService} from "./indexed-db.service";
 import {APP_BASE_HREF} from "@angular/common";
 import {BaseService} from "./s/base/base.service";
 import { GetFromKurseModalComponent } from './c/select/kurse/get-from-kurse-modal.component';
@@ -91,7 +90,6 @@ export class MyHammerConfig extends HammerGestureConfig  {
     NetwService,
     AlertService,
     RefreshttService,
-    IndexedDBService,
     {
       provide: HAMMER_GESTURE_CONFIG,
       useClass: MyHammerConfig

@@ -1,12 +1,11 @@
 
-import {fromEvent as observableFromEvent, of as observableOf, merge as observableMerge, Subscription} from 'rxjs';
+import {fromEvent as observableFromEvent, of as observableOf, merge as observableMerge, Subscription, Observable} from 'rxjs';
 
 import {mapTo} from 'rxjs/operators';
 import {Component, Input, AfterViewInit} from '@angular/core';
 import {BaseService} from '../../../s/base/base.service';
 import {NetwService} from '../../../s/network/netw.service';
 import {Router} from '@angular/router';
-import {Observable} from 'rxjs';
 import {DisplayArray, TimeTable, VertretungsReihe} from "../../../Classes";
 import {evaVertretung} from "./util/evaVertretung";
 import {addVDtoDisplayArray} from "./util/addVDtoDisplayArray";

@@ -10,7 +10,7 @@ import {Kurs, TT} from "../../Classes";
 
 @Injectable()
 export class BaseService {
-  public VERSION = "1.4.9.5 Beta";
+  public VERSION = "1.5.0 Beta";
   public acceptedAGB: boolean;
   allowedBrowser: boolean;
   public credentials: {u: string, p: string, l?: {u: string, p: string}};
