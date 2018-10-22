@@ -12,3 +12,4 @@ testdata
 **/runTest.sh
 **/serviceAccount.json
 **/run.sh
+**/.tests
