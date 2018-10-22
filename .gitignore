@@ -11,3 +11,4 @@ testing/examples.js
 testdata
 **/run.sh
 **/serviceAccount.json
+**/.tests

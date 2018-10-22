@@ -5,11 +5,11 @@ import {
     VertretungsReihe
 } from "../../../source/src/app/Classes";
 import {Creds} from "../Classes";
-import {VERT_URL_S} from "../CONFIG";
+import {VERT_URL_L, VERT_URL_S} from "../CONFIG";
 import {fetchWithCreds} from "../util";
 import {HTMLElement} from "./evaKurse-port";
-import {portedDOMParser} from "./customDOMParser";
 import {evaVDPort} from "./evaVDPort";
+
 const jsdom = require("jsdom");
 const {JSDOM} = jsdom;
 
@@ -23,38 +23,36 @@ export function getVertretungsdaten(creds: Creds, useLehrer = false, date = new 
 }
 
 
-export async function _getLehrerVertretungsDaten(creds: Creds, expectedDate): Promise<VertretungsDaten> {
-    throw new Error("Not implemented function _getVertretungsDaten");
+export function _getLehrerVertretungsDaten(creds: Creds, expectedDate): Promise<VertretungsDaten> {
+    return fetchVD(creds, expectedDate, true);
 }
 
-export async function _getSchuelerVertretungsDaten(creds: Creds, expectedDate): Promise<VertretungsDaten> {
-    const result = await fetchVD(creds, expectedDate);
-    console.log(JSON.stringify(result));
-    return result;
-    //throw new Error("Not implemented function _getVertretungsDaten");
-
+export function _getSchuelerVertretungsDaten(creds: Creds, expectedDate): Promise<VertretungsDaten> {
+    return fetchVD(creds, expectedDate);
 }
 
-export async function fetchVD(creds: Creds, expectedDate: string): Promise<VertretungsDaten | null>{
+export async function fetchVD(creds: Creds, expectedDate: string, lehrer = false): Promise<VertretungsDaten | null>{
     let frames = await Promise.all([
-        fetchVDFrame(creds, "f1/", expectedDate),
-        fetchVDFrame(creds, "f2/",expectedDate)
+        fetchVDFrame(creds, "f1/", expectedDate, lehrer),
+        fetchVDFrame(creds, "f2/",expectedDate, lehrer)
     ]);
     return analyzeVD(frames);
 }
 
 const START_FILE = "subst_001.htm";
+
 /**
  * @returns VertretungsDaten: This frames Date
  * @returns Null            : This frame is old
  * */
 export async function fetchVDFrame(creds: Creds,
-                                   frame: string,
+                                   frame: "f1/"|"f2/",
                                    expectedDate: string,
+                                   lehrer: boolean,
                                    file = START_FILE,
                                    slides: VertretungsEvaPayload[] = []
 ): Promise<VertretungsEvaPayload[] | null> {
-    const resp = await fetchWithCreds(VERT_URL_S + frame + file, creds, true);
+    const resp = await fetchWithCreds(lehrer? VERT_URL_L:VERT_URL_S + frame + file, creds, true);
     const text = await resp.textConverted();
     const dom = new JSDOM(text);
     const doc: HTMLElement = dom.window.document;
@@ -66,7 +64,7 @@ export async function fetchVDFrame(creds: Creds,
     file = eva[0];
     slides.push(eva[1]);
     if(file === START_FILE) return slides;
-    return fetchVDFrame(creds, frame, expectedDate, file, slides);
+    return fetchVDFrame(creds, frame, expectedDate, lehrer, file, slides);
 
 }
 
