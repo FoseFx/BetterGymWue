@@ -1,6 +1,6 @@
-import {CONFIG} from "../../conf";
+import {CONFIG} from "../../../conf";
 import {NetwService} from "./netw.service";
-import {Kurs} from "../../Classes";
+import {Kurs} from "../../../Classes";
 
 export function saveKurse(kurse, that: NetwService): Promise<number>{
   return new Promise<number>((resolve, reject) => {

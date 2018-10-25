@@ -1,6 +1,6 @@
-import {Kurs} from "../../../../Classes";
+import {Kurs} from "../../../../../Classes";
 import {evaVertretung} from "./evaVertretung";
-import {evaVertretungTestData} from "../../../../testdata/show/tt/evaVertretung.testdata";
+import {evaVertretungTestData} from "../../../../../testdata/show/tt/evaVertretung.testdata";
 import {} from 'jasmine';
 
 function testCases(values: any[], func: (value: any) => void) {

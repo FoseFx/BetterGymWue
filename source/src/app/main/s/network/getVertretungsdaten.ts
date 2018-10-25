@@ -1,7 +1,7 @@
-import {CONFIG} from "../../conf";
+import {CONFIG} from "../../../conf";
 import {evaVD} from "./evavd";
 import {NetwService} from "./netw.service";
-import {VertretungsDaten, VertretungsEva, VertretungsEvaPayload} from "../../Classes";
+import {VertretungsDaten, VertretungsEva, VertretungsEvaPayload} from "../../../Classes";
 
 let start = 'subst_001.htm';
 export function getVertretungsDaten(  that: NetwService,

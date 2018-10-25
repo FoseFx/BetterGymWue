@@ -2,10 +2,10 @@ import {from as observableFrom, Observable} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {CONFIG} from '../../conf';
+import {CONFIG} from '../../../conf';
 import {AlertService} from "../alert.service";
 import * as AppMeta from "./appMeta.base";
-import {Kurs, TT} from "../../Classes";
+import {Kurs, TT} from "../../../Classes";
 
 
 @Injectable()

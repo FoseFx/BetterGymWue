@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {BaseService} from '../../s/base/base.service';
 import {AlertService} from '../../s/alert.service';
-import {TimeTableSlot, TT} from "../../Classes";
+import {TimeTableSlot, TT} from "../../../Classes";
 import {formatDate} from "@angular/common";
 
 

@@ -1,5 +1,5 @@
-import {KurseType, TempTTs} from "../../Classes";
-import {TimeTableSlot} from "../../Classes";
+import {KurseType, TempTTs} from "../../../Classes";
+import {TimeTableSlot} from "../../../Classes";
 
 export function evaKurse(html: string, stufe:string, tempTTs: TempTTs, kurse: KurseType):void {
   const parser = new DOMParser();

@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
-import {CONFIG} from '../../conf';
+import {CONFIG} from '../../../conf';
 import {BaseService} from '../base/base.service';
 import {AlertService} from '../alert.service';
 import * as Cloud from './cloud.netw'
 import * as Initial from './initial.netw'
 import {getVertretungsDaten} from "./getVertretungsdaten";
-import {VertretungsDaten, VertretungsEvaPayload, VertretungsReihe} from "../../Classes";
+import {VertretungsDaten, VertretungsEvaPayload, VertretungsReihe} from "../../../Classes";
 
 @Injectable()
 export class NetwService {
