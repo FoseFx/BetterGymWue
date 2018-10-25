@@ -18,7 +18,6 @@ const lehrerCreds = {u: process.env.TEST_SCH_U, p: process.env.TEST_SCH_P,
 };
 
 
-
 describe('getVD', function () {
 
     describe('getFetchVDFrame', function () {
@@ -73,8 +72,19 @@ describe('getVD', function () {
             expect(lSlides.length).to.equal(1);
         });
 
-        it('should return three slides', async function () {
 
+        it('should return three slides', async function () {
+            this.timeout(5000);
+            const map = ["subst_001.htm", "subst_002.htm", "subst_003.htm"];
+            const stub = sinon.stub(UTIL, "fetchWithCreds").callsFake((args) => Promise.resolve({
+                    textConverted: () => Promise.resolve(
+                        m.S.THREESLIDES[ map.findIndex(v => v === args.replace(VERT_URL_S + "f1/", "")) ]
+                    )
+                })
+            );
+
+            const slides = await fetchVDFrame(schuelerCreds, "f1/", "24.12.", false);
+            expect(slides.length).to.equal(3);
 
         });
     });

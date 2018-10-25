@@ -11,7 +11,7 @@ export class VertretungsReihe{
   lehrer?: string;
 }
 export type VertretungsEva = [
-  string,
+  string,                     // next File
   VertretungsEvaPayload
 ]
 export type VertretungsEvaPayload = [
