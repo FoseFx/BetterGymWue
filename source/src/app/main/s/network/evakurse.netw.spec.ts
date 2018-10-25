@@ -1,6 +1,6 @@
 import {getWoche, isDoppelStunde} from "./evakurse.netw";
-import {getWocheTestCases, getWocheTestCasesResults} from "../../testdata/evaKurse/getWoche.cases";
-import {isDoppelStundeCases, isDoppelStundeCasesResults} from "../../testdata/evaKurse/isDoppelStunde.cases";
+import {getWocheTestCases, getWocheTestCasesResults} from "../../../testdata/evaKurse/getWoche.cases";
+import {isDoppelStundeCases, isDoppelStundeCasesResults} from "../../../testdata/evaKurse/isDoppelStunde.cases";
 
 describe("Evakurse.netw.ts", () => {
 

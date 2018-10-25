@@ -1,5 +1,5 @@
 import {HttpClient} from "@angular/common/http";
-import {CONFIG} from "../../conf";
+import {CONFIG} from "../../../conf";
 import {BaseService} from "./base.service";
 import {Observable} from "rxjs";
 

@@ -1,4 +1,4 @@
-import {VertretungsEva, VertretungsReihe} from "../../Classes";
+import {VertretungsEva, VertretungsReihe} from "../../../Classes";
 
 export function evaVD(ret: string, lehrer?:boolean):VertretungsEva {
   lehrer = lehrer || false;

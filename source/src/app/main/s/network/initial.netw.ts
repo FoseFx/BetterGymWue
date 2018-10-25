@@ -1,7 +1,7 @@
-import {CONFIG} from "../../conf";
+import {CONFIG} from "../../../conf";
 import {evaKurse} from "./evakurse.netw";
 import {Observable} from "rxjs/internal/Observable";
-import {KurseType, TempTTs} from "../../Classes";
+import {KurseType, TempTTs} from "../../../Classes";
 import {BaseService} from "../base/base.service";
 
 let tempTTs: TempTTs = [];

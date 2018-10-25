@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import {RouterModule, Routes} from "@angular/router";
-import {LoginComponent} from "./c/login/login.component";
-import {GuardService} from "./s/guard.service";
-import {AgbComponent} from "./c/agb/agb.component";
-import {SelectComponent} from "./c/select/select.component";
-import {ShowComponent} from "./c/show/show.component";
-import {CloudComponent} from "./c/cloud/cloud.component";
-import {AboutComponent} from "./c/about/about.component";
-import {StundenplanComponent} from "./c/stundenplan/stundenplan.component";
-import {ErrorComponent} from "./c/error/error.component";
+import {LoginComponent} from "./main/c/login/login.component";
+import {GuardService} from "./main/s/guard.service";
+import {AgbComponent} from "./main/c/agb/agb.component";
+import {SelectComponent} from "./main/c/select/select.component";
+import {ShowComponent} from "./main/c/show/show.component";
+import {CloudComponent} from "./main/c/cloud/cloud.component";
+import {AboutComponent} from "./main/c/about/about.component";
+import {StundenplanComponent} from "./main/c/stundenplan/stundenplan.component";
+import {ErrorComponent} from "./main/c/error/error.component";
 
 const routes: Routes =  [
   {path: '', component: LoginComponent, canActivate: [GuardService] },

@@ -1,4 +1,4 @@
-import {VertretungsReihe} from "../../../../Classes";
+import {VertretungsReihe} from "../../../../../Classes";
 
 export function addVDtoDisplayArray(VDMe, displayArray, that){
   if(VDMe.length === 0) return;

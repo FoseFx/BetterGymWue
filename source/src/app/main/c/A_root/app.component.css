@@ -14,7 +14,7 @@ mat-toolbar{
 }
 
 .head{
-  background: url("../../../assets/nav.jpg") no-repeat right top;
+  background: url("../../../../assets/nav.jpg") no-repeat right top;
   color: white;
   padding: 65px 5px 5px 15px;
 }.head *{

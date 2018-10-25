@@ -3,7 +3,7 @@ import {NetwService} from '../../../s/network/netw.service';
 import {AlertService} from '../../../s/alert.service';
 import {BaseService} from '../../../s/base/base.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Kurs, NetworkError} from "../../../Classes";
+import {Kurs, NetworkError} from "../../../../Classes";
 import {MatDialog} from "@angular/material";
 import {GetFromKurseData, GetFromKurseModalComponent} from "./get-from-kurse-modal.component";
 
