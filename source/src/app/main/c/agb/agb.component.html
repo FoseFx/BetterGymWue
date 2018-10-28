@@ -7,8 +7,8 @@
   <hr>
   <h3>Kurs-Cloud</h3>
   <p>Bei Verwendung der Kurs-Cloud erlaubt der Nutzer, dass Daten über die vom Nutzer angegeben Kurse (Kurs, Räume, Lehrer etc.) unverschlüsselt auf Datenbanken des Anbieters gespeichert werden. Diese Daten werden mit Beginn des neuen Halbjahres gelöscht und nicht automatisch verarbeitet.</p>
-  <hr>
 
+  <hr>
   <h3>Datenschutzerklärung</h3>
   <button  mat-raised-button *ngIf="!sdse" (click)="sdse = true">Zeige Datenschutzerklärung</button>
   <div *ngIf="sdse">
@@ -101,6 +101,28 @@
       Sie können Ihre Einwilligung jederzeit mit Wirkung für die Zukunft widerrufen, indem Sie die Speicherung der Cookies durch eine entsprechende Einstellung Ihrer Browser-Software verhindern; wir weisen Sie jedoch darauf hin, dass Sie in diesem Fall gegebenenfalls nicht sämtliche Funktionen dieser Website vollumfänglich werden nutzen können.</p>
 
     <p>Sie können darüber hinaus die Erfassung der durch das Cookie erzeugten und auf Ihre Nutzung der Website bezogenen Daten (inkl. Ihrer IP-Adresse) an Google sowie die Verarbeitung dieser Daten durch Google verhindern, indem Sie das <a href="https://tools.google.com/dlpage/gaoptout?hl=de" target="_blank">Browser-Add-on</a> herunterladen und installieren. Opt-Out-Cookies verhindern die zukünftige Erfassung Ihrer Daten beim Besuch dieser Website. Um die Erfassung durch Universal Analytics über verschiedene Geräte hinweg zu verhindern, müssen Sie das Opt-Out auf allen genutzten Systemen durchführen. Wenn Sie hier klicken, wird das Opt-Out-Cookie gesetzt: <a href="javascript:disableTracking()"><strong>Google Analytics deaktivieren</strong></a></p>
+
+    <h3>LocalStorage und Google Assistant</h3>
+    <p>
+      Neben Cookies, die von Google Analytics zum Tracking verwendet werden (s.u.) verwendet diese App den "localStorage" des Browsers um Daten über den Nutzer zu speichern.
+      Dies beinhaltet unter Anderem
+    </p>
+    <ul>
+      <li>Version</li>
+      <li>Informationen bzgl. der Kurse des Nutzers</li>
+      <li>Stundenplan</li>
+      <li>Vertretungsdaten</li>
+      <li>Anmeldedaten (unverschlüsselt)</li>
+    </ul>
+    <p>Sollte der Service "BGW für Google Assistant" verwendet werden, werden diese auf einem Server in den USA gespeichert und deinem Google Konto zugeordnet.
+      Dies kann jederzeit zurückgezogen werden, dann werden alle Benutzerdaten vom Server gelöscht. Darüber hinaus kann unter
+      <a href="https://myaccount.google.com">myaccount.google.com</a> Zugriff auf das Google Konto entzogen werden.
+    </p>
+    <h4>UserStorage</h4>
+    <p>
+      Um schnellere Antworzeiten bei verwendung des Google Assistants zu gewährleisten werden diese Daten zusätzlich im "UserStorage" bei Google gespeichert.
+    </p>
+
   </div>
 <hr>
 

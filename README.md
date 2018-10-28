@@ -17,7 +17,6 @@ Die Pro und Cons sind [hier](https://bgw.fosefx.com/about) zu finden.
 
 ## Fremdcode
 
-  * [iovar's Proxy Script](https://gist.github.com/iovar/9091078)
   * [tobiasahlin's spinner](http://tobiasahlin.com/spinkit/)
   * [dblock's getWeek()](https://gist.github.com/dblock/1081513)
 
@@ -30,8 +29,7 @@ Für Nutzer, die keine Mobilen Daten haben speichert BGW das ganze auch noch zwi
 Interessierte haben die Möglichkeit täglich per Benachrichtigung informiert zu werden.
 
 ## Zukunft
-1. Optimierung der fundamentalen Algorithmen
-2. Backendport für den Google Assistent (ggf. Paywall?)
-3. Maintenance
+1. Backendport für den Google Assistent
 
-~ FoseFx
+---
+<h6>@FoseFx</h6>
