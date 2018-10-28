@@ -32,9 +32,9 @@ export function _getSchuelerVertretungsDaten(creds: Creds, expectedDate): Promis
 }
 
 export async function fetchVD(creds: Creds, expectedDate: string, lehrer = false): Promise<VertretungsDaten | null>{
-    let frames = await Promise.all([
+    let frames: VertretungsEvaPayload[][] = await Promise.all([
         fetchVDFrame(creds, "f1/", expectedDate, lehrer),
-        fetchVDFrame(creds, "f2/",expectedDate, lehrer)
+        fetchVDFrame(creds, "f2/", expectedDate, lehrer)
     ]);
     return analyzeVD(frames);
 }
@@ -51,7 +51,7 @@ export async function fetchVDFrame(creds: Creds,
                                    lehrer: boolean,
                                    file = START_FILE,
                                    slides: VertretungsEvaPayload[] = []
-): Promise<VertretungsEvaPayload[] | null> {
+): Promise<VertretungsEvaPayload[]> {
     const resp = await fetchWithCreds(lehrer? VERT_URL_L:VERT_URL_S + frame + file, creds, true);
     const text = await resp.textConverted();
     const dom = new JSDOM(text);
