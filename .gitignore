@@ -13,3 +13,4 @@ testdata
 **/serviceAccount.json
 **/run.sh
 **/.tests
+**/firebase-debug.log

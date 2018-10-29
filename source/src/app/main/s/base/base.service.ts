@@ -10,7 +10,7 @@ import {Kurs, TT} from "../../../Classes";
 
 @Injectable()
 export class BaseService {
-  public VERSION = "1.5.0 Beta";
+  public VERSION = "1.5.1 Beta";
   public acceptedAGB: boolean;
   allowedBrowser: boolean;
   public credentials: {u: string, p: string, l?: {u: string, p: string}};
@@ -161,14 +161,10 @@ export class BaseService {
         redirect: "follow",
         cache: "no-cache"
       })
-        .then(function (response) {
-          if(response.ok){
-            response.arrayBuffer().then((buffer) => {
-              //@ts-ignore
-              let txt = new TextDecoder("iso-8859-1").decode(buffer);
-              resolve(txt);
-            });
-          }else {
+        .then(async function (response) {
+          if(response.ok)
+            resolve(await response.text());
+          else {
             reject({
               statusText: `${response.status} ${response.statusText}`
             });
