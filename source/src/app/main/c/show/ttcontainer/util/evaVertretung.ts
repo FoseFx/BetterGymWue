@@ -27,10 +27,36 @@ export function evaVertretung(w, that: TtcontainerComponent){
     if(row.fach == undefined) relevant.push(row);
   });
 
-  VDT.sort(function (a, b) {
-    return cmp(a.stunde[0], b.stunde[0]) || cmp(a.kurs, b.kurs) ||cmp(a.type, b.type);
+  // SORT
+  VDT.sort((a, b) => {
+    return cmp(a.fach, b.fach) || cmp(a.stunde[0], b.stunde[1]) || cmp(a.type, b.type);
   });
 
+
+
+  let obj = {};
+  VDT.forEach((v, i) => {
+    if(i === 0) obj[v.fach] = [v];
+    else if(v.fach == VDT[i-1].fach) obj[v.fach].push(v);
+    else obj[v.fach] = [v];
+  });
+  console.log(obj);
+
+  let final = [];
+  Object.keys(obj).sort((a, b) => {
+    return obj[a][0].stunde[0] - obj[b][0].stunde[0];
+  }).forEach((v) => {
+    obj[v].forEach((vv) => {final.push(vv)});
+  });
+
+  let arrEmpty = [];
+  let arrRest = [];
+  final.forEach(v=>{
+    if(v.fach.trim() === "") arrEmpty.push(v);
+    else arrRest.push(v);
+  });
+  VDT = arrEmpty.concat(arrRest);
+  // /SORT
 
   try{
     that.info = that.info.concat(Array.from(w[0][0]));

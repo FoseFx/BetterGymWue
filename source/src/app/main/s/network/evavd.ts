@@ -4,7 +4,7 @@ export function evaVD(ret: string, lehrer?:boolean):VertretungsEva {
   lehrer = lehrer || false;
   // .toLowerCase
   const SACONDITION = ['selbstständiges arbeiten', "selbständiges arbeiten", "selbstständies arbeiten", "selbstäniges arbeiten"];
-  const VARTEN =      ['entfall', 'vertretung', 'statt-vertretung', 'raum-vtr.', 'klausur', "absenz"];
+  const VARTEN =      ['entfall', 'vertretung', 'stattvertretung', 'raumvtr', 'klausur', "absenz"];
   const VABKUERZUNG = ['e',       'v',            'statt-v',          'r',        'k',       'fehlt'];
   let stufen = [];
 
@@ -44,7 +44,7 @@ export function evaVD(ret: string, lehrer?:boolean):VertretungsEva {
     let stundenstr = children[1].innerText.replace(/\s/g, "");
     let stunden = stundenstr.split("-"); // [1, 2]
     let fach = children[lehrer?3:2].innerText;
-    let type = children[lehrer? 6:3].innerText.replace(/\s/g, "").toLowerCase();
+    let type = children[lehrer? 6:3].innerText.replace(/\W/g, "").toLowerCase();
     let newroom = children[lehrer?4:5].innerText.replace(/\s/g, "");
     let infotext = children[lehrer?7:6].innerText.replace('\u00a0', '');
 

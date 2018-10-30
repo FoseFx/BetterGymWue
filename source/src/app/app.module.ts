@@ -31,6 +31,7 @@ import {APP_BASE_HREF} from "@angular/common";
 import {BaseService} from "./main/s/base/base.service";
 import { GetFromKurseModalComponent } from './main/c/select/kurse/get-from-kurse-modal.component';
 import { AppRoutingModule } from './app-routing.module';
+import { SureDialogComponent } from './main/sure/sure.dialog.component';
 declare var Hammer: any;
 
 export class MyHammerConfig extends HammerGestureConfig  {
@@ -61,7 +62,8 @@ export class MyHammerConfig extends HammerGestureConfig  {
     AboutComponent,
     StundenplanComponent,
     ErrorComponent,
-    GetFromKurseModalComponent
+    GetFromKurseModalComponent,
+    SureDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -98,7 +100,7 @@ export class MyHammerConfig extends HammerGestureConfig  {
   ],
 
   bootstrap: [AppComponent],
-  entryComponents: [GetFromKurseModalComponent]
+  entryComponents: [GetFromKurseModalComponent, SureDialogComponent]
 })
 export class AppModule { }
 
