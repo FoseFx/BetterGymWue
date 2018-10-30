@@ -8,10 +8,15 @@ p, ul{
   margin: 0 auto;
   text-align: justify;
 }
-h1, h2, h3, h4, strong{
+h1, h2, h3, h4, strong {
   text-align: center;
   width: 100%;
   display: block;
+}
+
+strong{
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 button{

@@ -261,3 +261,8 @@ ul{
 .font-weight-bold{
   font-weight: bold;
 }
+
+
+.light{
+  font-weight: lighter;
+}
