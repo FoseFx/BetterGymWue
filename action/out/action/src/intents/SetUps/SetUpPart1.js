@@ -16,15 +16,8 @@ const Stundenplan_1 = require("../Stundenplan");
 // download and create timetable
 function handlePart1(conv, update = false) {
     return __awaiter(this, void 0, void 0, function* () {
-        const payload = conv.user.storage.payload;
         try {
-            let sp = yield util_1.getStundenplanFromDB(payload.stufeid, payload.creds);
-            if (sp === null) {
-                console.log("SetUpPart1: ", "getStundenplanFromDB returned null, starting setup without cache");
-                sp = yield getStundenplan_1.getStundenplan(payload.creds, payload.stufe, payload.stufeid);
-            }
-            conv.user.storage.payload.plan = personalisieren_1.personalisieren(sp, payload.mergedAliases);
-            conv.user.storage.payload.planTTL = +new Date().setDate(new Date().getDate() + 7);
+            yield initializeStundenplan(conv);
             conv.user.storage.done = true;
             if (!update)
                 return conv.ask(new actions_on_google_1.SimpleResponse({
@@ -41,3 +34,18 @@ function handlePart1(conv, update = false) {
     });
 }
 exports.handlePart1 = handlePart1;
+function initializeStundenplan(conv) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const payload = conv.user.storage.payload;
+        let sp = yield util_1.getStundenplanFromDB(payload.stufeid, payload.creds);
+        if (sp === null) {
+            console.log("SetUpPart1: ", "getStundenplanFromDB returned null, starting setup without cache");
+            sp = yield getStundenplan_1.getStundenplan(payload.creds, payload.stufe, payload.stufeid);
+        }
+        const plan = personalisieren_1.personalisieren(sp, payload.mergedAliases);
+        conv.user.storage.payload.plan = plan;
+        conv.user.storage.payload.planTTL = +new Date().setDate(new Date().getDate() + 7);
+        return plan;
+    });
+}
+exports.initializeStundenplan = initializeStundenplan;

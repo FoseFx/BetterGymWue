@@ -13,17 +13,38 @@ export async function VertretungsIntent(conv: Conversation<UserStorage>) {
     if(!date) date = new Date();
     else date = new Date(date);
 
+    const DOW = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Sammstag"][date.getDay()];
 
 
     const payload = conv.user.storage.payload;
     const plan = (payload.planTTL < +new Date()) ? await initializeStundenplan(conv) : payload.plan;
 
     const VD: VertretungsDaten = await getVertretungsdaten(payload.creds, false, date);
-    const info = VD[0].reduce((p,c)=>p + new JSDOM(c).window.document.textContent().trim());
+
+
+    if(VD === null)
+        return conv.ask(`Keinen Vertretungsplan für ${DOW} gefunden`);
+
+
+
+
+    const info: string =
+        VD[0].length === 0? null:
+                            VD[0].reduce((p,c)=>p + new JSDOM(c).window.document.textContent().trim());
 
     const stufeVD = VD[1][payload.stufe];
 
-    return conv.ask(`Info: ${info}, payload: ${JSON.stringify(stufeVD)}`);
+    let answer = `Am ${DOW} hast du `;
+    if(!!stufeVD){
+        // todo
+    }else
+        answer += "keine Vertretung.";
 
-    //return conv.ask("Das kann ich noch nicht");
+    if(info !== null)
+        answer += `Weitere Informationen: ${info}`;
+
+
+
+    return conv.ask(answer);
+
 }

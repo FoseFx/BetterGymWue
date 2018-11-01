@@ -7,6 +7,7 @@ import {SignInIntent} from "./intents/SignInIntent";
 import * as admin from "firebase-admin";
 import {KurseConfIntent} from "./intents/KurseConfIntent";
 import {TutorialAnsweredIntent} from "./intents/TutorialAnsweredIntent";
+import {VertretungsIntent} from "./intents/VertretungsIntent";
 
 process.env.TZ = "Europe/Berlin";
 const serviceAccount = require("../../../serviceAccount.json");
@@ -20,7 +21,7 @@ admin.initializeApp({
 
 const CLIENT_ID = process.env.ACTION_CLIENT_ID;
 
-if(!CLIENT_ID) throw new Error("No Client ID Provided");
+if(!CLIENT_ID) throw new Error("No Client ID Provided 'ACTION_CLIENT_ID'");
 const app = dialogflow({debug: false, clientId: CLIENT_ID});
 const eapp = express();
 eapp.use(express.json());
@@ -28,6 +29,7 @@ eapp.use(app);
 
 // @ts-ignore
 app.intent(INTENTS.STUNDENPLAN, StundenPlanIntent);
+app.intent(INTENTS.VERTRETUNG, VertretungsIntent);
 app.intent(INTENTS.WELCOME, WelcomeIntent);
 app.intent(INTENTS.SIGN_IN_CONF, SignInIntent);
 app.intent(INTENTS.KURSE_CONFIRMED, KurseConfIntent);
