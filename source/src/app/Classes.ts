@@ -23,9 +23,9 @@ export type VertretungsEvaPayload = [
 ]
 
 export type VertretungsDaten = [
-  string[],
+  string[], // info of a day
   {
-    [key: string]: VertretungsReihe[]
+    [key: string]: VertretungsReihe[] // Stufe -> VD map
   }
 ];
 
