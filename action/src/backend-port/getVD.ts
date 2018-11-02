@@ -69,6 +69,7 @@ export async function fetchVDFrame(creds: Creds,
 }
 
 export function analyzeVD(frames: VertretungsEvaPayload[][]): VertretungsDaten {
+    if(frames.length !== 2) throw new Error("expected:  analyzeVD([frame1, frame2]), but got length of " + frames.length);
     // remove the one empty frame
     const frame = (frames[0] !== null) ? frames[0]: frames[1];
     if(frame === null) return null; // None of them have content

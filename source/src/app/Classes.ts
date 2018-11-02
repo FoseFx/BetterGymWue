@@ -19,7 +19,7 @@ export type VertretungsEvaPayload = [
     stufe: string,
     cntnd: VertretungsReihe[]
   }[],
-  string[]
+  string[]    // info of slide
 ]
 
 export type VertretungsDaten = [

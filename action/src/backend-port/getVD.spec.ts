@@ -3,11 +3,12 @@ import * as chai from 'chai';
 import "mocha";
 import * as sinon from "sinon";
 import * as sinonChai from 'sinon-chai';
-import {fetchVDFrame} from "./getVD";
+import {analyzeVD, fetchVDFrame} from "./getVD";
 import * as UTIL from "../util";
-import {MOCKVD as m} from "../.tests/VD";
+import {MOCKVD as m, MOCKVDEXPECT} from "../.tests/VD";
 import {VERT_URL_L, VERT_URL_S} from "../CONFIG";
 import {fetchWithCreds} from "../util";
+import {VertretungsDaten} from "../../../source/src/app/Classes";
 
 const expect = chai.expect;
 
@@ -87,6 +88,106 @@ describe('getVD', function () {
             expect(slides.length).to.equal(3);
 
         });
+    });
+
+    describe('analyzeVD', function () {
+
+        it('should pass schueler one slide', function () {
+            let res: VertretungsDaten = analyzeVD([null,
+                [ // one frame
+                    [ // one slide
+                        MOCKVDEXPECT.S_ONESLIDE, // slide payload
+                        ["<b>Nachrichten zum Tag</b>", "<b>Abwesende Klassen</b>", "<b>Stufe43</b>"] // slide info
+                    ]
+                ]
+            ]);
+
+            // get keys
+            const keys = [];
+            MOCKVDEXPECT.S_ONESLIDE.forEach(v => {
+                keys.push(v.stufe);
+            });
+
+            function f() {
+                // info
+                expect(res[0]).to.deep.equal(["<b>Nachrichten zum Tag</b>", "<b>Abwesende Klassen</b>", "<b>Stufe43</b>"]);
+
+                expect(Object.keys(res[1])).to.deep.equal(keys);
+            }
+            f();
+            res = analyzeVD([
+                [ // one frame
+                    [ // one slide
+                        MOCKVDEXPECT.S_ONESLIDE, // slide payload
+                        ["<b>Nachrichten zum Tag</b>", "<b>Abwesende Klassen</b>", "<b>Stufe43</b>"] // slide info
+                    ]
+                ],
+                null
+            ]);
+            f();
+
+
+        });
+
+        it('should pass schueler three slides', function () {
+            let res: VertretungsDaten = analyzeVD(
+                [
+                    null,
+                    [
+                        [
+                            MOCKVDEXPECT.S_THREESLIDES[0],
+                            ["Some test"]
+                        ],[
+                            MOCKVDEXPECT.S_THREESLIDES[1],
+                            []
+                        ],[
+                            MOCKVDEXPECT.S_THREESLIDES[2],
+                            []
+                        ]
+                    ]
+                ]);
+
+            const keys = [];
+            MOCKVDEXPECT.S_THREESLIDES.forEach(v=>{
+                v.forEach(vv=>{
+                    keys.push(vv.stufe);
+                })
+            });
+            function f() {
+                expect(res[0]).to.deep.equal(["Some test"]);
+
+                expect(Object.keys(res[1])).to.deep.equal(keys);
+            }
+
+            f();
+            res = analyzeVD(
+                [
+                    [
+                        [
+                            MOCKVDEXPECT.S_THREESLIDES[0],
+                            ["Some test"]
+                        ],
+                        [
+                            MOCKVDEXPECT.S_THREESLIDES[1],
+                            []
+                        ],
+                        [
+                            MOCKVDEXPECT.S_THREESLIDES[2],
+                            []
+                        ]
+                    ],
+                    null
+                ]);
+            f();
+
+
+        });
+
+        it('should pass no slides', function () {
+            const res = analyzeVD([null, null]);
+            expect(res).to.equal(null);
+        });
+
     });
 
 });
