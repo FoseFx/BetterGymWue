@@ -3,8 +3,7 @@ import {UserStorage} from "../Classes";
 import {initializeStundenplan} from "./SetUps/SetUpPart1";
 import {getVertretungsdaten} from "../backend-port/getVD";
 import {VertretungsDaten} from "../../../source/src/app/Classes";
-const jsdom = require("jsdom");
-const {JSDOM} = jsdom;
+import undefinedError = Mocha.utils.undefinedError;
 
 export async function VertretungsIntent(conv: Conversation<UserStorage>) {
 
@@ -23,14 +22,13 @@ export async function VertretungsIntent(conv: Conversation<UserStorage>) {
 
 
     if(VD === null)
-        return conv.ask(`Keinen Vertretungsplan für ${DOW} gefunden`);
-
+        return conv.ask(`Keinen Vertretungsplan für ${DOW} gefunden.`);
 
 
 
     const info: string =
         VD[0].length === 0? null:
-                            VD[0].reduce((p,c)=>p + new JSDOM(c).window.document.textContent().trim());
+                            VD[0].reduce((p,c)=> p + ` ${unHTML(c)}`, "");
 
     const stufeVD = VD[1][payload.stufe];
 
@@ -41,10 +39,17 @@ export async function VertretungsIntent(conv: Conversation<UserStorage>) {
         answer += "keine Vertretung.";
 
     if(info !== null)
-        answer += `Weitere Informationen: ${info}`;
+        answer += ` Weitere Informationen:${info}`;
 
 
 
     return conv.ask(answer);
 
 }
+
+const regex = /<[^><]*>|<\/[^><]*>/g;
+export function unHTML(string: string): string{
+    if(typeof string === "undefined") return undefined;
+    return string.replace(regex, "").trim();
+}
+
