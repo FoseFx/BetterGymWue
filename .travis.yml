@@ -4,4 +4,4 @@ node_js:
 branches:
   only:
   - master
-script: sh -c 'cd backend && npm i && npm test && cd .. && cd action && npm i && npm test'
+script: sh -c 'cd backend && npm i && npm test'
