@@ -1,4 +1,4 @@
-# Better Gym Wue
+# Better Gym Wue [![Build Status](https://travis-ci.com/FoseFx/BetterGymWue.svg?branch=master)](https://travis-ci.com/FoseFx/BetterGymWue)
 ## \>> [bgw.fosefx.com](https://bgw.fosefx.com/) <<
 ## About
 
