@@ -27,14 +27,17 @@ export async function VertretungsIntent(conv: Conversation<UserStorage>) {
 
 
     const info: string =
-        VD[0].length === 0? null:
-                            VD[0].reduce((p,c)=> p + ` ${unHTML(c)}`, "");
+        VD[0].length === 0?
+            null          :
+            VD[0].reduce((p,c)=> p + ` ${unHTML(c)}`, "");
 
     const stufeVD = VD[1][payload.stufe];
 
     let answer = `Am ${DOW} hast du `;
     if(!!stufeVD){
-        // todo
+        stufeVD.forEach(reihe =>{
+            
+        })
     }else
         answer += "keine Vertretung.";
 
@@ -47,7 +50,7 @@ export async function VertretungsIntent(conv: Conversation<UserStorage>) {
 
 }
 
-const regex = /<[^><]*>|<\/[^><]*>/g;
+const regex = /<[^><]*>|<\/[^><]*>|\t|\n/g;
 export function unHTML(string: string): string{
     if(typeof string === "undefined") return undefined;
     return string.replace(regex, "").trim();
