@@ -41,16 +41,15 @@ export class AppComponent implements OnInit{
   ngOnInit(){
     let last = localStorage.lastTTcheck;
     if(last == undefined){
-      localStorage.lastTTcheck = new Date();
       last = new Date();
+      localStorage.lastTTcheck = last;
     }
     else last = Date.parse(last);
     last = new Date(last);
     last.setDate(last.getDate() + 7);
     if (last < new Date()){
-      console.log("exec");
       localStorage.lastTTcheck = new Date();
-      this.refreshTT();
+      this.refreshTT(true);
     }else this.done = true;
     if(!this.done) return;
 
@@ -81,7 +80,9 @@ export class AppComponent implements OnInit{
     });
   }
 
-  refreshTT(){
+  refreshTT(force = false){
+    if(force) return this.refresh.refreshTT().then(()=>{rl();});
+
     this.hamnav.close();
     const dialogRef = this.dialog.open(SureDialogComponent);
     dialogRef.afterClosed().subscribe((v: boolean) => {

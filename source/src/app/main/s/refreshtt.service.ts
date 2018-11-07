@@ -23,11 +23,9 @@ export class RefreshttService {
   fails = 0;
   refreshTT(){
     this.removeTT();
-    let oldKurse = Array.from(this.baseService.KlassenKurse);
-    this.baseService.myKurse.forEach((val) => {
-      oldKurse.push(val.fach);
-    });
+    let oldKurse = this.baseService.KlassenKurse.concat(this.baseService.myKurse.map(v=>v.fach));
     oldKurse.sort();
+
     let newKurse = [];
     return new Promise((resolve, reject) => {
 

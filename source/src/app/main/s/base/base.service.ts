@@ -18,14 +18,13 @@ export class BaseService {
   public myStufe: string;
   public myStufeID;
   public TT: TT;
-  public KlassenKurse: string[]; // guter Name
+  public KlassenKurse: string[]; // Kurs.fach
   public kursID;
   public noswipe = false;
   private _preLehrer:boolean;
   public milchglas = false;
   public selectedTab = 0;
   public dead = false;
-  public _notificationsEnabled: boolean;
   public ferien = false;
   public ferienEndsOn = "";
   public justResetted = false;
@@ -57,7 +56,6 @@ export class BaseService {
     this.KlassenKurse = (!!localStorage.KlassenKurse) ? JSON.parse(localStorage.KlassenKurse) : undefined;
     this.kursID = (!!localStorage.kursID) ? localStorage.kursID : undefined;
     this._preLehrer = (!!localStorage.preLehrer) ? (localStorage.preLehrer == 'true') : true;
-    this._notificationsEnabled = (!!localStorage.notificationsEnabled) ? localStorage.notificationsEnabled == "true" :undefined;
     this.justResetted = (!!localStorage.justResetted) ? (localStorage.justResetted == "true"): false;
     localStorage.justResetted = false;
     AppMeta.checkFerien(this);
