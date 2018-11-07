@@ -3,7 +3,7 @@ import {VertretungsEva, VertretungsReihe} from "../../../Classes";
 export function evaVD(ret: string, lehrer?:boolean):VertretungsEva {
   lehrer = lehrer || false;
   // .toLowerCase
-  const SACONDITION = ['selbstständiges arbeiten', "selbständiges arbeiten", "selbstständies arbeiten", "selbstäniges arbeiten"];
+  const SACONDITION = ['selbstständiges arbeiten', "selbständiges arbeiten", "selbstständies arbeiten", "selbstäniges arbeiten", "eigenständiges arbeiten"];
   const VARTEN =      ['entfall', 'vertretung', 'stattvertretung', 'raumvtr', 'klausur', "absenz"];
   const VABKUERZUNG = ['e',       'v',            'statt-v',          'r',        'k',       'fehlt'];
   let stufen = [];
