@@ -10,7 +10,7 @@ import {Kurs, TT} from "../../../Classes";
 
 @Injectable()
 export class BaseService {
-  public VERSION = "1.4.9.5 Beta";
+  public VERSION = "1.5.3 Beta";
   public acceptedAGB: boolean;
   allowedBrowser: boolean;
   public credentials: {u: string, p: string, l?: {u: string, p: string}};
@@ -18,14 +18,13 @@ export class BaseService {
   public myStufe: string;
   public myStufeID;
   public TT: TT;
-  public KlassenKurse: string[]; // guter Name
+  public KlassenKurse: string[]; // Kurs.fach
   public kursID;
   public noswipe = false;
   private _preLehrer:boolean;
   public milchglas = false;
   public selectedTab = 0;
   public dead = false;
-  public _notificationsEnabled: boolean;
   public ferien = false;
   public ferienEndsOn = "";
   public justResetted = false;
@@ -57,7 +56,6 @@ export class BaseService {
     this.KlassenKurse = (!!localStorage.KlassenKurse) ? JSON.parse(localStorage.KlassenKurse) : undefined;
     this.kursID = (!!localStorage.kursID) ? localStorage.kursID : undefined;
     this._preLehrer = (!!localStorage.preLehrer) ? (localStorage.preLehrer == 'true') : true;
-    this._notificationsEnabled = (!!localStorage.notificationsEnabled) ? localStorage.notificationsEnabled == "true" :undefined;
     this.justResetted = (!!localStorage.justResetted) ? (localStorage.justResetted == "true"): false;
     localStorage.justResetted = false;
     AppMeta.checkFerien(this);
@@ -137,6 +135,8 @@ export class BaseService {
           }
         },
         (err) => {
+          try{ this.alertService.alert(JSON.parse(err.error).error, 1) } catch (e) {}
+          if(err.statusText === "Unknown Error") this.alertService.alert("Netzwerkfehler", 1);
           if(!lehrer){
             delete localStorage.credentials;
             this.credentials = undefined;
@@ -159,14 +159,10 @@ export class BaseService {
         redirect: "follow",
         cache: "no-cache"
       })
-        .then(function (response) {
-          if(response.ok){
-            response.arrayBuffer().then((buffer) => {
-              //@ts-ignore
-              let txt = new TextDecoder("iso-8859-1").decode(buffer);
-              resolve(txt);
-            });
-          }else {
+        .then(async function (response) {
+          if(response.ok)
+            resolve(await response.text());
+          else {
             reject({
               statusText: `${response.status} ${response.statusText}`
             });

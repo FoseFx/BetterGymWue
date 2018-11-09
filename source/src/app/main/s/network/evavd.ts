@@ -1,9 +1,19 @@
 import {VertretungsEva, VertretungsReihe} from "../../../Classes";
 
-import {SACONDITION, typeAbkuerzen} from "./abkuerzen"
-
-export function evaVD(ret: string, lehrer = false):VertretungsEva {
+export function evaVD(ret: string, lehrer?:boolean):VertretungsEva {
+  lehrer = lehrer || false;
+  // .toLowerCase
+  const SACONDITION = ['selbstständiges arbeiten', "selbständiges arbeiten", "selbstständies arbeiten", "selbstäniges arbeiten", "eigenständiges arbeiten"];
+  const VARTEN =      ['entfall', 'vertretung', 'stattvertretung', 'raumvtr', 'klausur', "absenz"];
+  const VABKUERZUNG = ['e',       'v',            'statt-v',          'r',        'k',       'fehlt'];
   let stufen = [];
+
+  function typeAbkuerzen(type:string, infotext:string):string {
+    let sa = infotext.includes('SELBST. ARB.');
+    let index = VARTEN.findIndex(art=>art===type);
+    if(index === -1 && !sa) return type;
+    return sa? 'e (v)' : VABKUERZUNG[index];
+  }
 
   let returnArray:VertretungsEva = [undefined, undefined];
   const parser = new DOMParser();
@@ -34,7 +44,7 @@ export function evaVD(ret: string, lehrer = false):VertretungsEva {
     let stundenstr = children[1].innerText.replace(/\s/g, "");
     let stunden = stundenstr.split("-"); // [1, 2]
     let fach = children[lehrer?3:2].innerText;
-    let type = children[lehrer? 6:3].innerText.replace(/\s/g, "").toLowerCase();
+    let type = children[lehrer? 6:3].innerText.replace(/\W/g, "").toLowerCase();
     let newroom = children[lehrer?4:5].innerText.replace(/\s/g, "");
     let infotext = children[lehrer?7:6].innerText.replace('\u00a0', '');
 

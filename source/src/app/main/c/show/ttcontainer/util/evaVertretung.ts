@@ -27,10 +27,6 @@ export function evaVertretung(w, that: TtcontainerComponent){
     if(row.fach == undefined) relevant.push(row);
   });
 
-  VDT.sort(function (a, b) {
-    return cmp(a.stunde[0], b.stunde[0]) || cmp(a.kurs, b.kurs) ||cmp(a.type, b.type);
-  });
-
 
   try{
     that.info = that.info.concat(Array.from(w[0][0]));

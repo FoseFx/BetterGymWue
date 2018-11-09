@@ -27,11 +27,11 @@ import { AboutComponent } from './main/c/about/about.component';
 import { StundenplanComponent } from './main/c/stundenplan/stundenplan.component';
 import { ErrorComponent } from './main/c/error/error.component';
 import {RefreshttService} from './main/s/refreshtt.service';
-import {IndexedDBService} from "./indexed-db.service";
 import {APP_BASE_HREF} from "@angular/common";
 import {BaseService} from "./main/s/base/base.service";
 import { GetFromKurseModalComponent } from './main/c/select/kurse/get-from-kurse-modal.component';
 import { AppRoutingModule } from './app-routing.module';
+import { SureDialogComponent } from './main/sure/sure.dialog.component';
 declare var Hammer: any;
 
 export class MyHammerConfig extends HammerGestureConfig  {
@@ -62,7 +62,8 @@ export class MyHammerConfig extends HammerGestureConfig  {
     AboutComponent,
     StundenplanComponent,
     ErrorComponent,
-    GetFromKurseModalComponent
+    GetFromKurseModalComponent,
+    SureDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -91,7 +92,6 @@ export class MyHammerConfig extends HammerGestureConfig  {
     NetwService,
     AlertService,
     RefreshttService,
-    IndexedDBService,
     {
       provide: HAMMER_GESTURE_CONFIG,
       useClass: MyHammerConfig
@@ -100,7 +100,7 @@ export class MyHammerConfig extends HammerGestureConfig  {
   ],
 
   bootstrap: [AppComponent],
-  entryComponents: [GetFromKurseModalComponent]
+  entryComponents: [GetFromKurseModalComponent, SureDialogComponent]
 })
 export class AppModule { }
 

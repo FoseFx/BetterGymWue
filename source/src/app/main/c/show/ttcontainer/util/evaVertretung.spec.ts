@@ -36,6 +36,7 @@ export type evaVertTestData = [any, [string, string[], string, Kurs[], string[]]
 describe("show: ttcontainer: evaVertretung", () => {
 
   // for legal reasons I cannot give you the testing data
+  //@ts-ignore
   let data: evaVertTestData[] = evaVertretungTestData;
 
 

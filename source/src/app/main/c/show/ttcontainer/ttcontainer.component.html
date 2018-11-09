@@ -37,17 +37,22 @@
   <table *ngIf="info.length > 0" class="table table-sm">
     <tbody>
     <tr *ngFor="let inf of info">
-      <td [ngClass]="{'bold':inf.toLowerCase().indexOf('<b>') != -1,'schulplaner': inf.indexOf('SCHULPLANER_INFO') != -1}">{{ unHTML(inf.replace("SCHULPLANER_INFO", "")) }}</td>
+      <td [ngClass]="{'bold':inf.toLowerCase().indexOf('<b>') != -1,'schulplaner': inf.indexOf('SCHULPLANER_INFO') != -1}">
+        {{ unHTML(inf.replace("SCHULPLANER_INFO", "")) }}
+      </td>
     </tr>
     </tbody>
   </table>
 
   <br>
 
-  <h2 *ngIf="VDStufe.length > 0">{{baseService.myStufe + ": "}} &nbsp;
-    <mat-slide-toggle *ngIf="baseService.credentials.l && (online | async)" [(ngModel)]="preLehrer">Lehrer</mat-slide-toggle>
-    <mat-slide-toggle *ngIf="baseService.credentials.l && !(online | async)" disabled [checked]="offlinepreLehrer">Lehrer</mat-slide-toggle>
-  </h2>
+    <h2 style="display: inline-block">{{baseService.myStufe + ": "}} &nbsp; </h2>
+    <h4 style="display: inline-block">
+      <span><mat-slide-toggle *ngIf="baseService.credentials.l && (online | async)" [(ngModel)]="preLehrer">Lehrer</mat-slide-toggle></span>
+      <span><mat-slide-toggle *ngIf="baseService.credentials.l && !(online | async)" disabled [checked]="offlinepreLehrer">Lehrer</mat-slide-toggle></span>
+    </h4>
+  <h2 *ngIf="VDStufe.length == 0" class="light center"><small>Leider nichts</small></h2>
+
   <table *ngIf="VDStufe.length > 0" class="table table-sm btmtbl">
     <tbody>
     <tr><th>St.</th><th>Kurs</th><th>Typ</th><th>Raum</th><th *ngIf="(baseService.credentials.l && baseService.preLehrer)">Lehrer</th><th>Info</th></tr>

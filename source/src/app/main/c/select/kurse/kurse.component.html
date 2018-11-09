@@ -25,10 +25,10 @@
     </div>
     <hr>
 
-    <h5 style="text-align: center">
+    <h5 style="text-align: center;">
       <span *ngFor="let t of titles; let i = index;"
             [ngClass]="{'notSelected': t.state < 1,'ok': t.state === 1,'tooMuch': t.state > 1}"
-            style="margin-right: 5px">{{t.t}}</span>
+            style="margin-right: 5px; display: inline-block;">{{t.t}}</span>
     </h5>
 
     <mat-slide-toggle style="text-align: center!important; display: block!important; margin: 0 auto!important; width: 230px" [(ngModel)]="cloud">Auf Kurs Cloud speichern</mat-slide-toggle>

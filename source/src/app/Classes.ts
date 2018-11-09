@@ -30,8 +30,8 @@ export type VertretungsDaten = [
 ];
 
 export class Kurs {
-  title: string;
-  fach: string;
+  title: string;      // GK01
+  fach: string;       // E1
   lehrer: string;
   selected?: boolean;
   ph?: boolean

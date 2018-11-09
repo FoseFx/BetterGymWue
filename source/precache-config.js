@@ -10,9 +10,7 @@ module.exports = {
       cacheId: 'BetterGymWue',
       filename: 'sw.js',
       staticFileGlobs: [
-        'dist/index.html',
-        'dist/**.js',
-        'dist/**.css'
+        'dist/**'
       ],
       stripPrefix:'dist/assets',
       mergeStatisticsConfig: true

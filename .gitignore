@@ -9,6 +9,8 @@ testing/examples.js
 **/.firebase
 **/heroku
 testdata
+**/runTest.sh
 **/run.sh
-**/serviceAccount.json
 **/.tests
+**/firebase-debug.log
+**/serviceAccount.json

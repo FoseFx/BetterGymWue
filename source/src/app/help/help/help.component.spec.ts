@@ -6,10 +6,13 @@ import {
   MatButtonModule,
   MatCardModule,
   MatFormFieldModule,
-  MatInputModule, MatSlideToggleModule,
-  MatSnackBarModule
+  MatInputModule,
+  MatSlideToggleModule
 } from "@angular/material";
-import {HttpClient} from "@angular/common/http";
+import {HttpClientModule} from "@angular/common/http";
+import {RouterModule} from "@angular/router";
+import {CommonModule} from "@angular/common";
+import {HelpRoutingModule} from "../help-routing.module";
 
 describe('HelpComponent', () => {
   let component: HelpComponent;
@@ -18,14 +21,15 @@ describe('HelpComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
+        CommonModule,
+        HelpRoutingModule,
         FormsModule,
         MatInputModule,
         MatFormFieldModule,
         MatButtonModule,
-        MatCardModule,
-        MatSnackBarModule,
         MatSlideToggleModule,
-        HttpClient
+        MatCardModule,
+        HttpClientModule
       ],
       declarations: [ HelpComponent ]
     })

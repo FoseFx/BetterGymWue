@@ -32,7 +32,7 @@
 
   <div>
     <br>
-    <h1>Bekannte Bugs</h1>
+    <h3>Bekannte Bugs</h3>
     <ul *ngIf="bugs">
       <li *ngFor="let bug of bugs" [ngClass]="{'fixed': bug.substr(0, 1) === '+'}">{{bug.substr(1)}}</li>
     </ul>
