@@ -1,6 +1,6 @@
 // .toLowerCase
-export const SACONDITION = ['selbstständiges arbeiten', "selbständiges arbeiten", "selbstständies arbeiten", "selbstäniges arbeiten"];
-const VARTEN =      ['entfall', 'vertretung', 'statt-vertretung', 'raum-vtr.', 'klausur', "absenz"];
+export const SACONDITION = ['selbstständiges arbeiten', "selbständiges arbeiten", "selbstständies arbeiten", "selbstäniges arbeiten", "eigenständiges arbeiten"];
+const VARTEN =      ['entfall', 'vertretung', 'stattvertretung', 'raumvtr', 'klausur', "absenz"];
 const VABKUERZUNG = ['e',       'v',            'statt-v',          'r',        'k',       'fehlt'];
 
 
