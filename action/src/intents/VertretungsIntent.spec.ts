@@ -3,7 +3,7 @@ import * as chai from 'chai';
 import "mocha";
 import * as sinon from "sinon";
 import * as sinonChai from 'sinon-chai';
-import {unHTML, VertretungsIntent} from "./VertretungsIntent";
+import {stify, unHTML, untype, VertretungsIntent} from "./VertretungsIntent";
 import * as getVD from "../backend-port/getVD";
 import {VertretungsDaten} from "../../../source/src/app/Classes";
 
@@ -40,7 +40,7 @@ describe('VertretungsIntent', function () {
         user:{ storage: {
             payload: {
                 planTTL: +new Date("18.02.2038"),
-                creds: {u: "user", p: "passw", l: {u: "luser", p: "lpassw"}}
+                creds: {u: "user", p: "passw", l: {u: "luser", p: "lpassw"}},
             }
         }},
         ask: (param) => param
@@ -89,12 +89,25 @@ describe('VertretungsIntent', function () {
     describe('VD', function () {
 
         it('should pass schueler 1', async function () {
+
+            // @ts-ignore
+            const stubObject = Object.assign({}, stubConv);
+            // @ts-ignore
+            stubObject.user.storage.payload.plan = [
+                [undefined, undefined, [], undefined, undefined],
+                [undefined, undefined, [{readAlias: "Niederländisch", fach: "Fach1"},{readAlias: "Niederländisch", fach: "Fach1"}], undefined, undefined]
+            ];
+            // @ts-ignore
+            stubObject.user.storage.payload.stufe = "Stufe1";
+
+
+
             // @ts-ignore
             stub = sinon.stub(getVD, "getVertretungsdaten").resolves(SCHUELER_1);
             // @ts-ignore
-            const res = await VertretungsIntent(stubConv);
+            const res = await VertretungsIntent(stubObject);
 
-            expect(true).equal(true);
+            expect(res).equal("Am Mittwoch hast du 3. Niederländisch Entfall Weitere Informationen: Nachrichten zum Tag Abwesende Klassen Stufe43");
 
         });
 
@@ -116,4 +129,27 @@ describe('unHTML', function () {
 
     });
 
+});
+
+
+describe('stify', function () {
+
+    it('should work', function () {
+        expect(stify("1 - 2")).to.equal("1./2.");
+        expect(stify("1")).to.equal("1.");
+        expect(stify("100")).to.equal("100.");
+        expect(stify("100 - 090")).to.equal("100./090.");
+    });
+
+});
+
+describe('untype', function () {
+    it('should work', function () {
+        expect(untype("e ")).to.equal("Entfall");
+        expect(untype(" e ")).to.equal("Entfall");
+        expect(untype(" e (v) ")).to.equal("Selbstständiges Arbeiten");
+        expect(untype("v")).to.equal("Vertretung");
+        expect(untype("fehlt")).to.equal("noch nicht Klar");
+        expect(untype("r")).to.equal("Raumvertretung");
+    });
 });

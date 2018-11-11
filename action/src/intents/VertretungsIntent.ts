@@ -1,9 +1,9 @@
 import {Conversation} from "actions-on-google";
-import {UserStorage} from "../Classes";
+import {Stunde, Stunden, UserStorage} from "../Classes";
 import {initializeStundenplan} from "./SetUps/SetUpPart1";
 import {getVertretungsdaten} from "../backend-port/getVD";
-import {VertretungsDaten} from "../../../source/src/app/Classes";
-import undefinedError = Mocha.utils.undefinedError;
+import {VertretungsDaten, VertretungsReihe} from "../../../source/src/app/Classes";
+import {VABKSPOKEN, VABKUERZUNG} from "../../../source/src/app/main/s/network/abkuerzen";
 
 export async function VertretungsIntent(conv: Conversation<UserStorage>) {
 
@@ -33,12 +33,21 @@ export async function VertretungsIntent(conv: Conversation<UserStorage>) {
 
     const stufeVD = VD[1][payload.stufe];
 
-    let answer = `Am ${DOW} hast du `;
+    const answerInit = `Am ${DOW} hast du `;
+    let answer = answerInit;
     if(!!stufeVD){
-        stufeVD.forEach(reihe =>{
-            
+        let relevant: Stunde[] = [];
+        plan.forEach((woche: Stunden[]) => {
+            relevant = relevant.concat(woche[date.getDay() - 1]);
+        });
+        stufeVD.forEach((reihe: VertretungsReihe) => {
+            if(!reihe.nd) return;
+            const stunde = relevant.find((stunde: Stunde) => stunde.fach == reihe.fach);
+            if(!stunde) return;
+            answer += `${stify(reihe.stunde)} ${!!stunde.readAlias? stunde.readAlias: stunde.fach} ${untype(reihe.type)}`;
         })
-    }else
+    }
+    if (answerInit === answer)
         answer += "keine Vertretung.";
 
     if(info !== null)
@@ -56,3 +65,14 @@ export function unHTML(string: string): string{
     return string.replace(regex, "").trim();
 }
 
+export function stify(string: string):string {
+    return string.replace(" - ", "/").replace(/(\d+)/g, "$1.");
+}
+
+export function untype(string: string): string {
+    string = string.trim();
+    const index = VABKUERZUNG.findIndex(v => v === string);
+    if(index === -1)
+        return string === "e (v)"? "Selbstständiges Arbeiten":string;
+    return VABKSPOKEN[index];
+}
