@@ -9,6 +9,7 @@ const SignInIntent_1 = require("./intents/SignInIntent");
 const admin = require("firebase-admin");
 const KurseConfIntent_1 = require("./intents/KurseConfIntent");
 const TutorialAnsweredIntent_1 = require("./intents/TutorialAnsweredIntent");
+const VertretungsIntent_1 = require("./intents/VertretungsIntent");
 process.env.TZ = "Europe/Berlin";
 const serviceAccount = require("../../../serviceAccount.json");
 exports.VERSION = 1;
@@ -18,13 +19,14 @@ admin.initializeApp({
 });
 const CLIENT_ID = process.env.ACTION_CLIENT_ID;
 if (!CLIENT_ID)
-    throw new Error("No Client ID Provided");
+    throw new Error("No Client ID Provided 'ACTION_CLIENT_ID'");
 const app = actions_on_google_1.dialogflow({ debug: false, clientId: CLIENT_ID });
 const eapp = express();
 eapp.use(express.json());
 eapp.use(app);
 // @ts-ignore
 app.intent(Intents_1.INTENTS.STUNDENPLAN, Stundenplan_1.StundenPlanIntent);
+app.intent(Intents_1.INTENTS.VERTRETUNG, VertretungsIntent_1.VertretungsIntent);
 app.intent(Intents_1.INTENTS.WELCOME, Welcome_1.WelcomeIntent);
 app.intent(Intents_1.INTENTS.SIGN_IN_CONF, SignInIntent_1.SignInIntent);
 app.intent(Intents_1.INTENTS.KURSE_CONFIRMED, KurseConfIntent_1.KurseConfIntent);

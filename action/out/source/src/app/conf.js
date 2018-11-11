@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const baseUrl = 'https://proxy.fosefx.com/http://gymnasium-wuerselen.de/untis/';
+const baseUrl = 'https://proxy.fosefx.com/v2/http://gymnasium-wuerselen.de/untis/';
 const dd = "https://bettergymwue.firebaseio.com/";
 exports.CONFIG = {
     baseURL: baseUrl,

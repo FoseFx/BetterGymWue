@@ -83,4 +83,87 @@ describe('getVD', function () {
             });
         });
     });
+    describe('analyzeVD', function () {
+        it('should pass schueler one slide', function () {
+            let res = getVD_1.analyzeVD([null,
+                [
+                    [
+                        VD_1.MOCKVDEXPECT.S_ONESLIDE,
+                        ["<b>Nachrichten zum Tag</b>", "<b>Abwesende Klassen</b>", "<b>Stufe43</b>"] // slide info
+                    ]
+                ]
+            ]);
+            // get keys
+            const keys = [];
+            VD_1.MOCKVDEXPECT.S_ONESLIDE.forEach(v => {
+                keys.push(v.stufe);
+            });
+            function f() {
+                // info
+                expect(res[0]).to.deep.equal(["<b>Nachrichten zum Tag</b>", "<b>Abwesende Klassen</b>", "<b>Stufe43</b>"]);
+                expect(Object.keys(res[1])).to.deep.equal(keys);
+            }
+            f();
+            res = getVD_1.analyzeVD([
+                [
+                    [
+                        VD_1.MOCKVDEXPECT.S_ONESLIDE,
+                        ["<b>Nachrichten zum Tag</b>", "<b>Abwesende Klassen</b>", "<b>Stufe43</b>"] // slide info
+                    ]
+                ],
+                null
+            ]);
+            f();
+        });
+        it('should pass schueler three slides', function () {
+            let res = getVD_1.analyzeVD([
+                null,
+                [
+                    [
+                        VD_1.MOCKVDEXPECT.S_THREESLIDES[0],
+                        ["Some test"]
+                    ], [
+                        VD_1.MOCKVDEXPECT.S_THREESLIDES[1],
+                        []
+                    ], [
+                        VD_1.MOCKVDEXPECT.S_THREESLIDES[2],
+                        []
+                    ]
+                ]
+            ]);
+            const keys = [];
+            VD_1.MOCKVDEXPECT.S_THREESLIDES.forEach(v => {
+                v.forEach(vv => {
+                    keys.push(vv.stufe);
+                });
+            });
+            function f() {
+                expect(res[0]).to.deep.equal(["Some test"]);
+                expect(Object.keys(res[1])).to.deep.equal(keys);
+            }
+            f();
+            res = getVD_1.analyzeVD([
+                [
+                    [
+                        VD_1.MOCKVDEXPECT.S_THREESLIDES[0],
+                        ["Some test"]
+                    ],
+                    [
+                        VD_1.MOCKVDEXPECT.S_THREESLIDES[1],
+                        []
+                    ],
+                    [
+                        VD_1.MOCKVDEXPECT.S_THREESLIDES[2],
+                        []
+                    ]
+                ],
+                null
+            ]);
+            f();
+        });
+        it('should pass no slides', function () {
+            const res = getVD_1.analyzeVD([null, null]);
+            expect(res).to.equal(null);
+        });
+    });
 });

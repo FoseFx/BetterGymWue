@@ -53,6 +53,7 @@ export async function fetchVDFrame(creds: Creds,
                                    slides: VertretungsEvaPayload[] = []
 ): Promise<VertretungsEvaPayload[]> {
     const resp = await fetchWithCreds(lehrer? VERT_URL_L:VERT_URL_S + frame + file, creds, true);
+    if (!resp.ok) throw new Error("Netzwerkfehler");
     const text = await resp.textConverted();
     const dom = new JSDOM(text);
     const doc: HTMLElement = dom.window.document;
