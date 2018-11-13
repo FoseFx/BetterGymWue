@@ -50,6 +50,8 @@ const START_FILE = "subst_001.htm";
 function fetchVDFrame(creds, frame, expectedDate, lehrer, file = START_FILE, slides = []) {
     return __awaiter(this, void 0, void 0, function* () {
         const resp = yield util_1.fetchWithCreds(lehrer ? CONFIG_1.VERT_URL_L : CONFIG_1.VERT_URL_S + frame + file, creds, true);
+        if (!resp.ok)
+            throw new Error("Netzwerkfehler: " + resp.statusCode);
         const text = yield resp.textConverted();
         const dom = new JSDOM(text);
         const doc = dom.window.document;

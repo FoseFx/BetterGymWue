@@ -39,7 +39,7 @@ describe('getVD', function () {
                     expect(creds.u).to.equal(schuelerCreds.u);
                     expect(creds.p).to.equal(schuelerCreds.p);
                     expect(url).to.contain(CONFIG_1.VERT_URL_S);
-                    return Promise.resolve({ textConverted: () => Promise.resolve(VD_1.MOCKVD.S.ONESLIDE) });
+                    return Promise.resolve({ textConverted: () => Promise.resolve(VD_1.MOCKVD.S.ONESLIDE), ok: true, statusCode: 200 });
                 });
                 const res = yield getVD_1.fetchVDFrame(schuelerCreds, "f1/", "24.12.", false);
                 expect(stub).to.been.called;
@@ -52,7 +52,7 @@ describe('getVD', function () {
                     expect(creds.u).to.equal(lehrerCreds.l.u);
                     expect(creds.p).to.equal(lehrerCreds.l.p);
                     expect(url).to.contain(CONFIG_1.VERT_URL_L);
-                    return Promise.resolve({ textConverted: () => Promise.resolve(VD_1.MOCKVD.L.ONESLIDE) });
+                    return Promise.resolve({ textConverted: () => Promise.resolve(VD_1.MOCKVD.L.ONESLIDE), ok: true, statusCode: 200 });
                 });
                 const res = yield getVD_1.fetchVDFrame(lehrerCreds.l, "f1/", "24.12.", true);
                 expect(stub).to.been.called;
@@ -63,7 +63,9 @@ describe('getVD', function () {
                 this.timeout(5000);
                 let count = 0;
                 const stub = sinon.stub(UTIL, "fetchWithCreds").resolves({
-                    textConverted: () => Promise.resolve(count === 0 ? VD_1.MOCKVD.S.ONESLIDE : VD_1.MOCKVD.L.ONESLIDE)
+                    textConverted: () => Promise.resolve(count === 0 ? VD_1.MOCKVD.S.ONESLIDE : VD_1.MOCKVD.L.ONESLIDE),
+                    ok: true,
+                    statusCode: 200
                 });
                 const sSlides = yield getVD_1.fetchVDFrame(schuelerCreds, "f1/", "24.12.", false);
                 expect(sSlides.length).to.equal(1);
@@ -76,7 +78,9 @@ describe('getVD', function () {
                 this.timeout(5000);
                 const map = ["subst_001.htm", "subst_002.htm", "subst_003.htm"];
                 const stub = sinon.stub(UTIL, "fetchWithCreds").callsFake((args) => Promise.resolve({
-                    textConverted: () => Promise.resolve(VD_1.MOCKVD.S.THREESLIDES[map.findIndex(v => v === args.replace(CONFIG_1.VERT_URL_S + "f1/", ""))])
+                    textConverted: () => Promise.resolve(VD_1.MOCKVD.S.THREESLIDES[map.findIndex(v => v === args.replace(CONFIG_1.VERT_URL_S + "f1/", ""))]),
+                    ok: true,
+                    statusCode: 200
                 }));
                 const slides = yield getVD_1.fetchVDFrame(schuelerCreds, "f1/", "24.12.", false);
                 expect(slides.length).to.equal(3);
