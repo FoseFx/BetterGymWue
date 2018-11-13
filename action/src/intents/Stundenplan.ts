@@ -78,7 +78,7 @@ export function dateDiffInDays(a: Date, b: Date): number {
 }
 
 export function generateDateText(date: Date) {
-    let day = (date.getDay() < 10)? "0" + date.getDay().toString() : date.getDay().toString();
-    let month = (date.getMonth() < 10)? "0" + date.getMonth().toString() : date.getMonth().toString();
-    return `${day}. ${month}. ${date.getFullYear()}`;
+    let day = date.getDate().toString().padStart(2, "0");
+    let month = (1 + date.getMonth()).toString().padStart(2, "0");
+    return `${day}.${month}.${date.getFullYear()}`;
 }

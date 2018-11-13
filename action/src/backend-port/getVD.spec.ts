@@ -38,7 +38,7 @@ describe('getVD', function () {
                 expect(creds.u).to.equal(schuelerCreds.u);
                 expect(creds.p).to.equal(schuelerCreds.p);
                 expect(url).to.contain(VERT_URL_S);
-                return Promise.resolve({textConverted: () => Promise.resolve(m.S.ONESLIDE)});
+                return Promise.resolve({textConverted: () => Promise.resolve(m.S.ONESLIDE), ok: true, statusCode: 200});
             });
 
             const res = await fetchVDFrame(schuelerCreds, "f1/", "24.12.", false);
@@ -51,7 +51,7 @@ describe('getVD', function () {
                 expect(creds.u).to.equal(lehrerCreds.l.u);
                 expect(creds.p).to.equal(lehrerCreds.l.p);
                 expect(url).to.contain(VERT_URL_L);
-                return Promise.resolve({textConverted: () => Promise.resolve(m.L.ONESLIDE)});
+                return Promise.resolve({textConverted: () => Promise.resolve(m.L.ONESLIDE), ok: true, statusCode: 200});
             });
 
             const res = await fetchVDFrame(lehrerCreds.l, "f1/", "24.12.", true);
@@ -62,7 +62,9 @@ describe('getVD', function () {
             this.timeout(5000);
             let count = 0;
             const stub = sinon.stub(UTIL, "fetchWithCreds").resolves({
-                textConverted: () => Promise.resolve(count === 0? m.S.ONESLIDE: m.L.ONESLIDE)
+                textConverted: () => Promise.resolve(count === 0? m.S.ONESLIDE: m.L.ONESLIDE),
+                ok: true,
+                statusCode: 200
             });
 
             const sSlides = await fetchVDFrame(schuelerCreds, "f1/", "24.12.", false);
@@ -80,7 +82,9 @@ describe('getVD', function () {
             const stub = sinon.stub(UTIL, "fetchWithCreds").callsFake((args) => Promise.resolve({
                     textConverted: () => Promise.resolve(
                         m.S.THREESLIDES[ map.findIndex(v => v === args.replace(VERT_URL_S + "f1/", "")) ]
-                    )
+                    ),
+                    ok: true,
+                    statusCode: 200
                 })
             );
 
