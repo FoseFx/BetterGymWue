@@ -10,7 +10,7 @@ interface ExpectedParameters {
 
 const days = ["Heute","Morgen", "Übermorgen"];
 // @ts-ignore
-export function StundenPlanIntent(conv: Conversation<UserStorage>, morgen=false) {
+export function StundenPlanIntent(conv: Conversation<UserStorage>, morgen: boolean=false) {
 
     if(conv.user.storage.payload.planTTL < +new Date()) return handlePart1(conv, true);
 
@@ -22,7 +22,7 @@ export function StundenPlanIntent(conv: Conversation<UserStorage>, morgen=false)
 
     let today = new Date();
     let diff = dateDiffInDays(today, date);
-    if(diff < 0) return conv.ask("Leider kann ich nicht in die Vergangenheit reisen, um die Zukunft vorherzusehen");
+    if(diff < 0) return conv.ask("Leider kann ich nicht in die Vergangenheit reisen.");
     let changed = false;
     if(date.getDay() === 0 || date.getDay() === 6){
         changed = true;

@@ -1,5 +1,5 @@
 import * as express from "express";
-import {dialogflow} from "actions-on-google";
+import {Conversation, dialogflow} from "actions-on-google";
 import {StundenPlanIntent} from "./intents/Stundenplan";
 import {WelcomeIntent} from "./intents/Welcome";
 import {INTENTS} from "./intents/Intents";
@@ -8,6 +8,7 @@ import * as admin from "firebase-admin";
 import {KurseConfIntent} from "./intents/KurseConfIntent";
 import {TutorialAnsweredIntent} from "./intents/TutorialAnsweredIntent";
 import {VertretungsIntent} from "./intents/VertretungsIntent";
+import {UserStorage} from "./Classes";
 
 process.env.TZ = "Europe/Berlin";
 const serviceAccount = require("../../../serviceAccount.json");
@@ -27,8 +28,7 @@ const eapp = express();
 eapp.use(express.json());
 eapp.use(app);
 
-// @ts-ignore
-app.intent(INTENTS.STUNDENPLAN, StundenPlanIntent);
+app.intent(INTENTS.STUNDENPLAN, (conv: Conversation<UserStorage>) => StundenPlanIntent(conv, false));
 app.intent(INTENTS.VERTRETUNG, VertretungsIntent);
 app.intent(INTENTS.WELCOME, WelcomeIntent);
 app.intent(INTENTS.SIGN_IN_CONF, SignInIntent);

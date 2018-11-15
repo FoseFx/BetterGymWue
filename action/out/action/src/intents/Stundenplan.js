@@ -49,7 +49,7 @@ function StundenPlanIntent(conv, morgen = false) {
         text += ` - ${stunde.fach} \n`;
     });
     const changedMsg = !changed ? "" : `Da ist Wochenende, aber`;
-    conv.ask(new actions_on_google_1.SimpleResponse({
+    return conv.ask(new actions_on_google_1.SimpleResponse({
         text: `Stundenplan - ${generateDateText(date)}: \n${text}`,
         speech: `<speak>${changedMsg} ${tag} hast du ${speech}.</speak>`
     }));

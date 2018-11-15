@@ -36,7 +36,11 @@ describe('StundenplanIntent', function () {
 
         });
 
-
+        it('should respond on same day', function () {
+            clock = sinon.useFakeTimers(fakeConv.parameters.date); // Mittwoch
+            delete fakeConv.parameters.date;
+            expect(StundenPlanIntent(fakeConv)).to.deep.equal({"textToSpeech":"<speak> Heute hast du .</speak>","displayText":"Stundenplan - 12.12.2018: \n"});
+        });
 
         it('should respond on same day', function () {
             clock = sinon.useFakeTimers(fakeConv.parameters.date); // Mittwoch
@@ -58,9 +62,39 @@ describe('StundenplanIntent', function () {
         });
 
 
+        it('should respond on saturdays', function () {
+            clock = sinon.useFakeTimers(new Date(2018, 11, 15));
+            delete fakeConv.parameters.date;
+            expect(StundenPlanIntent(fakeConv)).to.deep.equal({"textToSpeech":"<speak>Da ist Wochenende, aber Übermorgen hast du .</speak>","displayText":"Stundenplan - 17.12.2018: \n"});
+            fakeConv.parameters.date = new Date(2018, 11, 17);
+            expect(StundenPlanIntent(fakeConv)).to.deep.equal({"textToSpeech":"<speak> Übermorgen hast du .</speak>","displayText":"Stundenplan - 17.12.2018: \n"});
+        });
+
+        it('should respond on sundays', function () {
+            clock = sinon.useFakeTimers(new Date(2018, 11, 16));
+            delete fakeConv.parameters.date;
+            expect(StundenPlanIntent(fakeConv)).to.deep.equal({"textToSpeech":"<speak>Da ist Wochenende, aber Morgen hast du .</speak>","displayText":"Stundenplan - 17.12.2018: \n"});
+            fakeConv.parameters.date = new Date(2018, 11, 17);
+            expect(StundenPlanIntent(fakeConv)).to.deep.equal({"textToSpeech":"<speak> Morgen hast du .</speak>","displayText":"Stundenplan - 17.12.2018: \n"});
+        });
+
+        it('should not return in the past', function () {
+            fakeConv.parameters.date = new Date(0); // Donnerstag
+            expect(StundenPlanIntent(fakeConv)).to.equal("Leider kann ich nicht in die Vergangenheit reisen.");
+        });
+
+        it('should not return in the past on weekends', function () {
+            fakeConv.parameters.date = new Date(1970, 0, 3); // Samstag
+            expect(StundenPlanIntent(fakeConv)).to.equal("Leider kann ich nicht in die Vergangenheit reisen.");
+            fakeConv.parameters.date = new Date(1970, 0, 4); // Sonntag
+            expect(StundenPlanIntent(fakeConv)).to.equal("Leider kann ich nicht in die Vergangenheit reisen.");
+        });
+
 
         afterEach(() => {
-            clock.restore();
+            try{
+                clock.restore();
+            }catch (e) {}
         });
 
     });
