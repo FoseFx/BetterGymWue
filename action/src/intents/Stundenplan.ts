@@ -37,7 +37,7 @@ export function StundenPlanIntent(conv: Conversation<UserStorage>, morgen=false)
     let text = "",
         speech = "";
 
-    const arr = (<Payload>conv.user.storage.payload).plan[A_B_woche][date.getDay() -1];
+    const arr: Stunde[] = (<Payload>conv.user.storage.payload).plan[A_B_woche][date.getDay() -1];
     arr.forEach(function (stunde: Stunde, i) {
         const s = !!stunde.readAlias? stunde.readAlias: ` <say-as interpret-as="characters">${stunde.fach}</say-as>`;
         let ds = false;
@@ -53,7 +53,7 @@ export function StundenPlanIntent(conv: Conversation<UserStorage>, morgen=false)
     });
 
     const changedMsg = !changed? "" : `Da ist Wochenende, aber`;
-    conv.ask(new SimpleResponse({
+    return conv.ask(new SimpleResponse({
         text: `Stundenplan - ${generateDateText(date)}: \n${text}`,
         speech: `<speak>${changedMsg} ${tag} hast du ${speech}.</speak>`
     }));
