@@ -12,12 +12,17 @@ export class RefreshttService {
     delete localStorage.myKurse;
     this.baseService.kursID = undefined;
     delete localStorage.kursID;
+    this.baseService.verifiedNonKurse = false;
+    delete localStorage.verifiedNonKurse;
+    delete localStorage.notUsedNotKurse;
   }
 
   removeTT(){
     this.baseService.milchglas = true;
     this.baseService.TT = undefined;
     delete localStorage.TT;
+    this.baseService.verifiedNonKurse = false;
+    delete localStorage.notUsedNotKurse;
   }
 
   fails = 0;
