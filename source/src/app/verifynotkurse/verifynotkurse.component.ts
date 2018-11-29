@@ -21,6 +21,18 @@ export class VerifynotkurseComponent implements OnInit {
   submit(){
     const filtered = this.klassenK.filter(o => o.sel).map(o => o.klasse);
     const notUsed = this.klassenK.filter(o => !o.sel).map(o => o.klasse);
+
+    this.base.TT.forEach((woche) => {
+      woche.days.forEach((day) => {
+        day.forEach((stunde, i) => {
+          if (stunde.type === "klasse" && filtered.indexOf(stunde.fach) === -1)
+            day.splice(i, 1);
+        });
+      });
+    });
+    console.log(this.base.TT);
+    localStorage.TT = JSON.stringify(this.base.TT);
+
     this.base.KlassenKurse = filtered;
     localStorage.KlassenKurse = JSON.stringify(filtered);
     localStorage.notUsedNotKurse = JSON.stringify(notUsed);
