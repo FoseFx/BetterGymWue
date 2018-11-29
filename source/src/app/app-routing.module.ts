@@ -14,7 +14,14 @@ const routes: Routes =  [
   {path: '', component: LoginComponent, canActivate: [GuardService] },
   {path: 'agb', component: AgbComponent },
   {path: 'select', component: SelectComponent, canActivate: [GuardService]},
-  {path: 'show', component: ShowComponent, canActivate: [GuardService]},
+  {
+    path: 'show',
+    canActivate: [GuardService],
+    children: [
+      {path: '', component: ShowComponent},
+      {path: 'non-kurse', loadChildren: "app/verifynotkurse/verifynotkurse.module#VerifynotkurseModule"}
+    ]
+  },
   {path: 'cloud', component: CloudComponent, canActivate: [GuardService]},
   {path: 'about', component: AboutComponent},
   {path: 'stundenplan', component: StundenplanComponent, canActivate: [GuardService]},

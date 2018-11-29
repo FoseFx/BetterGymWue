@@ -10,7 +10,7 @@ import {Kurs, TT} from "../../../Classes";
 
 @Injectable()
 export class BaseService {
-  public VERSION = "1.5.4 Beta";
+  public VERSION = "1.5.5 Beta";
   public acceptedAGB: boolean;
   allowedBrowser: boolean;
   public credentials: {u: string, p: string, l?: {u: string, p: string}};
@@ -29,6 +29,7 @@ export class BaseService {
   public ferienEndsOn = "";
   public justResetted = false;
   public deadTested = false;
+  public verifiedNonKurse = false;
 
 
   constructor(public router: Router,
@@ -57,6 +58,7 @@ export class BaseService {
     this.kursID = (!!localStorage.kursID) ? localStorage.kursID : undefined;
     this._preLehrer = (!!localStorage.preLehrer) ? (localStorage.preLehrer == 'true') : true;
     this.justResetted = (!!localStorage.justResetted) ? (localStorage.justResetted == "true"): false;
+    this.verifiedNonKurse = (!!localStorage.verifiedNonKurse) ? (localStorage.verifiedNonKurse == "true"): false;
     localStorage.justResetted = false;
     AppMeta.checkFerien(this);
     AppMeta.needsReset(this.httpClient);

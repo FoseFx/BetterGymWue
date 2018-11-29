@@ -1,0 +1,24 @@
+<mat-card class="center" style="margin-bottom: 50px!important; margin-top: 10px!important;">
+
+  <h3 mat-card-title>BGW hat Nicht-Kurse gefunden</h3>
+  <p>Da manche Kurse nicht als solche zu identifizieren sind, geht BGW davon aus, dass es sich um Fächer handelt,
+    bei denen die ganze Klasse anwesend ist. Für die Unter- und Mittelstufe ist das vollkommen normal. Solltest du in der Oberstufe sein deutet dies oft auf Fehler in der Plangunssoftware hin.
+    <b>Bitte überprüfe die Auswahl und wähle Fächer ab, die du nicht hast.</b>
+  </p>
+
+  <!-- TODO -->
+  <button mat-raised-button
+          class="big-btn"
+          style="margin: 10px 5px"
+          *ngFor="let k of klassenK"
+          [ngClass]="{'green-btn': k.sel}"
+          (click)="k.sel = !k.sel">{{k.klasse}}</button>
+
+  <br><br><br>
+
+  <div>
+    <button mat-raised-button (click)="submit()">Ok</button>
+  </div>
+
+
+</mat-card>

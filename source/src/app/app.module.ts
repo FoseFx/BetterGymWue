@@ -32,6 +32,7 @@ import {BaseService} from "./main/s/base/base.service";
 import { GetFromKurseModalComponent } from './main/c/select/kurse/get-from-kurse-modal.component';
 import { AppRoutingModule } from './app-routing.module';
 import { SureDialogComponent } from './main/sure/sure.dialog.component';
+import {VerifynotkurseModule} from "./verifynotkurse/verifynotkurse.module";
 declare var Hammer: any;
 
 export class MyHammerConfig extends HammerGestureConfig  {
@@ -83,7 +84,8 @@ export class MyHammerConfig extends HammerGestureConfig  {
     MatCardModule,
     MatSnackBarModule,
     MatDialogModule,
-    AppRoutingModule
+    AppRoutingModule,
+    VerifynotkurseModule
   ],
   providers: [
     BaseService,
