@@ -6,12 +6,12 @@
     <b>Bitte überprüfe die Auswahl und wähle Fächer ab, die du nicht hast.</b>
   </p>
 
-  <!-- TODO -->
   <button mat-raised-button
           class="big-btn"
           style="margin: 10px 5px"
           *ngFor="let k of klassenK"
           [ngClass]="{'green-btn': k.sel}"
+          [disabled]="k.dis"
           (click)="k.sel = !k.sel">{{k.klasse}}</button>
 
   <br><br><br>

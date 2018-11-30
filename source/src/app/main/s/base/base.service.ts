@@ -11,7 +11,7 @@ import {Kurs, TT} from "../../../Classes";
 @Injectable()
 export class BaseService {
 
-  public VERSION = "1.5.6 Beta";
+  public VERSION = "1.5.7 Beta";
   public acceptedAGB: boolean;
   allowedBrowser: boolean;
   public credentials: {u: string, p: string, l?: {u: string, p: string}};

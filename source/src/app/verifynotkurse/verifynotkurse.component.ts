@@ -8,31 +8,43 @@ import {Router} from "@angular/router";
 })
 export class VerifynotkurseComponent implements OnInit {
 
-  klassenK: {klasse: string, sel: boolean}[] = [];
+  klassenK: {klasse: string, sel: boolean, dis: boolean}[] = [];
   constructor(private base: BaseService, private router: Router) { }
 
   ngOnInit() {
-    this.klassenK = Array.from(this.base.KlassenKurse).map(s => {return {klasse: s, sel: true}});
+    this.klassenK = Array.from(this.base.KlassenKurse).map(s => {return {klasse: s, sel: true, dis: false}});
     if(!!localStorage.notUsedNotKurse)
-      this.klassenK = this.klassenK.concat(JSON.parse(localStorage.notUsedNotKurse).map(s => {return {klasse: s, sel: false};}));
-    console.log(this.klassenK);
+      this.klassenK =
+        this.klassenK
+          .concat(JSON.parse(localStorage.notUsedNotKurse)
+          .map(s => {return {klasse: s, sel: false, dis: true};}));
   }
 
   submit(){
-    const filtered = this.klassenK.filter(o => o.sel).map(o => o.klasse);
-    const notUsed = this.klassenK.filter(o => !o.sel).map(o => o.klasse);
+    let oldNotUsed = null;
+    if(!!localStorage.notUsedNotKurse)
+      oldNotUsed = JSON.parse(localStorage.notUsedNotKurse);
 
-    this.base.TT.forEach((woche) => {
-      woche.days.forEach((day) => {
-        day.forEach((stunde, i) => {
+
+    const filtered = this.klassenK.filter(o => o.sel && !o.dis).map(o => o.klasse);
+    const notUsed = this.klassenK.filter(o => !o.sel || o.dis).map(o => o.klasse);
+
+    if(
+      JSON.stringify(notUsed) === JSON.stringify(oldNotUsed) &&
+      JSON.stringify(filtered) === JSON.stringify(this.base.KlassenKurse)
+    ) return this.router.navigate(['/show']);
+
+
+    this.base.TT.forEach((woche, bwoche: number) => {
+      woche.days.forEach((day, dayi: number) => {
+        day.forEach((stunde, std: number) => {
           if (stunde.type === "klasse" && filtered.indexOf(stunde.fach) === -1)
-            day.splice(i, 1);
+            day.splice(std, 1);
         });
       });
     });
-    console.log(this.base.TT);
-    localStorage.TT = JSON.stringify(this.base.TT);
 
+    localStorage.TT = JSON.stringify(this.base.TT);
     this.base.KlassenKurse = filtered;
     localStorage.KlassenKurse = JSON.stringify(filtered);
     localStorage.notUsedNotKurse = JSON.stringify(notUsed);

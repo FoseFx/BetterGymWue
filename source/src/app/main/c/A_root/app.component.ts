@@ -39,6 +39,8 @@ export class AppComponent implements OnInit{
 
 
   ngOnInit(){
+    this.done = true;
+    /*
     let last = localStorage.lastTTcheck;
     if(last == undefined){
       last = new Date();
@@ -52,7 +54,7 @@ export class AppComponent implements OnInit{
       this.refreshTT(true);
     }else this.done = true;
     if(!this.done) return;
-
+*/
     this.baseService.needsUpdate().then(() => {this.updateAv = true;}).catch();
     if (this.baseService.justResetted) {
       this.reset.header = this.baseService.getResetHeader();
