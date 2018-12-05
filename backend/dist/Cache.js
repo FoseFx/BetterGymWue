@@ -24,11 +24,10 @@ class Cache {
     get(key, storeFunction) {
         return __awaiter(this, void 0, void 0, function* () {
             const value = this.cache.get(key);
-            if (value)
-                console.log("Use Cache");
+            // if(value) console.log("Use Cache");
             if (value)
                 return value;
-            console.log("Use Network");
+            // console.log("Use Network");
             const res = yield storeFunction();
             this.cache.set(key, res);
             return res;

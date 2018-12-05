@@ -18,7 +18,7 @@ export function StundenplaeneHandler(req: mRequest, res: Response) {
         });
 }
 
-export default function getSP(url: string, credentials: string): Promise<FetchResult> {
+export function getSP(url: string, credentials: string): Promise<FetchResult> {
     return cache.get(url + credentials, () =>
         fetchWithCreds(url, credentials)
     );

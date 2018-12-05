@@ -4,6 +4,7 @@ import chaiHttp = require('chai-http');
 import "mocha";
 import Cache from "./Cache";
 import {__await} from "tslib";
+import {FetchResult} from "./types/FetchResult";
 
 chai.use(chaiHttp);
 
@@ -29,9 +30,9 @@ describe('Cache', function () {
     it('should set and get', async function () {
 
         let c = new Cache(1000);
-        let r = await c.get("1", ()=>Promise.resolve({ok: false}));
+        let r = <FetchResult>await c.get("1", ()=>Promise.resolve({ok: false}));
         expect(r.ok).to.be.equal(false);
-        r = await c.get("1", ()=>Promise.resolve({ok:true, content: "string"}));
+        r = <FetchResult>await c.get("1", ()=>Promise.resolve({ok:true, content: "string"}));
         expect(r.ok).to.be.equal(false);
         expect(r.ok).not.to.be.equal(true);
         expect(r.content).not.to.exist;
@@ -41,9 +42,9 @@ describe('Cache', function () {
     it('should set when ttl is expired', async function () {
         this.timeout(3000);
         let c = new Cache(1);
-        let r = await c.get("1", ()=>Promise.resolve({ok: true, content: "string"}));
+        let r = <FetchResult>await c.get("1", ()=>Promise.resolve({ok: true, content: "string"}));
         await new Promise((res)=>{setTimeout(()=>{res()}, 1500)});
-        r = await c.get("1", ()=>Promise.resolve({ok: true, content: "another string"}));
+        r = <FetchResult>await c.get("1", ()=>Promise.resolve({ok: true, content: "another string"}));
         expect(r.content).to.equal("another string");
     });
 

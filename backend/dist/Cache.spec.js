@@ -34,7 +34,7 @@ describe('Cache', function () {
             let c = new Cache_1.default(1000);
             let r = yield c.get("1", () => Promise.resolve({ ok: false }));
             expect(r.ok).to.be.equal(false);
-            r = yield c.get("1", () => Promise.resolve({ ok: true, content: "string" }));
+            r = (yield c.get("1", () => Promise.resolve({ ok: true, content: "string" })));
             expect(r.ok).to.be.equal(false);
             expect(r.ok).not.to.be.equal(true);
             expect(r.content).not.to.exist;
@@ -46,7 +46,7 @@ describe('Cache', function () {
             let c = new Cache_1.default(1);
             let r = yield c.get("1", () => Promise.resolve({ ok: true, content: "string" }));
             yield new Promise((res) => { setTimeout(() => { res(); }, 1500); });
-            r = yield c.get("1", () => Promise.resolve({ ok: true, content: "another string" }));
+            r = (yield c.get("1", () => Promise.resolve({ ok: true, content: "another string" })));
             expect(r.content).to.equal("another string");
         });
     });

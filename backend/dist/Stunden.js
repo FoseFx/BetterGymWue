@@ -19,5 +19,5 @@ exports.StundenplaeneHandler = StundenplaeneHandler;
 function getSP(url, credentials) {
     return cache.get(url + credentials, () => util_1.fetchWithCreds(url, credentials));
 }
-exports.default = getSP;
+exports.getSP = getSP;
 //# sourceMappingURL=Stunden.js.map

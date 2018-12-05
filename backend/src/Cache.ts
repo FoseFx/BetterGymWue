@@ -20,9 +20,9 @@ class Cache {
      * */
     async get(key: string, storeFunction: () => Promise<FetchResult>): Promise<FetchResult>{
         const value: FetchResult = this.cache.get(key);
-        if(value) console.log("Use Cache");
+        // if(value) console.log("Use Cache");
         if(value) return value;
-        console.log("Use Network");
+        // console.log("Use Network");
         const res = await storeFunction();
         this.cache.set(key, res);
         return res;

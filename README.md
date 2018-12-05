@@ -29,9 +29,4 @@ Dort werden dann auch Informationen über Vertretungen, Entfällen, etc. angezei
 Für Nutzer, die keine Mobilen Daten haben speichert BGW das ganze auch noch zwischen, um offline abgerufen werden zu können.
 Interessierte haben die Möglichkeit täglich per Benachrichtigung informiert zu werden.
 
-## Zukunft
-1. Optimierung der fundamentalen Algorithmen
-2. Backendport für den Google Assistent (ggf. Paywall?)
-3. Maintenance
-
 ~ FoseFx

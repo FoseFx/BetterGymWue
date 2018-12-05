@@ -24,8 +24,9 @@ export class AppComponent implements OnInit{
   @ViewChild('hamNav') hamnav;
   @ViewChild('cntnd') content;
 
-  done = false;
+  done = true;
   updateAv = false;
+  needsRefresh = false;
   reset = {header: undefined, message: undefined};
 
   get win(){
@@ -39,22 +40,8 @@ export class AppComponent implements OnInit{
 
 
   ngOnInit(){
-    this.done = true;
-    /*
-    let last = localStorage.lastTTcheck;
-    if(last == undefined){
-      last = new Date();
-      localStorage.lastTTcheck = last;
-    }
-    else last = Date.parse(last);
-    last = new Date(last);
-    last.setDate(last.getDate() + 7);
-    if (last < new Date()){
-      localStorage.lastTTcheck = new Date();
-      this.refreshTT(true);
-    }else this.done = true;
-    if(!this.done) return;
-*/
+  	if(this.baseService.myKurse)
+  		this.refresh.needsRefresh().then((r) => this.needsRefresh = r);
     this.baseService.needsUpdate().then(() => {this.updateAv = true;}).catch();
     if (this.baseService.justResetted) {
       this.reset.header = this.baseService.getResetHeader();
@@ -82,9 +69,7 @@ export class AppComponent implements OnInit{
     });
   }
 
-  refreshTT(force = false){
-    if(force) return this.refresh.refreshTT().then(()=>{rl();});
-
+  refreshTT(){
     this.hamnav.close();
     const dialogRef = this.dialog.open(SureDialogComponent);
     dialogRef.afterClosed().subscribe((v: boolean) => {

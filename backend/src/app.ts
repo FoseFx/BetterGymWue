@@ -1,9 +1,9 @@
 import express = require("express");
 import {mRequest} from "./types/Request";
 import {Response, Request} from "express";
-import {getVP, VertretungsplaeneHandler} from "./Vertretung";
-import {FetchResult} from "./types/FetchResult";
-import getSP, {StundenplaeneHandler} from "./Stunden";
+import {VertretungsplaeneHandler} from "./Vertretung";
+import {StundenplaeneHandler} from "./Stunden";
+import {HashHandler} from "./hash";
 
 const app = express();
 app.set("port", process.env.PORT || 59091);
@@ -23,6 +23,8 @@ app.use(function (req: mRequest, res: Response, next: ()=>void) {
 // Stundenpläne
 app.get("/v2/http://gymnasium-wuerselen.de/untis/Schueler-Stundenplan/**", removeV2MiddleWare, StundenplaeneHandler);
 app.get("/v2/http://gymnasium-wuerselen.de/untis/Lehrer-Stundenplan/**", removeV2MiddleWare, StundenplaeneHandler);
+
+app.get("/v2/hash", HashHandler);
 
 // Vertretungspläne
 app.get("/v2/http://gymnasium-wuerselen.de/untis/Schueler/**", removeV2MiddleWare, VertretungsplaeneHandler);

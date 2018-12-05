@@ -7,12 +7,18 @@ import {BaseService} from "../base/base.service";
 let tempTTs: TempTTs = [];
 let _kurse: KurseType = [{kurse: []}, {kurse: []}];
 
-export function getTT(stufe:string){
+export function getTT(stufe:string): {tt: { days: any[][]}[], hash: string}{
   console.log(stufe);
   console.log(tempTTs);
-  let r = null;
-  tempTTs.forEach((val) => { if (val.stufe === stufe) r = val.tt; });
-  return r;
+  let r: { days: any[][]}[] = null;
+  let hash: string = null;
+  tempTTs.forEach((val) => {
+    if (val.stufe === stufe) {
+      r = val.tt;
+      hash = val.hash;
+    }
+  });
+  return {tt: r, hash: hash};
 }
 
 export function get_stufen(resp: Observable<string>): Promise<string[][]> {
@@ -45,7 +51,7 @@ export function get_stufen(resp: Observable<string>): Promise<string[][]> {
   });
 }
 
-export function getkurse(stufe: string, stufeid: number, wochen: string[], baseService: BaseService): Promise<any> {
+export function getkurse(stufe: string, stufeid: number, wochen: string[], baseService: BaseService): Promise<any[]> {
   return new Promise((resolve, reject) => {
     if (!wochen[0] || !wochen[1]) reject('Internal Error: #01');
     const res = baseService.makeConnections(CONFIG.baseKursURL + wochen[0] + '/c/c' + generate5(stufeid) + '.htm');

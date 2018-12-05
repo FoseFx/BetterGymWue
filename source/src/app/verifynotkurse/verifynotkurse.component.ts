@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {BaseService} from "../main/s/base/base.service";
 import {Router} from "@angular/router";
 
@@ -35,12 +35,11 @@ export class VerifynotkurseComponent implements OnInit {
     ) return this.router.navigate(['/show']);
 
 
-    this.base.TT.forEach((woche, bwoche: number) => {
-      woche.days.forEach((day, dayi: number) => {
-        day.forEach((stunde, std: number) => {
-          if (stunde.type === "klasse" && filtered.indexOf(stunde.fach) === -1)
-            day.splice(std, 1);
-        });
+    this.base.TT.forEach((woche, wi) => {
+      woche.days.forEach((day, di) => {
+				this.base.TT[wi].days[di] =
+					day.filter(
+						(stunde) => !(stunde.type === "klasse" && filtered.indexOf(stunde.fach) === -1));
       });
     });
 

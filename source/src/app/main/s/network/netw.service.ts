@@ -75,7 +75,7 @@ export class NetwService {
     return [info, compr];
   }
 
-  get stufen(){
+  get stufen(): Promise<string[]>{
     return new Promise((resolve, reject )=> {
       this._stufen = (localStorage.stufen) ? JSON.parse(localStorage.stufen) : undefined;
 
@@ -99,7 +99,7 @@ export class NetwService {
   }
 
   public getkurse = (stufe: string, stufeid: number) => Initial.getkurse(stufe, stufeid, this.wochen, this.baseService);
-  public getTT = (stufe) => Initial.getTT(stufe);
+  public getTT = (stufe): {tt: { days: any[][]}[], hash: string} => Initial.getTT(stufe);
   public fetchCloud = (id: number)=> Cloud.fetchCloud(id, this);
   public saveKurse = (kurse) => Cloud.saveKurse(kurse, this);
 

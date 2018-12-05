@@ -1,4 +1,5 @@
-const baseUrl = 'https://proxy.fosefx.com/v2/http://gymnasium-wuerselen.de/untis/';
+const domain = "https://proxy.fosefx.com";
+const baseUrl = domain + '/v2/http://gymnasium-wuerselen.de/untis/';
 const dd = "https://bettergymwue.firebaseio.com/";
 export const CONFIG = {
   baseURL: baseUrl,
@@ -15,4 +16,5 @@ export const CONFIG = {
   resetHeader: dd + "resetMsg/header.json",
   resetMsg: dd + "resetMsg/message.json",
   message: dd + "header.json",
+  hashURL: domain + "/v2/hash"
 };

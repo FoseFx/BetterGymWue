@@ -11,7 +11,7 @@ import {Kurs, TT} from "../../../Classes";
 @Injectable()
 export class BaseService {
 
-  public VERSION = "1.5.7 Beta";
+  public VERSION = "1.5.8 Beta";
   public acceptedAGB: boolean;
   allowedBrowser: boolean;
   public credentials: {u: string, p: string, l?: {u: string, p: string}};
@@ -91,13 +91,13 @@ export class BaseService {
   }
 
 
-  setTT(val){
+  setTT(val: {tt: { days: any[][]}[], hash: string}){
 
-    this.TT = val;
+    this.TT = val.tt;
     localStorage.TT = JSON.stringify(val);
     let a = [];
     console.log(val);
-    val.forEach((wocheV) => {
+    val.tt.forEach((wocheV) => {
       wocheV.days.forEach((tag) => {
         tag.forEach((stunde) => {
           if(stunde.type == "klasse" && a.indexOf(stunde.fach) === -1) a.push(stunde.fach);
@@ -106,6 +106,7 @@ export class BaseService {
     });
     this.KlassenKurse = a;
     localStorage.KlassenKurse = JSON.stringify(a);
+    localStorage.stundnplanHash = val.hash;
 
   }
 
@@ -149,10 +150,12 @@ export class BaseService {
       );
     });
   }
-  makeConnections(url: string, lehrer:boolean = false):Observable<any>{
+  makeConnections(url: string, lehrer:boolean = false, cache: boolean = true):Observable<any>{
     let cred = this.credentials;
     if(!cred) return null;
     let ext = `?${(Math.random()*10000).toFixed(0)}`;
+    if(!cache)
+    	ext = "";
     let p = new Promise((resolve, reject) => {
       fetch(url + ext, {
         headers: {

@@ -6,7 +6,8 @@ export async function fetchWithCreds(url: string, credentials: string): Promise<
         if(!/^http:\/\/(www\.)?gymnasium-wuerselen\.de\/untis\/(Schueler|Lehrer).*$/g.test(url)) return {ok: false};
         const res = await fetch(url, {
             headers: {
-                "Authorization": credentials
+                "Authorization": credentials,
+                "User-Agent": "(Bitte nicht bannen) BGW Bot, mehr Infos auf bgw.fosefx.com/about"
             }
         });
         const ok = res.ok;

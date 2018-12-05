@@ -38,8 +38,17 @@
       </button>
       <span class="title">&nbsp; Better Gym Wue</span>
     </mat-toolbar>
-    <div class="pulseing" *ngIf="updateAv && !win.location.href.includes('about')" style="width: 100%!important; height: 26px; text-align: center; padding-top: 4px"><p style="color: black; margin: 3px 0 0 0!important;">Zum Updaten neuladen (Infos s. "Über")</p></div>
+    <div class="pulseing"
+				 *ngIf="updateAv && !win.location.href.includes('about')"
+				 style="width: 100%!important; height: 26px; text-align: center; padding-top: 4px">
+			<p style="color: black; margin: 3px 0 0 0!important;">Zum Updaten neuladen (Infos s. "Über")</p>
+		</div>
 
+		<div class="pulseing"
+				 style="width: 100%!important; height: 26px; text-align: center; padding-top: 4px"
+					*ngIf="needsRefresh">
+			<p style="color: black; margin: 3px 0 0 0!important;">BGW hat einen neuen Stundenplan erkannt.</p>
+		</div>
 
     <mat-card *ngIf="baseService.justResetted" class="center" style="position:relative; text-align: left!important; padding-bottom: 50px; margin-bottom: 10px!important;">
       <mat-card-header>
