@@ -16,6 +16,8 @@ export function needsReset(httpClient: HttpClient) {
           delete localStorage.myStufe;
           delete localStorage.myKurse;
           delete localStorage.kursID;
+          delete localStorage.stundnplanHash;
+          delete localStorage.notUsedNotKurse;
           delete localStorage.TT;
           delete localStorage.KlassenKurse;
           location.reload();
