@@ -1,23 +1,32 @@
 import {VertretungsReihe} from "../../../../../Classes";
 
 export function addVDtoDisplayArray(VDMe, displayArray, that){
-  if(VDMe.length === 0) return;
+	const order = ["k", "e (v)", "e", "v", "r"];
+	if(VDMe.length === 0) return;
   let filteredList: VertretungsReihe[] = VDMe.filter((me: VertretungsReihe) => // filter alle nicht meine klausuren und reduziert auf !nd
-    (me.type.toLowerCase() !== "k" || (me.type.toLowerCase() === "k" && isMyKlausur(me, that)) ) && !me.nd
+    (
+    	me.type.toLowerCase() !== "k"
+				|| (
+					me.type.toLowerCase() === "k"
+						&& isMyKlausur(me, that)
+					)
+		)
+			&& !me.nd
+			&& order.findIndex((s) => s===me.type) !== -1
   );
   console.log("been here", filteredList);
   if(filteredList.length === 0) return;
 
   let stunden: VertretungsReihe[] = [];
-  let order = ["k", "e (v)", "e", "v", "r"];
   // set stunden in order
   filteredList.forEach(function (vr: VertretungsReihe) {
-    if(!stunden[+vr.stunde - 1])
-      stunden[+vr.stunde - 1] = vr;
+    if(!stunden[+vr.stunde - 1]){
+			stunden[+vr.stunde - 1] = vr;
+		}
     else {
       let oldI = order.findIndex((s: string) => stunden[+vr.stunde - 1].type.toLowerCase() === s);
       let newI = order.findIndex((s: string) => vr.type.toLowerCase() === s);
-      if( oldI >= newI ) stunden[+vr.stunde - 1] = vr;
+      if( oldI >= newI && oldI !== -1 && newI !== -1) stunden[+vr.stunde - 1] = vr;
     }
   });
 
