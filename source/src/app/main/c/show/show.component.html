@@ -14,7 +14,7 @@
                    (swiperight)="swipe($event)"
                    (selectChange)="change($event)">
       <mat-tab *ngFor="let tt of tts; let i = index;" [label]="tt.date | date: 'E' : 'de' ">
-        <show-ttcontainer [tt]="tt" [index]="i"></show-ttcontainer>
+        <show-ttcontainer ngNavigationDrawerIgnore [tt]="tt" [index]="i"></show-ttcontainer>
       </mat-tab>
     </mat-tab-group>
 

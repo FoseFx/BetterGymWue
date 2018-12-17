@@ -28,6 +28,7 @@ export class AppComponent implements OnInit{
   updateAv = false;
   needsRefresh = false;
   reset = {header: undefined, message: undefined};
+  navOpen = false;
 
   get win(){
     return window;
@@ -47,16 +48,10 @@ export class AppComponent implements OnInit{
       this.reset.header = this.baseService.getResetHeader();
       this.reset.message = this.baseService.getResetMessage();
     }
+
+    this.hamnav.isOpen.subscribe(v => this.navOpen = v);
   }
 
-  swipe(type, e){
-    if(document.getElementsByClassName("fuckYou")[0].contains(e.target)) return;
-    if(type === 'r' && this.hamnav.opened === false){
-      this.hamnav.open();
-    }if(type === 'l'){
-      this.hamnav.close();
-    }
-  }
 
   removeKurse(){
     this.hamnav.close();

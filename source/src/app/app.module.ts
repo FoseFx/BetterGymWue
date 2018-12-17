@@ -33,6 +33,7 @@ import { GetFromKurseModalComponent } from './main/c/select/kurse/get-from-kurse
 import { AppRoutingModule } from './app-routing.module';
 import { SureDialogComponent } from './main/sure/sure.dialog.component';
 import {VerifynotkurseModule} from "./verifynotkurse/verifynotkurse.module";
+import {NgNavigationDrawerModule} from "ng-navigation-drawer";
 declare var Hammer: any;
 
 export class MyHammerConfig extends HammerGestureConfig  {
@@ -85,7 +86,8 @@ export class MyHammerConfig extends HammerGestureConfig  {
     MatSnackBarModule,
     MatDialogModule,
     AppRoutingModule,
-    VerifynotkurseModule
+    VerifynotkurseModule,
+		NgNavigationDrawerModule
   ],
   providers: [
     BaseService,
