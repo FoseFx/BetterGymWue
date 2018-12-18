@@ -16,5 +16,8 @@ export const CONFIG = {
   resetHeader: dd + "resetMsg/header.json",
   resetMsg: dd + "resetMsg/message.json",
   message: dd + "header.json",
-  hashURL: domain + "/v2/hash"
+  hashURL: domain + "/v2/hash",
+	versionURL: domain + "/v2/version"
 };
+
+export const APP_VERSION = "1.6.0 Beta";

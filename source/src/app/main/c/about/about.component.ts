@@ -7,8 +7,7 @@ import {BaseService} from '../../s/base/base.service';
   styleUrls: ['./about.component.css', '../show/ttcontainer/ttcontainer.component.css']
 })
 export class AboutComponent implements OnInit {
-  msg;
-  upDATE;
+  msg: string[];
   up = false;
   version = this.base.VERSION;
   constructor(private base: BaseService) { }
@@ -16,8 +15,7 @@ export class AboutComponent implements OnInit {
   ngOnInit() {
     this.base.needsUpdate()
       .then((arr) => {
-        this.msg = arr[1];
-        this.upDATE = arr[0];
+      	this.msg = arr;
         this.up = true;
       })
       .catch();
