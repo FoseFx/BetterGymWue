@@ -14,7 +14,7 @@ app.use((req: Request, res:Response, next:()=>void)=>{
     next();
 });
 app.options("**/**", (_, res)=>{res.end();});
-app.get("/v2/version", (req, res) => res.json({version: "1.6.0 Beta", news: ["AGB Änderungen", "Keine Analytics mehr", "Keine GithubAPI mehr"]}).end());
+app.get("/v2/version", (req, res) => res.json({version: "1.6.1 Beta", news: ["'EVA' wird jetzt als 'E (V) angezeigt'", "Backend wird jetzt auf Heroku gehosted"]}).end());
 app.use(function (req: mRequest, res: Response, next: ()=>void) {
     const auth = req.headers.authorization;
     if(!auth) return res.status(401).json({error: "Keine Zugangsdaten angegeben"}).end();
