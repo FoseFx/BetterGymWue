@@ -17,7 +17,7 @@
   * [tobiasahlin's spinner](http://tobiasahlin.com/spinkit/)
   * [dblock's getWeek()](https://gist.github.com/dblock/1081513)
 
-## Was macht BGW?
+## Was ist BGW?
 
 BetterGymWue besteht aus
   * Einem Scrapper, der den Nutzer über Stundenplanänderungen informiert
