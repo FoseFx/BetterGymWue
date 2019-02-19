@@ -12,7 +12,7 @@
   * [Bootstrap (Tables)](http://getbootstrap.com)
   * [Firebase](https://firebase.google.com/)
 
-## Fremdcode
+## Other's code used
 
   * [tobiasahlin's spinner](http://tobiasahlin.com/spinkit/)
   * [dblock's getWeek()](https://gist.github.com/dblock/1081513)
