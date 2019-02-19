@@ -9,7 +9,7 @@
   * [Angular](https://angular.io/)
   * [Angular Material](https://material.angular.io/)
   * [HammerJs](http://hammerjs.github.io/)
-  * [Bootstrap (Tables)](http://getbootstrap.com)
+  * [Bootstrap only tables used](http://getbootstrap.com)
   * [Firebase](https://firebase.google.com/)
 
 ## Other's code used
