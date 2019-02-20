@@ -28,4 +28,6 @@ BetterGymWue besteht aus
 
 ![Sample](https://raw.githubusercontent.com/fosefx/BetterGymWue/master/.github/02-setup.png)
 
+Also using Docker now
+
 ~ FoseFx
