@@ -28,5 +28,4 @@ BetterGymWue besteht aus
 
 ![Sample](https://raw.githubusercontent.com/fosefx/BetterGymWue/master/.github/02-setup.png)
 
--
 ~ FoseFx
