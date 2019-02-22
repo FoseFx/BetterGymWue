@@ -14,7 +14,7 @@ app.use((req: Request, res:Response, next:()=>void)=>{
     next();
 });
 app.options("**/**", (_, res)=>{res.end();});
-app.get("/v2/version", (req, res) => res.json({version: "1.6.2 Beta", news: ["Backend fixes, sorry für die Downtime", "Kurscloud reset", "Schulplaner Infos eingetragen"]}).end());
+app.get("/v2/version", (req, res) => res.json({version: "1.6.3 Beta", news: ["Production build", "Backend fixes, sorry für die Downtime", "Kurscloud reset", "Schulplaner Infos eingetragen"]}).end());
 app.use(function (req: mRequest, res: Response, next: ()=>void) {
     const auth = req.headers.authorization;
     if(!auth) return res.status(401).json({error: "Keine Zugangsdaten angegeben"}).end();

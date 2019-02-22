@@ -20,4 +20,4 @@ export const CONFIG = {
 	versionURL: domain + "/v2/version"
 };
 
-export const APP_VERSION = "1.6.2 Beta";
+export const APP_VERSION = "1.6.3 Beta";
