@@ -36,3 +36,27 @@
 
   </mat-tab-group>
 </mat-card>
+
+
+<mat-card class="center" style="margin-bottom: 50px!important;margin-top: 10px!important;">
+
+	<mat-tab-group style="width: 100%!important;"> 																		<!-- A/B Woche -->
+		<mat-tab *ngFor="let woche of weekTTs" [label]="woche.woche">	<!-- A/B Woche -->
+
+			<table class="table table-hover text-center">
+				<tbody>
+
+				<tr><td></td><td *ngFor="let tag of TAGE"></td></tr>
+				<tr><th></th><th *ngFor="let tag of TAGE" class="font-weight-bold">{{tag}}</th></tr>
+				<tr *ngFor="let stunde of woche.tt; let i = index">
+					<td class="font-weight-bold">{{i + 1}}</td>
+					<td *ngFor="let fach of stunde">{{fach?.fach}}</td>
+				</tr>
+
+				</tbody>
+			</table>
+
+		</mat-tab>																								<!-- A/B Woche -->
+	</mat-tab-group>
+
+</mat-card>

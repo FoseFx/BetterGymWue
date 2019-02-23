@@ -4,6 +4,8 @@ import {AlertService} from '../../s/alert.service';
 import {TimeTableSlot, TT} from "../../../Classes";
 import {formatDate} from "@angular/common";
 
+type TTS = {woche: string, tt: {fach: string, hasDouble: boolean, raum: string, sel: boolean}[][][]}[];
+type WeekTTs = {woche: string, tt: {fach: string, hasDouble: boolean, raum: string}[][]}[];
 
 @Component({
   selector: 'app-stundenplan',
@@ -12,10 +14,11 @@ import {formatDate} from "@angular/common";
 })
 export class StundenplanComponent implements OnInit {
   TAGE = ['Mo', 'Di', 'Mi', 'Do', 'Fr'];
-  tts = [];
+  tts: TTS = [];
   selectedDay = 0;
   d = new Date();
   selectedIndex: number = (+formatDate(this.d, "w", "de")) % 2 == 0? 0:1;
+  weekTTs: WeekTTs;
 
   constructor(private baseService:BaseService, private alert: AlertService) { }
 
@@ -86,6 +89,7 @@ export class StundenplanComponent implements OnInit {
     });
     console.log(this.tts);
     this.selectedDay = (this.d.getDay() > 0 && this.d.getDay() <= 5)? this.d.getDay() - 1: 0;
+    this.weekTTs = this.generateWeekTTs(this.tts);
   }
 
   getPos(fach):number{
@@ -100,5 +104,64 @@ export class StundenplanComponent implements OnInit {
     this.selectedDay = 0;
   }
 
+  generateWeekTTs(tts: TTS): WeekTTs{
+  	let newTTs: WeekTTs = []; // this will be returned
+
+  	tts.forEach((wocheOrig) => { // el: woche (A|B)
+
+			let newTT = {woche: wocheOrig.woche, tt: []};
+
+			wocheOrig.tt.forEach((tagOrig, tagIndex) => {
+
+				let deepness = 0;
+
+				tagOrig.forEach((stundeOrig, stundeIndex) => {
+
+					if(!newTT.tt[stundeIndex]){ 		// wenn die stunde noch nie erreicht wurde, hinzufügen
+						newTT.tt[stundeIndex] = [];
+						if(deepness > 1){							// padding hinzufügen
+							// console.log("deepness", deepness, stundeIndex, stundeOrig);
+							for(let i = 0; i <= deepness; i++)
+								newTT.tt[stundeIndex].push(null);
+						}
+
+					}
+
+					const selStunde = this.getSelectedStunde(stundeOrig);
+					newTT.tt[stundeIndex].push(selStunde);
+					deepness = newTT.tt[stundeIndex].length;
+
+				});
+				// fill the rest
+				for (let i = tagOrig.length; i !== newTT.tt.length; i++)
+					newTT.tt.forEach(s => {
+						if(!s[tagIndex])
+							s[tagIndex] = null;
+					});
+			});
+
+			// console.log(newTT);
+			// console.table(newTT.tt);
+			newTTs.push(newTT); // add week to returning array
+
+		});
+
+
+
+  	return newTTs;
+	}
+
+	getSelectedStunde(stunde: {fach: string, hasDouble: boolean, raum: string, sel: boolean}[]) : {fach: string, hasDouble: boolean, raum: string}{
+  	let el = null;
+  	stunde.forEach((fach) => {
+  		if(fach.sel)
+  			el = {fach: fach.fach, hasDouble: fach.hasDouble, raum: fach.raum};
+		});
+  	if(el === null)
+  		return null;
+  		// return {fach: "Frei", hasDouble: false, raum: ""};
+  	else
+  		return el;
+	}
 
 }
