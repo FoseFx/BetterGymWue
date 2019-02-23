@@ -33,6 +33,7 @@ import { GetFromKurseModalComponent } from './main/c/select/kurse/get-from-kurse
 import { AppRoutingModule } from './app-routing.module';
 import { SureDialogComponent } from './main/sure/sure.dialog.component';
 import {VerifynotkurseModule} from "./verifynotkurse/verifynotkurse.module";
+import { WeekspComponent } from './main/c/stundenplan/weeksp/weeksp.component';
 declare var Hammer: any;
 
 export class MyHammerConfig extends HammerGestureConfig  {
@@ -64,7 +65,8 @@ export class MyHammerConfig extends HammerGestureConfig  {
     StundenplanComponent,
     ErrorComponent,
     GetFromKurseModalComponent,
-    SureDialogComponent
+    SureDialogComponent,
+    WeekspComponent
   ],
   imports: [
     BrowserModule,
