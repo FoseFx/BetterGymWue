@@ -4,4 +4,5 @@ node_js:
 branches:
   only:
   - master
+  - testing-ci
 script: sh -c 'cd backend && npm i && npm test'
