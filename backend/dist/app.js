@@ -4,6 +4,7 @@ const express = require("express");
 const Vertretung_1 = require("./Vertretung");
 const Stunden_1 = require("./Stunden");
 const hash_1 = require("./hash");
+const version_1 = require("./version");
 const app = express();
 app.set("port", process.env.PORT || 59091);
 app.use((req, res, next) => {
@@ -13,7 +14,7 @@ app.use((req, res, next) => {
     next();
 });
 app.options("**/**", (_, res) => { res.end(); });
-app.get("/v2/version", (req, res) => res.json({ version: "1.6.3 Beta", news: ["Production build", "Backend fixes, sorry für die Downtime", "Kurscloud reset", "Schulplaner Infos eingetragen"] }).end());
+app.get("/v2/version", (req, res) => res.json({ version: version_1.VERSION, news: version_1.UPDATE_NEWS }).end());
 app.use(function (req, res, next) {
     const auth = req.headers.authorization;
     if (!auth)
