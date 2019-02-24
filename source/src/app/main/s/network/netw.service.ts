@@ -15,10 +15,10 @@ export class NetwService {
   saveKurseTrys = 0;
   constructor(public baseService: BaseService, public alertService: AlertService) {}
 
-  getSchulplanerInfo(date: string){
-    date = date.replace(/\./g, "-");
+  getSchulplanerInfo(date: string){ // date eg.: "23.1."
+    date = date.replace(/\./g, "-"); // eg.: "23-1-"
     return new Promise((resolve, reject) => {
-      this.baseService.makeConnections(CONFIG.databaseURL + "info/" + date + "/" + this.baseService.myStufe + ".json").subscribe((val) => {
+      this.baseService.makeConnections(CONFIG.databaseURL + "info/" + date + "/" + this.baseService.myStufe + ".json").subscribe((val) => { // eg: /info/23-1-/Q1.json
         let val2 = (val != "null") ? JSON.parse(val) : [];
         this.baseService.makeConnections(CONFIG.databaseURL + "info/" + date + "/*.json").subscribe((valueAll) => {
           let valueAll2 = (valueAll == "null")? [] : JSON.parse(valueAll);

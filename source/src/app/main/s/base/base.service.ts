@@ -2,7 +2,7 @@ import {from as observableFrom, Observable} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {CONFIG} from '../../../conf';
+import {APP_VERSION, CONFIG} from '../../../conf';
 import {AlertService} from "../alert.service";
 import * as AppMeta from "./appMeta.base";
 import {Kurs, TT} from "../../../Classes";
@@ -11,7 +11,7 @@ import {Kurs, TT} from "../../../Classes";
 @Injectable()
 export class BaseService {
 
-  public VERSION = "1.5.9 Beta - NavDrawer";
+  public VERSION = APP_VERSION;
   public acceptedAGB: boolean;
   allowedBrowser: boolean;
   public credentials: {u: string, p: string, l?: {u: string, p: string}};
@@ -49,7 +49,7 @@ export class BaseService {
       console.error("Tracking Failed");
     }
     this.dead = (!!localStorage.dead) ? (localStorage.dead === 'true') : false;
-    this.acceptedAGB = (!!localStorage.acceptedAGB2) ? (localStorage.acceptedAGB2 === 'true') : false;
+    this.acceptedAGB = (!!localStorage.acceptedAGB3) ? (localStorage.acceptedAGB3 === 'true') : false;
     this.credentials = (!!localStorage.credentials) ? JSON.parse(localStorage.credentials) : undefined;
     this.myKurse = (!!localStorage.myKurse) ? JSON.parse(localStorage.myKurse) : undefined;
     this.myStufe = (!!localStorage.myStufe) ? localStorage.myStufe : undefined;
@@ -112,7 +112,7 @@ export class BaseService {
 
   acceptAGB() {
     this.acceptedAGB = true;
-    localStorage.acceptedAGB2 = true;
+    localStorage.acceptedAGB3 = true;
     this.install();
     this.router.navigate(['/'], {queryParams: {ua: ''}});
   }

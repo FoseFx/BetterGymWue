@@ -32,8 +32,10 @@ import {BaseService} from "./main/s/base/base.service";
 import { GetFromKurseModalComponent } from './main/c/select/kurse/get-from-kurse-modal.component';
 import { AppRoutingModule } from './app-routing.module';
 import { SureDialogComponent } from './main/sure/sure.dialog.component';
-import {VerifynotkurseModule} from "./verifynotkurse/verifynotkurse.module";
+import {VerifynotkurseModule} from "./verifynotkurse/verifynotkurse.module"
 import {NgNavigationDrawerModule} from "ng-navigation-drawer";
+import { WeekspComponent } from './main/c/stundenplan/weeksp/weeksp.component';
+
 declare var Hammer: any;
 
 export class MyHammerConfig extends HammerGestureConfig  {
@@ -65,7 +67,8 @@ export class MyHammerConfig extends HammerGestureConfig  {
     StundenplanComponent,
     ErrorComponent,
     GetFromKurseModalComponent,
-    SureDialogComponent
+    SureDialogComponent,
+    WeekspComponent
   ],
   imports: [
     BrowserModule,
@@ -107,4 +110,3 @@ export class MyHammerConfig extends HammerGestureConfig  {
   entryComponents: [GetFromKurseModalComponent, SureDialogComponent]
 })
 export class AppModule { }
-

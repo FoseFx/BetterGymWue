@@ -60,17 +60,12 @@ export function needsUpdate(baseService: BaseService): Promise<string[]> {
       if(isdead) baseService.router.navigate(['/error'], {queryParams: {'dead': true}})})
   }
   return new Promise((resolve, reject) => {
-    let upDATE;
-    let msg;
     let up;
-    baseService.httpClient.get("https://api.github.com/repos/FoseFx/BetterGymWue/branches/master").subscribe(
-      (branch: {commit}) =>{
-        let c = branch.commit;
-        upDATE = c.commit.author.date;
-        msg = c.commit.message;
-        if(!msg.match(baseService.VERSION)) up = true;
+    baseService.httpClient.get(CONFIG.versionURL).subscribe(
+      (res: {version: string, news: string[]}) =>{
+        if(!res.version.match(baseService.VERSION)) up = true;
         if(up)
-          resolve([upDATE, msg]);
+          resolve(res.news);
         else
           reject();
       }
