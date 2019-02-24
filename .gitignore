@@ -14,3 +14,4 @@ testdata
 **/run.sh
 **/.tests
 **/firebase-debug.log
+**/dist/**
