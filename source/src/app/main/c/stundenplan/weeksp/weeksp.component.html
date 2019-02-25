@@ -1,7 +1,7 @@
 
 <mat-card class="center" style="margin-bottom: 50px!important;margin-top: 10px!important;">
 
-	<mat-tab-group style="width: 100%!important;"> 																		<!-- A/B Woche -->
+	<mat-tab-group style="width: 100%!important;" [(selectedIndex)]="selectedIndex" > 	<!-- A/B Woche -->
 		<mat-tab *ngFor="let woche of weekTTs" [label]="woche.woche">	<!-- A/B Woche -->
 
 			<table class="table table-hover text-center">

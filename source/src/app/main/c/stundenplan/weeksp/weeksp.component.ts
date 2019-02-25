@@ -14,6 +14,10 @@ export class WeekspComponent {
 
   constructor() { }
 
+  selectedIndex = 0;
+  @Input() set selIndex(val: number){
+  	this.selectedIndex = val;
+	}
   TAGE = ["Mo", "Di", "Mi", "Do", "Fr"];
   weekTTs: WeekTTs;
 
