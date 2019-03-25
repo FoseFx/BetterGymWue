@@ -49,7 +49,7 @@ export class BaseService {
       console.error("Tracking Failed");
     }
     this.dead = (!!localStorage.dead) ? (localStorage.dead === 'true') : false;
-    this.acceptedAGB = (!!localStorage.acceptedAGB3) ? (localStorage.acceptedAGB3 === 'true') : false;
+    this.acceptedAGB = (!!localStorage.acceptedAGB4) ? (localStorage.acceptedAGB4 === 'true') : false;
     this.credentials = (!!localStorage.credentials) ? JSON.parse(localStorage.credentials) : undefined;
     this.myKurse = (!!localStorage.myKurse) ? JSON.parse(localStorage.myKurse) : undefined;
     this.myStufe = (!!localStorage.myStufe) ? localStorage.myStufe : undefined;
@@ -112,7 +112,7 @@ export class BaseService {
 
   acceptAGB() {
     this.acceptedAGB = true;
-    localStorage.acceptedAGB3 = true;
+    localStorage.acceptedAGB4 = true;
     this.install();
     this.router.navigate(['/'], {queryParams: {ua: ''}});
   }

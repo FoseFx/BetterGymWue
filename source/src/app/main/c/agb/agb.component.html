@@ -1,7 +1,7 @@
 <mat-card id="agb" class="center">
   <h1 >Wichtige Hinweise</h1>
-  <h4 >Diese Version ist im Beta-Stadium, Fehler sind nicht ausgeschlossen</h4>
-  <hr>
+  <h4>Letzte Änderung: 25.03.2018</h4>
+	<hr/>
   <h3>Bedingungen</h3>
   <p>
 		Der Nutzer muss Schüler oder Angehöriger eines Schülers des Gymnasiums der Stadt Würselen sein.
@@ -22,10 +22,11 @@
 		</p>
     <strong>TL;DR</strong>
 		<ul>
-			<li>Ich habe Logdaten (IPs, User-Agents, URL etc.)</li>
+			<li>Ich habe Logdaten (IPs, User-Agents, URL, Cookies etc.)</li>
 			<li>Ich habe von dir ausgewählte Daten (Cloud)</li>
 			<li>Und oben genanntes hat auch Google und Cloudflare</li>
-			<li>Keine Cookies, keine Tracker, keine Werbung</li>
+			<li>Keine Tracker, keine Werbung</li>
+			<li>Cookies um Gefahren zu erkennen</li>
 		</ul>
 		<p>Warum und was genau? Weiter lesen!</p>
 
@@ -34,10 +35,11 @@
 
 		<p>
 			Jede Anfrage, die auf einen Server von mir getätigt wird schickt dein Browser deine angefragte URL
-			(bspw. "https://proxy.fosefx.com/v2") gesetzte Cookies (es werden keine Cookies gesetzt) den "User-Agent" und andere Http-Header mit.
+			(bspw. "https://proxy.fosefx.com/v2") gesetzte Cookies den "User-Agent" und andere Http-Header mit.
 			Letzterer ist ein Kurzer Text, der deinen Browser identifiziert
 			(bspw. "Mozilla/5.0 (Windows NT 6.1; rv:60.0) Gecko/20100101 Firefox/60.0") ("Logdaten"). Bevor die Anfrage an meinem Server ankommt
-			durchläuft sie Cloudflare (Cloudflare, Inc., 101 Townsend St, San Francisco, CA 94107, USA) Server.
+			durchläuft sie Cloudflare (Cloudflare, Inc., 101 Townsend St, San Francisco, CA 94107, USA) Server. Cloudflare setzt einen Cookie, um
+			ungefähliche Nutzer zu markieren.
 			All diese Daten werden von mir und Cloudflare analysiert um Risiken für den Server zu erkennen und zu blockieren.
 			Für mehr Informationen zu Cloudflare:
 			<a href="https://www.cloudflare.com/privacypolicy/">https://www.cloudflare.com/privacypolicy/</a>. Für dich relevant
@@ -67,7 +69,7 @@
 		<strong>Wie werden diese Daten and dritte weitergegeben?</strong>
 		<p>
 			Die oben genannten Anbieter erhalten die Informationen auf sicherem Weg (https/TLS verschlüsselte Verbindung).
-			Dabei werden die Daten nicht verkauft, sondern dienen nur den oben beschriebenen Gründen.
+			Dabei werden die Daten nicht verkauft und dienen nur den oben beschriebenen Gründen.
 		</p>
 
 		<strong>Welche Kontrolle hat ein Nutzer über seine Daten?</strong>

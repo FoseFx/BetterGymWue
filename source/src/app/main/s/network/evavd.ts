@@ -4,8 +4,8 @@ export function evaVD(ret: string, lehrer?:boolean):VertretungsEva {
   lehrer = lehrer || false;
   // .toLowerCase
   const SACONDITION = ['selbstständiges arbeiten', "selbständiges arbeiten", "selbstständies arbeiten", "selbstäniges arbeiten", "eigenständiges arbeiten", "eva"];
-  const VARTEN =      ['entfall', 'vertretung', 'stattvertretung', 'raumvtr', 'klausur', "absenz"];
-  const VABKUERZUNG = ['e',       'v',            'statt-v',          'r',        'k',       'fehlt'];
+  const VARTEN =      ['entfall', 'vertretung', 'stattvertretung', 'raumvtr', 'klausur', "absenz", "trotzabsenz"];
+  const VABKUERZUNG = ['e',       'v',            'statt-v',          'r',        'k',       'fehlt', "T-A"];
   let stufen = [];
 
   function typeAbkuerzen(type:string, infotext:string):string {
