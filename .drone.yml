@@ -32,3 +32,42 @@ volumes:
 trigger:
   branch:
     - master
+---
+kind: secret
+name: TEST_LEHRER_CREDS
+get:
+  path: secrets/data/docker
+  name: TEST_LEHRER_CREDS
+
+---
+kind: secret
+name: TEST_LEHRER_P
+get:
+  path: secrets/data/docker
+  name: TEST_LEHRER_P
+---
+kind: secret
+name: TEST_LEHRER_U
+get:
+  path: secrets/data/docker
+  name: TEST_LEHRER_U
+
+---
+kind: secret
+name: TEST_SCH_CREDS
+get:
+  path: secrets/data/docker
+  name: TEST_SCH_CREDS
+---
+kind: secret
+name: TEST_SCH_P
+get:
+  path: secrets/data/docker
+  name: TEST_SCH_P
+
+---
+kind: secret
+name: TEST_SCH_U
+get:
+  path: secrets/data/docker
+  name: TEST_SCH_U
