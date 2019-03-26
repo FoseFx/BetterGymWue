@@ -19,7 +19,7 @@ ENV TEST_SCH_P ${TEST_SCH_P}
 ARG TEST_SCH_U=local
 ENV TEST_SCH_U ${TEST_SCH_U}
 
-RUN npm run test
+#RUN npm run test
 
 EXPOSE 59091
 CMD [ "npm", "start" ]
