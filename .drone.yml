@@ -19,6 +19,7 @@ steps:
         from_secret: TEST_SCH_U
     image: node
     commands:
+      - cd backend
       - npm ci
       - npm test
 volumes:
