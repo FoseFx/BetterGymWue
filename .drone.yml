@@ -4,12 +4,23 @@ name: default
 
 steps:
   - name: test
+    environment:
+      TEST_LEHRER_CREDS:
+        from_secret: TEST_LEHRER_CREDS
+      TEST_LEHRER_P:
+        from_secret: TEST_LEHRER_P
+      TEST_LEHRER_U:
+        from_secret: TEST_LEHRER_U
+      TEST_SCH_CREDS:
+        from_secret: TEST_SCH_CREDS
+      TEST_SCH_P:
+        from_secret: TEST_SCH_P
+      TEST_SCH_U:
+        from_secret: TEST_SCH_U
     image: node
     commands:
-      - curl 172.17.0.1:59092/v2/version --verbose
       - npm ci
       - npm test
-
 volumes:
   - name: dockersock
     host:
