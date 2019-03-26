@@ -3,14 +3,12 @@ kind: pipeline
 name: default
 
 steps:
-  - name: build container
-    image: docker
-    volumes:
-      - name: dockersock
-        path: /var/run/docker.sock
+  - name: test
+    image: node
     commands:
       - curl ${DRONE_MACHINE}:59092/v2/version --verbose
-      - docker build -t fosefx/bettergymwue-backend:${DRONE_COMMIT_SHA} backend
+      - npm ci
+      - npm test
 
 volumes:
   - name: dockersock
