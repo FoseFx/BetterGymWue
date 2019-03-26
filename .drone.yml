@@ -4,12 +4,12 @@ name: default
 
 steps:
   - name: build container
-    image: docker:dind
+    image: docker
     volumes:
       - name: dockersock
         path: /var/run/docker.sock
     commands:
-      - bash backend/build.sh
+      - bash backend/build.sh ${DRONE_COMMIT_SHA}
 
 volumes:
   - name: dockersock
