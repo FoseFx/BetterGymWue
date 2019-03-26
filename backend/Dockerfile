@@ -6,7 +6,7 @@ COPY package*.json ./
 RUN npm ci
 
 COPY . .
-# RUN npm run test
+RUN npm run test
 
 EXPOSE 59091
 CMD [ "npm", "start" ]
