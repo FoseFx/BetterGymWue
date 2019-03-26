@@ -9,7 +9,7 @@ steps:
       - name: dockersock
         path: /var/run/docker.sock
     commands:
-      - bash backend/build.sh ${DRONE_COMMIT_SHA}
+      - docker build -t fosefx/bettergymwue-backend:${DRONE_COMMIT_SHA} .
 
 volumes:
   - name: dockersock
