@@ -8,8 +8,21 @@ steps:
     volumes:
       - name: dockersock
         path: /var/run/docker.sock
+    environment:
+      TEST_LEHRER_CREDS:
+        from_secret: TEST_LEHRER_CREDS
+      TEST_LEHRER_P:
+        from_secret: TEST_LEHRER_P
+      TEST_LEHRER_U:
+        from_secret: TEST_LEHRER_U
+      TEST_SCH_CREDS:
+        from_secret: TEST_SCH_CREDS
+      TEST_SCH_P:
+        from_secret: TEST_SCH_P
+      TEST_SCH_U:
+        from_secret: TEST_SCH_U
     commands:
-      - docker build -t fosefx/bettergymwue-backend:${DRONE_COMMIT_SHA} backend
+      - docker build -t --build-arg TEST_LEHRER_CREDS=${TEST_LEHRER_CREDS} --build-arg  TEST_LEHRER_P=${TEST_LEHRER_P} --build-arg  TEST_LEHRER_U=${TEST_LEHRER_U} --build-arg  TEST_SCH_CREDS=${TEST_SCH_CREDS} --build-arg  TEST_SCH_P=${TEST_SCH_P} --build-arg  TEST_SCH_U=${TEST_SCH_U} fosefx/bettergymwue-backend:${DRONE_COMMIT_SHA} backend
 
 volumes:
   - name: dockersock
