@@ -8,19 +8,6 @@ steps:
     volumes:
       - name: dockersock
         path: /var/run/docker.sock
-    environment:
-      TEST_LEHRER_CREDS:
-        from_secret: TEST_LEHRER_CREDS
-      TEST_LEHRER_P:
-        from_secret: TEST_LEHRER_P
-      TEST_LEHRER_U:
-        from_secret: TEST_LEHRER_U
-      TEST_SCH_CREDS:
-        from_secret: TEST_SCH_CREDS
-      TEST_SCH_P:
-        from_secret: TEST_SCH_P
-      TEST_SCH_U:
-        from_secret: TEST_SCH_U
     commands:
       - echo ${TEST_SCH_U}
       - docker build --build-arg TEST_LEHRER_CREDS=${TEST_LEHRER_CREDS} --build-arg  TEST_LEHRER_P=${TEST_LEHRER_P} --build-arg  TEST_LEHRER_U=${TEST_LEHRER_U} --build-arg  TEST_SCH_CREDS=${TEST_SCH_CREDS} --build-arg  TEST_SCH_P=${TEST_SCH_P} --build-arg  TEST_SCH_U=${TEST_SCH_U} -t fosefx/bettergymwue-backend:${DRONE_COMMIT_SHA} backend
@@ -33,42 +20,3 @@ volumes:
 trigger:
   branch:
     - master
----
-kind: secret
-name: TEST_LEHRER_CREDS
-get:
-  path: secrets/data/BetterGymWue
-  name: TEST_LEHRER_CREDS
-
----
-kind: secret
-name: TEST_LEHRER_P
-get:
-  path: secrets/data/BetterGymWue
-  name: TEST_LEHRER_P
----
-kind: secret
-name: TEST_LEHRER_U
-get:
-  path: secrets/data/BetterGymWue
-  name: TEST_LEHRER_U
-
----
-kind: secret
-name: TEST_SCH_CREDS
-get:
-  path: secrets/data/BetterGymWue
-  name: TEST_SCH_CREDS
----
-kind: secret
-name: TEST_SCH_P
-get:
-  path: secrets/data/BetterGymWue
-  name: TEST_SCH_P
-
----
-kind: secret
-name: TEST_SCH_U
-get:
-  path: secrets/data/BetterGymWue
-  name: TEST_SCH_U
