@@ -6,7 +6,7 @@ steps:
   - name: test
     image: node
     commands:
-      - curl ${DRONE_MACHINE}:59092/v2/version --verbose
+      - curl host.docker.internal:59092/v2/version --verbose
       - npm ci
       - npm test
 
