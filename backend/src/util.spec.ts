@@ -12,6 +12,7 @@ describe('util', function () {
         // notice: I cannot give you the Creds :P
         // Note: this is a live test!
         it('should fetch with correct creds', async function () {
+            console.log("ENV: ", process.env);
             const res = await Promise.all([
                 fetchWithCreds("http://gymnasium-wuerselen.de/untis/Lehrer-Stundenplan/38/t/t00013.htm", process.env.TEST_LEHRER_CREDS),
                 fetchWithCreds("http://gymnasium-wuerselen.de/untis/Lehrer/f1/subst_001.htm", process.env.TEST_LEHRER_CREDS),
