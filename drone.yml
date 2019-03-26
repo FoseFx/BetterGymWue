@@ -1,0 +1,21 @@
+---
+kind: pipeline
+name: default
+
+steps:
+  - name: build container
+    image: docker:dind
+    volumes:
+      - name: dockersock
+        path: /var/run/docker.sock
+    commands:
+      - bash backend/build.sh
+
+volumes:
+  - name: dockersock
+    host:
+      path: /var/run/docker.sock
+
+trigger:
+  branch:
+    - master
