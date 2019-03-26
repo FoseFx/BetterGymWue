@@ -6,7 +6,7 @@ steps:
   - name: test
     image: node
     commands:
-      - curl host.docker.internal:59092/v2/version --verbose
+      - curl 172.17.0.1:59092/v2/version --verbose
       - npm ci
       - npm test
 
