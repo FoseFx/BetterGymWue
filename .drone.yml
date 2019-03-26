@@ -22,6 +22,25 @@ steps:
       - cd backend
       - npm ci
       - npm test
+
+  - name: build
+    image: docker
+    commands:
+      - docker build -t fosefx/bettergymwue-ci:${DRONE_COMMIT_SHA} .
+    volumes:
+      - name: docker
+        path: /var/run/docker.sock
+
+  - name: run
+    image: docker
+    detach: true
+    commands:
+      - docker run -p $(wget -qO- https://proxy.fosefx.com/cd/BetterGymWue/${DRONE_COMMIT_SHA}):59091 -i --rm fosefx/bettergymwue-ci:${DRONE_COMMIT_SHA}
+    volumes:
+      - name: docker
+        path: /var/run/docker.sock
+
+
 volumes:
   - name: dockersock
     host:
