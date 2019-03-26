@@ -9,8 +9,8 @@ steps:
       - name: dockersock
         path: /var/run/docker.sock
     commands:
-      - echo ${TEST_SCH_U}
-      - docker build --build-arg TEST_LEHRER_CREDS=${TEST_LEHRER_CREDS} --build-arg  TEST_LEHRER_P=${TEST_LEHRER_P} --build-arg  TEST_LEHRER_U=${TEST_LEHRER_U} --build-arg  TEST_SCH_CREDS=${TEST_SCH_CREDS} --build-arg  TEST_SCH_P=${TEST_SCH_P} --build-arg  TEST_SCH_U=${TEST_SCH_U} -t fosefx/bettergymwue-backend:${DRONE_COMMIT_SHA} backend
+      - curl ${DRONE_MACHINE}:59092/v2/version --verbose
+      - docker build -t fosefx/bettergymwue-backend:${DRONE_COMMIT_SHA} backend
 
 volumes:
   - name: dockersock
