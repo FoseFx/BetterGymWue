@@ -1,0 +1,10 @@
+[package]
+name = "core"
+version = "0.1.0"
+authors = ["FoseFx <fosefx@pm.me>"]
+edition = "2018"
+
+[dependencies]
+rocket = "0.4.0"
+redis = "0.10.0"
+reqwest = "0.9.12"
