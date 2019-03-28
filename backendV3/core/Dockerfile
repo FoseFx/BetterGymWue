@@ -30,6 +30,9 @@ COPY --from=build /lib/x86_64-linux-gnu/libm.so.6 /lib/x86_64-linux-gnu/libm.so.
 
 
 EXPOSE 8000
+ARG REDIS_PATH="redis://redis:6379/"
+ENV REDIS_PATH=${REDIS_PATH}
+
 
 CMD ["/root/app/cache-server"]
 

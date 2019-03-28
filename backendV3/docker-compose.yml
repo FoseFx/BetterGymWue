@@ -1,0 +1,9 @@
+version: '3'
+services:
+  rust-backend:
+    build: core
+    ports:
+    - 88800:8000
+  redis:
+    image: redis
+
