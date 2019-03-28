@@ -16,7 +16,7 @@
 
   * [tobiasahlin's spinner](http://tobiasahlin.com/spinkit/)
   * [dblock's getWeek()](https://gist.github.com/dblock/1081513)
-
+  * [MitinPavel's RedisConnectionGuard](https://github.com/MitinPavel/rocket_redis_r2d2)
 ## Was ist BGW?
 
 BetterGymWue besteht aus

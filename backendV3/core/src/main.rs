@@ -2,20 +2,33 @@
 
 #[macro_use] extern crate rocket;
 extern crate redis;
+extern crate r2d2;
+extern crate r2d2_redis;
+use std::ops::Deref;
 
+mod cache;
 mod fetch_data;
 
-use rocket::Request;
+// use rocket::Request;
+use cache::redis::RedisConnection;
 
 #[get("/")]
-fn index() -> &'static str {
-    "Hello, world!"
+fn index(connection: RedisConnection) -> String {
+
+
+
+    let connection = connection.0.deref();
+    return fetch_data::fetch(format!("posts"), connection).unwrap();
+
 }
 
 fn main() {
-    println!("{:#?}", fetch_data::fetch_data::fetch(format!("posts")));
 
-    rocket::ignite().mount("/", routes![
-        index
-    ]).launch();
+    rocket::ignite()
+        .manage(cache::redis::pool())
+        .mount("/v3", routes![
+            index
+        ])
+        .launch();
+
 }
