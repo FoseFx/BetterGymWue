@@ -1,6 +1,8 @@
 FROM rust:1.33.0-slim-stretch AS build
 
 WORKDIR /usr/src/app
+RUN apt-get update
+RUN apt-get install pkg-config libssl-dev -y
 RUN rustup default nightly
 
 COPY . ./
@@ -9,9 +11,9 @@ RUN cargo install --path .
 
 RUN cargo build --release
 
-RUN ldd target/release/cache-server
+RUN ldd target/release/core
 
-RUN LANG=en objdump -s -j .interp target/release/cache-server
+RUN LANG=en objdump -s -j .interp target/release/core
 
 FROM alpine
 
@@ -34,5 +36,5 @@ ARG REDIS_PATH="redis://redis:6379/"
 ENV REDIS_PATH=${REDIS_PATH}
 
 
-CMD ["/root/app/cache-server"]
+CMD ["/root/app/core"]
 
