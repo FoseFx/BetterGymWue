@@ -44,25 +44,31 @@ fn post_get_session_token(data: Json<TokenRequestData>, connection: RedisConnect
         &data.creds
     );
 
+    println!("{}", already_cached);
+
     if already_cached == 1 {
         return "Ok";
+    } else if already_cached == 2 {
+        return "401";
     }
 
     let is_valid_res= sessions::is_valid(&data.mode, &data.creds);
 
     let is_valid = !is_valid_res.is_err();
 
-    if is_valid {
-        sessions::add_to_cache(
-            connection,
-            &data.mode,
-            &data.creds
-        );
+    sessions::add_to_cache(
+        connection,
+        &data.mode,
+        &data.creds,
+        is_valid
+    );
 
+    if is_valid {
         return "Ok";
+    } else {
+        return "401";
     }
 
-    return "401";
 }
 
 fn main() {
