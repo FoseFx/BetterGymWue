@@ -29,8 +29,8 @@ fn index(connection: RedisConnection) -> String {
 #[derive(Deserialize)]
 #[derive(Debug)]
 struct TokenRequestData {
-    username: String,
-    password: String
+    mode: String, // either 'schueler' or 'lehrer'
+    creds: String // btob of username:password
 }
 
 #[post("/token", data = "<data>")]
@@ -40,23 +40,23 @@ fn post_get_session_token(data: Json<TokenRequestData>, connection: RedisConnect
 
     let already_cached = sessions::test_cache(
         connection,
-        &data.username,
-        &data.password
+        &data.mode,
+        &data.creds
     );
 
     if already_cached == 1 {
         return "Ok";
     }
 
-    let is_valid_res= sessions::is_valid(&data.username, &data.password);
+    let is_valid_res= sessions::is_valid(&data.mode, &data.creds);
 
     let is_valid = !is_valid_res.is_err();
 
     if is_valid {
         sessions::add_to_cache(
             connection,
-            &data.username,
-            &data.password
+            &data.mode,
+            &data.creds
         );
 
         return "Ok";

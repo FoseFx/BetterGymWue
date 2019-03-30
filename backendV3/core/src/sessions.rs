@@ -9,12 +9,12 @@ static SESSION_REDIS_KEY: &str = "verified_logins";
 
 // checks if these values are already in the cache
 // 0 = false, 1 = true, 2 = redis error
-pub fn test_cache(connection: &redis::Connection, username: &String, password: &String) -> u8 {
+pub fn test_cache(connection: &redis::Connection, mode: &String, creds: &String) -> u8 {
 
     let get_res: RedisResult<u8> = redis::cmd("SISMEMBER")
         .arg(SESSION_REDIS_KEY)
         .arg(
-            format!("{}:{}", username, password)
+            format!("{}:{}", mode, creds)
         )
         .query(connection);
 
@@ -27,11 +27,11 @@ pub fn test_cache(connection: &redis::Connection, username: &String, password: &
 
 }
 
-pub fn add_to_cache(connection: &redis::Connection, username: &String, password: &String) {
+pub fn add_to_cache(connection: &redis::Connection, mode: &String, creds: &String) {
     let sadd_res: RedisResult<bool> = redis::cmd("SADD")
         .arg(SESSION_REDIS_KEY)
         .arg(
-            format!("{}:{}", username, password)
+            format!("{}:{}", mode, creds)
         )
         .query(connection);
 
@@ -52,9 +52,9 @@ pub fn add_to_cache(connection: &redis::Connection, username: &String, password:
 
 }
 
-pub fn is_valid(username: &String, password: &String) -> Result<bool, Box<Error>> {
+pub fn is_valid(mode: &String, creds: &String) -> Result<bool, Box<Error>> {
 
-    let _resp: String = reqwest::get(&format!("http://FETCH_BACKEND/{}/{}", username, password))?.text()?;
+    let _resp: String = reqwest::get(&format!("http://FETCH_BACKEND/auth/{}/{}", mode, creds))?.text()?;
 
     return Ok(true);
 
