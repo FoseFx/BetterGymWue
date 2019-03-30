@@ -3,6 +3,8 @@
 #[macro_use] extern crate rocket;
 #[macro_use] extern crate rocket_contrib;
 #[macro_use] extern crate serde_derive;
+#[macro_use] extern crate serde_json;
+extern crate frank_jwt;
 
 extern crate redis;
 extern crate r2d2;
@@ -16,6 +18,13 @@ mod sessions;
 // use rocket::Request;
 use cache::redis::RedisConnection;
 use rocket_contrib::json::Json;
+use frank_jwt::{Algorithm, encode, decode};
+
+
+
+static SECRET: &str = "secret123";
+
+
 
 #[get("/")]
 fn index(connection: RedisConnection) -> String {
@@ -34,7 +43,8 @@ struct TokenRequestData {
 }
 
 #[post("/token", data = "<data>")]
-fn post_get_session_token(data: Json<TokenRequestData>, connection: RedisConnection) -> &'static str {
+fn post_get_session_token(data: Json<TokenRequestData>, connection: RedisConnection) -> String {
+
 
     let connection = connection.0.deref();
 
@@ -46,10 +56,20 @@ fn post_get_session_token(data: Json<TokenRequestData>, connection: RedisConnect
 
     println!("{}", already_cached);
 
+
+    let payload = json!({
+        "mode": &data.mode,
+        "creds": &data.creds
+    });
+
+    let header = json!({});
+    let jwt = encode(header, &SECRET.to_string(), &payload, Algorithm::HS256).unwrap();
+
+
     if already_cached == 1 {
-        return "Ok";
+        return jwt;
     } else if already_cached == 2 {
-        return "401";
+        return format!("401");
     }
 
     let is_valid_res= sessions::is_valid(&data.mode, &data.creds);
@@ -71,9 +91,9 @@ fn post_get_session_token(data: Json<TokenRequestData>, connection: RedisConnect
     );
 
     if is_valid {
-        return "Ok";
+        return jwt;
     } else {
-        return "401";
+        return format!("401");
     }
 
 }
