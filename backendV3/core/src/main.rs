@@ -54,7 +54,14 @@ fn post_get_session_token(data: Json<TokenRequestData>, connection: RedisConnect
 
     let is_valid_res= sessions::is_valid(&data.mode, &data.creds);
 
-    let is_valid = !is_valid_res.is_err();
+
+    let mut is_valid = !is_valid_res.is_err();
+
+    if !is_valid {
+        println!("Error: {}", is_valid_res.err().unwrap().to_string());
+    } else {
+        is_valid = is_valid_res.unwrap();
+    }
 
     sessions::add_to_cache(
         connection,

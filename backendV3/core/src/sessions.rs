@@ -71,7 +71,7 @@ pub fn add_to_cache(connection: &redis::Connection, mode: &String, creds: &Strin
     }
 
     let exp_res: RedisResult<bool> = redis::cmd("EXPIRE") // reset this every time a new validation is in
-        .arg(SESSION_REDIS_KEY)
+        .arg(key)
         .arg(CACHE_TIME)
         .query(connection);
 
@@ -86,7 +86,7 @@ pub fn add_to_cache(connection: &redis::Connection, mode: &String, creds: &Strin
 pub fn is_valid(mode: &String, creds: &String) -> Result<bool, Box<Error>> {
 
     let resp: String = reqwest::get(&format!("http://FETCH_BACKEND:8001/auth/{}/{}", mode, creds))?.text()?;
-    println!("AUTH_RESP: {}", resp);
-    return Ok(true);
+    println!("AUTH_RESP: {}, {}", resp, resp == "verified");
+    return Ok(resp == "verified");
 
 }
