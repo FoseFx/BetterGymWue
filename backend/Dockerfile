@@ -8,4 +8,7 @@ RUN npm ci
 COPY . .
 
 EXPOSE 59091
+
+RUN npm run build
+
 CMD [ "npm", "run", "start-forever" ]
