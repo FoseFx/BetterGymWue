@@ -1,2 +1,2 @@
-export const VERSION = "1.0.0 Stable";
-export const UPDATE_NEWS = ["🎉BGW ist jetzt offiziell aus der Beta Phase🎉", "Datenschutzerklärung geändert"];
+export const VERSION = "1.0.1 Stable";
+export const UPDATE_NEWS = ["Emergency Patch: Backend geändert"];

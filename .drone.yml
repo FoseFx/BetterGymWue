@@ -32,12 +32,11 @@ steps:
         path: /var/run/docker.sock
 
   - name: run
-    image: docker
-    detach: true
+    image: dockersock
     commands:
-      - docker run -p $(wget -qO- https://proxy.fosefx.com/cd/BetterGymWue/${DRONE_COMMIT_SHA}):59091 -i --rm fosefx/bettergymwue-ci:${DRONE_COMMIT_SHA}
+      - docker run -d -p $(wget -qO- https://proxy.fosefx.com/cd/BetterGymWue/${DRONE_COMMIT_SHA}):59091 -i --rm fosefx/bettergymwue-ci:${DRONE_COMMIT_SHA}
     volumes:
-      - name: docker
+      - name: dockersock
         path: /var/run/docker.sock
 
 

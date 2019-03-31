@@ -1,4 +1,4 @@
-const domain = "https://proxy.fosefx.com";
+const domain = "https://better-gym-wue.herokuapp.com/"; //"https://proxy.fosefx.com";
 const baseUrl = domain + '/v2/http://gymnasium-wuerselen.de/untis/';
 const dd = "https://bettergymwue.firebaseio.com/";
 export const CONFIG = {
@@ -20,4 +20,4 @@ export const CONFIG = {
 	versionURL: domain + "/v2/version"
 };
 
-export const APP_VERSION = "1.0.0 Stable";
+export const APP_VERSION = "1.0.1 Stable";
