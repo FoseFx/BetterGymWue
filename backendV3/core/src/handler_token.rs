@@ -16,10 +16,9 @@ pub struct TokenRequestData {
 }
 
 #[post("/token", data = "<data>")]
-pub fn post_get_session_token(data: Json<TokenRequestData>,
+pub fn post_get_session_token_data(data: Json<TokenRequestData>,
                           connection: RedisConnection,
-                          jwt_secret: State<JwtSecret>) -> status::Custom<String> {
-
+                          jwt_secret: State<JwtSecret>, mut cookies: rocket::http::Cookies) -> status::Custom<&'static str> {
 
     let connection = connection.0.deref();
 
@@ -39,12 +38,16 @@ pub fn post_get_session_token(data: Json<TokenRequestData>,
 
     let header = json!({});
     let jwt = encode(header, &jwt_secret.0, &payload, Algorithm::HS256).unwrap();
-
+    let jwt_cookie = rocket::http::Cookie::build("token", jwt)
+        .http_only(true)
+        .secure(true)
+        .finish();
 
     if already_cached == 1 {
-        return status::Custom(Status::Ok, jwt);
+        cookies.add(jwt_cookie);
+        return status::Custom(Status::Ok, "Ok");
     } else if already_cached == 2 {
-        return status::Custom(Status::Unauthorized, format!("401"));
+        return status::Custom(Status::Unauthorized, "401");
     }
 
     let is_valid_res= sessions::is_valid(&data.mode, &data.creds);
@@ -66,9 +69,33 @@ pub fn post_get_session_token(data: Json<TokenRequestData>,
     );
 
     if is_valid {
-        return status::Custom(Status::Ok, jwt);
+        cookies.add(jwt_cookie);
+        return status::Custom(Status::Ok, "Ok");
     } else {
-        return status::Custom(Status::Unauthorized, format!("401"));
+        return status::Custom(Status::Unauthorized, "401");
     }
+
+}
+
+#[post("/token_cookie")]
+pub fn post_get_session_token_cookie(
+    connection: RedisConnection,
+    jwt_secret: State<JwtSecret>,
+    mut cookies: rocket::http::Cookies
+) -> status::Custom<&'static str> {
+
+    let token_cookie = cookies.get("token");
+
+    if token_cookie.is_none() {
+        return status::Custom(Status::Unauthorized, "No Data or cookie provided");
+    }
+
+    let token_cookie = token_cookie.unwrap();
+
+    let token_cookie_string = token_cookie.value();
+
+    println!("{:?}", token_cookie_string);
+
+    return status::Custom(Status::NotImplemented, "Not Implemented yet");
 
 }

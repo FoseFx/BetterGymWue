@@ -54,7 +54,8 @@ fn main() {
         .manage(jwt_secret)
         .mount("/v3", routes![
             index,
-            handler_token::post_get_session_token
+            handler_token::post_get_session_token_data,
+            handler_token::post_get_session_token_cookie
         ])
         .launch();
 
