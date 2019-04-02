@@ -4,10 +4,9 @@ use rocket::http::Status;
 use crate::{sessions, JwtSecret};
 use rocket::State;
 use crate::cache::redis::RedisConnection;
-use rocket_contrib::json::{Json, JsonValue};
+use rocket_contrib::json::Json;
 use std::ops::Deref;
 use rocket::http::Cookie;
-use crate::sessions::is_valid;
 
 
 #[derive(Deserialize)]

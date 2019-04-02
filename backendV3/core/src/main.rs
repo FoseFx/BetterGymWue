@@ -35,6 +35,9 @@ fn index(connection: RedisConnection) -> String {
 
 fn main() {
 
+    /*
+        Obtain JWT Secret environment variable
+    */
     let mut jwt_secret: Option<String> = None;
     for (env_key, val) in vars(){
         if env_key == "JWT_SECRET" {
@@ -45,9 +48,27 @@ fn main() {
     if jwt_secret.is_none() {
         panic!("No JWT_SECRET set");
     }
+    
+    let jwt_secret = jwt_secret.unwrap();
+    let last_index = jwt_secret.len() - 1;
 
-    let jwt_secret: JwtSecret = JwtSecret(jwt_secret.unwrap());
+    print!("\n🔐  \u{1b}[0m\u{1b}[31;1mJWT_SECRET: ");
+    for (i, part) in jwt_secret.chars().enumerate() {
+        if i == 0 || i == last_index {
+            print!("{}", part);
+        } else {
+            print!("*");
+        }
+    }
+    println!(" \u{1b}[0m");
 
+    let jwt_secret: JwtSecret = JwtSecret(jwt_secret);
+
+    
+
+    /*
+        Mount and launch rocket web server
+    */
 
     rocket::ignite()
         .manage(cache::redis::pool())

@@ -21,7 +21,7 @@ pub fn pool() -> r2d2::Pool<RedisConnectionManager> {
 
     let slice: &str = &redis_full_path.unwrap()[..]; // convert to &str for open() call
 
-    println!("Redis Server: '{}'", slice);
+    println!("🌪  \u{1b}[0m\u{1b}[31;1mRedis Server: '{}' \u{1b}[0m", slice);
 
     let manager = RedisConnectionManager::new(slice).expect("connection manager");
 
