@@ -1,5 +1,9 @@
 version: '3'
 services:
+  fetch-backend:
+    build: fetch
+    expose:
+    - 8001 
   redis:
     image: redis
     container_name: cache
@@ -9,7 +13,9 @@ services:
     build: core
     depends_on:
     - redis
+    - fetch-backend
     ports:
     - 8800:8000
     environment:
     - REDIS_PATH=redis://cache
+    - JWT_SECRET=testtest
