@@ -60,3 +60,59 @@ fn cache_value(conn: &redis::Connection, key: &String, value: &String){
     exp_res.expect(&format!("Could not expire key {}", key)[..]);
 
 }
+
+
+
+pub mod stufen {
+    use redis::RedisResult;
+    use crate::redis::Commands;
+    use std::ops::Deref;
+
+    static KEY: &str = "stufen";
+
+    pub fn get_stufen(connection: &redis::Connection, creds: String) -> Vec<String> {
+
+        let cache_res = try_cache(connection);
+
+        if cache_res.is_ok() {
+            let cache_data = cache_res.unwrap();
+            if cache_data.len() == 0 { // key not found
+                let fetched_stufen = fetch_stufen(creds);
+                if fetched_stufen.len() != 0 {
+                    cache(connection, &fetched_stufen);
+                }
+                return fetched_stufen;
+            }
+            return cache_data;
+        }
+        println!("Redis error: {:?}", cache_res);
+        // cache connection failed
+        return vec![];
+    }
+
+    /** empty when not found */
+    fn try_cache(connection: &redis::Connection) -> RedisResult<Vec<String>>{
+        return connection.smembers(KEY);
+    }
+
+    /** empty when failed */
+    fn fetch_stufen(creds: String) -> Vec<String> {
+
+        return vec![]; // todo
+    }
+
+    fn cache(connection: &redis::Connection, values: &Vec<String>){
+        let push_res: RedisResult<u8> = connection.sadd(KEY, values.deref());
+        if push_res.is_err() {
+            println!("Error caching stufen: {:?}", &push_res);
+        }
+
+        println!("Total of {} items cached", push_res.unwrap());
+
+        let expire_res: RedisResult<u8> = connection.expire(KEY, 60*24*4);
+        if expire_res.is_err() {
+            println!("Error expiring stufen: {:?}", &expire_res);
+        }
+    }
+
+}

@@ -17,6 +17,7 @@ mod fetch_data;
 mod sessions;
 mod handler_token;
 mod handler_stundenplaene;
+mod handler_stufen;
 
 // use rocket::Request;
 use cache::redis::RedisConnection;
@@ -66,7 +67,7 @@ fn main() {
 
     let jwt_secret: JwtSecret = JwtSecret(jwt_secret);
 
-    
+
 
     /*
         Mount and launch rocket web server
@@ -79,7 +80,8 @@ fn main() {
             index,
             handler_token::post_get_session_token_data,
             handler_token::post_get_session_token_cookie,
-            handler_stundenplaene::get_stundenplan
+            handler_stundenplaene::get_stundenplan,
+            handler_stufen::get_stufen
         ])
         .launch();
 
