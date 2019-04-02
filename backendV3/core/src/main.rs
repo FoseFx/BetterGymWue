@@ -52,6 +52,7 @@ fn main() {
     let jwt_secret = jwt_secret.unwrap();
     let last_index = jwt_secret.len() - 1;
 
+    /* Print jwt secret */
     print!("\n🔐  \u{1b}[0m\u{1b}[31;1mJWT_SECRET: ");
     for (i, part) in jwt_secret.chars().enumerate() {
         if i == 0 || i == last_index {
