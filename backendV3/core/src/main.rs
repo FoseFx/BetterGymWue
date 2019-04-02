@@ -16,6 +16,7 @@ mod cache;
 mod fetch_data;
 mod sessions;
 mod handler_token;
+mod handler_stundenplaene;
 
 // use rocket::Request;
 use cache::redis::RedisConnection;
@@ -77,7 +78,8 @@ fn main() {
         .mount("/v3", routes![
             index,
             handler_token::post_get_session_token_data,
-            handler_token::post_get_session_token_cookie
+            handler_token::post_get_session_token_cookie,
+            handler_stundenplaene::get_stundenplan
         ])
         .launch();
 
