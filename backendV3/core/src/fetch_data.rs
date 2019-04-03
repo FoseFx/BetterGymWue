@@ -97,8 +97,27 @@ pub mod stufen {
 
     /** empty when failed */
     fn fetch_stufen(creds: String) -> Vec<String> {
+        let client = reqwest::Client::new();
+        let req_res = client.get("https://gymnasium-wuerselen.de/untis/Schueler-Stundenplan/frames/navbar.htm")
+            .header(reqwest::header::AUTHORIZATION, format!("Basic {}", creds))
+            .send();
 
-        return vec![]; // todo
+        if req_res.is_err() {
+            println!("Request error tred fetching stufen: {:?}", req_res);
+            return vec![];
+        }
+        let text = req_res.unwrap().text().unwrap();
+        let split: Vec<&str> = text.split("var classes = [\"").collect(); // var classes = ["abc", "def"];
+        let important_part: Vec<&str> = split[1].split("\"];").collect();
+        let important_part: &str = important_part[0];
+        let as_vec: Vec<&str> = important_part.split("\",\"").collect();
+
+        let mut string_vec: Vec<String> = vec![];
+        for s in as_vec.iter(){
+            string_vec.push(s.to_string());
+        }
+
+        return string_vec;
     }
 
     fn cache(connection: &redis::Connection, values: &Vec<String>){
