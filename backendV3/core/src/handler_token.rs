@@ -7,38 +7,81 @@ use crate::cache::redis::RedisConnection;
 use rocket_contrib::json::Json;
 use std::ops::Deref;
 use rocket::http::Cookie;
+use crate::guards::Verified;
 
+/*
+
+JWT:
+{}, // default header
+{
+    exp: one Week in UNIX from iat,
+    schueler?: btoa(user:pass),
+    lehrer?: btoa(user:pass),
+},
+SIGN
+
+
+*/
 
 #[derive(Deserialize)]
 #[derive(Debug)]
 pub struct TokenRequestData {
-    mode: String, // either 'schueler' or 'lehrer'
     creds: String // btob of username:password
 }
 
-#[post("/token", data = "<data>")]
-pub fn post_get_session_token_data(data: Json<TokenRequestData>,
-                          connection: RedisConnection,
-                          jwt_secret: State<JwtSecret>, mut cookies: rocket::http::Cookies) -> status::Custom<&'static str> {
+#[post("/schueler_token", data = "<data>")]
+pub fn post_schueler_token(
+    data: Json<TokenRequestData>,
+    connection: RedisConnection,
+    jwt_secret: State<JwtSecret>,
+    mut cookies: rocket::http::Cookies) -> status::Custom<&'static str> {
 
     let connection = connection.0.deref();
 
+    let jwt_secret: &String = &jwt_secret.0;
+
+    return get_session_token(connection, cookies, jwt_secret, "schueler", &data.creds);
+
+}
+
+#[post("/lehrer_token", data = "<data>")]
+pub fn post_lehrer_token(
+    data: Json<TokenRequestData>,
+    connection: RedisConnection,
+    jwt_secret: State<JwtSecret>,
+    verified: Verified,
+    mut cookies: rocket::http::Cookies) -> status::Custom<&'static str> {
+
+    let connection = connection.0.deref();
+
+    let jwt_secret: &String = &jwt_secret.0;
+
+    return get_session_token(connection, cookies, jwt_secret, "lehrer", &data.creds);
+
+}
+
+fn get_session_token (
+    connection: &redis::Connection,
+    mut cookies: rocket::http::Cookies,
+    jwt_secret: &String,
+    mode: &str,
+    creds: &String
+) -> status::Custom<&'static str> {
+
+
     let already_cached = sessions::test_cache(
         connection,
-        &data.mode,
-        &data.creds
+        &mode.to_string(),
+        creds
     );
 
     println!("{}", already_cached);
 
-
-    let payload = json!({
-        "mode": &data.mode,
-        "creds": &data.creds
-    });
+    // note: this will clear existing values in the JWT
+    let payload = gen_new_payload(mode, creds, jwt_secret, &cookies);
 
     let header = json!({});
-    let jwt = encode(header, &jwt_secret.0, &payload, Algorithm::HS256).unwrap();
+    let jwt = encode(header, jwt_secret, &payload, Algorithm::HS256).unwrap();
     let jwt_cookie = rocket::http::Cookie::build("token", jwt)
         .http_only(true)
         .secure(true)
@@ -51,7 +94,7 @@ pub fn post_get_session_token_data(data: Json<TokenRequestData>,
         return status::Custom(Status::Unauthorized, "401");
     }
 
-    let is_valid_res= sessions::is_valid(&data.mode, &data.creds);
+    let is_valid_res= sessions::is_valid(&mode.to_string(), creds);
 
     if is_valid_res.is_err() {
         return status::Custom(Status::InternalServerError, "Failed fetching data");
@@ -61,8 +104,8 @@ pub fn post_get_session_token_data(data: Json<TokenRequestData>,
 
     sessions::add_to_cache(
         connection,
-        &data.mode,
-        &data.creds,
+        &mode.to_string(),
+        creds,
         is_valid
     );
 
@@ -75,78 +118,41 @@ pub fn post_get_session_token_data(data: Json<TokenRequestData>,
 
 }
 
-#[post("/token_cookie")]
-pub fn post_get_session_token_cookie(
-    connection: RedisConnection,
-    jwt_secret: State<JwtSecret>,
-    mut cookies: rocket::http::Cookies
-) -> status::Custom<&'static str> {
+fn gen_new_payload(mode: &str, value: &String, jwt_secret: &String, cookies: &rocket::http::Cookies) -> serde_json::Value {
 
-    let connection = connection.0.deref();
-
-    let token_cookie = cookies.get("token");
-
-    if token_cookie.is_none() {
-        return status::Custom(Status::Unauthorized, "No Data or cookie provided");
-    }
-
-    let token_cookie = token_cookie.unwrap();
-    let token_cookie_string = token_cookie.value();
-    let token_jwt = decode(&format!("{}", token_cookie_string), &format!("{}", jwt_secret.0), Algorithm::HS256);
-
-    if token_jwt.is_err() {
-        cookies.remove(Cookie::named("token"));
-        return status::Custom(Status::Unauthorized, "Token expired/invalid");
-    }
-
-    let token_jwt: serde_json::Value = token_jwt.unwrap().1;
-
-    let mode= token_jwt.get("mode").unwrap().as_str().unwrap().to_string();
-    let creds = token_jwt.get("creds").unwrap().as_str().unwrap().to_string();
-
-    let payload = json!({
-        "mode": &mode,
-        "creds": &creds
+    let fallback = json!({
+        mode: value
     });
 
-    let header = json!({});
-    let jwt = encode(header, &jwt_secret.0, &payload, Algorithm::HS256).unwrap();
-    let jwt_cookie = rocket::http::Cookie::build("token", jwt)
-        .http_only(true)
-        .secure(true)
-        .finish();
-
-    let is_cached = sessions::test_cache(connection, &mode, &creds);
-
-    if is_cached == 1 {
-        cookies.add(jwt_cookie);
-        return status::Custom(Status::Ok, "Ok");
+    //
+    // get cookie
+    //
+    let token_c = cookies.get("token");
+    if token_c.is_none() {
+        return fallback;
     }
+    let token_str = token_c.unwrap().value();
 
-    if is_cached == 2 {
-        cookies.remove(Cookie::named("token"));
-        return status::Custom(Status::Unauthorized, "Logindaten abgelaufen");
+    //
+    // get jwt payload
+    //
+    let jwt = decode(&token_str.to_string(), jwt_secret, Algorithm::HS256);
+    if jwt.is_err() {
+        return fallback;
     }
+    let mut old_payload: serde_json::Value  = jwt.unwrap().1;
+    let payload = old_payload.as_object_mut().unwrap();
+
+    //
+    // modify payload
+    //
+
+    payload.insert(mode.to_string(), serde_json::Value::String(value.to_string()));
 
 
-    let is_valid_res = sessions::is_valid(&mode, &creds);
+    return serde_json::Value::Object(payload.to_owned());
+}
 
-    let err = is_valid_res.is_err();
-
-    if err {
-        return status::Custom(Status::InternalServerError, "Could not fetch data");
-    }
-
-    let is_valid = is_valid_res.unwrap();
-
-    sessions::add_to_cache(connection, &mode, &creds, is_valid);
-
-    if is_valid {
-        cookies.add(jwt_cookie);
-        return status::Custom(Status::Ok, "Ok");
-    }
-
-    cookies.remove(Cookie::named("token"));
-    return status::Custom(Status::Unauthorized, "Not Implemented yet");
+fn get_refresh_token(){
 
 }

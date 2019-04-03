@@ -38,6 +38,28 @@ fn index(connection: RedisConnection) -> String {
 
 fn main() {
 
+
+    let jwt_secret = obtain_jwt_secret();
+
+    /*
+        Mount and launch rocket web server
+    */
+
+    rocket::ignite()
+        .manage(cache::redis::pool())
+        .manage(jwt_secret)
+        .mount("/v3", routes![
+            index,
+            handler_token::post_schueler_token,
+            handler_token::post_lehrer_token,
+            handler_stundenplaene::get_stundenplan,
+            handler_stufen::get_stufen
+        ])
+        .launch();
+
+}
+
+fn obtain_jwt_secret() -> JwtSecret {
     /*
         Obtain JWT Secret environment variable
     */
@@ -51,7 +73,7 @@ fn main() {
     if jwt_secret.is_none() {
         panic!("No JWT_SECRET set");
     }
-    
+
     let jwt_secret = jwt_secret.unwrap();
     let last_index = jwt_secret.len() - 1;
 
@@ -67,23 +89,5 @@ fn main() {
     println!(" \u{1b}[0m");
 
     let jwt_secret: JwtSecret = JwtSecret(jwt_secret);
-
-
-
-    /*
-        Mount and launch rocket web server
-    */
-
-    rocket::ignite()
-        .manage(cache::redis::pool())
-        .manage(jwt_secret)
-        .mount("/v3", routes![
-            index,
-            handler_token::post_get_session_token_data,
-            handler_token::post_get_session_token_cookie,
-            handler_stundenplaene::get_stundenplan,
-            handler_stufen::get_stufen
-        ])
-        .launch();
-
+    return jwt_secret;
 }

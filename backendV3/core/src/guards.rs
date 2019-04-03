@@ -22,7 +22,7 @@ impl<'a, 'r> FromRequest<'a, 'r> for Verified {
             let jwt_res = decode(&content, secret, Algorithm::HS256);
             if jwt_res.is_ok() {
                 let token: serde_json::Value = jwt_res.unwrap().1;
-                let creds = token.get("creds").unwrap().as_str().unwrap().to_string();
+                let creds = token.get("schueler").unwrap().as_str().unwrap().to_string();
                 return Success(Verified(creds));
             }
             cookies.remove(Cookie::named("token"));
