@@ -18,6 +18,7 @@ mod sessions;
 mod handler_token;
 mod handler_stundenplaene;
 mod handler_stufen;
+mod guards;
 
 // use rocket::Request;
 use cache::redis::RedisConnection;
