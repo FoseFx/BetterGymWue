@@ -5,6 +5,8 @@
 #[macro_use] extern crate serde_derive;
 #[macro_use] extern crate serde_json;
 extern crate frank_jwt;
+extern crate chrono;
+extern crate time;
 
 extern crate redis;
 extern crate r2d2;

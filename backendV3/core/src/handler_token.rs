@@ -9,6 +9,7 @@ use std::ops::Deref;
 use rocket::http::Cookie;
 use crate::guards::Verified;
 use rocket::response::status::Custom;
+use chrono::{Utc, Duration};
 
 /*
 
@@ -80,13 +81,14 @@ fn get_session_token (
     println!("{}", already_cached);
 
     // note: this will clear existing values in the JWT
-    let payload = gen_new_payload(mode, creds, jwt_secret, &cookies);
+    let (payload, exp) = gen_new_payload_and_exp(mode, creds, jwt_secret, &cookies);
 
     let header = json!({});
     let jwt = encode(header, jwt_secret, &payload, Algorithm::HS256).unwrap();
     let jwt_cookie = rocket::http::Cookie::build("token", jwt)
         .http_only(true)
         .secure(true)
+        .expires(time::at_utc(time::Timespec::new(exp, 0)))
         .finish();
 
     if already_cached == 1 {
@@ -120,11 +122,17 @@ fn get_session_token (
 
 }
 
-fn gen_new_payload(mode: &str, value: &String, jwt_secret: &String, cookies: &rocket::http::Cookies) -> serde_json::Value {
+/** returns new payload and the new unix time it expires on*/
+fn gen_new_payload_and_exp(mode: &str, value: &String, jwt_secret: &String, cookies: &rocket::http::Cookies) -> (serde_json::Value, i64) {
 
-    let fallback = json!({
+    let now = Utc::now();
+    let exp = now.checked_add_signed(Duration::weeks(1)).unwrap();
+    let exp = exp.timestamp();
+
+    let fallback = (json!({
+        "exp": exp,
         mode: value
-    });
+    }), exp);
 
     //
     // get cookie
@@ -148,11 +156,11 @@ fn gen_new_payload(mode: &str, value: &String, jwt_secret: &String, cookies: &ro
     //
     // modify payload
     //
+    payload.insert(mode.to_string(), serde_json::Value::String(value.to_string())); // mode => value
+    payload.insert("exp".to_string(), json!(exp)); // exp => exp
 
-    payload.insert(mode.to_string(), serde_json::Value::String(value.to_string()));
 
-
-    return serde_json::Value::Object(payload.to_owned());
+    return (serde_json::Value::Object(payload.to_owned()), exp);
 }
 
 #[post("/refresh_token")]
@@ -179,7 +187,8 @@ pub fn post_refresh_token(mut cookies: rocket::http::Cookies, jwt_secret: State<
     // todo block old ages
     // todo re-verify creds
 
-    pl_hm.insert("exp".to_string(), json!(1));
+    let exp = Utc::now().checked_add_signed(Duration::weeks(1)).unwrap().timestamp();
+    pl_hm.insert("exp".to_string(), json!(exp));
 
     let ret_payload = json!(pl_hm);
     let ret_token = encode(json!({}), jwt_secret, &ret_payload, Algorithm::HS256);
@@ -193,6 +202,7 @@ pub fn post_refresh_token(mut cookies: rocket::http::Cookies, jwt_secret: State<
         Cookie::build("token", ret_token.unwrap())
             .secure(true)
             .http_only(true)
+            .expires(time::at_utc(time::Timespec::new(exp, 0)))
             .finish()
     );
 
