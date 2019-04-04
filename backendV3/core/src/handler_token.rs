@@ -4,11 +4,11 @@ use rocket::http::Status;
 use crate::{sessions, JwtSecret};
 use rocket::State;
 use crate::cache::redis::RedisConnection;
-use rocket_contrib::json::Json;
+use rocket_contrib::json::{Json, JsonValue};
 use std::ops::Deref;
 use rocket::http::Cookie;
 use crate::guards::Verified;
-use rocket_contrib::databases::DbError::Custom;
+use rocket::response::status::Custom;
 
 /*
 
@@ -16,6 +16,7 @@ JWT:
 {}, // default header
 {
     exp: one Week in UNIX from iat,
+    age: number,
     schueler?: btoa(user:pass),
     lehrer?: btoa(user:pass),
 },
@@ -155,9 +156,45 @@ fn gen_new_payload(mode: &str, value: &String, jwt_secret: &String, cookies: &ro
 }
 
 #[post("/refresh_token")]
-fn post_refresh_token(mut cookies: Cookies) -> Custom<&'static str>{
+pub fn post_refresh_token(mut cookies: rocket::http::Cookies, jwt_secret: State<JwtSecret>) -> Custom<&'static str>{
 
+    let jwt_secret: &String = &jwt_secret.0;
 
+    let token_res = cookies.get("token");
 
-    return Custom((Status::NotImplemented, "Not Implemented yet"));
+    if token_res.is_none(){
+        return Custom(Status::Unauthorized, "Nothing to refresh");
+    }
+
+    let token = token_res.unwrap().value().to_string();
+    let decoded = decode(&token, jwt_secret, Algorithm::HS256);
+
+    if decoded.is_err(){
+        return Custom(Status::Unauthorized, "Token not valid or expired. Please log in again.");
+    }
+
+    let mut payload: serde_json::Value = decoded.unwrap().1;
+    let pl_hm = payload.as_object_mut().unwrap();
+
+    // todo block old ages
+    // todo re-verify creds
+
+    pl_hm.insert("exp".to_string(), json!(1));
+
+    let ret_payload = json!(pl_hm);
+    let ret_token = encode(json!({}), jwt_secret, &ret_payload, Algorithm::HS256);
+
+    if ret_token.is_err(){
+        println!("Error encoding token: {:?}", ret_token);
+        return Custom(Status::InternalServerError, "Internal Server Error");
+    }
+
+    cookies.add(
+        Cookie::build("token", ret_token.unwrap())
+            .secure(true)
+            .http_only(true)
+            .finish()
+    );
+
+    return Custom(Status::Ok, "Ok");
 }
