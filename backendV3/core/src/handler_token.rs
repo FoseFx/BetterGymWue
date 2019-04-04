@@ -8,6 +8,7 @@ use rocket_contrib::json::Json;
 use std::ops::Deref;
 use rocket::http::Cookie;
 use crate::guards::Verified;
+use rocket_contrib::databases::DbError::Custom;
 
 /*
 
@@ -153,6 +154,10 @@ fn gen_new_payload(mode: &str, value: &String, jwt_secret: &String, cookies: &ro
     return serde_json::Value::Object(payload.to_owned());
 }
 
-fn get_refresh_token(){
+#[post("/refresh_token")]
+fn post_refresh_token(mut cookies: Cookies) -> Custom<&'static str>{
 
+
+
+    return Custom((Status::NotImplemented, "Not Implemented yet"));
 }

@@ -52,6 +52,7 @@ fn main() {
             index,
             handler_token::post_schueler_token,
             handler_token::post_lehrer_token,
+            handler_token::post_refresh_token,
             handler_stundenplaene::get_stundenplan,
             handler_stufen::get_stufen
         ])
