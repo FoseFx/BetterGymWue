@@ -1,4 +1,4 @@
-use crate::JwtSecret;
+use crate::{JwtSecret, is_expired};
 use rocket::http::{Status, Cookie};
 use rocket::request::FromRequest;
 use rocket::State;
@@ -22,6 +22,10 @@ impl<'a, 'r> FromRequest<'a, 'r> for Verified {
             let jwt_res = decode(&content, secret, Algorithm::HS256);
             if jwt_res.is_ok() {
                 let token: serde_json::Value = jwt_res.unwrap().1;
+                if is_expired(&token){
+                    cookies.remove(Cookie::named("token"));
+                    return Failure((Status::Unauthorized, ()));
+                }
                 let creds = token.get("schueler").unwrap().as_str().unwrap().to_string();
                 return Success(Verified(creds));
             }

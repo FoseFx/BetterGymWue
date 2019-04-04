@@ -24,6 +24,7 @@ mod guards;
 
 // use rocket::Request;
 use cache::redis::RedisConnection;
+use chrono::{Utc, Duration, DateTime, NaiveDateTime};
 
 
 pub struct JwtSecret(String);
@@ -93,4 +94,14 @@ fn obtain_jwt_secret() -> JwtSecret {
 
     let jwt_secret: JwtSecret = JwtSecret(jwt_secret);
     return jwt_secret;
+}
+
+pub fn is_expired(payload: &serde_json::Value) -> bool {
+    let old_exp: i64 = payload.get("exp").unwrap().as_i64().unwrap();
+    let as_date: DateTime<Utc> = DateTime::<Utc>::from_utc(NaiveDateTime::from_timestamp(old_exp, 0), Utc);
+    let now: DateTime<Utc> = Utc::now();
+
+    let diff: Duration = now.signed_duration_since(as_date);
+
+    return diff.gt(&Duration::weeks(1));
 }
