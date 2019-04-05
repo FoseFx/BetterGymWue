@@ -1,7 +1,7 @@
 use frank_jwt::{encode, Algorithm, decode};
 use rocket::response::status;
 use rocket::http::Status;
-use crate::{sessions, JwtSecret, is_expired};
+use crate::{sessions, JwtSecret, is_expired, verify_jwt};
 use rocket::State;
 use crate::cache::redis::RedisConnection;
 use rocket_contrib::json::{Json, JsonValue};
@@ -141,20 +141,17 @@ fn gen_new_payload_and_exp(mode: &str, value: &String, jwt_secret: &String, cook
     if token_c.is_none() {
         return fallback;
     }
-    let token_str = token_c.unwrap().value();
 
     //
     // get jwt payload
     //
-    let jwt = decode(&token_str.to_string(), jwt_secret, Algorithm::HS256);
-    if jwt.is_err() {
+    let payload: Result <serde_json::Value, &str> = verify_jwt(&token_c.unwrap(), jwt_secret);
+    if payload.is_err() {
+        println!("Error: {}", payload.unwrap_err());
         return fallback;
     }
-    let mut old_payload: serde_json::Value  = jwt.unwrap().1;
-    if is_expired(&old_payload){
-        return fallback;
-    }
-    let payload = old_payload.as_object_mut().unwrap();
+    let mut payload = payload.unwrap();
+    let payload = payload.as_object_mut().unwrap();
 
     //
     // modify payload
