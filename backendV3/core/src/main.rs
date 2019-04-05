@@ -42,7 +42,6 @@ fn index(connection: RedisConnection) -> String {
 
 fn main() {
 
-
     let jwt_secret = obtain_jwt_secret();
 
     /*
@@ -104,7 +103,7 @@ fn is_expired(payload: &serde_json::Value) -> bool {
 
     let diff: Duration = now.signed_duration_since(as_date);
 
-    return diff.gt(&Duration::weeks(1));
+    return diff.num_seconds() <= 0;
 }
 
 pub fn verify_jwt(cookie: &rocket::http::Cookie, secret: &String) -> Result<serde_json::Value, &'static str> {
