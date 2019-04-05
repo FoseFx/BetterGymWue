@@ -1,9 +1,8 @@
-use crate::{JwtSecret, is_expired, verify_jwt};
+use crate::{JwtSecret, verify_jwt};
 use rocket::http::{Status, Cookie};
 use rocket::request::FromRequest;
 use rocket::State;
 use rocket::{Outcome, Request};
-use frank_jwt::{decode, Algorithm};
 use rocket::outcome::Outcome::{Success, Failure};
 use serde_json::Value;
 

@@ -8,7 +8,7 @@ mod handler_stundenplaene;
 mod handler_stufen;
 mod guards;
 #[macro_use] extern crate rocket;
-#[macro_use] extern crate rocket_contrib;
+extern crate rocket_contrib;
 #[macro_use] extern crate serde_derive;
 #[macro_use] extern crate serde_json;
 extern crate frank_jwt;

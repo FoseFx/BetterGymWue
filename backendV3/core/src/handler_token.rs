@@ -1,10 +1,10 @@
 use frank_jwt::{encode, Algorithm, decode};
 use rocket::response::status;
 use rocket::http::Status;
-use crate::{sessions, JwtSecret, is_expired, verify_jwt};
+use crate::{sessions, JwtSecret, verify_jwt};
 use rocket::State;
 use crate::cache::redis::RedisConnection;
-use rocket_contrib::json::{Json, JsonValue};
+use rocket_contrib::json::{Json};
 use std::ops::Deref;
 use rocket::http::Cookie;
 use crate::guards::Verified;
@@ -37,7 +37,7 @@ pub fn post_schueler_token(
     data: Json<TokenRequestData>,
     connection: RedisConnection,
     jwt_secret: State<JwtSecret>,
-    mut cookies: rocket::http::Cookies) -> status::Custom<&'static str> {
+    cookies: rocket::http::Cookies) -> status::Custom<&'static str> {
 
     let connection = connection.0.deref();
 
@@ -52,8 +52,8 @@ pub fn post_lehrer_token(
     data: Json<TokenRequestData>,
     connection: RedisConnection,
     jwt_secret: State<JwtSecret>,
-    verified: Verified,
-    mut cookies: rocket::http::Cookies) -> status::Custom<&'static str> {
+    _verified: Verified,
+    cookies: rocket::http::Cookies) -> status::Custom<&'static str> {
 
     let connection = connection.0.deref();
 
