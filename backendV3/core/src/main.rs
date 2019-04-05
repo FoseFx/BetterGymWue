@@ -1,5 +1,12 @@
 #![feature(proc_macro_hygiene, decl_macro)]
 
+mod cache;
+mod fetch_data;
+mod sessions;
+mod handler_token;
+mod handler_stundenplaene;
+mod handler_stufen;
+mod guards;
 #[macro_use] extern crate rocket;
 #[macro_use] extern crate rocket_contrib;
 #[macro_use] extern crate serde_derive;
@@ -13,18 +20,12 @@ extern crate r2d2;
 extern crate r2d2_redis;
 use std::ops::Deref;
 use std::env::vars;
-
-mod cache;
-mod fetch_data;
-mod sessions;
-mod handler_token;
-mod handler_stundenplaene;
-mod handler_stufen;
-mod guards;
-
-// use rocket::Request;
 use cache::redis::RedisConnection;
 use chrono::{Utc, Duration, DateTime, NaiveDateTime};
+use frank_jwt::{decode, Algorithm};
+
+
+// use rocket::Request;
 
 
 pub struct JwtSecret(String);
@@ -96,7 +97,7 @@ fn obtain_jwt_secret() -> JwtSecret {
     return jwt_secret;
 }
 
-pub fn is_expired(payload: &serde_json::Value) -> bool {
+fn is_expired(payload: &serde_json::Value) -> bool {
     let old_exp: i64 = payload.get("exp").unwrap().as_i64().unwrap();
     let as_date: DateTime<Utc> = DateTime::<Utc>::from_utc(NaiveDateTime::from_timestamp(old_exp, 0), Utc);
     let now: DateTime<Utc> = Utc::now();
@@ -104,4 +105,22 @@ pub fn is_expired(payload: &serde_json::Value) -> bool {
     let diff: Duration = now.signed_duration_since(as_date);
 
     return diff.gt(&Duration::weeks(1));
+}
+
+pub fn verify_jwt(cookie: &rocket::http::Cookie, secret: &String) -> Result<serde_json::Value, &'static str> {
+
+    let content = cookie.value().to_string();
+    let jwt_res = decode(&content, secret, Algorithm::HS256);
+
+    if jwt_res.is_err(){
+        return Err("Token not valid");
+    }
+
+    let payload: serde_json::Value = jwt_res.unwrap().1;
+    if is_expired(&payload){
+        return Err("Token expired");
+    }
+
+    return Ok(payload);
+
 }

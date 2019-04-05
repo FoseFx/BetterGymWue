@@ -1,10 +1,11 @@
-use crate::{JwtSecret, is_expired};
+use crate::{JwtSecret, is_expired, verify_jwt};
 use rocket::http::{Status, Cookie};
 use rocket::request::FromRequest;
 use rocket::State;
 use rocket::{Outcome, Request};
 use frank_jwt::{decode, Algorithm};
 use rocket::outcome::Outcome::{Success, Failure};
+use serde_json::Value;
 
 #[derive(Debug)]
 pub struct Verified(pub String);
@@ -13,23 +14,29 @@ impl<'a, 'r> FromRequest<'a, 'r> for Verified {
     type Error = ();
 
     fn from_request(request: &'a Request<'r>) -> Outcome<Self, (Status, Self::Error), ()> {
-        let secret = &request.guard::<State<JwtSecret>>().unwrap().0;
+        let secret: &String = &request.guard::<State<JwtSecret>>().unwrap().0;
 
         let mut cookies = request.cookies();
         let token_res = cookies.get("token");
         if token_res.is_some() {
-            let content = token_res.unwrap().value().to_string();
-            let jwt_res = decode(&content, secret, Algorithm::HS256);
-            if jwt_res.is_ok() {
-                let token: serde_json::Value = jwt_res.unwrap().1;
-                if is_expired(&token){
-                    cookies.remove(Cookie::named("token"));
-                    return Failure((Status::Unauthorized, ()));
-                }
-                let creds = token.get("schueler").unwrap().as_str().unwrap().to_string();
-                return Success(Verified(creds));
+
+            let payload: Result<Value, &str> = verify_jwt(token_res.unwrap(), secret);
+            if payload.is_err() {
+                cookies.remove(Cookie::named("token"));
+                return Failure((Status::Unauthorized, ()));
             }
-            cookies.remove(Cookie::named("token"));
+            return Success(
+                Verified(
+                    payload.unwrap()
+                        .get("schueler")
+                        .unwrap()
+                        .as_str()
+                        .unwrap()
+                        .to_string()
+                )
+            );
+
+
         }
         return Failure((Status::Unauthorized, ()));
     }
