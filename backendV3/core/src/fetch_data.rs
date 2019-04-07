@@ -134,4 +134,35 @@ pub mod stufen {
         }
     }
 
+    pub fn is_stufe(connection: &redis::Connection, query: String, creds: String) -> Result<bool, &'static str>{
+        let res_exists: RedisResult<bool> = connection.exists(KEY);
+
+        if res_exists.is_err() {
+            return Err("Could not fetch cache");
+        }
+
+        let key_exists = res_exists.unwrap();
+
+        if key_exists {
+            let res: RedisResult<bool> = connection.sismember(KEY, query);
+            if res.is_err() {
+                return Err("Could not fetch cache");
+            }
+            let value_exists = res.unwrap();
+            return Ok(value_exists);
+        }
+
+        let stufen = get_stufen(connection, creds);
+        if stufen.len() == 0 {
+            return Err("Failed fetching stufen");
+        }
+
+        let res: RedisResult<bool> = connection.sismember(KEY, query);
+        if res.is_err() {
+            return Err("Could not fetch cache");
+        }
+        let value_exists = res.unwrap();
+        return Ok(value_exists);
+    }
+
 }

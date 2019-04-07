@@ -1,20 +1,32 @@
 use crate::cache::redis::RedisConnection;
 use std::ops::Deref;
-use regex::Regex;
 use rocket::http::Status;
 use rocket::response::status::Custom;
+use crate::fetch_data;
+use crate::guards::Verified;
 
 
 #[get("/stundenplan/<stufe>")]
-pub fn get_stundenplan(connection: RedisConnection, stufe: String) -> Custom<&'static str> {
-    let _connection = connection.0.deref();
+pub fn get_stundenplan(connection: RedisConnection,
+                       stufe: String,
+                       schueler_creds: Verified) -> Custom<&'static str> {
+    let connection = connection.0.deref();
+    let schueler_creds = schueler_creds.0;
 
-    let regex = Regex::new(r"^[a-zA-Z0-9-]+$").unwrap(); // Stufe must match this
-    let is_valid = regex.is_match(&stufe);
+    // todo check if already cached
 
-    if !is_valid {
-        return Custom(Status::BadRequest, "Nicht als Stufe erkannt");
+    let is_member = fetch_data::stufen::is_stufe(connection, stufe, schueler_creds);
+
+    if is_member.is_err() {
+        return Custom(Status::InternalServerError, is_member.unwrap_err());
     }
+    let is_member = is_member.unwrap();
+
+    if !is_member {
+        return Custom(Status::BadRequest, "Stufe not found");
+    }
+
+    // todo fetch and cache
 
     return Custom(Status::NotImplemented, "NIY");
 }

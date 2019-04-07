@@ -100,8 +100,8 @@ fn is_expired(payload: &serde_json::Value) -> bool {
     let as_date: DateTime<Utc> = DateTime::<Utc>::from_utc(NaiveDateTime::from_timestamp(old_exp, 0), Utc);
     let now: DateTime<Utc> = Utc::now();
 
-    let diff: Duration = now.signed_duration_since(as_date);
-
+    let diff: Duration = as_date.signed_duration_since(now);
+    println!("now: {} exp: {}, diff: {}", now, as_date, diff.num_seconds());
     return diff.num_seconds() <= 0;
 }
 
