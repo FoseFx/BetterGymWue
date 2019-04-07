@@ -3,9 +3,8 @@
 mod cache;
 mod fetch_data;
 mod sessions;
-mod handler_token;
-mod handler_stundenplaene;
-mod handler_stufen;
+mod handlers;
+
 mod guards;
 #[macro_use] extern crate rocket;
 extern crate rocket_contrib;
@@ -53,11 +52,11 @@ fn main() {
         .manage(jwt_secret)
         .mount("/v3", routes![
             index,
-            handler_token::post_schueler_token,
-            handler_token::post_lehrer_token,
-            handler_token::post_refresh_token,
-            handler_stundenplaene::get_stundenplan,
-            handler_stufen::get_stufen
+            handlers::token::post_schueler_token,
+            handlers::token::post_lehrer_token,
+            handlers::token::post_refresh_token,
+            handlers::stundenplaene::get_stundenplan,
+            handlers::stufen::get_stufen
         ])
         .launch();
 
