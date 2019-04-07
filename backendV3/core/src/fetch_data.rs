@@ -166,3 +166,22 @@ pub mod stufen {
     }
 
 }
+
+pub mod stundenplan {
+    use redis::RedisResult;
+    use crate::redis::Commands;
+    pub fn get_cache(connection: &redis::Connection, stufe: &String) -> Result<String, bool>{
+
+        let key = format!("stundenplan_{}", stufe);
+        let res: RedisResult<String> = connection.get(key);
+
+        // if nil, String conversion fails:
+        if res.is_err(){
+            return Err(true);
+        } else {
+            return Ok(res.unwrap());
+        }
+
+    }
+
+}
