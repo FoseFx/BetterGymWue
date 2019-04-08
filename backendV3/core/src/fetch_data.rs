@@ -70,7 +70,7 @@ pub mod stufen {
 
     static KEY: &str = "stufen";
 
-    pub fn get_stufen(connection: &redis::Connection, creds: String) -> Vec<String> {
+    pub fn get_stufen(connection: &redis::Connection, creds: &String) -> Vec<String> {
 
         let cache_res = try_cache(connection);
 
@@ -96,7 +96,7 @@ pub mod stufen {
     }
 
     /** empty when failed */
-    fn fetch_stufen(creds: String) -> Vec<String> {
+    fn fetch_stufen(creds: &String) -> Vec<String> {
         let client = reqwest::Client::new();
         let req_res = client.get("https://gymnasium-wuerselen.de/untis/Schueler-Stundenplan/frames/navbar.htm")
             .header(reqwest::header::AUTHORIZATION, format!("Basic {}", creds))
@@ -134,7 +134,7 @@ pub mod stufen {
         }
     }
 
-    pub fn is_stufe(connection: &redis::Connection, query: String, creds: String) -> Result<bool, &'static str>{
+    pub fn is_stufe(connection: &redis::Connection, query: &String, creds: &String) -> Result<bool, &'static str>{
         let res_exists: RedisResult<bool> = connection.exists(KEY);
 
         if res_exists.is_err() {
@@ -170,6 +170,9 @@ pub mod stufen {
 pub mod stundenplan {
     use redis::RedisResult;
     use crate::redis::Commands;
+    use std::error::Error;
+    use std::ops::Deref;
+
     pub fn get_cache(connection: &redis::Connection, stufe: &String) -> Result<String, bool>{
 
         let key = format!("stundenplan_{}", stufe);
@@ -183,5 +186,32 @@ pub mod stundenplan {
         }
 
     }
+
+    /// returns JSON or error message
+    pub fn fetch(connection: &redis::Connection, stufe: String, creds: String) -> Result<String, String> {
+
+        let sp = fetch_over_network(&stufe, creds);
+        if sp.is_err(){
+            return Err(sp.unwrap_err().deref().description().to_string());
+        }
+        let sp = sp.unwrap();
+
+        cache_value(connection, stufe, &sp);
+
+        return Ok(sp);
+
+    }
+
+    fn fetch_over_network(stufe: &String, creds: String) -> Result<String, Box<Error>>{
+        let resp: String = reqwest::get(&format!("http://FETCH_BACKEND:8001/stundenplan/{}/{}", stufe, creds))?.text()?;
+        return Ok(resp);
+    }
+
+    fn cache_value(connection: &redis::Connection, stufe: String, value: &String){
+        let res: RedisResult<bool> = connection.set(format!("stundenplan_{}", stufe), value);
+        println!("res: {:?}", res);
+    }
+
+
 
 }

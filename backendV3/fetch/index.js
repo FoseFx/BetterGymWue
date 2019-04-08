@@ -8,6 +8,8 @@ const BASE_URL = "https://gymnasium-wuerselen.de/untis/";
 http.createServer(async (req, res) => {
     if (/^\/auth\//.test(req.url)){
         auth(req, res);
+    } else if (/^\/stundenplan\//.test(req.url)){
+        stundenplan(req, res);
     }
     else res.end("Ok");
 
@@ -58,6 +60,12 @@ async function auth(req, res) {
     }
 
 
+}
+
+async function stundenplan(req, res){
+    const url = req.url;
+    console.log("stundenplan", url);
+    res.end("stundenplan");
 }
 
 

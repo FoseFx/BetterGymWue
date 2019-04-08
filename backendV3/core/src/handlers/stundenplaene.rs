@@ -17,7 +17,7 @@ pub fn get_stundenplan(connection: RedisConnection,
     // sanitize
     //
     let re = regex::Regex::new(r"[^\w\d]").unwrap();
-    let stufe = truncate(re.replace_all(stufe.as_str(), "").deref(), 10).to_string();
+    let stufe = truncate(re.replace_all(stufe.as_str(), "").deref(), 10).to_string().to_uppercase();
     println!("stufe: '{}'", stufe);
 
 
@@ -29,7 +29,7 @@ pub fn get_stundenplan(connection: RedisConnection,
     // its not
 
     // is the stufe bs or valid?
-    let is_member = fetch_data::stufen::is_stufe(connection, stufe, schueler_creds);
+    let is_member = fetch_data::stufen::is_stufe(connection, &stufe, &schueler_creds);
 
     if is_member.is_err() {
         return Custom(Status::InternalServerError, is_member.unwrap_err().to_string());
@@ -41,7 +41,8 @@ pub fn get_stundenplan(connection: RedisConnection,
     }
     // stufe is valid
 
-    // todo fetch and cache
+    let sp_res = fetch_data::stundenplan::fetch(connection, stufe, schueler_creds);
+    println!("sp res: {:?}", sp_res);
 
     return Custom(Status::NotImplemented, "NIY".to_string());
 }
