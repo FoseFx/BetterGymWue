@@ -62,9 +62,54 @@ async function auth(req, res) {
 
 }
 
+// GET /stundenplan/{A-Woche}/{B-Woche}/{NUMBER_OF_STUFE_WITH_0s}/{SCHUELER_CREDS}
 async function stundenplan(req, res){
     const url = req.url;
-    console.log("stundenplan", url);
+
+    const regex_res = url.match(/^\/stundenplan\/(\d{2})\/(\d{2})\/(\d{5})\/(.+)$/);
+    
+    if (regex_res === null){
+        return res.end("Invalid request " + url);
+    }
+
+    const wochea = regex_res[1];
+    const wocheb = regex_res[2];
+    const stufe = regex_res[3];
+    const credentials = regex_res[4];
+
+    const requesturlA = BASE_URL + `Schueler-Stundenplan/${wochea}/c/c${stufe}.htm`;
+    const requesturlB = BASE_URL + `Schueler-Stundenplan/${wocheb}/c/c${stufe}.htm`;
+
+    console.log(requesturl, credentials);
+    
+    let resp = await fetch(requesturlA, {
+        headers: {
+            "Authorization": "Basic " + credentials,
+            "User-Agent": "BGW Bot, mehr Infos auf bgw.fosefx.com/about"
+        }
+    });
+
+    let respB = await fetch(requesturlB, {
+        headers: {
+            "Authorization": "Basic " + credentials,
+            "User-Agent": "BGW Bot, mehr Infos auf bgw.fosefx.com/about"
+        }
+    });
+
+    let textA = await resp.textConverted();
+    let textB = await respB.textConverted();
+
+    // todo actual conversion
+    
+
+    const ok = resp.ok;
+    if (!ok){
+        res.statusCode = 401;
+        res.end();
+    } else {
+        res.end("NIY");
+    }
+
     res.end("stundenplan");
 }
 
