@@ -1,3 +1,10 @@
+//
+// This file is ulgy, dont judge me for it
+// it contains 3 year old code, that I just 
+// copied over multiple times and some glue code
+// it works, thats the important piece
+//
+
 const jsdom = require("jsdom");
 const {JSDOM} = jsdom;
 
