@@ -41,8 +41,14 @@ pub fn get_stundenplan(connection: RedisConnection,
     }
     // stufe is valid
 
-    let sp_res = fetch_data::stundenplan::fetch(connection, stufe, schueler_creds);
+    let stufe_id = format!("00021"); // todo stufe_id
+
+    let sp_res = fetch_data::stundenplan::fetch(connection, stufe, stufe_id, schueler_creds);
     println!("sp res: {:?}", sp_res);
 
-    return Custom(Status::NotImplemented, "NIY".to_string());
+    if sp_res.is_ok() {
+        return Custom(Status::Ok, sp_res.unwrap());
+    }
+
+    return Custom(Status::BadRequest, sp_res.unwrap_err());
 }

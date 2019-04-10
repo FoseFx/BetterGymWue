@@ -188,9 +188,12 @@ pub mod stundenplan {
     }
 
     /// returns JSON or error message
-    pub fn fetch(connection: &redis::Connection, stufe: String, creds: String) -> Result<String, String> {
+    pub fn fetch(connection: &redis::Connection, stufe: String, stufe_id: String, creds: String) -> Result<String, String> {
 
-        let sp = fetch_over_network(&stufe, creds);
+        let woche1 = format!("08"); // todo
+        let woche2 = format!("09"); // todo
+
+        let sp = fetch_over_network(&stufe, &stufe_id, &woche1, &woche2, creds);
         if sp.is_err(){
             return Err(sp.unwrap_err().deref().description().to_string());
         }
@@ -202,8 +205,15 @@ pub mod stundenplan {
 
     }
 
-    fn fetch_over_network(stufe: &String, creds: String) -> Result<String, Box<Error>>{
-        let resp: String = reqwest::get(&format!("http://FETCH_BACKEND:8001/stundenplan/{}/{}", stufe, creds))?.text()?;
+    fn fetch_over_network(stufe: &String,
+                          stufe_id: &String,
+                          woche1: &String,
+                          woche2: &String,
+                          creds: String) -> Result<String, Box<Error>> {
+        let resp: String = reqwest::get(
+            &format!("http://FETCH_BACKEND:8001/stundenplan/{}/{}/{}/{}/{}", woche1, woche2, stufe_id, stufe, creds)
+            )?.text()?;
+
         return Ok(resp);
     }
 
