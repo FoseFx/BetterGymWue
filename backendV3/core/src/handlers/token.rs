@@ -98,9 +98,9 @@ fn get_session_token (
         return status::Custom(Status::Unauthorized, "401");
     }
 
-    let is_valid_res= sessions::is_valid(&mode.to_string(), creds);
-
+    let is_valid_res= sessions::is_valid(&connection, &mode.to_string(), creds);
     if is_valid_res.is_err() {
+        println!("Err: {}", is_valid_res.unwrap_err());
         return status::Custom(Status::InternalServerError, "Failed fetching data");
     }
 

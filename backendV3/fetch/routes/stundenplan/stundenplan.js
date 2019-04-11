@@ -8,6 +8,7 @@ async function stundenplan(req, res){
     const regex_res = url.match(/^\/stundenplan\/(\d{2})\/(\d{2})\/(\d{5})\/(.+)\/(.+)$/);
     
     if (regex_res === null){
+        res.statusCode = 400;
         return res.end("Invalid request " + url);
     }
 

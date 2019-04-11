@@ -4,6 +4,7 @@ mod cache;
 mod fetch_data;
 mod sessions;
 mod handlers;
+mod urls;
 
 mod guards;
 #[macro_use] extern crate rocket;

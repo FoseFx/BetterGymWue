@@ -3,6 +3,8 @@ extern crate reqwest;
 
 use redis::RedisResult;
 use std::error::Error;
+use regex::Regex;
+use crate::redis::Commands;
 
 static CACHE_TIME: u32 = 42 * 60 * 60;
 static SESSION_REDIS_KEY: &str = "verified_logins";
@@ -83,10 +85,61 @@ pub fn add_to_cache(connection: &redis::Connection, mode: &String, creds: &Strin
 
 }
 
-pub fn is_valid(mode: &String, creds: &String) -> Result<bool, Box<Error>> {
+pub fn is_valid(conn: &redis::Connection, mode: &String, creds: &String) -> Result<bool, String> {
 
-    let resp: String = reqwest::get(&format!("http://FETCH_BACKEND:8001/auth/{}/{}", mode, creds))?.text()?;
-    println!("AUTH_RESP: {}, {}", resp, resp == "verified");
-    return Ok(resp == "verified");
+    let url = match &mode[..] {
+        "schueler" => crate::urls::schueler::auth_url(),
+        _ => crate::urls::lehrer::auth_url()
+    };
 
+    let http = reqwest::Client::new();
+
+    let result = http
+        .get(&url[..])
+        .header("Authorization", format!("Basic {}", creds))
+        .send();
+
+    if result.is_err() {
+        let err = result.unwrap_err();
+        return Err(
+            format!("Server Verbindung fehlgeschlagen: {:?} {}", err.status(), err.description())
+        );
+    }
+    let mut result = result.unwrap();
+
+    if !result.status().is_success() {
+        println!("Server Verbindung fehlgeschlagen: {}", result.status().as_u16());
+        return Ok(false);
+    }
+
+    let text = result.text();
+
+    if text.is_err(){
+        return Err(
+            format!("Der Server hat mit keiner Verwertbaren Antwort reagiert")
+        );
+    }
+
+    let text = text.unwrap().replace("\n", "").replace("\t", "");
+    let text = Regex::new(r" +").unwrap().replace_all(&text, " ");
+
+    let regex = Regex::new("<option value=\"(\\d{2})\">\\d+\\.\\d+.\\d+</option><option value=\"(\\d{2})\">\\d+\\.\\d+.\\d+</option> </select>").unwrap();
+
+    let captures = regex.captures(&text[..]).unwrap();
+
+    let wochen =
+        format!(
+            "{},{}",
+            captures.get(1).unwrap().as_str(),
+            captures.get(2).unwrap().as_str()
+        );
+
+
+    let redis_res: RedisResult<bool> = conn.set("wochen", wochen);
+    if redis_res.is_err(){
+        return Err(redis_res.unwrap_err().to_string());
+    }
+
+    println!("redisres: {:?}", redis_res);
+    return Ok(true);
 }

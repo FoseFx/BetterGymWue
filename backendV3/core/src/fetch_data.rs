@@ -172,6 +172,7 @@ pub mod stundenplan {
     use crate::redis::Commands;
     use std::error::Error;
     use std::ops::Deref;
+    use std::vec::Vec;
 
     pub fn get_cache(connection: &redis::Connection, stufe: &String) -> Result<String, bool>{
 
@@ -184,24 +185,6 @@ pub mod stundenplan {
         } else {
             return Ok(res.unwrap());
         }
-
-    }
-
-    /// returns JSON or error message
-    pub fn fetch(connection: &redis::Connection, stufe: String, stufe_id: String, creds: String) -> Result<String, String> {
-
-        let woche1 = format!("08"); // todo
-        let woche2 = format!("09"); // todo
-
-        let sp = fetch_over_network(&stufe, &stufe_id, &woche1, &woche2, creds);
-        if sp.is_err(){
-            return Err(sp.unwrap_err().deref().description().to_string());
-        }
-        let sp = sp.unwrap();
-
-        cache_value(connection, stufe, &sp);
-
-        return Ok(sp);
 
     }
 
@@ -222,6 +205,55 @@ pub mod stundenplan {
         println!("res: {:?}", res);
     }
 
+    /// returns JSON or error message
+    pub fn fetch(connection: &redis::Connection, stufe: String, stufe_id: String, creds: String) -> Result<String, String> {
 
+        let wochen= get_wochen(connection, &creds);
+        if wochen.is_err(){
+            return Err(format!("Stundenplaene konnten nicht heruntergeladen werden"));
+        }
+        let wochen = wochen.unwrap();
+
+        let sp = fetch_over_network(&stufe, &stufe_id, &wochen[0], &wochen[1], creds);
+        if sp.is_err(){
+            return Err(sp.unwrap_err().deref().description().to_string());
+        }
+        let sp = sp.unwrap();
+
+        cache_value(connection, stufe, &sp);
+
+        return Ok(sp);
+
+    }
+
+    fn get_wochen(connection: &redis::Connection, creds: &String) -> Result<Vec<String>, String> {
+
+        let cache: RedisResult<String> = connection.get("wochen");
+        if cache.is_ok(){
+            let cs: String = cache.unwrap();
+            let mut cs = cs.split(",");
+            let cs1 = cs.next().unwrap().to_string();
+            let cs2 = cs.next().unwrap().to_string();
+            return Ok(vec![cs1, cs2]);
+        }
+
+        let res = crate::sessions::is_valid(connection, &format!("schueler"), creds);
+
+        if res.is_err(){
+            return Err(res.unwrap_err());
+        }
+
+
+        let cache: RedisResult<String> = connection.get("wochen");
+        if cache.is_ok(){
+            let cs: String = cache.unwrap();
+            let mut cs = cs.split(",");
+            let cs1 = cs.next().unwrap().to_string();
+            let cs2 = cs.next().unwrap().to_string();
+            return Ok(vec![cs1, cs2]);
+        }
+
+        return Err(format!("Error fetching cache")); // should never happen
+    }
 
 }
