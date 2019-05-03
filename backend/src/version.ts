@@ -1,2 +1,2 @@
-export const VERSION = "1.0.2 Stable";
-export const UPDATE_NEWS = ["Emergency Patch reverted: Backend geändert"];
+export const VERSION = "1.0.3 Stable";
+export const UPDATE_NEWS = ["Emergency Patch: Fix bei Problemen mit neuem Stundenplan"];

@@ -1,7 +1,7 @@
 import {VertretungsReihe} from "../../../../../Classes";
 
 export function addVDtoDisplayArray(VDMe, displayArray, that){
-	const order = ["k", "e (v)", "e", "v", "r"];
+	const order = ["k", "eva", "e (v)", "e", "v", "r"];
 	if(VDMe.length === 0) return;
   let filteredList: VertretungsReihe[] = VDMe.filter((me: VertretungsReihe) => // filter alle nicht meine klausuren und reduziert auf !nd
     (

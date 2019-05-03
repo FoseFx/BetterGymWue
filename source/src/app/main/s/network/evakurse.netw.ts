@@ -1,8 +1,8 @@
 import {KurseType, TempTTs} from "../../../Classes";
 import {TimeTableSlot} from "../../../Classes";
 
-export function evaKurse(html: string, stufe:string, tempTTs: TempTTs, kurse: KurseType):void {
-  const hash = md5(html);
+export function evaKurse(html: string, original: string, stufe:string, tempTTs: TempTTs, kurse: KurseType):void {
+  const hash = md5(original);
   const parser = new DOMParser();
   let doc = parser.parseFromString(html, "text/html");
   let woche: 0|1 = getWoche(doc);
@@ -51,6 +51,8 @@ export function evaKurse(html: string, stufe:string, tempTTs: TempTTs, kurse: Ku
         stunde.push(handleKurse(info, td, kurse, woche, doppelStunde, tag, isUsed));
       }
     }); // td
+    console.log("stunde",stunde);
+    
     if(stunde.length !== 0)
       data.push(stunde);
 
@@ -210,6 +212,9 @@ export function isDoppelStunde(td: Element) {
 
 export function fitIn(data, tag): {tag: number, isUsed: boolean} {
   let isUsed = false;
+  if (data.length === 0) {
+    return {tag: tag, isUsed: isUsed};
+  }
   let indexOfFirstSmallSlotBefore = data[data.length-1].findIndex((e: TimeTableSlot)=> !e.isBig && !e.isUsed);
   tag = indexOfFirstSmallSlotBefore === -1? tag : indexOfFirstSmallSlotBefore + 1;
   // +1 to counter following -1, which is needed because of the exclusion

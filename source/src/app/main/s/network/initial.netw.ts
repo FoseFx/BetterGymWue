@@ -58,12 +58,14 @@ export function getkurse(stufe: string, stufeid: number, wochen: string[], baseS
     if (res === null) reject('Failure: Connection could not be made');
     res.subscribe(
       (r:string) => {
-        evaKurse(r, stufe, tempTTs, _kurse);
+        const newr = r.replace(/\?/g, '').replace(/color="#FF0000"/g, '');        
+        evaKurse(newr, r, stufe, tempTTs, _kurse);
         //woche 2
         const res2 = baseService.makeConnections(CONFIG.baseKursURL + wochen[1] + '/c/c' + generate5(stufeid) + '.htm');
         res2.subscribe(
           (r) => {
-            evaKurse(r, stufe, tempTTs, _kurse);
+            const newr = r.replace(/\?/g, '').replace(/color="#FF0000"/g, '');        
+            evaKurse(newr, r, stufe, tempTTs, _kurse);
             let k = [];
             _kurse[0].kurse.forEach((val) => {
               _kurse[1].kurse.forEach((val2) => {
