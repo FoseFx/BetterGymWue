@@ -12,7 +12,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
   constructor(public baseService: BaseService, private router: Router, private route: ActivatedRoute) { }
 
-  @ViewChild('loginForm') form: NgForm;
+  @ViewChild('loginForm', { static: false }) form: NgForm;
   fine = true;
   show = false;
   falseLehrerLogin = false;

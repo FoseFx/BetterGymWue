@@ -21,8 +21,8 @@ export class AppComponent implements OnInit{
               private dialog: MatDialog){};
 
 
-  @ViewChild('hamNav') hamnav;
-  @ViewChild('cntnd') content;
+  @ViewChild('hamNav', { static: true }) hamnav;
+  @ViewChild('cntnd', { static: true }) content;
 
   done = true;
   updateAv = false;

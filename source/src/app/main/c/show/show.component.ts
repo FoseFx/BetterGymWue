@@ -15,7 +15,7 @@ export class ShowComponent implements OnInit, AfterViewInit {
     date: Date
   }[] = [];
 
-  @ViewChild(MatTabGroup) group;
+  @ViewChild(MatTabGroup, { static: false }) group;
   @ViewChildren(MatTab) tabs;
   tab_num = 0;
   SWIPE_ACTION = {

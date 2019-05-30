@@ -12,7 +12,7 @@ import {CONFIG} from "../../conf";
 })
 export class HelpComponent implements OnInit {
 
-  @ViewChild('supportForm') form: NgForm;
+  @ViewChild('supportForm', { static: true }) form: NgForm;
 
   constructor(private http: HttpClient, private router: Router, private alert: AlertService) { }
 

@@ -19,14 +19,14 @@ const routes: Routes =  [
     canActivate: [GuardService],
     children: [
       {path: '', component: ShowComponent},
-      {path: 'non-kurse', loadChildren: "app/verifynotkurse/verifynotkurse.module#VerifynotkurseModule"}
+      {path: 'non-kurse', loadChildren: () => import('app/verifynotkurse/verifynotkurse.module').then(m => m.VerifynotkurseModule)}
     ]
   },
   {path: 'cloud', component: CloudComponent, canActivate: [GuardService]},
   {path: 'about', component: AboutComponent},
   {path: 'stundenplan', component: StundenplanComponent, canActivate: [GuardService]},
-  {path: 'help', loadChildren: "app/help/help.module#HelpModule"},
-  {path: 'homework', loadChildren: "app/homework/homework.module#HomeworkModule"},
+  {path: 'help', loadChildren: () => import('app/help/help.module').then(m => m.HelpModule)},
+  {path: 'homework', loadChildren: () => import('app/homework/homework.module').then(m => m.HomeworkModule)},
   {path: '**', component: ErrorComponent}
 ];
 
