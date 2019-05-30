@@ -15,13 +15,19 @@ import { KurseComponent } from './main/c/select/kurse/kurse.component';
 import { ShowComponent } from './main/c/show/show.component';
 import { TtcontainerComponent } from './main/c/show/ttcontainer/ttcontainer.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {
-  MatButtonModule, MatCardModule, MatDialogModule,
-  MatFormFieldModule, MatIconModule, MatInputModule,
-  MatListModule,
-  MatSelectModule,
-  MatSidenavModule, MatSlideToggleModule, MatSnackBarModule, MatTabsModule, MatToolbarModule
-} from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { CloudComponent } from './main/c/cloud/cloud.component';
 import { AboutComponent } from './main/c/about/about.component';
 import { StundenplanComponent } from './main/c/stundenplan/stundenplan.component';

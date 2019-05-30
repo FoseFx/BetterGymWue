@@ -26,7 +26,7 @@ const routes: Routes =  [
   {path: 'about', component: AboutComponent},
   {path: 'stundenplan', component: StundenplanComponent, canActivate: [GuardService]},
   {path: 'help', loadChildren: () => import('app/help/help.module').then(m => m.HelpModule)},
-  {path: 'homework', loadChildren: () => import('app/homework/homework.module').then(m => m.HomeworkModule)},
+  // {path: 'homework', loadChildren: () => import('app/homework/homework.module').then(m => m.HomeworkModule)},
   {path: '**', component: ErrorComponent}
 ];
 

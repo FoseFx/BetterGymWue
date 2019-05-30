@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, OnInit, ViewChild, ViewChildren} from '@angular/core';
 import {BaseService} from '../../s/base/base.service';
 import {AlertService} from '../../s/alert.service';
-import {MatTab, MatTabGroup} from '@angular/material';
+import { MatTab, MatTabGroup } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-show',

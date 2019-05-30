@@ -5,7 +5,7 @@ import {RefreshttService} from '../../s/refreshtt.service';
 import localeDe from "@angular/common/locales/de"
 import {registerLocaleData} from "@angular/common";
 import {MessageService} from "../../s/message.service";
-import {MatDialog} from "@angular/material";
+import { MatDialog } from "@angular/material/dialog";
 import {SureDialogComponent} from "../../sure/sure.dialog.component";
 registerLocaleData(localeDe);
 

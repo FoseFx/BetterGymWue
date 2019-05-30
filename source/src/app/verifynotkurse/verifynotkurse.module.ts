@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { VerifynotkurseComponent } from './verifynotkurse.component';
-import {MatButtonModule, MatCardModule} from "@angular/material";
+import { MatButtonModule } from "@angular/material/button";
+import { MatCardModule } from "@angular/material/card";
 import {VerifynotkurseRoutingModule} from "./verifynotkurse-routing.module";
 
 @NgModule({
