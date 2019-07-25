@@ -11,4 +11,4 @@ EXPOSE 59091
 
 RUN npm run build
 
-CMD [ "npm", "run", "start-forever" ]
+CMD [ "npm", "run", "start" ]

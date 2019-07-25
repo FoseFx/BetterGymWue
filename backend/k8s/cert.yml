@@ -1,0 +1,16 @@
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Certificate
+metadata:
+  name: proxy-fosefx-com-cert
+  namespace: bgw
+spec:
+  secretName:  proxy-fosefx-com-tls
+  duration: 2160h # 90d
+  renewBefore: 360h # 15d
+  commonName: proxy.fosefx.com
+  dnsNames:
+  - proxy.fosefx.com
+  issuerRef:
+    name: letsencrypt-staging
+    # The default value is Issuer (i.e. a locally namespaced Issuer)
+    kind: ClusterIssuer
