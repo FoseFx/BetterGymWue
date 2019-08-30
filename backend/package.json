@@ -16,10 +16,9 @@
   "author": "",
   "license": "None",
   "dependencies": {
+    "body-parser": "^1.19.0",
     "encoding": "^0.1.12",
-    "event-stream": "^3.3.4",
     "express": "^4.16.4",
-    "node-cache": "^4.2.0",
     "node-fetch": "^2.2.0"
   },
   "devDependencies": {

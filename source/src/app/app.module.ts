@@ -7,11 +7,8 @@ import { AgbComponent } from './main/c/agb/agb.component';
 import { LoginComponent } from './main/c/login/login.component';
 import {GuardService} from './main/s/guard.service';
 import {HttpClientModule} from '@angular/common/http';
-import { SelectComponent } from './main/c/select/select.component';
-import { StufeComponent } from './main/c/select/stufe/stufe.component';
 import {NetwService} from './main/s/network/netw.service';
 import {AlertService} from './main/s/alert.service';
-import { KurseComponent } from './main/c/select/kurse/kurse.component';
 import { ShowComponent } from './main/c/show/show.component';
 import { TtcontainerComponent } from './main/c/show/ttcontainer/ttcontainer.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -35,7 +32,6 @@ import { ErrorComponent } from './main/c/error/error.component';
 import {RefreshttService} from './main/s/refreshtt.service';
 import {APP_BASE_HREF} from "@angular/common";
 import {BaseService} from "./main/s/base/base.service";
-import { GetFromKurseModalComponent } from './main/c/select/kurse/get-from-kurse-modal.component';
 import { AppRoutingModule } from './app-routing.module';
 import { SureDialogComponent } from './main/sure/sure.dialog.component';
 import {VerifynotkurseModule} from "./verifynotkurse/verifynotkurse.module";
@@ -61,16 +57,12 @@ export class MyHammerConfig extends HammerGestureConfig  {
     AppComponent,
     AgbComponent,
     LoginComponent,
-    SelectComponent,
-    StufeComponent,
-    KurseComponent,
     ShowComponent,
     TtcontainerComponent,
     CloudComponent,
     AboutComponent,
     StundenplanComponent,
     ErrorComponent,
-    GetFromKurseModalComponent,
     SureDialogComponent,
     WeekspComponent
   ],
@@ -110,7 +102,7 @@ export class MyHammerConfig extends HammerGestureConfig  {
   ],
 
   bootstrap: [AppComponent],
-  entryComponents: [GetFromKurseModalComponent, SureDialogComponent]
+  entryComponents: [SureDialogComponent]
 })
 export class AppModule { }
 

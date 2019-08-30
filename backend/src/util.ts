@@ -1,21 +1,15 @@
-import fetch from "node-fetch"
-import {FetchResult} from "./types/FetchResult";
-
-export async function fetchWithCreds(url: string, credentials: string): Promise<FetchResult> {
-    try {
-        if(!/^http:\/\/(www\.)?gymnasium-wuerselen\.de\/untis\/(Schueler|Lehrer).*$/g.test(url)) return {ok: false};
-        const res = await fetch(url, {
-            headers: {
-                "Authorization": credentials,
-                "User-Agent": "(Bitte nicht bannen) BGW Bot, mehr Infos auf bgw.fosefx.com/about"
-            }
-        });
-        const ok = res.ok;
-        if (!ok) return {ok: ok};
-        let txt = await res.textConverted();
-        return {ok: ok, content: txt};
-    }catch (e) {
-        console.error(e);
-        return {ok: false};
+export function extractSessionCookies(cookieStr: string): {session: string, sig: string} {
+    const cookies = cookieStr.split(","); // ["session=dfgh; path=/; httponly", "session.sig=hjkl; path=/"]
+    const retObj: any = { session: null, sig: null };
+    for (const cookie of cookies) {
+        const split = cookie.split(";"); // ["session=dfgh", "path=/", "httponly"]
+        const nameValue = split[0]; // "session=dfgh"
+        const nameValueSplit = nameValue.split("="); // ["session", "dfgh"]
+        if (nameValueSplit[0].trim() === "session") {
+            retObj.session = nameValueSplit[1].trim();
+        } else if (nameValueSplit[0].trim() === "session.sig") {
+            retObj.sig = nameValueSplit[1].trim();
+        }
     }
+    return retObj;
 }

@@ -3,7 +3,6 @@ import {RouterModule, Routes} from "@angular/router";
 import {LoginComponent} from "./main/c/login/login.component";
 import {GuardService} from "./main/s/guard.service";
 import {AgbComponent} from "./main/c/agb/agb.component";
-import {SelectComponent} from "./main/c/select/select.component";
 import {ShowComponent} from "./main/c/show/show.component";
 import {CloudComponent} from "./main/c/cloud/cloud.component";
 import {AboutComponent} from "./main/c/about/about.component";
@@ -13,7 +12,6 @@ import {ErrorComponent} from "./main/c/error/error.component";
 const routes: Routes =  [
   {path: '', component: LoginComponent, canActivate: [GuardService] },
   {path: 'agb', component: AgbComponent },
-  {path: 'select', component: SelectComponent, canActivate: [GuardService]},
   {
     path: 'show',
     canActivate: [GuardService],

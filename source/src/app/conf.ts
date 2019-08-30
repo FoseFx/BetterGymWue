@@ -1,6 +1,7 @@
 const domain = "https://proxy.fosefx.com"; // "https://better-gym-wue.herokuapp.com";
 const baseUrl = domain + '/v2/http://gymnasium-wuerselen.de/untis/';
 const dd = "https://bettergymwue.firebaseio.com/";
+const v3Url = "http://localhost:59091/v3";
 export const CONFIG = {
   baseURL: baseUrl,
   credentialsCheckUrl: baseUrl + 'Schueler-Stundenplan/frames/navbar.htm', // also get Stufen
@@ -17,7 +18,8 @@ export const CONFIG = {
   resetMsg: dd + "resetMsg/message.json",
   message: dd + "header.json",
   hashURL: domain + "/v2/hash",
-	versionURL: domain + "/v2/version"
+	versionURL: domain + "/v2/version",
+	loginUrl: v3Url + "/login"
 };
 
 export const APP_VERSION = "1.0.4 Stable";

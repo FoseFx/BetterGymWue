@@ -5,7 +5,8 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {APP_VERSION, CONFIG} from '../../../conf';
 import {AlertService} from "../alert.service";
 import * as AppMeta from "./appMeta.base";
-import {Kurs, TT} from "../../../Classes";
+import {Kurs, LoginResponse, TT} from "../../../Classes";
+import {map} from "rxjs/operators";
 
 
 @Injectable()
@@ -14,7 +15,8 @@ export class BaseService {
   public VERSION = APP_VERSION;
   public acceptedAGB: boolean;
   allowedBrowser: boolean;
-  public credentials: {u: string, p: string, l?: {u: string, p: string}};
+	public credentials: {u: string, p: string};
+	public session: LoginResponse;
   public myKurse: Kurs[];
   public myStufe: string;
   public myStufeID;
@@ -50,7 +52,8 @@ export class BaseService {
     }
     this.dead = (!!localStorage.dead) ? (localStorage.dead === 'true') : false;
     this.acceptedAGB = (!!localStorage.acceptedAGB4) ? (localStorage.acceptedAGB4 === 'true') : false;
-    this.credentials = (!!localStorage.credentials) ? JSON.parse(localStorage.credentials) : undefined;
+		this.credentials = (!!localStorage.credentials) ? JSON.parse(localStorage.credentials) : undefined;
+		this.session = (!!localStorage.session) ? JSON.parse(localStorage.session) : undefined;
     this.myKurse = (!!localStorage.myKurse) ? JSON.parse(localStorage.myKurse) : undefined;
     this.myStufe = (!!localStorage.myStufe) ? localStorage.myStufe : undefined;
     this.myStufeID = (!!localStorage.myStufeID) ? localStorage.myStufeID : undefined;
@@ -78,19 +81,6 @@ export class BaseService {
     return this._preLehrer;
   }
 
-  set MyKurse(val){
-    this.myKurse = val;
-    localStorage.myKurse = JSON.stringify(val);
-  }
-
-  set MyStufe(val: string[]){
-    this.myStufe = val[0];
-    this.myStufeID = val[1];
-    localStorage.myStufe = val[0];
-    localStorage.myStufeID = val[1];
-  }
-
-
   setTT(val: {tt: { days: any[][]}[], hash: string}){
 
     this.TT = val.tt;
@@ -117,38 +107,22 @@ export class BaseService {
     this.router.navigate(['/'], {queryParams: {ua: ''}});
   }
 
-  checkCredentials(u: string, p: string, lehrer?:boolean) {
-    lehrer = lehrer || false;
-    return new Promise((resolve) => {
-      this.httpClient.get((lehrer)? CONFIG.credentialsCheckLehrerUrl : CONFIG.credentialsCheckUrl, {
-        headers: new HttpHeaders({'Authorization': 'Basic ' + btoa(u + ':' + p)}),
-        responseType: 'text'
-      }).subscribe(
-        (value) => {
-          if (value && !lehrer) {
-            localStorage.credentials = JSON.stringify({u: u, p: p});
-            this.credentials = {u: u, p: p};
-            resolve(true);
-          }else if(value && lehrer){
-            let obj = JSON.parse(localStorage.credentials);
-            obj.l = {u: u, p: p};
-            console.log(obj);
-            localStorage.credentials = JSON.stringify(obj);
-            this.credentials = obj;
-            resolve(true);
-          }
-        },
-        (err) => {
-          try{ this.alertService.alert(JSON.parse(err.error).error, 1) } catch (e) {}
-          if(err.statusText === "Unknown Error") this.alertService.alert("Netzwerkfehler", 1);
-          if(!lehrer){
-            delete localStorage.credentials;
-            this.credentials = undefined;
-          }
-          resolve(false);
-        }
-      );
-    });
+  checkCredentials(e: string, p: string) {
+    return this.httpClient.post(CONFIG.loginUrl, {
+    	email: e,
+			password: p
+		}).pipe(
+			map((d: LoginResponse) => {
+				if (d.session === null || d.sig === null) {
+					return false;
+				}
+				this.credentials = {u: e, p};
+				localStorage.setItem("credentials", JSON.stringify(this.credentials));
+				this.session = d;
+				localStorage.setItem("session", JSON.stringify(this.session));
+				return true;
+			})
+		).toPromise();
   }
   makeConnections(url: string, lehrer:boolean = false, cache: boolean = true):Observable<any>{
     let cred = this.credentials;
@@ -159,7 +133,7 @@ export class BaseService {
     let p = new Promise((resolve, reject) => {
       fetch(url + ext, {
         headers: {
-          "Authorization": "Basic " + ((!lehrer) ? btoa(cred.u + ':' + cred.p) : btoa(cred.l.u+ ':' +cred.l.p))
+          "Authorization": "Basic " + btoa(cred.u + ':' + cred.p)
         },
         method: "get",
         redirect: "follow",

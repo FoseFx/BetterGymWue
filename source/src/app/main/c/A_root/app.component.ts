@@ -80,12 +80,6 @@ export class AppComponent implements OnInit{
     });
   }
 
-  get credentialsLiegen(){
-    if (!this.baseService.credentials) return false;
-    return !this.baseService.credentials.l;
-
-  }
-
 }
 function rl(){
   setTimeout(() => {

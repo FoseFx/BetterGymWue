@@ -3,19 +3,14 @@
     <mat-card-header>
       <div mat-card-avatar><mat-icon style="font-size: 3em; color: #444">account_circle</mat-icon></div>
       <mat-card-title style="text-align: left; margin-left: 15px!important;">Login</mat-card-title>
-      <mat-card-subtitle style="margin-left: 15px!important;">(GymWue Daten)</mat-card-subtitle>
+      <mat-card-subtitle style="margin-left: 15px!important;">(Schulmanager Daten)</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
 
       <form #loginForm="ngForm" (submit)="formSubmitted()">
-        <p style="width: 20rem" class="text-danger" *ngIf="select.value == 'lehrer'">Der Lehrer Zugang erweitert den Schüler Zugang und ist nicht eigenständig!</p>
-        <p style="width: 20rem" class="text-danger" *ngIf="select.value == 'lehrer' && falseLehrerLogin">Kein Schüler Zugang gesetzt!</p>
         <mat-form-field>
-          <mat-select placeholder="Nutzer" ngModel name="nutzer" required #select>
-            <mat-option value="schueler" [disabled]="!!baseService.credentials">schueler</mat-option>
-            <mat-option value="lehrer" [disabled]="!baseService.credentials">lehrer</mat-option>
-          </mat-select>
-        </mat-form-field><br>
+					<input matInput email type="email" autocomplete="email" placeholder="E-Mail" style="box-shadow: none" ngModel name="nutzer" required> <!--style="width: 20rem"-->
+				</mat-form-field><br>
 
         <mat-form-field
                         floatLabel="auto">
