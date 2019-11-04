@@ -1,12 +1,10 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {BaseService} from '../../s/base/base.service';
 import {NetwService} from '../../s/network/netw.service';
-import {RefreshttService} from '../../s/refreshtt.service';
 import localeDe from "@angular/common/locales/de"
 import {registerLocaleData} from "@angular/common";
 import {MessageService} from "../../s/message.service";
 import { MatDialog } from "@angular/material/dialog";
-import {SureDialogComponent} from "../../sure/sure.dialog.component";
 registerLocaleData(localeDe);
 
 @Component({
@@ -16,9 +14,7 @@ registerLocaleData(localeDe);
 })
 export class AppComponent implements OnInit{
 
-  constructor(public baseService: BaseService, private netwService: NetwService,
-              private refresh: RefreshttService, public message: MessageService,
-              private dialog: MatDialog){};
+  constructor(public baseService: BaseService, public message: MessageService){};
 
 
   @ViewChild('hamNav', { static: true }) hamnav;
@@ -40,13 +36,6 @@ export class AppComponent implements OnInit{
 
 
   ngOnInit(){
-  	if(this.baseService.myKurse)
-  		this.refresh.needsRefresh().then((r) => this.needsRefresh = r);
-    this.baseService.needsUpdate().then(() => {this.updateAv = true;}).catch();
-    if (this.baseService.justResetted) {
-      this.reset.header = this.baseService.getResetHeader();
-      this.reset.message = this.baseService.getResetMessage();
-    }
   }
 
   swipe(type, e){
@@ -58,37 +47,10 @@ export class AppComponent implements OnInit{
     }
   }
 
-  removeKurse(){
-    this.hamnav.close();
-    const dialogRef = this.dialog.open(SureDialogComponent);
-    dialogRef.afterClosed().subscribe((v: boolean) => {
-      if(v){
-        this.refresh.removeKurse();
-        rl();
-      }
-    });
-  }
-
-  refreshTT(){
-    this.hamnav.close();
-    const dialogRef = this.dialog.open(SureDialogComponent);
-    dialogRef.afterClosed().subscribe((v: boolean) => {
-      if(v)
-        this.refresh.refreshTT().then(()=>{
-          rl()
-        });
-    });
-  }
-
   get credentialsLiegen(){
     if (!this.baseService.credentials) return false;
     return !this.baseService.credentials.l;
 
   }
 
-}
-function rl(){
-  setTimeout(() => {
-    location.reload();
-  }, 500);
 }

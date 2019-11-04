@@ -6,9 +6,10 @@
 
   <div mat-card-content>
     <hr>
-    <button mat-raised-button (click)="openGetFromKurseModal()">
+    <button mat-raised-button disabled>
       Von Cloud laden
     </button>
+		<p><small class="hint red">(Not available in Demo)</small></p>
     <hr>
 
     <div class="kurs-container">
@@ -31,9 +32,10 @@
             style="margin-right: 5px; display: inline-block;">{{t.t}}</span>
     </h5>
 
-    <mat-slide-toggle style="text-align: center!important; display: block!important; margin: 0 auto!important; width: 230px" [(ngModel)]="cloud">Auf Kurs Cloud speichern</mat-slide-toggle>
+    <mat-slide-toggle style="text-align: center!important; display: block!important; margin: 0 auto!important; width: 230px" disabled [checked]="false">Auf Kurs Cloud speichern</mat-slide-toggle>
+		<p><small class="hint red">(Not available in Demo)</small></p>
 
-    <br>
+		<br>
     <button mat-raised-button color="primary"
             [ngClass]="{'disabled': !valid, 'center': true}"
             (click)="kursSubmit()">Fertig!</button><br>

@@ -26,10 +26,6 @@ export class ShowComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(){
     this.baseService.noswipe = true;
     this.tab_num = this.tabs.length;
-    if(!localStorage.firstVisit){
-      localStorage.firstVisit = "false";
-      location.reload();
-    }
   }
 
   swipe(e){

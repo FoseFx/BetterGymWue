@@ -1,24 +1,16 @@
 <mat-card id="agb" class="center">
   <h1 >Wichtige Hinweise</h1>
   <h4>Letzte Änderung: 25.03.2018</h4>
+	<h2 class="red">DEMO MODE</h2>
 	<hr/>
-  <h3>Bedingungen</h3>
-  <p>
-		Der Nutzer muss Schüler oder Angehöriger eines Schülers des Gymnasiums der Stadt Würselen sein.
-		Ausgeschlossen sind automatisierte Systeme.
-	</p>
-	<h3>Haftung</h3>
-	<p>
-		Für keine der Angezeigten Informationen wird Haftung übernommen. BGW soll zusätzlich zum normalen Vertetungs- und Stundenplan
-		verwendet werden.
-	</p>
+  <h3 class="red">Background</h3>
+	<p class="red">My school used to have a pretty bad way organizing time- and substitution plans. So in the beginning of 2017 I started working on a project that would enhance the way students could check those plans. I started with a prototype written with jQuery and then moved on to implement BGW in Angular. I think this was actually my first big Angular project. The idea was to have a minimal backend that just acted as a proxy in order to bypass CORS policies so the frontend could do all the work. I added a caching layer later on. The pwa would download the timetable once and scape the received HTML-table in order to create a JSON representation. With this information I could then determine which classes are available. In an initial setup step the user can then choose their classes in an intuitive way. The main feature of BGW is the personalized timetable for the day. BGW would also crawl the currently available substitution plans and after scraping it merges the information into the timetable represented with colors. Unfortunately (or fortunately, ... depends) my school switched to a different system (which also has it's flaws, more on that later). In total my PWA managed to gain about 100 daily users (~10% of the school). I had plans to migrate parts of it to the backend and let users use it with their Voice Assistants using Dialogflow. Due to the lack of interest I removed that branch half way there.</p>
   <hr>
   <h3>Datenschutzerklärung</h3>
   <button  mat-raised-button *ngIf="!sdse" (click)="sdse = true">Zeige Datenschutzerklärung</button>
   <div *ngIf="sdse">
 		<p>
-			Diese Bestimmung gilt für die Domains "bgw.fosefx.com", "bgw.fosefx.de" und dazugehörig "proxy.fosefx.com" NICHT
-			"fosefx.com" oder "www.fosefx.com".
+			<b>Diese Bestimmung gilt nicht für die DEMO.</b>
 		</p>
     <strong>TL;DR</strong>
 		<ul>

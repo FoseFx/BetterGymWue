@@ -3,7 +3,6 @@ import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from '
 import {Observable} from 'rxjs';
 import {BaseService} from './base/base.service';
 import {LoginComponent} from '../c/login/login.component';
-import {CloudComponent} from '../c/cloud/cloud.component';
 import {StundenplanComponent} from '../c/stundenplan/stundenplan.component';
 @Injectable()
 export class GuardService implements CanActivate {
@@ -21,7 +20,7 @@ export class GuardService implements CanActivate {
         return false;
       }
     }
-    if(/\/show$/.test(state.url) || route.component === StundenplanComponent || route.component === CloudComponent){
+    if(/\/show$/.test(state.url) || route.component === StundenplanComponent){
       if(!this.baseService.myKurse){
         this.router.navigate(['/']);
         return false;
@@ -29,7 +28,7 @@ export class GuardService implements CanActivate {
     }
 
     if(/\/show$/.test(state.url)){
-      if(!this.baseService.verifiedNonKurse){
+      if(false){
         this.router.navigate(['/show/non-kurse']);
         return false;
       }

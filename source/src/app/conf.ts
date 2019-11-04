@@ -20,4 +20,4 @@ export const CONFIG = {
 	versionURL: domain + "/v2/version"
 };
 
-export const APP_VERSION = "1.0.4 Stable";
+export const APP_VERSION = "1.0.4 DEMO";

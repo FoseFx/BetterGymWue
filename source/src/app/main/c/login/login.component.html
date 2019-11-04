@@ -22,6 +22,7 @@
           <input matInput type="password" autocomplete="new-password" placeholder="Passwort" style="box-shadow: none" ngModel name="psw" required> <!--style="width: 20rem"-->
         </mat-form-field>
         <br>
+				<p class="red">DEMO: Just use anything</p>
         <button mat-raised-button color="accent" [ngClass]="{'disabled': !loginForm.valid}">Login</button><span style="color: red" *ngIf="!fine">&nbsp;&nbsp;&nbsp;Das ist nicht richtig.</span>
       </form>
 

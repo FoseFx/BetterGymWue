@@ -13,12 +13,6 @@ export class AboutComponent implements OnInit {
   constructor(private base: BaseService) { }
 
   ngOnInit() {
-    this.base.needsUpdate()
-      .then((arr) => {
-      	this.msg = arr;
-        this.up = true;
-      })
-      .catch();
   }
 
 }

@@ -5,7 +5,6 @@ import {GuardService} from "./main/s/guard.service";
 import {AgbComponent} from "./main/c/agb/agb.component";
 import {SelectComponent} from "./main/c/select/select.component";
 import {ShowComponent} from "./main/c/show/show.component";
-import {CloudComponent} from "./main/c/cloud/cloud.component";
 import {AboutComponent} from "./main/c/about/about.component";
 import {StundenplanComponent} from "./main/c/stundenplan/stundenplan.component";
 import {ErrorComponent} from "./main/c/error/error.component";
@@ -22,10 +21,8 @@ const routes: Routes =  [
       {path: 'non-kurse', loadChildren: () => import('app/verifynotkurse/verifynotkurse.module').then(m => m.VerifynotkurseModule)}
     ]
   },
-  {path: 'cloud', component: CloudComponent, canActivate: [GuardService]},
   {path: 'about', component: AboutComponent},
   {path: 'stundenplan', component: StundenplanComponent, canActivate: [GuardService]},
-  {path: 'help', loadChildren: () => import('app/help/help.module').then(m => m.HelpModule)},
   // {path: 'homework', loadChildren: () => import('app/homework/homework.module').then(m => m.HomeworkModule)},
   {path: '**', component: ErrorComponent}
 ];

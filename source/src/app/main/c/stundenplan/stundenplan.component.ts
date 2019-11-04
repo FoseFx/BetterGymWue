@@ -21,6 +21,7 @@ export class StundenplanComponent implements OnInit {
 
   ngOnInit() {
     let tt: TT = this.baseService.TT;
+		console.log('tt',tt);
     if(!tt) {
       this.alert.alert("Kein Stundenplan gesetzt", this.alert.DANGER);
       return;

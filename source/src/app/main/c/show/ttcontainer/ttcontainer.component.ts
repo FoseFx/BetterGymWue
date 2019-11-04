@@ -6,7 +6,7 @@ import {Component, Input, AfterViewInit} from '@angular/core';
 import {BaseService} from '../../../s/base/base.service';
 import {NetwService} from '../../../s/network/netw.service';
 import {Router} from '@angular/router';
-import {DisplayArray, TimeTable, VertretungsReihe} from "../../../../Classes";
+import {DisplayArray, TimeTable, VertretungsDaten, VertretungsReihe} from "../../../../Classes";
 import {evaVertretung} from "./util/evaVertretung";
 import {addVDtoDisplayArray} from "./util/addVDtoDisplayArray";
 
@@ -31,6 +31,7 @@ export class TtcontainerComponent implements AfterViewInit{
   domParser = new DOMParser();
 
   @Input() set tt(val: TimeTable){
+		console.log('_tt', val);
     if(this.setted) return;
     this.setted = true;
     this._tt = val;
@@ -43,7 +44,7 @@ export class TtcontainerComponent implements AfterViewInit{
   }
   onlineSub: Subscription;
 
-  constructor(public baseService: BaseService, private netwService: NetwService, private router:Router) {
+  constructor(public baseService: BaseService, private router:Router) {
     this.online = observableMerge(
       observableOf(navigator.onLine),
       observableFromEvent(window, 'online').pipe(mapTo(true)),
@@ -53,6 +54,7 @@ export class TtcontainerComponent implements AfterViewInit{
 
   filterVisible(){
     let that = this;
+		console.log(this.baseService.myKurse);
     this._tt.tag.forEach(function (stunde, i) {
       if (stunde.type === "klasse")
         that.displayArray[i] = {fach: stunde.fach, lehrer: stunde.lehrer, raum: stunde.raum};
@@ -73,13 +75,10 @@ export class TtcontainerComponent implements AfterViewInit{
 
   checkVertretung(){
     this.baseService.milchglas = true;
-    this.netwService.getVertretungsDaten(this.readableDate, this._index).then((w)=>{
-      this.evaVertretung(w);
-      this.baseService.setLastVD(this._index, w, this.baseService.preLehrer);
-      this.baseService.milchglas = false;
-    }).catch(() => {
-      this.baseService.milchglas = false;
-    });
+    const w: VertretungsDaten = [[], {}];
+		this.evaVertretung(w);
+		this.baseService.setLastVD(this._index, w, this.baseService.preLehrer);
+		this.baseService.milchglas = false;
   }
 
   evaVertretung = (w) => evaVertretung(w, this);
@@ -106,13 +105,6 @@ export class TtcontainerComponent implements AfterViewInit{
           this.getVDfromCache();
           return;
         }
-
-        this.netwService.getSchulplanerInfo(this.readableDate).then((value: string[]) => {
-          //this.offlineDate = undefined;
-          value.forEach((v, i) => {value[i] += 'SCHULPLANER_INFO'});
-          this.info = this.info.concat(value);
-        });
-        this.checkVertretung();
       }
     );
   }

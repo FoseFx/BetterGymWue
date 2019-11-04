@@ -12,22 +12,22 @@
         <br><hr>
       </ng-container>
       <a mat-list-item routerLink="/" (click)="hamNav.close()"><i class="material-icons">home</i>&nbsp; Home</a>
-      <a mat-list-item routerLink="cloud" (click)="hamNav.close()"><i class="material-icons">cloud</i>&nbsp; Kurs-Cloud</a>
+      <a mat-list-item class="disabled" (click)="hamNav.close()"><i class="material-icons">cloud</i>&nbsp; Kurs-Cloud</a>
       <hr>
 
       <a [ngClass]="{'disabled': !credentialsLiegen}" mat-list-item routerLink='/' [queryParams]="{'force': true}" (click)="hamNav.close()"><i class="material-icons">school</i>&nbsp; Lehrer Zugang hinzufügen</a>
       <a mat-list-item [ngClass]="{'disabled': !baseService.myKurse}" routerLink="stundenplan" (click)="hamNav.close()"><i class="material-icons">assignment</i>&nbsp;Stundenplan</a>
       <hr>
-      <a mat-list-item [ngClass]="{'disabled': !baseService.myKurse}" (click)="removeKurse()"><i class="material-icons">delete</i>&nbsp; Kurse löschen</a>
-      <a mat-list-item [ngClass]="{'disabled': !baseService.KlassenKurse}" (click)="hamNav.close()" routerLink="/show/non-kurse"><i class="material-icons">swap_horiz</i>&nbsp; Nicht-Kurse ändern</a>
-      <a mat-list-item [ngClass]="{'disabled': !baseService.myKurse}" (click)="refreshTT()"><i class="material-icons">refresh</i>&nbsp; Stundenplan aktualisieren</a>
+      <a mat-list-item [ngClass]="{'disabled': true}"><i class="material-icons">delete</i>&nbsp; Kurse löschen</a>
+      <a mat-list-item [ngClass]="{'disabled': true}" routerLink="/show/non-kurse"><i class="material-icons">swap_horiz</i>&nbsp; Nicht-Kurse ändern</a>
+      <a mat-list-item [ngClass]="{'disabled': true}"><i class="material-icons">refresh</i>&nbsp; Stundenplan aktualisieren</a>
       <hr>
       <a mat-list-item routerLink="agb" (click)="hamNav.close()"><i class="material-icons">gavel</i>&nbsp; Wichtige Hinweise</a>
       <a mat-list-item routerLink="about" (click)="hamNav.close()"><i class="material-icons">account_circle</i>&nbsp; Über</a>
 			<!--<hr>
 			<a mat-list-item routerLink="homework" (click)="hamNav.close()"><i class="material-icons">view_list</i>&nbsp; Hausaufgaben</a> -->
 			<hr>
-			<a mat-list-item routerLink="help" (click)="hamNav.close()"><i class="material-icons">live_help</i>&nbsp; Hilfe & Feedback</a>
+			<a mat-list-item class="disabled" (click)="hamNav.close()"><i class="material-icons">live_help</i>&nbsp; Hilfe & Feedback</a>
 
 		</mat-nav-list>
 
@@ -59,16 +59,6 @@
         <mat-card-title>{{reset.header | async }}</mat-card-title><span style="clear: both"></span>
         <mat-card-subtitle>{{ reset.message  | async }}</mat-card-subtitle>
       </mat-card-header>
-    </mat-card>
-
-    <mat-card *ngIf="(message.message$ | async)?.count > message.count"
-      style="position:relative; text-align: left!important; padding-bottom: 50px; margin-bottom: 10px!important;" class="center">
-      <mat-card-header>
-        <mat-icon mat-card-avatar>announcement</mat-icon>
-        <mat-card-title>{{(message.message$ | async)?.title }}</mat-card-title><span style="clear: both"></span>
-        <mat-card-subtitle [innerHTML]="(message.message$  | async)?.msg"></mat-card-subtitle>
-      </mat-card-header>
-      <button mat-button style="display: block; position:absolute; right: 10px" (click)="message.resetCount()">Schließen</button>
     </mat-card>
 
     <div *ngIf="baseService.milchglas" style="width: 100%; height: 100vh; position:fixed; z-index: 2; top: 0; left: 0; opacity: 0.7; background: white; display: flex; justify-content: center; align-items: center">

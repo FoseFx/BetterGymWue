@@ -1,37 +1,14 @@
 import {Injectable} from '@angular/core';
-import {CONFIG} from '../../../conf';
 import {BaseService} from '../base/base.service';
 import {AlertService} from '../alert.service';
-import * as Cloud from './cloud.netw'
-import * as Initial from './initial.netw'
-import {getVertretungsDaten} from "./getVertretungsdaten";
 import {VertretungsDaten, VertretungsEvaPayload, VertretungsReihe} from "../../../Classes";
 
 @Injectable()
 export class NetwService {
 
-  public _stufen: string[];
-  public wochen: string[] = [];
   saveKurseTrys = 0;
   constructor(public baseService: BaseService, public alertService: AlertService) {}
-
-  getSchulplanerInfo(date: string){ // date eg.: "23.1."
-    date = date.replace(/\./g, "-"); // eg.: "23-1-"
-    return new Promise((resolve, reject) => {
-      this.baseService.makeConnections(CONFIG.databaseURL + "info/" + date + "/" + this.baseService.myStufe + ".json").subscribe((val) => { // eg: /info/23-1-/Q1.json
-        let val2 = (val != "null") ? JSON.parse(val) : [];
-        this.baseService.makeConnections(CONFIG.databaseURL + "info/" + date + "/*.json").subscribe((valueAll) => {
-          let valueAll2 = (valueAll == "null")? [] : JSON.parse(valueAll);
-          resolve(val2.concat(valueAll2));
-        });
-      },
-      (err) => {
-        reject(err);
-      });
-    });
-  }
-
-  public compileVD(slides: VertretungsEvaPayload[], lehrer?:boolean) : VertretungsDaten{
+  public compileVD(slides: VertretungsEvaPayload[], lehrer?:boolean): VertretungsDaten{
     lehrer = lehrer || false;
     let compr = {};
     let info = [];
@@ -75,38 +52,7 @@ export class NetwService {
     return [info, compr];
   }
 
-  get stufen(): Promise<string[]>{
-    return new Promise((resolve, reject )=> {
-      this._stufen = (localStorage.stufen) ? JSON.parse(localStorage.stufen) : undefined;
 
-      if (this._stufen) resolve(this._stufen);
-      let observable = this.baseService.makeConnections(CONFIG.credentialsCheckUrl);
-
-      Initial.get_stufen(observable)
-      .then((res:string[][])=>{
-        let stufen = res[0];
-        this.wochen = res[1];
-        this._stufen = stufen;
-        localStorage.stufen = JSON.stringify(stufen);
-        resolve(stufen);
-      })
-      .catch( (msg:string) =>{
-          this.alertService.alert(msg, this.alertService.DANGER);
-          reject(msg);
-      });
-
-    });
-  }
-
-  public getkurse = (stufe: string, stufeid: number) => Initial.getkurse(stufe, stufeid, this.wochen, this.baseService);
-  public getTT = (stufe): {tt: { days: any[][]}[], hash: string} => Initial.getTT(stufe);
-  public fetchCloud = (id: number)=> Cloud.fetchCloud(id, this);
-  public saveKurse = (kurse) => Cloud.saveKurse(kurse, this);
-
-
-  getVertretungsDaten(tag: string, i: number, urlmiddle?: string, file?: string[], sides?: any[]){
-    return getVertretungsDaten(this, new DOMParser(), tag, i, urlmiddle, file, sides);
-  }
 }
 function decodeHtml(html) {
   let txt = document.createElement("textarea");

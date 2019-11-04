@@ -266,3 +266,8 @@ ul{
 .light{
   font-weight: lighter;
 }
+
+.red {
+	font-weight: bold;
+	color: red;
+}

@@ -1,10 +1,7 @@
-import {from as observableFrom, Observable} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {APP_VERSION, CONFIG} from '../../../conf';
 import {AlertService} from "../alert.service";
-import * as AppMeta from "./appMeta.base";
 import {Kurs, TT} from "../../../Classes";
 
 
@@ -34,7 +31,6 @@ export class BaseService {
 
 
   constructor(public router: Router,
-              public httpClient: HttpClient,
               private alertService: AlertService
   ) {
     if (typeof(Storage) === 'undefined') {
@@ -61,13 +57,7 @@ export class BaseService {
     this.justResetted = (!!localStorage.justResetted) ? (localStorage.justResetted == "true"): false;
     this.verifiedNonKurse = (!!localStorage.verifiedNonKurse) ? (localStorage.verifiedNonKurse == "true"): false;
     localStorage.justResetted = false;
-    AppMeta.checkFerien(this);
-    AppMeta.needsReset(this.httpClient);
   }
-
-  public needsUpdate = () => AppMeta.needsUpdate(this);
-  public getResetHeader = () => AppMeta.getResetHeader(this);
-  public getResetMessage = () => AppMeta.getResetMessage(this);
 
   set preLehrer(val){
     this._preLehrer = val;
@@ -92,9 +82,8 @@ export class BaseService {
 
 
   setTT(val: {tt: { days: any[][]}[], hash: string}){
-
     this.TT = val.tt;
-    localStorage.TT = JSON.stringify(val);
+    localStorage.TT = JSON.stringify(val.tt);
     let a = [];
     console.log(val);
     val.tt.forEach((wocheV) => {
@@ -119,68 +108,22 @@ export class BaseService {
 
   checkCredentials(u: string, p: string, lehrer?:boolean) {
     lehrer = lehrer || false;
-    return new Promise((resolve) => {
-      this.httpClient.get((lehrer)? CONFIG.credentialsCheckLehrerUrl : CONFIG.credentialsCheckUrl, {
-        headers: new HttpHeaders({'Authorization': 'Basic ' + btoa(u + ':' + p)}),
-        responseType: 'text'
-      }).subscribe(
-        (value) => {
-          if (value && !lehrer) {
+    return new Promise((resolve, reject) => {
+				const value = true;
+				if (value && !lehrer) {
             localStorage.credentials = JSON.stringify({u: u, p: p});
             this.credentials = {u: u, p: p};
             resolve(true);
           }else if(value && lehrer){
-            let obj = JSON.parse(localStorage.credentials);
-            obj.l = {u: u, p: p};
-            console.log(obj);
-            localStorage.credentials = JSON.stringify(obj);
-            this.credentials = obj;
-            resolve(true);
-          }
-        },
-        (err) => {
-          try{ this.alertService.alert(JSON.parse(err.error).error, 1) } catch (e) {}
-          if(err.statusText === "Unknown Error") this.alertService.alert("Netzwerkfehler", 1);
-          if(!lehrer){
-            delete localStorage.credentials;
-            this.credentials = undefined;
-          }
-          resolve(false);
-        }
-      );
-    });
+					let obj = JSON.parse(localStorage.credentials);
+					obj.l = {u: u, p: p};
+					console.log(obj);
+					localStorage.credentials = JSON.stringify(obj);
+					this.credentials = obj;
+					resolve(true);
+				}
+		});
   }
-  makeConnections(url: string, lehrer:boolean = false, cache: boolean = true):Observable<any>{
-    let cred = this.credentials;
-    if(!cred) return null;
-    let ext = `?${(Math.random()*10000).toFixed(0)}`;
-    if(!cache)
-    	ext = "";
-    let p = new Promise((resolve, reject) => {
-      fetch(url + ext, {
-        headers: {
-          "Authorization": "Basic " + ((!lehrer) ? btoa(cred.u + ':' + cred.p) : btoa(cred.l.u+ ':' +cred.l.p))
-        },
-        method: "get",
-        redirect: "follow",
-        cache: "no-cache"
-      })
-        .then(async function (response) {
-          if(response.ok)
-            resolve(await response.text());
-          else {
-            reject({
-              statusText: `${response.status} ${response.statusText}`
-            });
-          }
-        })
-        .catch((err) => {
-          reject({statusText: "Netzwerkfehler"});
-        });
-    });
-    return observableFrom(p);
-  }
-
   install(){
     // @ts-ignore
     if (!!window.installpromptevent){

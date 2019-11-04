@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {NetwService} from '../../../s/network/netw.service';
 import {BaseService} from '../../../s/base/base.service';
 
 @Component({
@@ -9,17 +8,14 @@ import {BaseService} from '../../../s/base/base.service';
 })
 export class StufeComponent implements OnInit {
 
-  constructor(private netwService: NetwService, private baseService: BaseService) { }
+  constructor(private baseService: BaseService) { }
 
   stufen:string[] = [];
   tempSelectedValue = '';
   selectedValue: string;
 
   ngOnInit() {
-    this.netwService.stufen.then(
-      (wert: string[]) => {this.stufen = wert; }
-    );
-    console.log(this.stufen);
+    this.stufen = ["DEMO"];
   }
 
   setValue(){
