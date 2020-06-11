@@ -1,5 +1,8 @@
 # Better Gym Wue [![Build Status](https://travis-ci.com/FoseFx/BetterGymWue.svg?branch=master)](https://travis-ci.com/FoseFx/BetterGymWue)
-## \> [bgw.fosefx.com](https://bgw.fosefx.com/) <
+
+# Post Mortem
+This project is now unmaintained. A demo is available [here](https://fosefx.github.io/Project-Demos/BGW/index.html).
+
 ## About
 
 ![Sample](https://raw.githubusercontent.com/fosefx/BetterGymWue/master/.github/03-done.png)
